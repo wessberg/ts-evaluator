@@ -56,12 +56,12 @@
     "@wessberg/ts-config": "0.0.34",
     "npm-check-updates": "2.15.0",
     "standard-changelog": "2.0.6",
-    "tslint": "5.11.0"
+    "tslint": "5.11.0",
+    "ava": "0.25.0"
   },
   "dependencies": {
     "@types/node": "10.12.15",
     "@types/object-path": "0.9.29",
-    "ava": "0.25.0",
     "chalk": "2.4.1",
     "object-path": "0.11.4",
     "tslib": "1.9.3",
