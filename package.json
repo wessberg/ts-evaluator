@@ -1,0 +1,99 @@
+{
+  "name": "@wessberg/ts-evaluator",
+  "version": "0.0.0",
+  "description": "An interpreter for Typescript that can evaluate an arbitrary Node within a Typescript AST",
+  "scripts": {
+    "postinstall": "npm run build",
+    "generate:readme": "scaffold readme",
+    "generate:license": "scaffold license",
+    "generate:contributing": "scaffold contributing",
+    "generate:coc": "scaffold coc",
+    "generate:changelog": "standard-changelog --first-release",
+    "generate:all": "npm run generate:license & npm run generate:contributing & npm run generate:coc & npm run generate:readme & npm run generate:changelog",
+    "update": "ncu -ua && npm update && npm install",
+    "lint": "tsc --noEmit && tslint -c tslint.json --project tsconfig.json",
+    "clean:dist": "rm -rf dist",
+    "clean:compiled": "rm -rf compiled",
+    "clean": "npm run clean:dist && npm run clean:compiled",
+    "rollup": "rollup -c rollup.config.js",
+    "rollup:watch": "rollup -c rollup.config.js --watch",
+    "tsc:test": "tsc --module commonjs --target es2017 --sourceMap",
+    "prebuild": "npm run clean",
+    "prewatch": "npm run prebuild",
+    "build": "npm run rollup",
+    "build:test": "npm run tsc:test",
+    "watch": "npm run tsc:cjs -- --watch & npm run tsc:esm -- --watch",
+    "prepare": "npm run build",
+    "publish:pre": "NODE_ENV=production npm run lint && NODE_ENV=production npm run prepare",
+    "publish:meta": "npm run generate:all && git add . && (git commit -am \"Bumped version\" || true) && git push",
+    "publish:patch": "npm run publish:pre && npm version patch && npm run publish:meta && npm publish",
+    "publish:minor": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
+    "publish:major": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
+    "pretest": "npm run clean:compiled && npm run build:test",
+    "test": "ava **/*.test.* --fail-fast",
+    "posttest": "npm run clean:compiled"
+  },
+  "keywords": [
+    "typescript",
+    "ts",
+    "interpreter",
+    "evaluate",
+    "evaluator",
+    "ast"
+  ],
+  "files": [
+    "dist/**/*.*"
+  ],
+  "author": {
+    "name": "Frederik Wessberg",
+    "email": "frederikwessberg@hotmail.com",
+    "url": "https://github.com/wessberg"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@wessberg/scaffold": "1.0.5",
+    "@wessberg/rollup-plugin-ts": "1.1.10",
+    "@wessberg/ts-config": "0.0.34",
+    "npm-check-updates": "2.15.0",
+    "standard-changelog": "2.0.6",
+    "tslint": "5.11.0"
+  },
+  "dependencies": {
+    "@types/node": "10.12.15",
+    "@types/object-path": "0.9.29",
+    "ava": "0.25.0",
+    "chalk": "2.4.1",
+    "object-path": "0.11.4",
+    "tslib": "1.9.3",
+    "typescript": "3.2.2"
+  },
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "browser": "./dist/esm/index.js",
+  "types": "./dist/esm/index.d.ts",
+  "typings": "./dist/esm/index.d.ts",
+  "es2015": "./dist/esm/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wessberg/ts-evaluator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/wessberg/ts-evaluator/issues"
+  },
+  "engines": {
+    "node": ">=10.1.0"
+  },
+  "scaffold": {
+    "patreonUserId": "11315442",
+    "logo": "https://raw.githubusercontent.com/wessberg/ts-evaluator/master/documentation/asset/ts-evaluator-logo.png",
+    "contributorMeta": {
+      "Frederik Wessberg": {
+        "imageUrl": "https://avatars2.githubusercontent.com/u/20454213?s=460&v=4",
+        "role": "Maintainer",
+        "twitterHandle": "FredWessberg",
+        "isCocEnforcer": true
+      }
+    },
+    "backers": []
+  }
+}
