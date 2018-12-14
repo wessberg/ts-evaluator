@@ -9,10 +9,10 @@ import {evaluateExpression} from "../evaluate-expression";
 import {IEvaluatorOptions} from "../i-evaluator-options";
 import {evaluateDeclaration} from "../evaluate-declaration";
 import {hasModifier} from "../../util/modifier/has-modifier";
-import {IsAsyncError} from "../../error/is-async-error/is-async-error";
 import {evaluateNodeWithArgument} from "../evaluate-node-with-argument";
 import {evaluateNodeWithValue} from "../evaluate-node-with-value";
 import {createStatementTraversalStack, StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack";
+import {AsyncError} from "../../error/policy-error/async-error/async-error";
 
 /**
  * Asserts that a node isn't async
@@ -21,7 +21,7 @@ import {createStatementTraversalStack, StatementTraversalStack} from "../../stac
 function assertNonAsync (node: Node): void {
 	// Throw if the function is async
 	if (hasModifier(node, SyntaxKind.AsyncKeyword) || isAwaitExpression(node)) {
-		throw new IsAsyncError();
+		throw new AsyncError({kind: "promise"});
 	}
 }
 
@@ -34,7 +34,7 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack}: ICrea
 	let ops = 0;
 
 	const handleNewNode = (node: Node, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => {
-		assertNonAsync(node);
+		if (!policy.async.promise) assertNonAsync(node);
 
 		// Increment the amount of encountered ops
 		ops++;

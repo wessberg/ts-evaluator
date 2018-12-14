@@ -35,6 +35,10 @@ export function evaluate ({
 															process = {
 																exit: false,
 																spawnChild: false
+															},
+															async = {
+																timer: false,
+																promise: false
 															}
 														} = {}
 													}: IEvaluateOptions): EvaluateResult {
@@ -55,6 +59,10 @@ export function evaluate ({
 		process: {
 			exit: typeof process === "boolean" ? process : process.exit,
 			spawnChild: typeof process === "boolean" ? process : process.spawnChild
+		},
+		async: {
+			timer: typeof async === "boolean" ? async : async.timer,
+			promise: typeof async === "boolean" ? async : async.promise
 		}
 	};
 

@@ -2,12 +2,12 @@ import {IEvaluatorOptions} from "./i-evaluator-options";
 import {ForOfStatement, isVariableDeclarationList} from "typescript";
 import {Literal} from "../literal/literal";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {IsAsyncError} from "../error/is-async-error/is-async-error";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
 import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
+import {AsyncError} from "../error/policy-error/async-error/async-error";
 
 // tslint:disable:no-redundant-jump
 
@@ -15,10 +15,10 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * Evaluates, or attempts to evaluate, a ForOfStatement
  * @param {IEvaluatorOptions<ForOfStatement>} options
  */
-export function evaluateForOfStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForOfStatement>): void {
+export function evaluateForOfStatement ({node, environment, evaluate, logger, statementTraversalStack, policy}: IEvaluatorOptions<ForOfStatement>): void {
 	// Throw if it is an async iterator
-	if (node.awaitModifier != null) {
-		throw new IsAsyncError();
+	if (!policy.async.promise && node.awaitModifier != null) {
+		throw new AsyncError({kind: "promise"});
 	}
 
 	// Compute the 'of' part

@@ -13,6 +13,9 @@ import {NetworkError} from "../error/policy-error/network-error/network-error";
 import {isProcessExitOperation} from "../policy/process/is-process-exit-operation";
 import {ProcessError} from "../error/policy-error/process-error/process-error";
 import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-child-operation";
+import {isAsyncPromiseOperation} from "../policy/async/is-async-promise-operation";
+import {AsyncError} from "../error/policy-error/async-error/async-error";
+import {isAsyncTimerOperation} from "../policy/async/is-async-timer-operation";
 
 // tslint:disable:no-any
 
@@ -90,6 +93,14 @@ export function createProxyBaseEnvironment (policy: IEvaluatePolicySanitized): I
 
 		if (!policy.io.write && isIoWrite(item)) {
 			throw new IoError({kind: "write"});
+		}
+
+		if (!policy.async.promise && isAsyncPromiseOperation(item)) {
+			throw new AsyncError({kind: "promise"});
+		}
+
+		if (!policy.async.timer && isAsyncTimerOperation(item)) {
+			throw new AsyncError({kind: "timer"});
 		}
 
 		if (!policy.process.exit && isProcessExitOperation(item)) {

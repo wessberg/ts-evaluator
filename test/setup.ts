@@ -55,6 +55,10 @@ export function prepareTest (
 			process = {
 				exit: false,
 				spawnChild: false
+			},
+			async = {
+				timer: false,
+				promise: false
 			}
 		} = {},
 		logLevel = LogLevelKind.SILENT
@@ -143,6 +147,7 @@ export function prepareTest (
 				deterministic,
 				io,
 				process,
+				async,
 				network
 			},
 			logLevel
