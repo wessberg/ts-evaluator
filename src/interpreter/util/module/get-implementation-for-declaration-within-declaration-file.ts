@@ -6,6 +6,7 @@ import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-
 import {IEvaluatorOptions} from "../../evaluator/i-evaluator-options";
 import {getDeclarationName} from "../declaration/get-declaration-name";
 import {EvaluationError} from "../../error/evaluation-error/evaluation-error";
+import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment";
 
 /**
  * Gets an implementation for the given declaration that lives within a declaration file
@@ -21,7 +22,8 @@ export function getImplementationForDeclarationWithinDeclarationFile (options: I
 	}
 
 	// Require itself may be requested. If so, return it
-	if (name === "require") return options.require;
+	const require = getFromLexicalEnvironment(options.environment, "require")!.literal as NodeRequire;
+	if (name === "require") return require;
 
 	const moduleDeclaration = isModuleDeclaration(node) ? node : findNearestParentNodeOfKind<ModuleDeclaration>(node, SyntaxKind.ModuleDeclaration);
 	if (moduleDeclaration == null) {
@@ -29,12 +31,11 @@ export function getImplementationForDeclarationWithinDeclarationFile (options: I
 	}
 
 	try {
-		const module = options.require(moduleDeclaration.name.text);
+		const module = require(moduleDeclaration.name.text);
 		return isModuleDeclaration(node)
 			? module
 			: module[name];
 	} catch (ex) {
-		console.log(ex);
 		if (ex instanceof EvaluationError) throw ex;
 		else throw new ModuleNotFoundError({path: moduleDeclaration.name.text});
 	}

@@ -4,9 +4,7 @@
  * @returns {boolean}
  */
 export function isObjectLike<T> (value: T): boolean {
-	return value != null && (
-		typeof value === "function" || Array.isArray(value) || value.constructor === {}.constructor
-	);
+	return value != null && (typeof value === "function" || typeof value === "object");
 }
 
 /**

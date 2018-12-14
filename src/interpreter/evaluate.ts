@@ -13,7 +13,6 @@ import {createStack, Stack} from "./stack/stack";
 import {isDeclaration} from "./util/declaration/is-declaration";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
 import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
-import {createProxyRequire} from "./require/create-proxy-require";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
@@ -32,6 +31,10 @@ export function evaluate ({
 															io = {
 																read: true,
 																write: false
+															},
+															process = {
+																exit: false,
+																spawnChild: false
 															}
 														} = {}
 													}: IEvaluateOptions): EvaluateResult {
@@ -48,6 +51,10 @@ export function evaluate ({
 		io: {
 			read: typeof io === "boolean" ? io : io.read,
 			write: typeof io === "boolean" ? io : io.write
+		},
+		process: {
+			exit: typeof process === "boolean" ? process : process.exit,
+			spawnChild: typeof process === "boolean" ? process : process.spawnChild
 		}
 	};
 
@@ -55,8 +62,7 @@ export function evaluate ({
 	const initialEnvironment = createLexicalEnvironment(environment, policy, logger);
 
 	const stack: Stack = createStack();
-	const require: NodeRequire = createProxyRequire(policy);
-	const nodeEvaluator = createNodeEvaluator({policy, typeChecker, logger, stack, require});
+	const nodeEvaluator = createNodeEvaluator({policy, typeChecker, logger, stack});
 
 	try {
 		let value: Literal;

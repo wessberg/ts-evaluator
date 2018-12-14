@@ -8,5 +8,4 @@ export interface ICreateNodeEvaluatorOptions {
 	policy: IEvaluatePolicySanitized;
 	logger: Logger;
 	stack: Stack;
-	require: NodeRequire;
 }

@@ -1,6 +1,6 @@
 import {IEvaluationErrorOptions} from "../../evaluation-error/i-evaluation-error-options";
-import {IoOperationKind} from "../../../policy/io/module-io-map";
+import {IEvaluateIOPolicy} from "../../../policy/i-evaluate-policy";
 
 export interface IIoErrorOptions extends IEvaluationErrorOptions {
-	kind: IoOperationKind;
+	kind: keyof IEvaluateIOPolicy;
 }

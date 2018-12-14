@@ -30,7 +30,7 @@ function assertNonAsync (node: Node): void {
  * @param {ICreateNodeEvaluatorOptions} options
  * @returns {NodeEvaluator}
  */
-export function createNodeEvaluator ({typeChecker, policy, logger, stack, require}: ICreateNodeEvaluatorOptions): NodeEvaluator {
+export function createNodeEvaluator ({typeChecker, policy, logger, stack}: ICreateNodeEvaluatorOptions): NodeEvaluator {
 	let ops = 0;
 
 	const handleNewNode = (node: Node, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => {
@@ -91,8 +91,7 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack, requir
 			environment,
 			stack,
 			logger,
-			statementTraversalStack,
-			require
+			statementTraversalStack
 		};
 	}
 

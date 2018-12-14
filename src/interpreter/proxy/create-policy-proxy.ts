@@ -66,7 +66,6 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 					target,
 					path: stringifyPath(inputPath)
 				});
-
 				return Reflect.apply(<Function>target, thisArg, argArray);
 			},
 

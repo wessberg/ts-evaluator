@@ -15,5 +15,4 @@ export interface IEvaluatorOptions<T extends (Node|NodeArray<Node>)> {
 	stack: Stack;
 	statementTraversalStack: StatementTraversalStack;
 	logger: Logger;
-	require: NodeRequire;
 }

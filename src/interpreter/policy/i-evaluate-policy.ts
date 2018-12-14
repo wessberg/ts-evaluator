@@ -3,8 +3,14 @@ export interface IEvaluateIOPolicy {
 	write: boolean;
 }
 
+export interface IEvaluateProcessPolicy {
+	exit: boolean;
+	spawnChild: boolean;
+}
+
 export interface IEvaluatePolicy {
 	io: boolean|IEvaluateIOPolicy;
+	process: boolean|IEvaluateProcessPolicy;
 	network: boolean;
 	deterministic: boolean;
 	maxOps: number;
@@ -12,6 +18,7 @@ export interface IEvaluatePolicy {
 
 export interface IEvaluatePolicySanitized {
 	io: IEvaluateIOPolicy;
+	process: IEvaluateProcessPolicy;
 	network: boolean;
 	deterministic: boolean;
 	maxOps: number;

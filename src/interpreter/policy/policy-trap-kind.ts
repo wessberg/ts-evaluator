@@ -3,3 +3,22 @@ export const enum PolicyTrapKind {
 	APPLY = "__$$_PROXY_APPLY",
 	CONSTRUCT = "__$$_PROXY_CONSTRUCT"
 }
+
+/**
+ * Stringifies the given PolicyTrapKind on the given path
+ * @param {PolicyTrapKind} kind
+ * @param {string} path
+ * @return {string}
+ */
+export function stringifyPolicyTrapKindOnPath (kind: PolicyTrapKind, path: string): string {
+	switch (kind) {
+		case PolicyTrapKind.GET:
+			return `get ${path}`;
+
+		case PolicyTrapKind.APPLY:
+			return `${path}(...)`;
+
+		case PolicyTrapKind.CONSTRUCT:
+			return `new ${path}(...)`;
+	}
+}

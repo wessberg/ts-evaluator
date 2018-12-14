@@ -7,6 +7,41 @@ import {IBuiltInModuleMap} from "../module/built-in-module-map";
  * @type {TrapConditionMap<IBuiltInModuleMap>}
  */
 export const MODULE_NETWORK_MAP: TrapConditionMap<IBuiltInModuleMap> = {
+	http2: {
+		connect: {
+			[PolicyTrapKind.APPLY]: true
+		},
+		createSecureServer: {
+			[PolicyTrapKind.APPLY]: true
+		},
+		createServer: {
+			[PolicyTrapKind.APPLY]: true
+		}
+	},
+
+	https: {
+		createServer: {
+			[PolicyTrapKind.APPLY]: true
+		},
+		request: {
+			[PolicyTrapKind.APPLY]: true
+		},
+		get: {
+			[PolicyTrapKind.APPLY]: true
+		},
+		Server: {
+			[PolicyTrapKind.CONSTRUCT]: true
+		},
+		globalAgent: {
+			destroy: {
+				[PolicyTrapKind.APPLY]: true
+			}
+		},
+		Agent: {
+			[PolicyTrapKind.CONSTRUCT]: true
+		}
+	},
+
 	http: {
 		createClient: {
 			[PolicyTrapKind.APPLY]: true
@@ -19,6 +54,20 @@ export const MODULE_NETWORK_MAP: TrapConditionMap<IBuiltInModuleMap> = {
 		},
 		get: {
 			[PolicyTrapKind.APPLY]: true
+		},
+		Server: {
+			[PolicyTrapKind.CONSTRUCT]: true
+		},
+		ClientRequest: {
+			[PolicyTrapKind.CONSTRUCT]: true
+		},
+		globalAgent: {
+			destroy: {
+				[PolicyTrapKind.APPLY]: true
+			}
+		},
+		Agent: {
+			[PolicyTrapKind.CONSTRUCT]: true
 		}
 	}
 };

@@ -12,10 +12,9 @@ export type TrapConditionMap<T, ConditionType = boolean> = {
 };
 
 export type TrapConditionMemberMap<T, ConditionType> = {
-	[Key in keyof T]?: TrapConditionMemberMapValue<ConditionType>;
+	[Key in keyof T]?: TrapConditionMapValue<T[Key], ConditionType>;
 };
 
-export type TrapConditionMemberMapValue<ConditionType> = TrapCondition<ConditionType>|PolicyTrapKindToTrapConditionMap<ConditionType>;
 export type TrapConditionMapValue<T, ConditionType> = TrapCondition<ConditionType>|TrapConditionMemberMap<T, ConditionType>|PolicyTrapKindToTrapConditionMap<ConditionType>;
 
 /**

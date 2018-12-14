@@ -30,7 +30,7 @@
     "publish:minor": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
     "publish:major": "npm run publish:pre && npm version minor && npm run publish:meta && npm publish",
     "pretest": "npm run clean:compiled && npm run build:test",
-    "test": "ava **/*.test.* --fail-fast",
+    "test": "ava **/policy.test.* --fail-fast",
     "posttest": "npm run clean:compiled"
   },
   "keywords": [

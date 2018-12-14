@@ -5,7 +5,7 @@ import {GLOBAL_SYMBOL, GLOBAL_THIS_SYMBOL} from "../util/global/global-symbol";
 import {console} from "./lib/shared/console";
 import {Logger} from "../logger/logger";
 import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
-import {createProxyEcmaEnvironment} from "../ecma/create-proxy-ecma-environment";
+import {createProxyBaseEnvironment} from "../environment/create-proxy-base-environment";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment|undefined;
@@ -148,11 +148,12 @@ export function createLexicalEnvironment (inputEnvironment: LexicalEnvironment["
 	const environment = {
 		parentEnv: undefined,
 		env: {
-			...createProxyEcmaEnvironment(policy),
+			...createProxyBaseEnvironment(policy),
 			console: console(logger),
 			...inputEnvironment
 		} as IndexLiteral
 	};
+
 	environment.env[GLOBAL_SYMBOL] = environment.env[GLOBAL_THIS_SYMBOL] = environment;
 	return environment;
 }

@@ -3,6 +3,8 @@ import {prepareTest} from "../setup";
 import {IoError} from "../../src/interpreter/error/policy-error/io-error/io-error";
 import {NonDeterministicError} from "../../src/interpreter/error/policy-error/non-deterministic-error/non-deterministic-error";
 import {NetworkError} from "../../src/interpreter/error/policy-error/network-error/network-error";
+import {ProcessError} from "../../src/interpreter/error/policy-error/process-error/process-error";
+import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Throws on IO read if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
@@ -303,7 +305,7 @@ test("Throws on constructing new Date() without arguments if the policy is non-d
 test("Doesn't throws on construction of a new Date with a specific date input, even if the policy is non-deterministic. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-		`
+			`
 			(() => {
 				try {
 					new Date("01-01-1991");
@@ -334,7 +336,7 @@ test("Doesn't throws on construction of a new Date with a specific date input, e
 test("Throws on Network activity if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-		`
+			`
 			(() => {
 				import {request} from "http";
 				try {
@@ -352,6 +354,99 @@ test("Throws on Network activity if the policy requires it. #1", t => {
 			},
 			environment: {
 				NetworkError
+			}
+		}
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else t.deepEqual(result.value, true);
+});
+
+test("Throws on Network activity if the policy requires it. #2", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+			`
+			(() => {
+				import {globalAgent} from "http";
+				try {
+					globalAgent.destroy();
+					return false;
+				} catch (ex) {
+					return ex instanceof NetworkError;
+				}
+			})();
+		`,
+		"(() => ",
+		{
+			policy: {
+				network: false
+			},
+			environment: {
+				NetworkError
+			}
+		}
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else t.deepEqual(result.value, true);
+});
+
+test("Throws on attempting to exit the Process if the policy requires it. #1", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+			`
+			(() => {
+				try {
+					process.exit();
+					return false;
+				} catch (ex) {
+					return ex instanceof ProcessError;
+				}
+			})();
+		`,
+		"(() => ",
+		{
+			policy: {
+				process: false
+			},
+			environment: {
+				ProcessError
+			}
+		}
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else t.deepEqual(result.value, true);
+});
+
+test.only("Throws on attempting to spawn a child process if the policy requires it. #1", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+		`
+			(() => {
+				import {spawn} from "child_process";
+				try {
+					spawn("ls");
+					return false;
+				} catch (ex) {
+					return ex instanceof ProcessError;
+				}
+			})();
+		`,
+		"(() => ",
+		{
+			logLevel: LogLevelKind.INFO,
+			policy: {
+				process: false
+			},
+			environment: {
+				ProcessError
 			}
 		}
 	);

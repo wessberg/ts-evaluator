@@ -51,6 +51,10 @@ export function prepareTest (
 			io = {
 				read: true,
 				write: false
+			},
+			process = {
+				exit: false,
+				spawnChild: false
 			}
 		} = {},
 		logLevel = LogLevelKind.SILENT
@@ -138,6 +142,7 @@ export function prepareTest (
 				maxOps,
 				deterministic,
 				io,
+				process,
 				network
 			},
 			logLevel
