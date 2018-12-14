@@ -16,10 +16,7 @@ import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
 import {createProxyRequire} from "./require/create-proxy-require";
 
 /**
- * TODO: imports,
- *       exports,
- *       properties on for example window/global
- * Will get a literal value for the given Expression.
+ * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
  * @param {IEvaluateOptions} options
  * @returns {EvaluateResult}
  */
