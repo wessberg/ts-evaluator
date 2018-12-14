@@ -425,7 +425,7 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", t
 	else t.deepEqual(result.value, true);
 });
 
-test.only("Throws on attempting to spawn a child process if the policy requires it. #1", t => {
+test("Throws on attempting to spawn a child process if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
