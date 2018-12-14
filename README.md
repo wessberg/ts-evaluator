@@ -1,4 +1,4 @@
-<img alt="Logo for @wessberg/ts-evaluator" src="https://raw.githubusercontent.com/wessberg/ts-evaluator/master/documentation/asset/ts-evaluator-logo.png" height="130"></img><br>
+<img alt="Logo for @wessberg/ts-evaluator" src="https://raw.githubusercontent.com/wessberg/ts-evaluator/master/documentation/asset/ts-evaluator-logo.png" height="120"></img><br>
 <a href="https://npmcharts.com/compare/@wessberg/ts-evaluator?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fts-evaluator.svg" height="20"></img></a>
 <a href="https://david-dm.org/wessberg/ts-evaluator"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/ts-evaluator.svg" height="20"></img></a>
 <a href="https://www.npmjs.com/package/@wessberg/ts-evaluator"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fts-evaluator.svg" height="20"></img></a>
