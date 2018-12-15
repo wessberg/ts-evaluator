@@ -10,12 +10,14 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file";
 import {hasModifier} from "../util/modifier/has-modifier";
 
+// tslint:disable:no-identical-functions
+
 /**
  * Evaluates, or attempts to evaluate, a FunctionDeclaration
  * @param {IEvaluatorOptions<FunctionDeclaration>} options
  * @returns {Promise<void>}
  */
-export async function evaluateFunctionDeclaration (options: IEvaluatorOptions<FunctionDeclaration>): Promise<void> {
+export function evaluateFunctionDeclaration (options: IEvaluatorOptions<FunctionDeclaration>): void {
 	const {node, environment, evaluate, stack, ...rest} = options;
 
 	const nameResult = node.name == null ? undefined : node.name.text;
@@ -33,7 +35,7 @@ export async function evaluateFunctionDeclaration (options: IEvaluatorOptions<Fu
 			}
 
 			// Evaluate the parameters based on the given arguments
-			await evaluateParameterDeclarations({
+			evaluateParameterDeclarations({
 					node: node.parameters,
 					environment: localLexicalEnvironment,
 					evaluate,
@@ -44,13 +46,54 @@ export async function evaluateFunctionDeclaration (options: IEvaluatorOptions<Fu
 
 			const sourceFile = node.getSourceFile();
 			if (nameResult != null && sourceFile.isDeclarationFile) {
-				const implementation = await getImplementationForDeclarationWithinDeclarationFile(options);
-				return await (implementation as Function)(...args);
+				const implementation = getImplementationForDeclarationWithinDeclarationFile(options);
+				return (implementation as Function)(...args);
 			}
 
 			// If the body is a block, evaluate it as a statement
 			if (node.body == null) return;
-			await evaluate.statement(node.body, localLexicalEnvironment);
+			evaluate.statement(node.body, localLexicalEnvironment);
+
+			// If a 'return' has occurred within the block, pop the Stack and return that value
+			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+				return stack.pop();
+			}
+
+			// Otherwise, return 'undefined'. Nothing is returned from the function
+			else {
+				return undefined;
+			}
+		}
+		: function functionDeclaration (this: Literal, ...args: Literal[]) {
+			// Prepare a lexical environment for the function context
+			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+
+			// Define a new binding for a return symbol within the environment
+			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+
+			if (this != null) {
+				setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+			}
+
+			// Evaluate the parameters based on the given arguments
+			evaluateParameterDeclarations({
+					node: node.parameters,
+					environment: localLexicalEnvironment,
+					evaluate,
+					stack,
+					...rest
+				}, args
+			);
+
+			const sourceFile = node.getSourceFile();
+			if (nameResult != null && sourceFile.isDeclarationFile) {
+				const implementation = getImplementationForDeclarationWithinDeclarationFile(options);
+				return deasync.await((implementation as Function)(...args));
+			}
+
+			// If the body is a block, evaluate it as a statement
+			if (node.body == null) return;
+			evaluate.statement(node.body, localLexicalEnvironment);
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
 			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -59,46 +102,7 @@ export async function evaluateFunctionDeclaration (options: IEvaluatorOptions<Fu
 
 			// Otherwise, return 'undefined'. Nothing is returned from the function
 			else return undefined;
-		}
-		: function functionDeclaration (this: Literal, ...args: Literal[]) {
-		// Prepare a lexical environment for the function context
-		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
-
-		// Define a new binding for a return symbol within the environment
-		setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
-
-		if (this != null) {
-			setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
-		}
-
-		// Evaluate the parameters based on the given arguments
-		deasync.await(evaluateParameterDeclarations({
-				node: node.parameters,
-				environment: localLexicalEnvironment,
-				evaluate,
-				stack,
-				...rest
-			}, args
-		));
-
-		const sourceFile = node.getSourceFile();
-		if (nameResult != null && sourceFile.isDeclarationFile) {
-			const implementation = deasync.await(getImplementationForDeclarationWithinDeclarationFile(options));
-			return deasync.await((implementation as Function)(...args));
-		}
-
-		// If the body is a block, evaluate it as a statement
-		if (node.body == null) return;
-		deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
-
-		// If a 'return' has occurred within the block, pop the Stack and return that value
-		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
-			return stack.pop();
-		}
-
-		// Otherwise, return 'undefined'. Nothing is returned from the function
-		else return undefined;
-	};
+		};
 
 	if (nameResult != null) {
 		setInLexicalEnvironment(environment, nameResult, _functionDeclaration.bind(_functionDeclaration));

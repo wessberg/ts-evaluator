@@ -7,6 +7,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<StringLiteralLike>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateStringLiteral ({node}: IEvaluatorOptions<StringLiteralLike>): Promise<Literal> {
+export function evaluateStringLiteral ({node}: IEvaluatorOptions<StringLiteralLike>): Literal {
 	return node.text;
 }

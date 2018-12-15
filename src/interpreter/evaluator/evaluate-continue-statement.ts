@@ -8,6 +8,6 @@ import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
  * @param {IEvaluatorOptions<ContinueStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateContinueStatement ({environment}: IEvaluatorOptions<ContinueStatement>): Promise<void> {
+export function evaluateContinueStatement ({environment}: IEvaluatorOptions<ContinueStatement>): void {
 	setInLexicalEnvironment(environment, CONTINUE_SYMBOL, true);
 }

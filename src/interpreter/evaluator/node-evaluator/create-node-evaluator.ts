@@ -38,24 +38,24 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack}: ICrea
 	};
 
 	const nodeEvaluator: NodeEvaluator = {
-		expression: (node: Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Promise<Literal> => {
+		expression: (node: Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal => {
 			handleNewNode(node, environment, statementTraversalStack);
 			return evaluateExpression(getEvaluatorOptions(node, environment, statementTraversalStack));
 		},
-		statement: (node: Statement, environment: LexicalEnvironment): Promise<void> => {
+		statement: (node: Statement, environment: LexicalEnvironment): void => {
 			const statementTraversalStack = createStatementTraversalStack();
 			handleNewNode(node, environment, statementTraversalStack);
 			return evaluateStatement(getEvaluatorOptions(node, environment, statementTraversalStack));
 		},
-		declaration: (node: Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Promise<void> => {
+		declaration: (node: Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): void => {
 			handleNewNode(node, environment, statementTraversalStack);
 			return evaluateDeclaration(getEvaluatorOptions(node, environment, statementTraversalStack));
 		},
-		nodeWithArgument: (node: Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack): Promise<void> => {
+		nodeWithArgument: (node: Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack): void => {
 			handleNewNode(node, environment, statementTraversalStack);
 			return evaluateNodeWithArgument(getEvaluatorOptions(node, environment, statementTraversalStack), arg);
 		},
-		nodeWithValue: (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Promise<Literal> => {
+		nodeWithValue: (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal => {
 			handleNewNode(node, environment, statementTraversalStack);
 			return evaluateNodeWithValue(getEvaluatorOptions(node, environment, statementTraversalStack));
 		}

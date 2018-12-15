@@ -7,8 +7,8 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<ObjectBindingPattern>} options
  * @param {Literal} rightHandValue
  */
-export async function evaluateObjectBindingPattern ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ObjectBindingPattern>, rightHandValue: Literal): Promise<void> {
+export function evaluateObjectBindingPattern ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ObjectBindingPattern>, rightHandValue: Literal): void {
 	for (const element of node.elements) {
-		await evaluate.nodeWithArgument(element, environment, rightHandValue, statementTraversalStack);
+		evaluate.nodeWithArgument(element, environment, rightHandValue, statementTraversalStack);
 	}
 }

@@ -1,5 +1,5 @@
 import {LogLevelKind} from "../src/interpreter/logger/log-level";
-import {evaluateSync} from "../src/interpreter/evaluate-sync";
+import {evaluate} from "../src/interpreter/evaluate";
 import {EvaluateResult} from "../src/interpreter/evaluate-result";
 import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChild, getDefaultCompilerOptions, getDefaultLibFileName, Node, NodeArray, ScriptKind, ScriptTarget, SourceFile, Statement, sys} from "typescript";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
@@ -134,7 +134,7 @@ export function prepareTest (
 	const entryNode = findEntryExpressionFromStatements(entrySourceFile.statements, normalizedEntry.match);
 
 	return {
-		evaluate: () => evaluateSync({
+		evaluate: () => evaluate({
 			node: entryNode,
 			typeChecker: program.getTypeChecker(),
 			environment,

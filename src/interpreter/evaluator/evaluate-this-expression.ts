@@ -9,7 +9,7 @@ import {THIS_SYMBOL} from "../util/this/this-symbol";
  * @param {IEvaluatorOptions<ThisExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateThisExpression ({environment}: IEvaluatorOptions<ThisExpression>): Promise<Literal> {
+export function evaluateThisExpression ({environment}: IEvaluatorOptions<ThisExpression>): Literal {
 	const match = getFromLexicalEnvironment(environment, THIS_SYMBOL);
 	return match == null ? undefined : match.literal;
 }

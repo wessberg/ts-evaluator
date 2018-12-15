@@ -11,7 +11,7 @@ import {isSuperExpression} from "../util/node/is-super-expression";
  * Evaluates, or attempts to evaluate, a Block
  * @param {IEvaluatorOptions<Block>} options
  */
-export async function evaluateBlock ({node, environment, evaluate}: IEvaluatorOptions<Block>): Promise<void> {
+export function evaluateBlock ({node, environment, evaluate}: IEvaluatorOptions<Block>): void {
 	// Prepare a lexical environment for the Block context
 	const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
@@ -21,7 +21,7 @@ export async function evaluateBlock ({node, environment, evaluate}: IEvaluatorOp
 		// Don't execute 'super()' within Constructor Blocks since this is handled in another level
 		if (isConstructorDeclaration(node.parent) && i === 0 && isExpressionStatement(statement) && isCallExpression(statement.expression) && isSuperExpression(statement.expression.expression)) continue;
 
-		await evaluate.statement(statement, localLexicalEnvironment);
+		evaluate.statement(statement, localLexicalEnvironment);
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
 		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {

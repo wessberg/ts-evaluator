@@ -7,11 +7,11 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<TemplateExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateTemplateExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TemplateExpression>): Promise<Literal> {
+export function evaluateTemplateExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TemplateExpression>): Literal {
 	let str = "";
 	str += node.head.text;
 	for (const span of node.templateSpans) {
-		const expression = (await evaluate.expression(span.expression, environment, statementTraversalStack)) as string;
+		const expression = (evaluate.expression(span.expression, environment, statementTraversalStack)) as string;
 		str += expression;
 		str += span.literal.text;
 	}

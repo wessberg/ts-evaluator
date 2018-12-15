@@ -1,3 +1,4 @@
+import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {ForOfStatement, isVariableDeclarationList} from "typescript";
 import {Literal} from "../literal/literal";
@@ -15,10 +16,10 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ForOfStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateForOfStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForOfStatement>): Promise<void> {
+export function evaluateForOfStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForOfStatement>): void {
 
 	// Compute the 'of' part
-	const expressionResult = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as Iterable<Literal>;
+	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as Iterable<Literal>;
 
 	// Ensure that the initializer is a proper VariableDeclarationList
 	if (!isVariableDeclarationList(node.initializer)) {
@@ -31,7 +32,7 @@ export async function evaluateForOfStatement ({node, environment, evaluate, logg
 	}
 
 	if (node.awaitModifier != null) {
-		for await (const literal of expressionResult) {
+		for (const literal of expressionResult) {
 			// Prepare a lexical environment for the current iteration
 			const localEnvironment = cloneLexicalEnvironment(environment);
 
@@ -42,10 +43,10 @@ export async function evaluateForOfStatement ({node, environment, evaluate, logg
 			setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
 
 			// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
-			await evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
+			evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
 
 			// Evaluate the Statement
-			await evaluate.statement(node.statement, localEnvironment);
+			evaluate.statement(node.statement, localEnvironment);
 
 			// Check if a 'break' statement has been encountered and break if so
 			if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {
@@ -67,7 +68,11 @@ export async function evaluateForOfStatement ({node, environment, evaluate, logg
 	}
 
 	else {
-		for (const literal of expressionResult) {
+		for (let literal of expressionResult) {
+			if (node.awaitModifier != null) {
+				literal = deasync.await(literal as Promise<Literal>);
+			}
+
 			// Prepare a lexical environment for the current iteration
 			const localEnvironment = cloneLexicalEnvironment(environment);
 
@@ -78,10 +83,10 @@ export async function evaluateForOfStatement ({node, environment, evaluate, logg
 			setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
 
 			// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
-			await evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
+			evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
 
 			// Evaluate the Statement
-			await evaluate.statement(node.statement, localEnvironment);
+			evaluate.statement(node.statement, localEnvironment);
 
 			// Check if a 'break' statement has been encountered and break if so
 			if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {

@@ -6,8 +6,8 @@ import {VariableDeclarationList} from "typescript";
  * @param {IEvaluatorOptions<VariableDeclarationList>} options
  * @returns {Promise<void>}
  */
-export async function evaluateVariableDeclarationList ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<VariableDeclarationList>): Promise<void> {
+export function evaluateVariableDeclarationList ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<VariableDeclarationList>): void {
 	for (const declaration of node.declarations) {
-		await evaluate.declaration(declaration, environment, statementTraversalStack);
+		evaluate.declaration(declaration, environment, statementTraversalStack);
 	}
 }

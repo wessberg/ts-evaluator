@@ -1,3 +1,4 @@
+import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {AwaitExpression} from "typescript";
 import {Literal} from "../literal/literal";
@@ -7,6 +8,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<AwaitExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateAwaitExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<AwaitExpression>): Promise<Literal> {
-	return await evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateAwaitExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<AwaitExpression>): Literal {
+	return deasync.await(evaluate.expression(node.expression, environment, statementTraversalStack) as Promise<Literal>);
 }

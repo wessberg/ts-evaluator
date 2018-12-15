@@ -11,7 +11,7 @@ import {IEvaluatorOptions} from "../evaluator/i-evaluator-options";
  * @param {IEvaluatorOptions<Node>} options
  * @returns {Promise<string?>}
  */
-export async function getDotPathFromNode<T extends Node> ({node, evaluate, ...rest}: IEvaluatorOptions<T>): Promise<string|undefined> {
+export function getDotPathFromNode<T extends Node> ({node, evaluate, ...rest}: IEvaluatorOptions<T>): string|undefined {
 	if (isIdentifier(node)) {
 		return node.text;
 	}
@@ -32,19 +32,19 @@ export async function getDotPathFromNode<T extends Node> ({node, evaluate, ...re
 	}
 
 	else if (isPropertyAccessExpression(node)) {
-		let leftHand = await getDotPathFromNode({node: node.expression, evaluate, ...rest});
-		if (leftHand == null) leftHand = (await evaluate.expression(node.expression, rest.environment, rest.statementTraversalStack)) as string;
-		let rightHand = await getDotPathFromNode({node: node.name, evaluate, ...rest});
-		if (rightHand == null) rightHand = (await evaluate.expression(node.name, rest.environment, rest.statementTraversalStack)) as string;
+		let leftHand = getDotPathFromNode({node: node.expression, evaluate, ...rest});
+		if (leftHand == null) leftHand = (evaluate.expression(node.expression, rest.environment, rest.statementTraversalStack)) as string;
+		let rightHand = getDotPathFromNode({node: node.name, evaluate, ...rest});
+		if (rightHand == null) rightHand = (evaluate.expression(node.name, rest.environment, rest.statementTraversalStack)) as string;
 
 		if (leftHand == null || rightHand == null) return undefined;
 		return `${leftHand}.${rightHand}`;
 	}
 
 	else if (isElementAccessExpression(node)) {
-		let leftHand = await getDotPathFromNode({node: node.expression, evaluate, ...rest});
-		if (leftHand == null) leftHand = (await evaluate.expression(node.expression, rest.environment, rest.statementTraversalStack)) as string;
-		const rightHand = (await evaluate.expression(node.argumentExpression, rest.environment, rest.statementTraversalStack)) as string;
+		let leftHand = getDotPathFromNode({node: node.expression, evaluate, ...rest});
+		if (leftHand == null) leftHand = (evaluate.expression(node.expression, rest.environment, rest.statementTraversalStack)) as string;
+		const rightHand = (evaluate.expression(node.argumentExpression, rest.environment, rest.statementTraversalStack)) as string;
 
 		if (leftHand == null || rightHand == null) return undefined;
 		return `${leftHand}.${rightHand}`;

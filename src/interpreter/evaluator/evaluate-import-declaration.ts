@@ -8,5 +8,5 @@ import {ImportDeclaration} from "typescript";
  * @param {IEvaluatorOptions<ImportDeclaration>} _options
  * @returns {Promise<void>}
  */
-export async function evaluateImportDeclaration (_options: IEvaluatorOptions<ImportDeclaration>): Promise<void> {
+export function evaluateImportDeclaration (_options: IEvaluatorOptions<ImportDeclaration>): void {
 }

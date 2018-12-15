@@ -11,8 +11,8 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<PrefixUnaryExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluatePrefixUnaryExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<PrefixUnaryExpression>): Promise<Literal> {
-	const operandValue = (await evaluate.expression(node.operand, environment, statementTraversalStack)) as number;
+export function evaluatePrefixUnaryExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<PrefixUnaryExpression>): Literal {
+	const operandValue = (evaluate.expression(node.operand, environment, statementTraversalStack)) as number;
 
 	switch (node.operator) {
 		case SyntaxKind.PlusToken: {

@@ -15,10 +15,10 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ForInStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateForInStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForInStatement>): Promise<void> {
+export function evaluateForInStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForInStatement>): void {
 
 	// Compute the 'of' part
-	const expressionResult = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
+	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
 
 	// Ensure that the initializer is a proper VariableDeclarationList
 	if (!isVariableDeclarationList(node.initializer)) {
@@ -41,10 +41,10 @@ export async function evaluateForInStatement ({node, environment, evaluate, logg
 		setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
 
 		// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
-		await evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
+		evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
 
 		// Evaluate the Statement
-		await evaluate.statement(node.statement, localEnvironment);
+		evaluate.statement(node.statement, localEnvironment);
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {

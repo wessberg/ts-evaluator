@@ -8,14 +8,14 @@ import {hasModifier} from "../util/modifier/has-modifier";
  * Evaluates, or attempts to evaluate, a ClassDeclaration
  * @param {IEvaluatorOptions<FunctionDeclaration>} options
  */
-export async function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, statementTraversalStack}: IEvaluatorOptions<ClassDeclaration>): Promise<void> {
+export function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, statementTraversalStack}: IEvaluatorOptions<ClassDeclaration>): void {
 	let extendedType: Function|undefined;
 	const ctorMember = node.members.find(isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !isConstructorDeclaration(member));
 
 	let ctor: Function|undefined;
 	if (ctorMember != null) {
-		await evaluate.declaration(ctorMember, environment, statementTraversalStack);
+		evaluate.declaration(ctorMember, environment, statementTraversalStack);
 		ctor = stack.pop() as Function;
 	}
 
@@ -24,7 +24,7 @@ export async function evaluateClassDeclaration ({node, environment, evaluate, st
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = (await evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack)) as Function;
+				extendedType = (evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack)) as Function;
 			}
 		}
 	}
@@ -34,7 +34,7 @@ export async function evaluateClassDeclaration ({node, environment, evaluate, st
 
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
-			await evaluate.nodeWithArgument(decorator, environment, [classDeclaration], statementTraversalStack);
+			evaluate.nodeWithArgument(decorator, environment, [classDeclaration], statementTraversalStack);
 			classDeclaration = stack.pop() as Function;
 		}
 	}
@@ -47,7 +47,7 @@ export async function evaluateClassDeclaration ({node, environment, evaluate, st
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		await evaluate.nodeWithArgument(
+		evaluate.nodeWithArgument(
 			member,
 			environment,
 			hasModifier(member, SyntaxKind.StaticKeyword)

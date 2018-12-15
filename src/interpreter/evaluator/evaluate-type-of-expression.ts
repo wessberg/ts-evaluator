@@ -7,6 +7,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<TypeOfExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateTypeOfExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TypeOfExpression>): Promise<Literal> {
-	return typeof (await evaluate.expression(node.expression, environment, statementTraversalStack));
+export function evaluateTypeOfExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TypeOfExpression>): Literal {
+	return typeof (evaluate.expression(node.expression, environment, statementTraversalStack));
 }

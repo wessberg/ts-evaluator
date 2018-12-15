@@ -7,6 +7,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<BooleanLiteral>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateBooleanLiteral ({node}: IEvaluatorOptions<Token<SyntaxKind.TrueKeyword|SyntaxKind.FalseKeyword>>): Promise<Literal> {
+export function evaluateBooleanLiteral ({node}: IEvaluatorOptions<Token<SyntaxKind.TrueKeyword|SyntaxKind.FalseKeyword>>): Literal {
 	return node.kind === SyntaxKind.TrueKeyword;
 }

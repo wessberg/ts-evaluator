@@ -7,6 +7,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<NullLiteral>} _options
  * @returns {Promise<Literal>}
  */
-export async function evaluateNullLiteral (_options: IEvaluatorOptions<NullLiteral>): Promise<Literal> {
+export function evaluateNullLiteral (_options: IEvaluatorOptions<NullLiteral>): Literal {
 	return null;
 }

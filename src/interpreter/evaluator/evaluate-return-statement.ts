@@ -8,7 +8,7 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ReturnStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateReturnStatement ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<ReturnStatement>): Promise<void> {
+export function evaluateReturnStatement ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<ReturnStatement>): void {
 	setInLexicalEnvironment(environment, RETURN_SYMBOL, true);
 
 	// If it is a simple 'return', return undefined
@@ -17,6 +17,6 @@ export async function evaluateReturnStatement ({node, environment, evaluate, sta
 	}
 
 	else {
-		stack.push(await evaluate.expression(node.expression, environment, statementTraversalStack));
+		stack.push(evaluate.expression(node.expression, environment, statementTraversalStack));
 	}
 }

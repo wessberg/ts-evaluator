@@ -7,8 +7,8 @@ import {getImplementationForDeclarationWithinDeclarationFile} from "../util/modu
  * @param {IEvaluatorOptions<ModuleDeclaration>} options
  * @returns {Promise<void>}
  */
-export async function evaluateModuleDeclaration (options: IEvaluatorOptions<ModuleDeclaration>): Promise<void> {
+export function evaluateModuleDeclaration (options: IEvaluatorOptions<ModuleDeclaration>): void {
 	options.stack.push(
-		await getImplementationForDeclarationWithinDeclarationFile(options)
+		getImplementationForDeclarationWithinDeclarationFile(options)
 	);
 }

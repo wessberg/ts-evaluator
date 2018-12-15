@@ -6,6 +6,6 @@ import {ExpressionStatement} from "typescript";
  * @param {IEvaluatorOptions<ExpressionStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateExpressionStatement ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<ExpressionStatement>): Promise<void> {
-	stack.push(await evaluate.expression(node.expression, environment, statementTraversalStack));
+export function evaluateExpressionStatement ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<ExpressionStatement>): void {
+	stack.push(evaluate.expression(node.expression, environment, statementTraversalStack));
 }

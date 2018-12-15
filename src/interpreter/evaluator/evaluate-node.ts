@@ -68,7 +68,7 @@ import {evaluateAwaitExpression} from "./evaluate-await-expression";
  * @param {IEvaluatorOptions<Node>} options
  * @returns {Promise<unknown>}
  */
-export async function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): Promise<unknown> {
+export function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): unknown {
 
 	if (isIdentifier(node)) {
 		return evaluateIdentifier({node, ...rest});

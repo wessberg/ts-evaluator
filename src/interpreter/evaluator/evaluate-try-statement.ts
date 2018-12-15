@@ -7,20 +7,20 @@ import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-fina
  * @param {IEvaluatorOptions<TryStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateTryStatement ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TryStatement>): Promise<void> {
-	const executeTry = async () => {
+export function evaluateTryStatement ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TryStatement>): void {
+	const executeTry = () => {
 		// The Block will declare an environment of its own
-		await evaluate.statement(node.tryBlock, environment);
+		evaluate.statement(node.tryBlock, environment);
 	};
 
-	const executeCatch = async (ex: Error) => {
+	const executeCatch = (ex: Error) => {
 		// The CatchClause will declare an environment of its own
-		await evaluate.nodeWithArgument(node.catchClause!, environment, ex, statementTraversalStack);
+		evaluate.nodeWithArgument(node.catchClause!, environment, ex, statementTraversalStack);
 	};
 
-	const executeFinally = async () => {
+	const executeFinally = () => {
 		// The Block will declare an environment of its own
-		await evaluate.statement(node.finallyBlock!, environment);
+		evaluate.statement(node.finallyBlock!, environment);
 	};
 
 	// A TryStatement must have either a catch or a finally block
@@ -31,29 +31,29 @@ export async function evaluateTryStatement ({node, evaluate, environment, statem
 	// Follows the form: try {...} catch {...}
 	else if (node.catchClause != null && node.finallyBlock == null) {
 		try {
-			await executeTry();
+			executeTry();
 		} catch (ex) {
-			await executeCatch(ex);
+			executeCatch(ex);
 		}
 	}
 
 	// Follows the form: try {...} catch {...} finally {...}
 	else if (node.catchClause != null && node.finallyBlock != null) {
 		try {
-			await executeTry();
+			executeTry();
 		} catch (ex) {
-			await executeCatch(ex);
+			executeCatch(ex);
 		} finally {
-			await executeFinally();
+			executeFinally();
 		}
 	}
 
 	// Follows the form: try {...} finally {...}
 	else if (node.catchClause == null && node.finallyBlock != null) {
 		try {
-			await executeTry();
+			executeTry();
 		} finally {
-			await executeFinally();
+			executeFinally();
 		}
 	}
 }

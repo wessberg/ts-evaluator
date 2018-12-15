@@ -7,6 +7,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<NumericLiteral>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateNumericLiteral ({node}: IEvaluatorOptions<NumericLiteral>): Promise<Literal> {
+export function evaluateNumericLiteral ({node}: IEvaluatorOptions<NumericLiteral>): Literal {
 	return Number(node.text);
 }

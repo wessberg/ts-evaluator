@@ -6,6 +6,6 @@ import {evaluateVariableDeclarationList} from "./evaluate-variable-declaration-l
  * Evaluates, or attempts to evaluate, a VariableStatement
  * @param {IEvaluatorOptions<VariableStatement>} options
  */
-export async function evaluateVariableStatement ({node, ...rest}: IEvaluatorOptions<VariableStatement>): Promise<void> {
-	await evaluateVariableDeclarationList({node: node.declarationList, ...rest});
+export function evaluateVariableStatement ({node, ...rest}: IEvaluatorOptions<VariableStatement>): void {
+	evaluateVariableDeclarationList({node: node.declarationList, ...rest});
 }

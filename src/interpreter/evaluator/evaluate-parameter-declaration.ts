@@ -8,13 +8,13 @@ import {Literal} from "../literal/literal";
  * @param {Literal} boundArgument
  * @returns {Promise<void>}
  */
-export async function evaluateParameterDeclaration ({node, environment, evaluate, statementTraversalStack, logger}: IEvaluatorOptions<ParameterDeclaration>, boundArgument: Literal): Promise<void> {
+export function evaluateParameterDeclaration ({node, environment, evaluate, statementTraversalStack, logger}: IEvaluatorOptions<ParameterDeclaration>, boundArgument: Literal): void {
 
 	// Use the bound argument if it is given unless it is nullable and the node itself has an initializer
 	const boundValue = boundArgument != null || node.initializer === undefined
 		? boundArgument
-		: await evaluate.expression(node.initializer, environment, statementTraversalStack);
+		: evaluate.expression(node.initializer, environment, statementTraversalStack);
 
 	logger.logBinding(node.name.getText(), boundValue, "evaluateParameterDeclaration");
-	await evaluate.nodeWithArgument(node.name, environment, boundValue, statementTraversalStack);
+	evaluate.nodeWithArgument(node.name, environment, boundValue, statementTraversalStack);
 }

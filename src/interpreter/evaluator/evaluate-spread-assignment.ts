@@ -8,7 +8,7 @@ import {IndexLiteral} from "../literal/literal";
  * @param {IndexLiteral} parent
  * @returns {Promise<void>}
  */
-export async function evaluateSpreadAssignment ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadAssignment>, parent: IndexLiteral): Promise<void> {
-	const entries = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
+export function evaluateSpreadAssignment ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadAssignment>, parent: IndexLiteral): void {
+	const entries = (evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
 	Object.assign(parent, entries);
 }

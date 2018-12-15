@@ -12,13 +12,13 @@ import {Literal} from "../literal/literal";
  * @param {Literal} switchExpression
  * @returns {Promise<void>}
  */
-export async function evaluateCaseClause ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<CaseClause>, switchExpression: Literal): Promise<void> {
-	const expressionResult = await evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateCaseClause ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<CaseClause>, switchExpression: Literal): void {
+	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack);
 	// Stop immediately if the expression doesn't match the switch expression
 	if (expressionResult !== switchExpression) return;
 
 	for (const statement of node.statements) {
-		await evaluate.statement(statement, environment);
+		evaluate.statement(statement, environment);
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
 		if (pathInLexicalEnvironmentEquals(environment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {

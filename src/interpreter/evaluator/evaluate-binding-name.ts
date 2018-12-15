@@ -9,13 +9,14 @@ import {setInLexicalEnvironment} from "../lexical-environment/lexical-environmen
  * @param {Literal} rightHandValue
  * @returns {Promise<void>}
  */
-export async function evaluateBindingName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<BindingName>, rightHandValue: Literal): Promise<void> {
+export function evaluateBindingName ({node, environment, evaluate, statementTraversalStack ,logger}: IEvaluatorOptions<BindingName>, rightHandValue: Literal): void {
 	// If the declaration binds a simple identifier, bind that text to the environment
 	if (isIdentifier(node)) {
 		setInLexicalEnvironment(environment, node.text, rightHandValue, true);
+		logger.logBinding(node.text, rightHandValue, "evaluateBindingName");
 	}
 
 	else {
-		await evaluate.nodeWithArgument(node, environment, rightHandValue, statementTraversalStack);
+		evaluate.nodeWithArgument(node, environment, rightHandValue, statementTraversalStack);
 	}
 }

@@ -1,4 +1,3 @@
-import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {isIdentifier, MethodDeclaration, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -11,14 +10,16 @@ import {SUPER_SYMBOL} from "../util/super/super-symbol";
 import {inStaticContext} from "../util/static/in-static-context";
 import {hasModifier} from "../util/modifier/has-modifier";
 
+// tslint:disable:no-identical-functions
+
 /**
  * Evaluates, or attempts to evaluate, a MethodDeclaration, before setting it on the given parent
  * @param {IEvaluatorOptions<MethodDeclaration>} options
  * @param {IndexLiteral} parent
  */
-export async function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent: IndexLiteral): Promise<void> {
+export function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent: IndexLiteral): void {
 
-	const nameResult = (await evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
+	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
 
 	const _methodDeclaration = hasModifier(node, SyntaxKind.AsyncKeyword)
@@ -42,7 +43,7 @@ export async function evaluateMethodDeclaration ({node, environment, evaluate, s
 			}
 
 			// Evaluate the parameters based on the given arguments
-			await evaluateParameterDeclarations({
+			evaluateParameterDeclarations({
 					node: node.parameters,
 					environment: localLexicalEnvironment,
 					evaluate,
@@ -54,7 +55,7 @@ export async function evaluateMethodDeclaration ({node, environment, evaluate, s
 
 			// If the body is a block, evaluate it as a statement
 			if (node.body == null) return;
-			await evaluate.statement(node.body, localLexicalEnvironment);
+			evaluate.statement(node.body, localLexicalEnvironment);
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
 			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -66,46 +67,46 @@ export async function evaluateMethodDeclaration ({node, environment, evaluate, s
 		}
 		: function methodDeclaration (this: Literal, ...args: Literal[]) {
 
-		// Prepare a lexical environment for the function context
-		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+			// Prepare a lexical environment for the function context
+			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
-		// Define a new binding for a return symbol within the environment
-		setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			// Define a new binding for a return symbol within the environment
+			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
 
-		if (this != null) {
-			setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+			if (this != null) {
+				setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
 
-			// Set the 'super' binding, depending on whether or not we're inside a static context
-			setInLexicalEnvironment(localLexicalEnvironment, SUPER_SYMBOL, isStatic
-				? Object.getPrototypeOf(this)
-				: Object.getPrototypeOf((this as Function).constructor).prototype,
-				true
+				// Set the 'super' binding, depending on whether or not we're inside a static context
+				setInLexicalEnvironment(localLexicalEnvironment, SUPER_SYMBOL, isStatic
+					? Object.getPrototypeOf(this)
+					: Object.getPrototypeOf((this as Function).constructor).prototype,
+					true
+				);
+			}
+
+			// Evaluate the parameters based on the given arguments
+			evaluateParameterDeclarations({
+					node: node.parameters,
+					environment: localLexicalEnvironment,
+					evaluate,
+					stack,
+					statementTraversalStack,
+					...rest
+				}, args
 			);
-		}
 
-		// Evaluate the parameters based on the given arguments
-		deasync.await(evaluateParameterDeclarations({
-				node: node.parameters,
-				environment: localLexicalEnvironment,
-				evaluate,
-				stack,
-				statementTraversalStack,
-				...rest
-			}, args
-		));
+			// If the body is a block, evaluate it as a statement
+			if (node.body == null) return;
+			evaluate.statement(node.body, localLexicalEnvironment);
 
-		// If the body is a block, evaluate it as a statement
-		if (node.body == null) return;
-		deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
+			// If a 'return' has occurred within the block, pop the Stack and return that value
+			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+				return stack.pop();
+			}
 
-		// If a 'return' has occurred within the block, pop the Stack and return that value
-		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
-			return stack.pop();
-		}
-
-		// Otherwise, return 'undefined'. Nothing is returned from the function
-		else return undefined;
-	};
+			// Otherwise, return 'undefined'. Nothing is returned from the function
+			else return undefined;
+		};
 
 	_methodDeclaration.toString = () => `[Method: ${nameResult}]`;
 
@@ -120,7 +121,7 @@ export async function evaluateMethodDeclaration ({node, environment, evaluate, s
 
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
-			await evaluate.nodeWithArgument(decorator, environment, [parent, nameResult], statementTraversalStack);
+			evaluate.nodeWithArgument(decorator, environment, [parent, nameResult], statementTraversalStack);
 			// Pop the stack. We don't need the value it has left on the Stack
 			stack.pop();
 		}
@@ -134,7 +135,7 @@ export async function evaluateMethodDeclaration ({node, environment, evaluate, s
 			const parameter = parameters[i];
 			if (parameter.decorators != null) {
 				for (const decorator of parameter.decorators) {
-					await evaluate.nodeWithArgument(decorator, environment, [parent, nameResult, i], statementTraversalStack);
+					evaluate.nodeWithArgument(decorator, environment, [parent, nameResult, i], statementTraversalStack);
 					// Pop the stack. We don't need the value it has left on the Stack
 					stack.pop();
 				}

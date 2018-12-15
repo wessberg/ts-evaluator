@@ -11,7 +11,7 @@ import {getImplementationForDeclarationWithinDeclarationFile} from "../util/modu
  * @param {IEvaluatorOptions<Identifier>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateIdentifier ({node, environment, typeChecker, evaluate, stack, logger, statementTraversalStack, ...rest}: IEvaluatorOptions<Identifier>): Promise<Literal> {
+export function evaluateIdentifier ({node, environment, typeChecker, evaluate, stack, logger, statementTraversalStack, ...rest}: IEvaluatorOptions<Identifier>): Literal {
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
 	const environmentMatch = getFromLexicalEnvironment(environment, node.text);
@@ -44,7 +44,7 @@ export async function evaluateIdentifier ({node, environment, typeChecker, evalu
 	if (valueDeclaration != null) {
 		if (valueDeclaration.getSourceFile().isDeclarationFile) {
 
-			const implementation = await getImplementationForDeclarationWithinDeclarationFile({node: valueDeclaration, statementTraversalStack, environment, evaluate, logger, typeChecker, stack, ...rest});
+			const implementation = getImplementationForDeclarationWithinDeclarationFile({node: valueDeclaration, statementTraversalStack, environment, evaluate, logger, typeChecker, stack, ...rest});
 			// Bind the value placed on the top of the stack to the local environment
 			setInLexicalEnvironment(environment, node.text, implementation);
 			logger.logBinding(node.text, implementation, `Discovered declaration value${valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`}`);
@@ -71,7 +71,7 @@ export async function evaluateIdentifier ({node, environment, typeChecker, evalu
 
 		}
 
-		await evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
+		evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
 		const stackValue = stack.pop();
 
 		// Bind the value placed on the top of the stack to the local environment

@@ -13,7 +13,7 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ForStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateForStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ForStatement>): Promise<void> {
+export function evaluateForStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ForStatement>): void {
 
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
@@ -22,12 +22,12 @@ export async function evaluateForStatement ({node, environment, evaluate, statem
 	if (node.initializer !== undefined) {
 		if (isVariableDeclarationList(node.initializer)) {
 			for (const declaration of node.initializer.declarations) {
-				await evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
+				evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
 			}
 		}
 
 		else {
-			await evaluate.expression(node.initializer, forEnvironment, statementTraversalStack);
+			evaluate.expression(node.initializer, forEnvironment, statementTraversalStack);
 		}
 	}
 
@@ -44,13 +44,13 @@ export async function evaluateForStatement ({node, environment, evaluate, statem
 		// Evaluate the condition. It may be truthy always
 		const conditionResult = node.condition == null
 			? true
-			: (await evaluate.expression(node.condition, forEnvironment, statementTraversalStack)) as boolean;
+			: (evaluate.expression(node.condition, forEnvironment, statementTraversalStack)) as boolean;
 
 		// If the condition doesn't hold, return immediately
 		if (!conditionResult) return;
 
 		// Execute the Statement
-		await evaluate.statement(node.statement, iterationEnvironment);
+		evaluate.statement(node.statement, iterationEnvironment);
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, BREAK_SYMBOL)) {
@@ -63,7 +63,7 @@ export async function evaluateForStatement ({node, environment, evaluate, statem
 
 		// Run the incrementor
 		if (node.incrementor != null) {
-			await evaluate.expression(node.incrementor, forEnvironment, statementTraversalStack);
+			evaluate.expression(node.incrementor, forEnvironment, statementTraversalStack);
 		}
 
 		// Always run the incrementor before continuing

@@ -9,7 +9,7 @@ import {SUPER_SYMBOL} from "../util/super/super-symbol";
  * @param {IEvaluatorOptions<SuperExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateSuperExpression ({environment}: IEvaluatorOptions<SuperExpression>): Promise<Literal> {
+export function evaluateSuperExpression ({environment}: IEvaluatorOptions<SuperExpression>): Literal {
 	const match = getFromLexicalEnvironment(environment, SUPER_SYMBOL);
 	return match == null ? undefined : match.literal;
 }

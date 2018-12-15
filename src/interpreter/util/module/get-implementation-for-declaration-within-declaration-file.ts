@@ -13,9 +13,9 @@ import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-envir
  * @param {IEvaluatorOptions<Declaration>} options
  * @return {Promise<Literal>}
  */
-export async function getImplementationForDeclarationWithinDeclarationFile (options: IEvaluatorOptions<Declaration>): Promise<Literal> {
+export function getImplementationForDeclarationWithinDeclarationFile (options: IEvaluatorOptions<Declaration>): Literal {
 	const {node} = options;
-	const name = await getDeclarationName(options);
+	const name = getDeclarationName(options);
 
 	if (name == null) {
 		throw new UnexpectedNodeError({node});

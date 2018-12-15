@@ -6,6 +6,6 @@ import {OmittedExpression} from "typescript";
  * @param {IEvaluatorOptions<OmittedExpression>} _options
  * @returns {Promise<undefined>}
  */
-export async function evaluateOmittedExpression (_options: IEvaluatorOptions<OmittedExpression>): Promise<undefined> {
+export function evaluateOmittedExpression (_options: IEvaluatorOptions<OmittedExpression>): undefined {
 	return undefined;
 }

@@ -8,10 +8,10 @@ import {IndexLiteral, IndexLiteralKey} from "../literal/literal";
  * @param {IndexLiteral} parent
  * @returns {Promise<void>}
  */
-export async function evaluatePropertyAssignment ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<PropertyAssignment>, parent: IndexLiteral): Promise<void> {
-	const initializer = await evaluate.expression(node.initializer, environment, statementTraversalStack);
+export function evaluatePropertyAssignment ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<PropertyAssignment>, parent: IndexLiteral): void {
+	const initializer = evaluate.expression(node.initializer, environment, statementTraversalStack);
 	// Compute the property name
-	const propertyNameResult = (await evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
+	const propertyNameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 
 	parent[propertyNameResult] = initializer;
 }

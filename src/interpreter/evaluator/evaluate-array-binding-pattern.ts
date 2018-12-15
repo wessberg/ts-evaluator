@@ -8,7 +8,7 @@ import {Literal} from "../literal/literal";
  * @param {Iterable<Literal>} rightHandValue
  * @returns {Promise<void>}
  */
-export async function evaluateArrayBindingPattern ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<ArrayBindingPattern>, rightHandValue: Iterable<Literal>): Promise<void> {
+export function evaluateArrayBindingPattern ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<ArrayBindingPattern>, rightHandValue: Iterable<Literal>): void {
 	const iterator = rightHandValue[Symbol.iterator]();
 	let elementsCursor = 0;
 
@@ -16,6 +16,6 @@ export async function evaluateArrayBindingPattern ({node, evaluate, environment,
 		const {done, value} = iterator.next();
 		if (done) break;
 
-		await evaluate.nodeWithArgument(node.elements[elementsCursor++], environment, value, statementTraversalStack);
+		evaluate.nodeWithArgument(node.elements[elementsCursor++], environment, value, statementTraversalStack);
 	}
 }

@@ -7,8 +7,8 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<VoidExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluateVoidExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<VoidExpression>): Promise<Literal> {
-	await evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateVoidExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<VoidExpression>): Literal {
+	evaluate.expression(node.expression, environment, statementTraversalStack);
 	// The void operator evaluates the expression and then returns undefined
 	return undefined;
 }

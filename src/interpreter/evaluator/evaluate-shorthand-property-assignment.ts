@@ -10,7 +10,7 @@ import {UndefinedIdentifierError} from "../error/undefined-identifier-error/unde
  * @param {IndexLiteral} parent
  * @returns {Promise<void>}
  */
-export async function evaluateShorthandPropertyAssignment ({environment, node}: IEvaluatorOptions<ShorthandPropertyAssignment>, parent: IndexLiteral): Promise<void> {
+export function evaluateShorthandPropertyAssignment ({environment, node}: IEvaluatorOptions<ShorthandPropertyAssignment>, parent: IndexLiteral): void {
 	const identifier = node.name.text;
 	const match = getFromLexicalEnvironment(environment, identifier);
 

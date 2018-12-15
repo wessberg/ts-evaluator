@@ -1,4 +1,3 @@
-import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {GetAccessorDeclaration} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -14,9 +13,9 @@ import {inStaticContext} from "../util/static/in-static-context";
  * @param {IEvaluatorOptions<GetAccessorDeclaration>} options
  * @param {IndexLiteral} parent
  */
-export async function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<GetAccessorDeclaration>, parent: IndexLiteral): Promise<void> {
+export function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<GetAccessorDeclaration>, parent: IndexLiteral): void {
 
-	const nameResult = (await evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
+	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
 
 	/**
@@ -43,7 +42,7 @@ export async function evaluateGetAccessorDeclaration ({node, environment, evalua
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
+		evaluate.statement(node.body, localLexicalEnvironment);
 		// If a 'return' has occurred within the block, pop the Stack and return that value
 		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
 			return stack.pop();

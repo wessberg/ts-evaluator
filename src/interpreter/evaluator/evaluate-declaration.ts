@@ -7,8 +7,8 @@ import {evaluateNode} from "./evaluate-node";
  * @param {IEvaluatorOptions<Declaration>} options
  * @returns {Promise<void>}
  */
-export async function evaluateDeclaration (options: IEvaluatorOptions<Declaration>): Promise<void> {
+export function evaluateDeclaration (options: IEvaluatorOptions<Declaration>): void {
 	options.logger.logNode(options.node);
 
-	await evaluateNode(options);
+	evaluateNode(options);
 }

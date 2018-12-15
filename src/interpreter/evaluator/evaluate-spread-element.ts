@@ -7,6 +7,6 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<SpreadElement>} options
  * @returns {Promise<Literal[]>}
  */
-export async function evaluateSpreadElement ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadElement>): Promise<Literal[]> {
-	return (await evaluate.expression(node.expression, environment, statementTraversalStack)) as Literal[];
+export function evaluateSpreadElement ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadElement>): Literal[] {
+	return (evaluate.expression(node.expression, environment, statementTraversalStack)) as Literal[];
 }

@@ -7,7 +7,7 @@ import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-
  * @param {IEvaluatorOptions<Declaration>} options
  * @return {Promise<string|number?>}
  */
-export async function getDeclarationName ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<Declaration>): Promise<string|number|undefined> {
+export function getDeclarationName ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<Declaration>): string|number|undefined {
 	const name = getNameOfDeclaration(node);
 	if (name == null) return undefined;
 
@@ -24,7 +24,7 @@ export async function getDeclarationName ({node, evaluate, environment, statemen
 	}
 
 	else if (isComputedPropertyName(name)) {
-		return (await evaluate.expression(name.expression, environment, statementTraversalStack)) as ReturnType<typeof getDeclarationName>;
+		return (evaluate.expression(name.expression, environment, statementTraversalStack)) as ReturnType<typeof getDeclarationName>;
 	}
 
 	else {

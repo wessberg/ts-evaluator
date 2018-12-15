@@ -8,8 +8,8 @@ import {isBindCallApply} from "../util/function/is-bind-call-apply";
  * @param {IEvaluatorOptions<PropertyAccessExpression>} options
  * @returns {Promise<Literal>}
  */
-export async function evaluatePropertyAccessExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<PropertyAccessExpression>): Promise<Literal> {
-	const expressionResult = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
+export function evaluatePropertyAccessExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<PropertyAccessExpression>): Literal {
+	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
 	const match = expressionResult[node.name.text];
 
 	// If it is a function, wrap it in a lazy call to preserve implicit 'this' bindings. This is to avoid losing the 'this' binding or having to

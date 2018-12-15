@@ -8,11 +8,11 @@ import {createStatementTraversalStack} from "../stack/traversal-stack/statement-
  * @param {IEvaluatorOptions<Statement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateStatement (options: IEvaluatorOptions<Statement>): Promise<void> {
+export function evaluateStatement (options: IEvaluatorOptions<Statement>): void {
 	options.logger.logNode(options.node);
 
 	// Create a new Statement traversal stack (since this is a new statement)
 	options.statementTraversalStack = createStatementTraversalStack();
 
-	await evaluateNode(options);
+	evaluateNode(options);
 }

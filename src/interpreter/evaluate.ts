@@ -19,7 +19,7 @@ import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
  * @param {IEvaluateOptions} options
  * @returns {Promise<EvaluateResult>}
  */
-export async function evaluate ({
+export function evaluate ({
 														typeChecker,
 														node,
 														environment = {},
@@ -37,7 +37,7 @@ export async function evaluate ({
 																spawnChild: false
 															}
 														} = {}
-													}: IEvaluateOptions): Promise<EvaluateResult> {
+													}: IEvaluateOptions): EvaluateResult {
 	// Take the simple path first. This may be far more performant than building up an environment
 	const simpleLiteralResult = evaluateSimpleLiteral(node);
 	if (simpleLiteralResult.success) return simpleLiteralResult;
@@ -71,12 +71,12 @@ export async function evaluate ({
 		}
 
 		else if (isStatement(node)) {
-			await nodeEvaluator.statement(node, initialEnvironment);
+			nodeEvaluator.statement(node, initialEnvironment);
 			value = stack.pop();
 		}
 
 		else if (isDeclaration(node)) {
-			await nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
+			nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
 			value = stack.pop();
 		}
 

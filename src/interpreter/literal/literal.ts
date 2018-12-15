@@ -8,7 +8,7 @@ export const LAZY_CALL_FLAG = "___lazyCallFlag";
 
 export interface LazyCall {
 	[LAZY_CALL_FLAG]: LiteralFlag;
-	invoke (...args: Literal[]): Promise<Literal>;
+	invoke (...args: Literal[]): Literal;
 }
 
 /**

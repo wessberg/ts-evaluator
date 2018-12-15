@@ -1,5 +1,6 @@
 import {test} from "ava";
 import {prepareTest} from "../setup";
+import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Can evaluate an AwaitExpression #1", t => {
 	const {evaluate} = prepareTest(
@@ -13,7 +14,10 @@ test("Can evaluate an AwaitExpression #1", t => {
 				return await myAsyncFunction();
 			})();
 		`,
-		"(async ()"
+		"return await myAsyncFunction()",
+		{
+			logLevel: LogLevelKind.DEBUG
+		}
 	);
 
 	const result = evaluate();

@@ -10,7 +10,7 @@ import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-nod
  * @param {IEvaluatorOptions<Expression>} options
  * @returns {Literal}
  */
-export async function evaluateNodeWithValue (options: IEvaluatorOptions<NodeWithValue>): Promise<Literal> {
+export function evaluateNodeWithValue (options: IEvaluatorOptions<NodeWithValue>): Literal {
 	options.logger.logNode(options.node, "nodeWithValue");
 	const {node, ...rest} = options;
 

@@ -6,6 +6,6 @@ import {ThrowStatement} from "typescript";
  * @param {IEvaluatorOptions<ThrowStatement>} options
  * @returns {Promise<void>}
  */
-export async function evaluateThrowStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ThrowStatement>): Promise<void> {
-	throw (await evaluate.expression(node.expression!, environment, statementTraversalStack));
+export function evaluateThrowStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ThrowStatement>): void {
+	throw (evaluate.expression(node.expression!, environment, statementTraversalStack));
 }
