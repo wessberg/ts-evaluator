@@ -1,14 +1,8 @@
-const BLACKLISTED_KEYS: Set<string> = new Set([
-	"GLOBAL",
-	// Will trigger Experimental warnings
-	"queueMicrotask",
-	"root"
-]);
+import {mergeDescriptors} from "../../util/descriptor/merge-descriptors";
+
 export const NODE_GLOBALS = () => {
-	const names = Object.getOwnPropertyNames(global).filter(key => !BLACKLISTED_KEYS.has(key));
-	return Object.assign(
-		{},
-		...names.map(name => ({[name]: global[name as keyof typeof global]})),
+	return mergeDescriptors(
+		global,
 		{require}
 	);
 };

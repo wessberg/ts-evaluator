@@ -7,6 +7,8 @@ import {ECMA_GLOBALS} from "../environment/ecma/ecma-globals";
 import {NODE_GLOBALS} from "../environment/node/node-globals";
 import {IEnvironment} from "../environment/i-environment";
 import {EnvironmentPresetKind} from "../environment/environment-preset-kind";
+import {BROWSER_GLOBALS} from "../environment/browser/browser-globals";
+import {mergeDescriptors} from "../util/descriptor/merge-descriptors";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment|undefined;
@@ -130,23 +132,19 @@ export function createLexicalEnvironment ({preset, extra}: IEnvironment, policy:
 
 	switch (preset) {
 		case EnvironmentPresetKind.NONE:
-			envInput = {
-				...extra
-			};
+			envInput = mergeDescriptors(extra);
 			break;
 
 		case EnvironmentPresetKind.ECMA:
-			envInput = {
-				...ECMA_GLOBALS(),
-				...extra
-			};
+			envInput = mergeDescriptors(ECMA_GLOBALS(), extra);
 			break;
 
 		case EnvironmentPresetKind.NODE:
-			envInput = {
-				...NODE_GLOBALS(),
-				...extra
-			};
+			envInput = mergeDescriptors(NODE_GLOBALS(), extra);
+			break;
+
+		case EnvironmentPresetKind.BROWSER:
+			envInput = mergeDescriptors(BROWSER_GLOBALS(), extra);
 			break;
 
 		default:

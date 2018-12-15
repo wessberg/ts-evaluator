@@ -57,11 +57,16 @@ export function createSanitizedEnvironment ({policy, env}: ICreateSanitizedEnvir
 		return true;
 	};
 
-	return Object.assign(
-		{},
-		...Object.entries(env)
-			.map(([name, implementation]) => ({
-				[name]: name === "require" ? new Proxy(implementation as NodeRequire, {
+	const descriptors = Object.entries(Object.getOwnPropertyDescriptors(env));
+	const gettersAndSetters = Object.assign({}, ...descriptors
+		.filter(([_, descriptor]) => !("value" in descriptor))
+		.map(([name, descriptor]) => ({[name]: descriptor}))
+	);
+
+	const values = Object.assign({}, ...descriptors
+		.filter(([_, descriptor]) => "value" in descriptor)
+		.map(([name, descriptor]) => ({
+			[name]: name === "require" ? new Proxy(descriptor.value as NodeRequire, {
 
 					/**
 					 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
@@ -80,12 +85,16 @@ export function createSanitizedEnvironment ({policy, env}: ICreateSanitizedEnvir
 							hook
 						});
 					}
-				}) : createPolicyProxy({
+				})
+				: createPolicyProxy({
 					policy,
-					item: implementation as object,
+					item: descriptor.value as object,
 					scope: name,
 					hook
 				})
-			}))
-	);
+		})));
+
+	return Object.defineProperties(values, {
+		...gettersAndSetters
+	});
 }
