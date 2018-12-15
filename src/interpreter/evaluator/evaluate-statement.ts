@@ -6,12 +6,13 @@ import {createStatementTraversalStack} from "../stack/traversal-stack/statement-
 /**
  * Will get a literal value for the given Statement. If it doesn't succeed, the value will be 'undefined'
  * @param {IEvaluatorOptions<Statement>} options
+ * @returns {Promise<void>}
  */
-export function evaluateStatement (options: IEvaluatorOptions<Statement>): void {
+export async function evaluateStatement (options: IEvaluatorOptions<Statement>): Promise<void> {
 	options.logger.logNode(options.node);
 
 	// Create a new Statement traversal stack (since this is a new statement)
 	options.statementTraversalStack = createStatementTraversalStack();
 
-	evaluateNode(options);
+	await evaluateNode(options);
 }

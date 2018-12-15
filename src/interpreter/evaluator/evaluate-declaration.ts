@@ -5,9 +5,10 @@ import {evaluateNode} from "./evaluate-node";
 /**
  * Will get a literal value for the given Declaration. If it doesn't succeed, the value will be 'undefined'
  * @param {IEvaluatorOptions<Declaration>} options
+ * @returns {Promise<void>}
  */
-export function evaluateDeclaration (options: IEvaluatorOptions<Declaration>): void {
+export async function evaluateDeclaration (options: IEvaluatorOptions<Declaration>): Promise<void> {
 	options.logger.logNode(options.node);
 
-	evaluateNode(options);
+	await evaluateNode(options);
 }

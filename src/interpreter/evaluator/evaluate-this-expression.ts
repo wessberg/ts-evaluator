@@ -7,9 +7,9 @@ import {THIS_SYMBOL} from "../util/this/this-symbol";
 /**
  * Evaluates, or attempts to evaluate, a ThisExpression
  * @param {IEvaluatorOptions<ThisExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateThisExpression ({environment}: IEvaluatorOptions<ThisExpression>): Literal {
+export async function evaluateThisExpression ({environment}: IEvaluatorOptions<ThisExpression>): Promise<Literal> {
 	const match = getFromLexicalEnvironment(environment, THIS_SYMBOL);
 	return match == null ? undefined : match.literal;
 }

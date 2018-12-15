@@ -45,6 +45,7 @@ test("Can evaluate VoidExpressions #3", t => {
 		// language=TypeScript
 			`
 			(() => {
+				// noinspection JSUnusedAssignment
 				let a = 0;
 				let b = void (a = 1);
 				return [a, b];

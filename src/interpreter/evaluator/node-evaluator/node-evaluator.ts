@@ -5,11 +5,11 @@ import {StatementTraversalStack} from "../../stack/traversal-stack/statement-tra
 
 export type NodeWithValue = PropertyName;
 
-export type StatementEvaluator = (node: Statement, environment: LexicalEnvironment) => void;
-export type DeclarationEvaluator = (node: Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => void;
-export type NodeEvaluatorWithArgument = (node: Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack) => void;
-export type ExpressionEvaluator = (node: Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => Literal;
-export type NodeWithValueEvaluator = (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => Literal;
+export type StatementEvaluator = (node: Statement, environment: LexicalEnvironment) => Promise<void>;
+export type DeclarationEvaluator = (node: Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => Promise<void>;
+export type NodeEvaluatorWithArgument = (node: Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack) => Promise<void>;
+export type ExpressionEvaluator = (node: Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => Promise<Literal>;
+export type NodeWithValueEvaluator = (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack) => Promise<Literal>;
 
 export interface NodeEvaluator {
 	statement: StatementEvaluator;

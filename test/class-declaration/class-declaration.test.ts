@@ -100,6 +100,7 @@ test("Inherits PropertyDeclarations from super classes. #1", t => {
 		// language=TypeScript
 			`
 			class MyParentClass {
+				// noinspection JSUnusedLocalSymbols
 				private bar = "hello";
 			}
 

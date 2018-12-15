@@ -5,8 +5,8 @@ import {Literal} from "../literal/literal";
 /**
  * Evaluates, or attempts to evaluate, a ComputedPropertyName
  * @param {IEvaluatorOptions<ComputedPropertyName>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateComputedPropertyName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ComputedPropertyName>): Literal {
-	return evaluate.expression(node.expression, environment, statementTraversalStack);
+export async function evaluateComputedPropertyName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ComputedPropertyName>): Promise<Literal> {
+	return await evaluate.expression(node.expression, environment, statementTraversalStack);
 }

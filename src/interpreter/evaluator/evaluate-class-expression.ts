@@ -10,14 +10,14 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<ClassExpression>} options
  * @returns {Literal}
  */
-export function evaluateClassExpression ({node, environment, evaluate, stack, logger, statementTraversalStack}: IEvaluatorOptions<ClassExpression>): Literal {
+export async function evaluateClassExpression ({node, environment, evaluate, stack, logger, statementTraversalStack}: IEvaluatorOptions<ClassExpression>): Promise<Literal> {
 	let extendedType: Function|undefined;
 	const ctorMember = node.members.find(isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !isConstructorDeclaration(member));
 
 	let ctor: Function|undefined;
 	if (ctorMember != null) {
-		evaluate.declaration(ctorMember, environment, statementTraversalStack);
+		await evaluate.declaration(ctorMember, environment, statementTraversalStack);
 		ctor = stack.pop() as Function;
 	}
 
@@ -26,7 +26,7 @@ export function evaluateClassExpression ({node, environment, evaluate, stack, lo
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as Function;
+				extendedType = (await evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack)) as Function;
 			}
 		}
 	}
@@ -36,7 +36,7 @@ export function evaluateClassExpression ({node, environment, evaluate, stack, lo
 
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
-			evaluate.nodeWithArgument(decorator, environment, [classExpression], statementTraversalStack);
+			await evaluate.nodeWithArgument(decorator, environment, [classExpression], statementTraversalStack);
 			classExpression = stack.pop() as Function;
 		}
 	}
@@ -49,7 +49,7 @@ export function evaluateClassExpression ({node, environment, evaluate, stack, lo
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		evaluate.nodeWithArgument(
+		await evaluate.nodeWithArgument(
 			member,
 			environment,
 			hasModifier(member, SyntaxKind.StaticKeyword)

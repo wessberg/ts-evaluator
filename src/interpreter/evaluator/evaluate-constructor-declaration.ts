@@ -1,3 +1,4 @@
+import {await} from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {ConstructorDeclaration} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -10,8 +11,9 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
 /**
  * Evaluates, or attempts to evaluate, a ConstructorDeclaration
  * @param {IEvaluatorOptions<ConstructorDeclaration>} options
+ * @returns {Promise<void>}
  */
-export function evaluateConstructorDeclaration ({node, environment, evaluate, stack, ...rest}: IEvaluatorOptions<ConstructorDeclaration>): void {
+export async function evaluateConstructorDeclaration ({node, environment, evaluate, stack, ...rest}: IEvaluatorOptions<ConstructorDeclaration>): Promise<void> {
 
 	/**
 	 * An implementation of a constructor function
@@ -31,18 +33,18 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 		}
 
 		// Evaluate the parameters based on the given arguments
-		evaluateParameterDeclarations({
+		await(evaluateParameterDeclarations({
 				node: node.parameters,
 				environment: localLexicalEnvironment,
 				evaluate,
 				stack,
 				...rest
 			}, args
-		);
+		));
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		evaluate.statement(node.body, localLexicalEnvironment);
+		await(evaluate.statement(node.body, localLexicalEnvironment));
 
 		// If a 'return' has occurred within the block, pop the Stack and return that value
 		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {

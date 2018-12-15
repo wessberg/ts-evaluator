@@ -14,6 +14,7 @@ export class Logger {
 	constructor (public readonly logLevel: LogLevelKind) {
 	}
 
+	// noinspection JSUnusedGlobalSymbols
 	/**
 	 * Logs info output if the log level allows it
 	 * @param {string} message
@@ -23,6 +24,7 @@ export class Logger {
 		console.log(message);
 	}
 
+	// noinspection JSUnusedGlobalSymbols
 	/**
 	 * Logs verbose output if the log level allows it
 	 * @param {string} message
@@ -32,6 +34,7 @@ export class Logger {
 		console.log(message);
 	}
 
+	// noinspection JSUnusedGlobalSymbols
 	/**
 	 * Logs debug output if the log level allows it
 	 * @param {string} message
@@ -132,6 +135,7 @@ export class Logger {
 		console.log(`Stack value: ${chalk.blue(stringifyLiteral(stack[stack.length - 1]))}`);
 	}
 
+	// noinspection JSUnusedGlobalSymbols
 	/**
 	 * Logs the entire Traversal Stack
 	 * @param {StatementTraversalStack} stack

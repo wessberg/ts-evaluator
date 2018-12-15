@@ -7,7 +7,7 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<NodeArray<ParameterDeclaration>>} options
  * @param {Literal[]} boundArguments
  */
-export function evaluateParameterDeclarations ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<NodeArray<ParameterDeclaration>>, boundArguments: Literal[]): void {
+export async function evaluateParameterDeclarations ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<NodeArray<ParameterDeclaration>>, boundArguments: Literal[]): Promise<void> {
 	// 'this' is a special parameter which is removed from the emitted results
 	const parameters = node.filter(param => !(isIdentifier(param.name) && param.name.text === "this"));
 
@@ -16,13 +16,13 @@ export function evaluateParameterDeclarations ({node, evaluate, environment, sta
 
 		// It it is a spread element, it should receive all arguments from the current index.
 		if (parameter.dotDotDotToken != null) {
-			evaluate.nodeWithArgument(parameter, environment, boundArguments.slice(i), statementTraversalStack);
+			await evaluate.nodeWithArgument(parameter, environment, boundArguments.slice(i), statementTraversalStack);
 			// Spread elements must always be the last parameter
 			break;
 		}
 
 		else {
-			evaluate.nodeWithArgument(parameter, environment, boundArguments[i], statementTraversalStack);
+			await evaluate.nodeWithArgument(parameter, environment, boundArguments[i], statementTraversalStack);
 		}
 	}
 }

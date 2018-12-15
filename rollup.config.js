@@ -1,6 +1,7 @@
 import ts from "@wessberg/rollup-plugin-ts";
 import packageJSON from "./package.json";
 
+// noinspection JSUnusedGlobalSymbols
 export default {
 	input: "src/index.ts",
 	output: [

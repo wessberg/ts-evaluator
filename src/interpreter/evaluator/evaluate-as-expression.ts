@@ -5,8 +5,8 @@ import {Literal} from "../literal/literal";
 /**
  * Evaluates, or attempts to evaluate, an AsExpression
  * @param {IEvaluatorOptions<AsExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateAsExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<AsExpression>): Literal {
-	return evaluate.expression(node.expression, environment, statementTraversalStack);
+export async function evaluateAsExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<AsExpression>): Promise<Literal> {
+	return await evaluate.expression(node.expression, environment, statementTraversalStack);
 }

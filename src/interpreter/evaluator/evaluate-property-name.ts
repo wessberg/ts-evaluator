@@ -5,14 +5,14 @@ import {IndexLiteralKey, Literal} from "../literal/literal";
 /**
  * Evaluates, or attempts to evaluate, a PropertyName
  * @param {IEvaluatorOptions<PropertyName>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluatePropertyName ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<PropertyName>): Literal {
+export async function evaluatePropertyName ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<PropertyName>): Promise<Literal> {
 	return (
 		isComputedPropertyName(node)
-			? evaluate.expression(node.expression, environment, statementTraversalStack)
+			? await evaluate.expression(node.expression, environment, statementTraversalStack)
 			: isIdentifier(node)
 			? node.text
-			: evaluate.expression(node, environment, statementTraversalStack)
+			: await evaluate.expression(node, environment, statementTraversalStack)
 	) as IndexLiteralKey;
 }

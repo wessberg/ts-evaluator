@@ -11,8 +11,9 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
 /**
  * Evaluates, or attempts to evaluate, a ForStatement
  * @param {IEvaluatorOptions<ForStatement>} options
+ * @returns {Promise<void>}
  */
-export function evaluateForStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ForStatement>): void {
+export async function evaluateForStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ForStatement>): Promise<void> {
 
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
@@ -20,10 +21,14 @@ export function evaluateForStatement ({node, environment, evaluate, statementTra
 	// Evaluate the initializer if it is given
 	if (node.initializer !== undefined) {
 		if (isVariableDeclarationList(node.initializer)) {
-			for (const declaration of node.initializer.declarations) evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
+			for (const declaration of node.initializer.declarations) {
+				await evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
+			}
 		}
 
-		else evaluate.expression(node.initializer, forEnvironment, statementTraversalStack);
+		else {
+			await evaluate.expression(node.initializer, forEnvironment, statementTraversalStack);
+		}
 	}
 
 	while (true) {
@@ -37,13 +42,15 @@ export function evaluateForStatement ({node, environment, evaluate, statementTra
 		setInLexicalEnvironment(iterationEnvironment, CONTINUE_SYMBOL, false, true);
 
 		// Evaluate the condition. It may be truthy always
-		const conditionResult = node.condition == null ? true : evaluate.expression(node.condition, forEnvironment, statementTraversalStack) as boolean;
+		const conditionResult = node.condition == null
+			? true
+			: (await evaluate.expression(node.condition, forEnvironment, statementTraversalStack)) as boolean;
 
 		// If the condition doesn't hold, return immediately
 		if (!conditionResult) return;
 
 		// Execute the Statement
-		evaluate.statement(node.statement, iterationEnvironment);
+		await evaluate.statement(node.statement, iterationEnvironment);
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, BREAK_SYMBOL)) {
@@ -56,7 +63,7 @@ export function evaluateForStatement ({node, environment, evaluate, statementTra
 
 		// Run the incrementor
 		if (node.incrementor != null) {
-			evaluate.expression(node.incrementor, forEnvironment, statementTraversalStack);
+			await evaluate.expression(node.incrementor, forEnvironment, statementTraversalStack);
 		}
 
 		// Always run the incrementor before continuing

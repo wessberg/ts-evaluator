@@ -95,11 +95,13 @@ test("Can evaluate equality BinaryExpressions #1", t => {
 });
 
 test("Can evaluate BinaryExpressions with CommaTokens #1", t => {
+	// noinspection UnnecessaryLocalVariableJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 			`
 			(() => {
 				let a = 0;
+				// noinspection CommaExpressionJS
 				let b = (a++, a + 1);
 				return b;
 			})();
@@ -193,6 +195,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #5", t => {
 		// language=TypeScript
 			`
 			(() => {
+				// noinspection JSPrimitiveTypeWrapperUsage
 				let a = new String("hello");
 				return a instanceof String;
 			})();

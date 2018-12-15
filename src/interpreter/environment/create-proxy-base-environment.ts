@@ -13,70 +13,10 @@ import {NetworkError} from "../error/policy-error/network-error/network-error";
 import {isProcessExitOperation} from "../policy/process/is-process-exit-operation";
 import {ProcessError} from "../error/policy-error/process-error/process-error";
 import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-child-operation";
-import {isAsyncPromiseOperation} from "../policy/async/is-async-promise-operation";
-import {AsyncError} from "../error/policy-error/async-error/async-error";
-import {isAsyncTimerOperation} from "../policy/async/is-async-timer-operation";
+import {BUILT_IN_NAMES} from "./built-in/built-in-names";
 
 // tslint:disable:no-any
 
-const BUILT_IN_NAMES = [
-	"Infinity",
-	"NaN",
-	"undefined",
-	"isFinite",
-	"isNaN",
-	"parseFloat",
-	"parseInt",
-	"decodeURI",
-	"decodeURIComponent",
-	"encodeURI",
-	"encodeURIComponent",
-	"Array",
-	"ArrayBuffer",
-	"Boolean",
-	"DataView",
-	"Date",
-	"Error",
-	"EvalError",
-	"Float32Array",
-	"Float64Array",
-	"Int8Array",
-	"Int16Array",
-	"Int32Array",
-	"Map",
-	"Number",
-	"Object",
-	"Promise",
-	"Proxy",
-	"RangeError",
-	"ReferenceError",
-	"RegExp",
-	"Set",
-	"String",
-	"Symbol",
-	"SyntaxError",
-	"TypeError",
-	"Uint8Array",
-	"Uint8ClampedArray",
-	"Uint16Array",
-	"Uint32Array",
-	"URIError",
-	"WeakMap",
-	"WeakSet",
-	"JSON",
-	"Math",
-	"Reflect",
-	"escape",
-	"unescape",
-	"Intl",
-	"Realm",
-	"eval",
-	"Function",
-	"BigInt",
-	"fetch",
-	"process",
-	"require"
-];
 
 /**
  * Creates a proxy'ed ECMAScript and Node environment that can intercept calls based on the evaluation policy
@@ -93,14 +33,6 @@ export function createProxyBaseEnvironment (policy: IEvaluatePolicySanitized): I
 
 		if (!policy.io.write && isIoWrite(item)) {
 			throw new IoError({kind: "write"});
-		}
-
-		if (!policy.async.promise && isAsyncPromiseOperation(item)) {
-			throw new AsyncError({kind: "promise"});
-		}
-
-		if (!policy.async.timer && isAsyncTimerOperation(item)) {
-			throw new AsyncError({kind: "timer"});
 		}
 
 		if (!policy.process.exit && isProcessExitOperation(item)) {

@@ -5,10 +5,10 @@ import {Literal} from "../literal/literal";
 /**
  * Evaluates, or attempts to evaluate, a VoidExpression
  * @param {IEvaluatorOptions<VoidExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateVoidExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<VoidExpression>): Literal {
-	evaluate.expression(node.expression, environment, statementTraversalStack);
+export async function evaluateVoidExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<VoidExpression>): Promise<Literal> {
+	await evaluate.expression(node.expression, environment, statementTraversalStack);
 	// The void operator evaluates the expression and then returns undefined
 	return undefined;
 }

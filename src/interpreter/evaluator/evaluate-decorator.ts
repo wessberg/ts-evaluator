@@ -9,9 +9,10 @@ import {__decorate, __param} from "tslib";
  * @param {IEvaluatorOptions<Decorator>} options
  * @param {*} args
  * @param {IndexLiteral} parent
+ * @returns {Promise<void>}
  */
-export function evaluateDecorator ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<Decorator>, [parent, propertyName, index]: [IndexLiteral, string?, number?]): void {
-	const decoratorImplementation = evaluate.expression(node.expression, environment, statementTraversalStack);
+export async function evaluateDecorator ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<Decorator>, [parent, propertyName, index]: [IndexLiteral, string?, number?]): Promise<void> {
+	const decoratorImplementation = await evaluate.expression(node.expression, environment, statementTraversalStack);
 
 	if (typeof decoratorImplementation !== "function") {
 		throw new NotCallableError({value: decoratorImplementation, message: `${stringifyLiteral(decoratorImplementation)} is not a valid decorator implementation'`});

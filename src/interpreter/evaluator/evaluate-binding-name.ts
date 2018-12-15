@@ -7,14 +7,15 @@ import {setInLexicalEnvironment} from "../lexical-environment/lexical-environmen
  * Evaluates, or attempts to evaluate, a BindingName, based on an initializer
  * @param {IEvaluatorOptions<BindingName>} options
  * @param {Literal} rightHandValue
+ * @returns {Promise<void>}
  */
-export function evaluateBindingName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<BindingName>, rightHandValue: Literal): void {
+export async function evaluateBindingName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<BindingName>, rightHandValue: Literal): Promise<void> {
 	// If the declaration binds a simple identifier, bind that text to the environment
 	if (isIdentifier(node)) {
 		setInLexicalEnvironment(environment, node.text, rightHandValue, true);
 	}
 
 	else {
-		evaluate.nodeWithArgument(node, environment, rightHandValue, statementTraversalStack);
+		await evaluate.nodeWithArgument(node, environment, rightHandValue, statementTraversalStack);
 	}
 }

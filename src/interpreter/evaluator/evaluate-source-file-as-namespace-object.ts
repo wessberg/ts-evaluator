@@ -6,8 +6,9 @@ import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environm
 /**
  * Evaluates, or attempts to evaluate, a SourceFile as a namespace object
  * @param {IEvaluatorOptions<SourceFile>} options
+ * @returns {Promise<void>}
  */
-export function evaluateSourceFileAsNamespaceObject ({node, environment, evaluate, typeChecker, stack, statementTraversalStack}: IEvaluatorOptions<SourceFile>): void {
+export async function evaluateSourceFileAsNamespaceObject ({node, environment, evaluate, typeChecker, stack, statementTraversalStack}: IEvaluatorOptions<SourceFile>): Promise<void> {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(environment, "Object")!.literal as ObjectConstructor;
@@ -22,7 +23,7 @@ export function evaluateSourceFileAsNamespaceObject ({node, environment, evaluat
 				const valueDeclaration = symbol.valueDeclaration;
 				if (valueDeclaration == null) return;
 
-				evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
+				await evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
 				namespaceObject[identifier] = stack.pop();
 			}
 		}

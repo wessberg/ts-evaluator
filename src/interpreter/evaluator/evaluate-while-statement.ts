@@ -11,10 +11,11 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
 /**
  * Evaluates, or attempts to evaluate, a WhileStatement
  * @param {IEvaluatorOptions<WhileStatement>} options
+ * @returns {Promise<void>}
  */
-export function evaluateWhileStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<WhileStatement>): void {
+export async function evaluateWhileStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<WhileStatement>): Promise<void> {
 
-	let condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
+	let condition = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as boolean;
 
 	while (condition) {
 		// Prepare a lexical environment for the current iteration
@@ -27,7 +28,7 @@ export function evaluateWhileStatement ({node, environment, evaluate, logger, st
 		setInLexicalEnvironment(iterationEnvironment, CONTINUE_SYMBOL, false, true);
 
 		// Execute the Statement
-		evaluate.statement(node.statement, iterationEnvironment);
+		await evaluate.statement(node.statement, iterationEnvironment);
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, BREAK_SYMBOL)) {
@@ -40,7 +41,7 @@ export function evaluateWhileStatement ({node, environment, evaluate, logger, st
 			return;
 		}
 
-		condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
+		condition = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as boolean;
 
 		// Always re-evaluate the condition before continuing
 		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, CONTINUE_SYMBOL)) {

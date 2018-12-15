@@ -1,5 +1,5 @@
 import {LogLevelKind} from "../src/interpreter/logger/log-level";
-import {evaluate} from "../src/interpreter/evaluate";
+import {evaluateSync} from "../src/interpreter/evaluate-sync";
 import {EvaluateResult} from "../src/interpreter/evaluate-result";
 import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChild, getDefaultCompilerOptions, getDefaultLibFileName, Node, NodeArray, ScriptKind, ScriptTarget, SourceFile, Statement, sys} from "typescript";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
@@ -55,10 +55,6 @@ export function prepareTest (
 			process = {
 				exit: false,
 				spawnChild: false
-			},
-			async = {
-				timer: false,
-				promise: false
 			}
 		} = {},
 		logLevel = LogLevelKind.SILENT
@@ -138,7 +134,7 @@ export function prepareTest (
 	const entryNode = findEntryExpressionFromStatements(entrySourceFile.statements, normalizedEntry.match);
 
 	return {
-		evaluate: () => evaluate({
+		evaluate: () => evaluateSync({
 			node: entryNode,
 			typeChecker: program.getTypeChecker(),
 			environment,
@@ -147,7 +143,6 @@ export function prepareTest (
 				deterministic,
 				io,
 				process,
-				async,
 				network
 			},
 			logLevel

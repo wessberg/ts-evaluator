@@ -11,19 +11,25 @@ import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-envir
 /**
  * Gets an implementation for the given declaration that lives within a declaration file
  * @param {IEvaluatorOptions<Declaration>} options
- * @return {Literal}
+ * @return {Promise<Literal>}
  */
-export function getImplementationForDeclarationWithinDeclarationFile (options: IEvaluatorOptions<Declaration>): Literal {
+export async function getImplementationForDeclarationWithinDeclarationFile (options: IEvaluatorOptions<Declaration>): Promise<Literal> {
 	const {node} = options;
-	const name = getDeclarationName(options);
+	const name = await getDeclarationName(options);
 
 	if (name == null) {
 		throw new UnexpectedNodeError({node});
 	}
 
-	// Require itself may be requested. If so, return it
+	// First see if it lives within the lexical environment
+	const matchInLexicalEnvironment = getFromLexicalEnvironment(options.environment, name as string);
+	// If so, return it
+	if (matchInLexicalEnvironment != null && matchInLexicalEnvironment.literal != null) {
+		return matchInLexicalEnvironment.literal;
+	}
+
+	// Otherwise, expect it to be something that is require'd on demand
 	const require = getFromLexicalEnvironment(options.environment, "require")!.literal as NodeRequire;
-	if (name === "require") return require;
 
 	const moduleDeclaration = isModuleDeclaration(node) ? node : findNearestParentNodeOfKind<ModuleDeclaration>(node, SyntaxKind.ModuleDeclaration);
 	if (moduleDeclaration == null) {

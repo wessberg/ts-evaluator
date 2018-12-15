@@ -5,8 +5,8 @@ import {Literal} from "../literal/literal";
 /**
  * Evaluates, or attempts to evaluate, a ParenthesizedExpression
  * @param {IEvaluatorOptions<ParenthesizedExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateParenthesizedExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ParenthesizedExpression>): Literal {
-	return evaluate.expression(node.expression, environment, statementTraversalStack);
+export async function evaluateParenthesizedExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ParenthesizedExpression>): Promise<Literal> {
+	return await evaluate.expression(node.expression, environment, statementTraversalStack);
 }

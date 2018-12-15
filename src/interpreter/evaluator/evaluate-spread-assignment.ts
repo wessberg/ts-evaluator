@@ -6,8 +6,9 @@ import {IndexLiteral} from "../literal/literal";
  * Evaluates, or attempts to evaluate, a SpreadAssignment, before applying it on the given parent
  * @param {IEvaluatorOptions<SpreadAssignment>} options
  * @param {IndexLiteral} parent
+ * @returns {Promise<void>}
  */
-export function evaluateSpreadAssignment ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadAssignment>, parent: IndexLiteral): void {
-	const entries = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
+export async function evaluateSpreadAssignment ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadAssignment>, parent: IndexLiteral): Promise<void> {
+	const entries = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
 	Object.assign(parent, entries);
 }

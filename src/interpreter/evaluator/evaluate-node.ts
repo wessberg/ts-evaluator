@@ -1,5 +1,5 @@
 import {
-	isArrayLiteralExpression, isArrowFunction, isAsExpression, isBigIntLiteral, isBinaryExpression, isBlock, isBreakStatement, isCallExpression, isClassDeclaration, isClassExpression, isComputedPropertyName, isConstructorDeclaration, isContinueStatement, isElementAccessExpression, isEnumDeclaration, isExpressionStatement, isForInStatement, isForOfStatement, isForStatement, isFunctionDeclaration, isFunctionExpression, isIdentifier, isIfStatement, isImportDeclaration, isImportEqualsDeclaration, isModuleDeclaration, isNewExpression, isNonNullExpression, isNumericLiteral, isObjectLiteralExpression, isParenthesizedExpression, isPostfixUnaryExpression, isPrefixUnaryExpression, isPropertyAccessExpression, isRegularExpressionLiteral, isReturnStatement, isSourceFile, isSpreadElement, isStringLiteralLike, isSwitchStatement, isTemplateExpression, isThrowStatement, isTryStatement, isTypeAssertion, isTypeOfExpression, isVariableDeclaration, isVariableDeclarationList, isVariableStatement, isVoidExpression, isWhileStatement, Node
+	isArrayLiteralExpression, isArrowFunction, isAsExpression, isAwaitExpression, isBigIntLiteral, isBinaryExpression, isBlock, isBreakStatement, isCallExpression, isClassDeclaration, isClassExpression, isComputedPropertyName, isConstructorDeclaration, isContinueStatement, isElementAccessExpression, isEnumDeclaration, isExpressionStatement, isForInStatement, isForOfStatement, isForStatement, isFunctionDeclaration, isFunctionExpression, isIdentifier, isIfStatement, isImportDeclaration, isImportEqualsDeclaration, isModuleDeclaration, isNewExpression, isNonNullExpression, isNumericLiteral, isObjectLiteralExpression, isParenthesizedExpression, isPostfixUnaryExpression, isPrefixUnaryExpression, isPropertyAccessExpression, isRegularExpressionLiteral, isReturnStatement, isSourceFile, isSpreadElement, isStringLiteralLike, isSwitchStatement, isTemplateExpression, isThrowStatement, isTryStatement, isTypeAssertion, isTypeOfExpression, isVariableDeclaration, isVariableDeclarationList, isVariableStatement, isVoidExpression, isWhileStatement, Node
 } from "typescript";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {evaluateVariableDeclaration} from "./evaluate-variable-declaration";
@@ -61,12 +61,14 @@ import {evaluateModuleDeclaration} from "./evaluate-module-declaration";
 import {evaluateImportDeclaration} from "./evaluate-import-declaration";
 import {evaluateThrowStatement} from "./evaluate-throw-statement";
 import {evaluateImportEqualsDeclaration} from "./evaluate-import-equals-declaration";
+import {evaluateAwaitExpression} from "./evaluate-await-expression";
 
 /**
  * Will get a literal value for the given Node. If it doesn't succeed, the value will be 'undefined'
  * @param {IEvaluatorOptions<Node>} options
+ * @returns {Promise<unknown>}
  */
-export function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): unknown {
+export async function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): Promise<unknown> {
 
 	if (isIdentifier(node)) {
 		return evaluateIdentifier({node, ...rest});
@@ -106,6 +108,10 @@ export function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): unknown
 
 	else if (isObjectLiteralExpression(node)) {
 		return evaluateObjectLiteralExpression({node, ...rest});
+	}
+
+	else if (isAwaitExpression(node)) {
+		return evaluateAwaitExpression({node, ...rest});
 	}
 
 	else if (isTypeAssertion(node)) {

@@ -5,9 +5,10 @@ import {getImplementationForDeclarationWithinDeclarationFile} from "../util/modu
 /**
  * Evaluates, or attempts to evaluate, a ModuleDeclaration
  * @param {IEvaluatorOptions<ModuleDeclaration>} options
+ * @returns {Promise<void>}
  */
-export function evaluateModuleDeclaration (options: IEvaluatorOptions<ModuleDeclaration>): void {
+export async function evaluateModuleDeclaration (options: IEvaluatorOptions<ModuleDeclaration>): Promise<void> {
 	options.stack.push(
-		getImplementationForDeclarationWithinDeclarationFile(options)
+		await getImplementationForDeclarationWithinDeclarationFile(options)
 	);
 }

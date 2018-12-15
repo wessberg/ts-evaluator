@@ -1,1 +1,0 @@
-export const CHECK_IMPORTS_SYMBOL = "[CHECK_IMPORTS]";

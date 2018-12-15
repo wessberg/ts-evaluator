@@ -7,10 +7,13 @@ import {setInLexicalEnvironment} from "../lexical-environment/lexical-environmen
  * Evaluates, or attempts to evaluate, a BindingName, based on an BindingElement
  * @param {IEvaluatorOptions<BindingElement>} options
  * @param {Literal} rightHandValue
+ * @returns {Promise<void>}
  */
-export function evaluateBindingElement ({environment, node, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<BindingElement>, rightHandValue: Literal): void {
+export async function evaluateBindingElement ({environment, node, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<BindingElement>, rightHandValue: Literal): Promise<void> {
 	// Compute the initializer value of the BindingElement, if it has any, that is
-	const bindingElementInitializer = node.initializer == null ? undefined : evaluate.expression(node.initializer, environment, statementTraversalStack);
+	const bindingElementInitializer = node.initializer == null
+		? undefined
+		: await evaluate.expression(node.initializer, environment, statementTraversalStack);
 
 	// If the element is directly references a property, but then aliases, store that alias in the environment.
 	if (isIdentifier(node.name) && node.propertyName != null) {
@@ -19,7 +22,7 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, st
 		const aliasName = node.name.text;
 
 		// Compute the property name
-		const propertyNameResult = evaluate.nodeWithValue(node.propertyName, environment, statementTraversalStack) as IndexLiteralKey;
+		const propertyNameResult = (await evaluate.nodeWithValue(node.propertyName, environment, statementTraversalStack)) as IndexLiteralKey;
 
 		// Extract the property value from the initializer. If it is an ArrayBindingPattern, the rightHandValue will be assigned as-is to the identifier
 		const propertyValue = isArrayBindingPattern(node.parent)
@@ -68,7 +71,7 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, st
 	// Otherwise, the name is itself a BindingPattern, and the property it is destructuring will always be defined
 	else if (!isIdentifier(node.name) && node.propertyName != null) {
 		// Compute the property name
-		const propertyNameResult = evaluate.nodeWithValue(node.propertyName, environment, statementTraversalStack) as IndexLiteralKey;
+		const propertyNameResult = (await evaluate.nodeWithValue(node.propertyName, environment, statementTraversalStack)) as IndexLiteralKey;
 
 		// Extract the property value from the initializer. If it is an ArrayBindingPattern, the rightHandValue will be assigned as-is to the identifier
 		const propertyValue = isArrayBindingPattern(node.parent)
@@ -81,7 +84,7 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, st
 			: bindingElementInitializer;
 
 		// Evaluate the BindingPattern based on the narrowed property value
-		evaluate.nodeWithArgument(node.name, environment, propertyValueWithInitializerFallback, statementTraversalStack);
+		await evaluate.nodeWithArgument(node.name, environment, propertyValueWithInitializerFallback, statementTraversalStack);
 	}
 
 	// Otherwise, the name itself is a BindingPattern. This will happen for example if an ObjectBindingPattern occurs within an ArrayBindingPattern
@@ -92,6 +95,6 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, st
 			? rightHandValue
 			: bindingElementInitializer;
 
-		evaluate.nodeWithArgument(node.name, environment, propertyValueWithInitializerFallback, statementTraversalStack);
+		await evaluate.nodeWithArgument(node.name, environment, propertyValueWithInitializerFallback, statementTraversalStack);
 	}
 }

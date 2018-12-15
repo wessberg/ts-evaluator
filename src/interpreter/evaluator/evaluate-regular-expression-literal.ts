@@ -6,9 +6,9 @@ import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environm
 /**
  * Evaluates, or attempts to evaluate, a RegularExpressionLiteral
  * @param {IEvaluatorOptions<RegularExpressionLiteral>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateRegularExpressionLiteral ({node, environment}: IEvaluatorOptions<RegularExpressionLiteral>): Literal {
+export async function evaluateRegularExpressionLiteral ({node, environment}: IEvaluatorOptions<RegularExpressionLiteral>): Promise<Literal> {
 	const functionCtor = getFromLexicalEnvironment(environment, "Function")!.literal as FunctionConstructor;
-	return new functionCtor(`return ${node.text}`)();
+	return await (new functionCtor(`return ${node.text}`)());
 }

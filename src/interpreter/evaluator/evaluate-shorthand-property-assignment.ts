@@ -8,8 +8,9 @@ import {UndefinedIdentifierError} from "../error/undefined-identifier-error/unde
  * Evaluates, or attempts to evaluate, a ShorthandPropertyAssignment, before applying it on the given parent
  * @param {IEvaluatorOptions<ShorthandPropertyAssignment>} options
  * @param {IndexLiteral} parent
+ * @returns {Promise<void>}
  */
-export function evaluateShorthandPropertyAssignment ({environment, node}: IEvaluatorOptions<ShorthandPropertyAssignment>, parent: IndexLiteral): void {
+export async function evaluateShorthandPropertyAssignment ({environment, node}: IEvaluatorOptions<ShorthandPropertyAssignment>, parent: IndexLiteral): Promise<void> {
 	const identifier = node.name.text;
 	const match = getFromLexicalEnvironment(environment, identifier);
 

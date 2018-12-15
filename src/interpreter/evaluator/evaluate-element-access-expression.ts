@@ -6,11 +6,11 @@ import {isBindCallApply} from "../util/function/is-bind-call-apply";
 /**
  * Evaluates, or attempts to evaluate, a ElementAccessExpression
  * @param {IEvaluatorOptions<ElementAccessExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateElementAccessExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ElementAccessExpression>): Literal {
-	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
-	const argumentExpressionResult = evaluate.expression(node.argumentExpression, environment, statementTraversalStack) as IndexLiteralKey;
+export async function evaluateElementAccessExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ElementAccessExpression>): Promise<Literal> {
+	const expressionResult = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
+	const argumentExpressionResult = (await evaluate.expression(node.argumentExpression, environment, statementTraversalStack)) as IndexLiteralKey;
 
 	const match = expressionResult[argumentExpressionResult];
 

@@ -15,15 +15,6 @@ export interface LexicalEnvironment {
 const LEXICAL_ENVIRONMENT_MAP: WeakMap<Node|NodeArray<Node>, LexicalEnvironment> = new WeakMap();
 
 /**
- * Returns true if a lexical environment has been computed for the given Node
- * @param {T} node
- * @returns {boolean}
- */
-export function hasLexicalEnvironmentForNode<T extends Node> (node: T): boolean {
-	return LEXICAL_ENVIRONMENT_MAP.has(node);
-}
-
-/**
  * Gets a value from a Lexical Environment
  * @param {LexicalEnvironment} env
  * @param {string} path
@@ -47,16 +38,6 @@ export function getFromLexicalEnvironment (env: LexicalEnvironment, path: string
 	if (has(env.env, firstBinding)) return {literal: get(env.env, path)};
 	if (env.parentEnv != null) return getFromLexicalEnvironment(env.parentEnv, path);
 	return undefined;
-}
-
-/**
- * Returns true if the Lexical Environment includes a value on the given path
- * @param {LexicalEnvironment} env
- * @param {string} path
- * @returns {LiteralMatch?}
- */
-export function hasInLexicalEnvironment (env: LexicalEnvironment, path: string): boolean {
-	return getFromLexicalEnvironment(env, path) != null;
 }
 
 /**

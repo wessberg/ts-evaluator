@@ -6,8 +6,9 @@ import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-env
 /**
  * Evaluates, or attempts to evaluate, an EnumDeclaration
  * @param {IEvaluatorOptions<EnumDeclaration>} options
+ * @returns {Promise<void>}
  */
-export function evaluateEnumDeclaration ({node, environment, evaluate, statementTraversalStack, stack}: IEvaluatorOptions<EnumDeclaration>): void {
+export async function evaluateEnumDeclaration ({node, environment, evaluate, statementTraversalStack, stack}: IEvaluatorOptions<EnumDeclaration>): Promise<void> {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(environment, "Object")!.literal as ObjectConstructor;
@@ -18,7 +19,7 @@ export function evaluateEnumDeclaration ({node, environment, evaluate, statement
 	setInLexicalEnvironment(environment, name, enumDeclaration, true);
 
 	for (const member of node.members) {
-		evaluate.nodeWithArgument(member, environment, enumDeclaration, statementTraversalStack);
+		await evaluate.nodeWithArgument(member, environment, enumDeclaration, statementTraversalStack);
 	}
 
 	enumDeclaration.toString = () => `[Enum: ${name}]`;

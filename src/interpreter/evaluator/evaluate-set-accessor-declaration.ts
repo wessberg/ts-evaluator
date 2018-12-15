@@ -1,3 +1,4 @@
+import {await} from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {SetAccessorDeclaration} from "typescript";
 import {LexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -14,9 +15,9 @@ import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
  * @param {IEvaluatorOptions<SetAccessorDeclaration>} options
  * @param {IndexLiteral} parent
  */
-export function evaluateSetAccessorDeclaration ({node, environment, evaluate, statementTraversalStack, stack, ...rest}: IEvaluatorOptions<SetAccessorDeclaration>, parent: IndexLiteral): void {
+export async function evaluateSetAccessorDeclaration ({node, environment, evaluate, statementTraversalStack, stack, ...rest}: IEvaluatorOptions<SetAccessorDeclaration>, parent: IndexLiteral): Promise<void> {
 
-	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
+	const nameResult = (await evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
 
 	/**
@@ -43,7 +44,7 @@ export function evaluateSetAccessorDeclaration ({node, environment, evaluate, st
 		}
 
 		// Evaluate the parameters based on the given arguments
-		evaluateParameterDeclarations({
+		await(evaluateParameterDeclarations({
 				node: node.parameters,
 				environment: localLexicalEnvironment,
 				evaluate,
@@ -51,11 +52,11 @@ export function evaluateSetAccessorDeclaration ({node, environment, evaluate, st
 				statementTraversalStack,
 				...rest
 			}, args
-		);
+		));
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		evaluate.statement(node.body, localLexicalEnvironment);
+		await(evaluate.statement(node.body, localLexicalEnvironment));
 	}
 
 	setAccessorDeclaration.toString = () => `[Set: ${nameResult}]`;

@@ -6,6 +6,7 @@ import {ImportEqualsDeclaration} from "typescript";
  * It will be a noop, since we rely on the TypeChecker to resolve symbols across SourceFiles,
  * rather than manually parsing and resolving imports/exports
  * @param {IEvaluatorOptions<ImportEqualsDeclaration>} _options
+ * @returns {Promise<void>}
  */
-export function evaluateImportEqualsDeclaration (_options: IEvaluatorOptions<ImportEqualsDeclaration>): void {
+export async function evaluateImportEqualsDeclaration (_options: IEvaluatorOptions<ImportEqualsDeclaration>): Promise<void> {
 }

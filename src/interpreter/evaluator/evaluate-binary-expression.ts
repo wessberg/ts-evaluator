@@ -13,10 +13,10 @@ import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undef
  * @param {IEvaluatorOptions<BinaryExpression>} options
  * @returns {Literal}
  */
-export function evaluateBinaryExpression ({node, environment, evaluate, logger, statementTraversalStack, ...rest}: IEvaluatorOptions<BinaryExpression>): Literal {
-	const leftValue = evaluate.expression(node.left, environment, statementTraversalStack) as number;
-	const rightValue = evaluate.expression(node.right, environment, statementTraversalStack) as number;
-	const leftIdentifier = getDotPathFromNode({node: node.left, environment, evaluate, logger, statementTraversalStack, ...rest});
+export async function evaluateBinaryExpression ({node, environment, evaluate, logger, statementTraversalStack, ...rest}: IEvaluatorOptions<BinaryExpression>): Promise<Literal> {
+	const leftValue = (await evaluate.expression(node.left, environment, statementTraversalStack)) as number;
+	const rightValue = (await evaluate.expression(node.right, environment, statementTraversalStack)) as number;
+	const leftIdentifier = await getDotPathFromNode({node: node.left, environment, evaluate, logger, statementTraversalStack, ...rest});
 
 	const operator = node.operatorToken.kind;
 	switch (operator) {

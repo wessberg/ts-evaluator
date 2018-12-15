@@ -27,8 +27,9 @@ import {evaluateEnumMember} from "./evaluate-enum-member";
  * Evaluates a given node with the provided argument
  * @param {IEvaluatorOptions<Expression>} options
  * @param {Literal} arg
+ * @returns {Promise<void>}
  */
-export function evaluateNodeWithArgument (options: IEvaluatorOptions<Node>, arg: Literal): void {
+export async function evaluateNodeWithArgument (options: IEvaluatorOptions<Node>, arg: Literal): Promise<void> {
 	options.logger.logNode(options.node, "nodeWithArgument");
 	const {node, ...rest} = options;
 

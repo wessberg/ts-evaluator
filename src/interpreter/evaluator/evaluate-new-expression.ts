@@ -5,20 +5,20 @@ import {Literal} from "../literal/literal";
 /**
  * Evaluates, or attempts to evaluate, a NewExpression
  * @param {IEvaluatorOptions<NewExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateNewExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<NewExpression>): Literal {
+export async function evaluateNewExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<NewExpression>): Promise<Literal> {
 
 	const evaluatedArgs: Literal[] = [];
 
 	if (node.arguments != null) {
 		for (let i = 0; i < node.arguments.length; i++) {
-			evaluatedArgs[i] = evaluate.expression(node.arguments[i], environment, statementTraversalStack);
+			evaluatedArgs[i] = await evaluate.expression(node.arguments[i], environment, statementTraversalStack);
 		}
 	}
 
 	// Evaluate the expression
-	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as (new (...args: Literal[]) => Literal);
+	const expressionResult = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as (new (...args: Literal[]) => Literal);
 
-	return new expressionResult(...evaluatedArgs);
+	return await (new expressionResult(...evaluatedArgs));
 }

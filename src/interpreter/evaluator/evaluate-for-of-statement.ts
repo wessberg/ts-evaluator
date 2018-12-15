@@ -7,22 +7,18 @@ import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexica
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {AsyncError} from "../error/policy-error/async-error/async-error";
 
 // tslint:disable:no-redundant-jump
 
 /**
  * Evaluates, or attempts to evaluate, a ForOfStatement
  * @param {IEvaluatorOptions<ForOfStatement>} options
+ * @returns {Promise<void>}
  */
-export function evaluateForOfStatement ({node, environment, evaluate, logger, statementTraversalStack, policy}: IEvaluatorOptions<ForOfStatement>): void {
-	// Throw if it is an async iterator
-	if (!policy.async.promise && node.awaitModifier != null) {
-		throw new AsyncError({kind: "promise"});
-	}
+export async function evaluateForOfStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForOfStatement>): Promise<void> {
 
 	// Compute the 'of' part
-	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as Iterable<Literal>;
+	const expressionResult = (await evaluate.expression(node.expression, environment, statementTraversalStack)) as Iterable<Literal>;
 
 	// Ensure that the initializer is a proper VariableDeclarationList
 	if (!isVariableDeclarationList(node.initializer)) {
@@ -34,37 +30,75 @@ export function evaluateForOfStatement ({node, environment, evaluate, logger, st
 		throw new UnexpectedNodeError({node: node.initializer.declarations[1]});
 	}
 
-	for (const literal of expressionResult) {
-		// Prepare a lexical environment for the current iteration
-		const localEnvironment = cloneLexicalEnvironment(environment);
+	if (node.awaitModifier != null) {
+		for await (const literal of expressionResult) {
+			// Prepare a lexical environment for the current iteration
+			const localEnvironment = cloneLexicalEnvironment(environment);
 
-		// Define a new binding for a break symbol within the environment
-		setInLexicalEnvironment(localEnvironment, BREAK_SYMBOL, false, true);
+			// Define a new binding for a break symbol within the environment
+			setInLexicalEnvironment(localEnvironment, BREAK_SYMBOL, false, true);
 
-		// Define a new binding for a continue symbol within the environment
-		setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
+			// Define a new binding for a continue symbol within the environment
+			setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
 
-		// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
-		evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
+			// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
+			await evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
 
-		// Evaluate the Statement
-		evaluate.statement(node.statement, localEnvironment);
+			// Evaluate the Statement
+			await evaluate.statement(node.statement, localEnvironment);
 
-		// Check if a 'break' statement has been encountered and break if so
-		if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {
-			logger.logBreak(node);
-			break;
+			// Check if a 'break' statement has been encountered and break if so
+			if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {
+				logger.logBreak(node);
+				break;
+			}
+
+			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, CONTINUE_SYMBOL)) {
+				logger.logContinue(node);
+				// noinspection UnnecessaryContinueJS
+				continue;
+			}
+
+			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, RETURN_SYMBOL)) {
+				logger.logReturn(node);
+				return;
+			}
 		}
+	}
 
-		else if (pathInLexicalEnvironmentEquals(localEnvironment, true, CONTINUE_SYMBOL)) {
-			logger.logContinue(node);
-			// noinspection UnnecessaryContinueJS
-			continue;
-		}
+	else {
+		for (const literal of expressionResult) {
+			// Prepare a lexical environment for the current iteration
+			const localEnvironment = cloneLexicalEnvironment(environment);
 
-		else if (pathInLexicalEnvironmentEquals(localEnvironment, true, RETURN_SYMBOL)) {
-			logger.logReturn(node);
-			return;
+			// Define a new binding for a break symbol within the environment
+			setInLexicalEnvironment(localEnvironment, BREAK_SYMBOL, false, true);
+
+			// Define a new binding for a continue symbol within the environment
+			setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
+
+			// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
+			await evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);
+
+			// Evaluate the Statement
+			await evaluate.statement(node.statement, localEnvironment);
+
+			// Check if a 'break' statement has been encountered and break if so
+			if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {
+				logger.logBreak(node);
+				break;
+			}
+
+			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, CONTINUE_SYMBOL)) {
+				logger.logContinue(node);
+				// noinspection UnnecessaryContinueJS
+				continue;
+			}
+
+			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, RETURN_SYMBOL)) {
+				logger.logReturn(node);
+				return;
+			}
 		}
 	}
 }

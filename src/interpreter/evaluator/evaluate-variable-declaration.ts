@@ -8,12 +8,12 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<VariableDeclaration>} options
  * @param {Literal} [initializer
  */
-export function evaluateVariableDeclaration ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<VariableDeclaration>, initializer?: Literal): void {
+export async function evaluateVariableDeclaration ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<VariableDeclaration>, initializer?: Literal): Promise<void> {
 
 	const initializerResult = initializer != null ? initializer : node.initializer == null
 		// A VariableDeclaration with no initializer is implicitly bound to 'undefined'
 		? undefined
-		: evaluate.expression(node.initializer, environment, statementTraversalStack);
+		: await evaluate.expression(node.initializer, environment, statementTraversalStack);
 
 	// There's no way of destructuring a nullable value
 	if (initializerResult == null && !isIdentifier(node.name)) {
@@ -21,6 +21,6 @@ export function evaluateVariableDeclaration ({node, environment, evaluate, stack
 	}
 
 	// Evaluate the binding name
-	evaluate.nodeWithArgument(node.name, environment, initializerResult, statementTraversalStack);
+	await evaluate.nodeWithArgument(node.name, environment, initializerResult, statementTraversalStack);
 	stack.push(initializerResult);
 }

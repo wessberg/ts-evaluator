@@ -17,9 +17,9 @@ import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
  * @param {IEvaluateOptions} options
- * @returns {EvaluateResult}
+ * @returns {Promise<EvaluateResult>}
  */
-export function evaluate ({
+export async function evaluate ({
 														typeChecker,
 														node,
 														environment = {},
@@ -35,13 +35,9 @@ export function evaluate ({
 															process = {
 																exit: false,
 																spawnChild: false
-															},
-															async = {
-																timer: false,
-																promise: false
 															}
 														} = {}
-													}: IEvaluateOptions): EvaluateResult {
+													}: IEvaluateOptions): Promise<EvaluateResult> {
 	// Take the simple path first. This may be far more performant than building up an environment
 	const simpleLiteralResult = evaluateSimpleLiteral(node);
 	if (simpleLiteralResult.success) return simpleLiteralResult;
@@ -59,10 +55,6 @@ export function evaluate ({
 		process: {
 			exit: typeof process === "boolean" ? process : process.exit,
 			spawnChild: typeof process === "boolean" ? process : process.spawnChild
-		},
-		async: {
-			timer: typeof async === "boolean" ? async : async.timer,
-			promise: typeof async === "boolean" ? async : async.promise
 		}
 	};
 
@@ -79,12 +71,12 @@ export function evaluate ({
 		}
 
 		else if (isStatement(node)) {
-			nodeEvaluator.statement(node, initialEnvironment);
+			await nodeEvaluator.statement(node, initialEnvironment);
 			value = stack.pop();
 		}
 
 		else if (isDeclaration(node)) {
-			nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
+			await nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
 			value = stack.pop();
 		}
 

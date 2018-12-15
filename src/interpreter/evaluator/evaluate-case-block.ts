@@ -11,15 +11,16 @@ import {Literal} from "../literal/literal";
  * Evaluates, or attempts to evaluate, a CaseBlock, based on a switch expression
  * @param {IEvaluatorOptions<CaseBlock>} options
  * @param {Literal} switchExpression
+ * @returns {Promise<void>}
  */
-export function evaluateCaseBlock ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<CaseBlock>, switchExpression: Literal): void {
+export async function evaluateCaseBlock ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<CaseBlock>, switchExpression: Literal): Promise<void> {
 	// Prepare a lexical environment for the case block
 	const localEnvironment = cloneLexicalEnvironment(environment);
 	// Define a new binding for a break symbol within the environment
 	setInLexicalEnvironment(localEnvironment, BREAK_SYMBOL, false, true);
 
 	for (const clause of node.clauses) {
-		evaluate.nodeWithArgument(clause, localEnvironment, switchExpression, statementTraversalStack);
+		await evaluate.nodeWithArgument(clause, localEnvironment, switchExpression, statementTraversalStack);
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
 		if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {

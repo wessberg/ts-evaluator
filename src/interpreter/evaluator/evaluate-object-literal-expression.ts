@@ -7,9 +7,9 @@ import {THIS_SYMBOL} from "../util/this/this-symbol";
 /**
  * Evaluates, or attempts to evaluate, a ObjectLiteralExpression
  * @param {IEvaluatorOptions<ObjectLiteralExpression>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateObjectLiteralExpression ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<ObjectLiteralExpression>): Literal {
+export async function evaluateObjectLiteralExpression ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<ObjectLiteralExpression>): Promise<Literal> {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(environment, "Object")!.literal as ObjectConstructor;
@@ -19,7 +19,7 @@ export function evaluateObjectLiteralExpression ({node, evaluate, environment, s
 	setInLexicalEnvironment(environment, THIS_SYMBOL, value, true);
 
 	for (const property of node.properties) {
-		evaluate.nodeWithArgument(property, environment, value, statementTraversalStack);
+		await evaluate.nodeWithArgument(property, environment, value, statementTraversalStack);
 	}
 
 	return value;

@@ -6,9 +6,9 @@ import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environm
 /**
  * Evaluates, or attempts to evaluate, a BigIntLiteral
  * @param {IEvaluatorOptions<BigIntLiteral>} options
- * @returns {Literal}
+ * @returns {Promise<Literal>}
  */
-export function evaluateBigIntLiteral ({node, environment}: IEvaluatorOptions<BigIntLiteral>): Literal {
+export async function evaluateBigIntLiteral ({node, environment}: IEvaluatorOptions<BigIntLiteral>): Promise<Literal> {
 	// Use BigInt from the Realm instead of the executing context such that instanceof checks won't fail, etc.
 	const _BigInt = getFromLexicalEnvironment(environment, "BigInt")!.literal as BigIntConstructor;
 

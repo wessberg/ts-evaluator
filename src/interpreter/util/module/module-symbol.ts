@@ -1,1 +1,0 @@
-export const MODULE_SYMBOL: unique symbol = Symbol.for("__$$MODULE_SYMBOL");
