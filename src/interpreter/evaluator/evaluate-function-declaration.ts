@@ -1,4 +1,3 @@
-import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {FunctionDeclaration, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -88,7 +87,7 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 			const sourceFile = node.getSourceFile();
 			if (nameResult != null && sourceFile.isDeclarationFile) {
 				const implementation = getImplementationForDeclarationWithinDeclarationFile(options);
-				return deasync.await((implementation as Function)(...args));
+				return (implementation as Function)(...args);
 			}
 
 			// If the body is a block, evaluate it as a statement

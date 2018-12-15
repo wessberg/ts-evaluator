@@ -1,4 +1,3 @@
-import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {ForOfStatement, isVariableDeclarationList} from "typescript";
 import {Literal} from "../literal/literal";
@@ -8,6 +7,7 @@ import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexica
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
+import {syncAwait} from "../util/await/sync-await";
 
 // tslint:disable:no-redundant-jump
 
@@ -70,7 +70,7 @@ export function evaluateForOfStatement ({node, environment, evaluate, logger, st
 	else {
 		for (let literal of expressionResult) {
 			if (node.awaitModifier != null) {
-				literal = deasync.await(literal as Promise<Literal>);
+				literal = syncAwait(literal as Promise<Literal>);
 			}
 
 			// Prepare a lexical environment for the current iteration
