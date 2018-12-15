@@ -1,4 +1,4 @@
-import {await} from "deasync2";
+import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {FunctionDeclaration, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -72,7 +72,7 @@ export async function evaluateFunctionDeclaration (options: IEvaluatorOptions<Fu
 		}
 
 		// Evaluate the parameters based on the given arguments
-		await(evaluateParameterDeclarations({
+		deasync.await(evaluateParameterDeclarations({
 				node: node.parameters,
 				environment: localLexicalEnvironment,
 				evaluate,
@@ -83,13 +83,13 @@ export async function evaluateFunctionDeclaration (options: IEvaluatorOptions<Fu
 
 		const sourceFile = node.getSourceFile();
 		if (nameResult != null && sourceFile.isDeclarationFile) {
-			const implementation = await(getImplementationForDeclarationWithinDeclarationFile(options));
-			return await((implementation as Function)(...args));
+			const implementation = deasync.await(getImplementationForDeclarationWithinDeclarationFile(options));
+			return deasync.await((implementation as Function)(...args));
 		}
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		await(evaluate.statement(node.body, localLexicalEnvironment));
+		deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
 
 		// If a 'return' has occurred within the block, pop the Stack and return that value
 		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {

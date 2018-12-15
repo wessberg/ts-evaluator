@@ -1,4 +1,4 @@
-import {await} from "deasync2";
+import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {GetAccessorDeclaration} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -43,7 +43,7 @@ export async function evaluateGetAccessorDeclaration ({node, environment, evalua
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		await(evaluate.statement(node.body, localLexicalEnvironment));
+		deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
 		// If a 'return' has occurred within the block, pop the Stack and return that value
 		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
 			return stack.pop();

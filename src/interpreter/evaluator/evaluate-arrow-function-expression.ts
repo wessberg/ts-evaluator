@@ -1,4 +1,4 @@
-import {await} from "deasync2";
+import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {ArrowFunction, isBlock, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -62,7 +62,7 @@ export async function evaluateArrowFunctionExpression ({node, environment, evalu
 		setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
 
 		// Evaluate the parameters based on the given arguments
-		await(evaluateParameterDeclarations({
+		deasync.await(evaluateParameterDeclarations({
 				node: node.parameters,
 				environment: localLexicalEnvironment,
 				evaluate,
@@ -74,7 +74,7 @@ export async function evaluateArrowFunctionExpression ({node, environment, evalu
 
 		// If the body is a block, evaluate it as a statement
 		if (isBlock(node.body)) {
-			await(evaluate.statement(node.body, localLexicalEnvironment));
+			deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
 			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -87,7 +87,7 @@ export async function evaluateArrowFunctionExpression ({node, environment, evalu
 
 		// Otherwise, the body is itself an expression
 		else {
-			return await(evaluate.expression(node.body, localLexicalEnvironment, statementTraversalStack));
+			return deasync.await(evaluate.expression(node.body, localLexicalEnvironment, statementTraversalStack));
 		}
 	};
 

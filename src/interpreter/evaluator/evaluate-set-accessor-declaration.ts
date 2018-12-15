@@ -1,4 +1,4 @@
-import {await} from "deasync2";
+import deasync from "deasync2";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {SetAccessorDeclaration} from "typescript";
 import {LexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -44,7 +44,7 @@ export async function evaluateSetAccessorDeclaration ({node, environment, evalua
 		}
 
 		// Evaluate the parameters based on the given arguments
-		await(evaluateParameterDeclarations({
+		deasync.await(evaluateParameterDeclarations({
 				node: node.parameters,
 				environment: localLexicalEnvironment,
 				evaluate,
@@ -56,7 +56,7 @@ export async function evaluateSetAccessorDeclaration ({node, environment, evalua
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		await(evaluate.statement(node.body, localLexicalEnvironment));
+		deasync.await(evaluate.statement(node.body, localLexicalEnvironment));
 	}
 
 	setAccessorDeclaration.toString = () => `[Set: ${nameResult}]`;

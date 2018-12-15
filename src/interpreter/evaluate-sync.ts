@@ -1,4 +1,4 @@
-import {await} from "deasync2";
+import deasync from "deasync2";
 import {evaluate} from "./evaluate";
 import {IEvaluateOptions} from "./i-evaluate-options";
 import {EvaluateResult} from "./evaluate-result";
@@ -9,5 +9,5 @@ import {EvaluateResult} from "./evaluate-result";
  * @return {EvaluateResult}
  */
 export function evaluateSync (options: IEvaluateOptions): EvaluateResult {
-	return await(evaluate(options));
+	return deasync.await(evaluate(options));
 }
