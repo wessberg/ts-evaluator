@@ -9,6 +9,11 @@ export default {
 			file: packageJSON.main,
 			format: "cjs",
 			sourcemap: true
+		},
+		{
+			file: packageJSON.module,
+			format: "esm",
+			sourcemap: true
 		}
 	],
 	treeshake: true,
