@@ -1,4 +1,3 @@
-import {Literal} from "./literal/literal";
 import {EvaluationError} from "./error/evaluation-error/evaluation-error";
 
 export interface IEvaluateResultBase {
@@ -7,7 +6,7 @@ export interface IEvaluateResultBase {
 
 export interface IEvaluateSuccessResult extends IEvaluateResultBase {
 	success: true;
-	value: Literal;
+	value: unknown;
 }
 
 export interface IEvaluateFailureResult extends IEvaluateResultBase {

@@ -13,6 +13,7 @@ import {createStack, Stack} from "./stack/stack";
 import {isDeclaration} from "./util/declaration/is-declaration";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
 import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
+import {EnvironmentPresetKind} from "./environment/environment-preset-kind";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
@@ -22,11 +23,15 @@ import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
 export function evaluate ({
 														typeChecker,
 														node,
-														environment = {},
+														environment: {
+															preset = EnvironmentPresetKind.NODE,
+															extra = {}
+														} = {},
 														logLevel = LogLevelKind.SILENT,
 														policy: {
 															deterministic = false,
 															network = false,
+															console = false,
 															maxOps = Infinity,
 															io = {
 																read: true,
@@ -48,6 +53,7 @@ export function evaluate ({
 		deterministic,
 		maxOps,
 		network,
+		console,
 		io: {
 			read: typeof io === "boolean" ? io : io.read,
 			write: typeof io === "boolean" ? io : io.write
@@ -59,7 +65,7 @@ export function evaluate ({
 	};
 
 	const logger = new Logger(logLevel);
-	const initialEnvironment = createLexicalEnvironment(environment, policy, logger);
+	const initialEnvironment = createLexicalEnvironment({preset, extra}, policy);
 
 	const stack: Stack = createStack();
 	const nodeEvaluator = createNodeEvaluator({policy, typeChecker, logger, stack});

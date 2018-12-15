@@ -1,7 +1,13 @@
 export {evaluate} from "./interpreter/evaluate";
 export {EvaluateResult} from "./interpreter/evaluate-result";
 export {IEvaluateOptions} from "./interpreter/i-evaluate-options";
+
+// Logging
 export {LogLevelKind} from "./interpreter/logger/log-level";
+
+// Environment
+export {EnvironmentPresetKind} from "./interpreter/environment/environment-preset-kind";
+export {IEnvironment} from "./interpreter/environment/i-environment";
 
 // Errors
 export{EvaluationError} from "./interpreter/error/evaluation-error/evaluation-error";

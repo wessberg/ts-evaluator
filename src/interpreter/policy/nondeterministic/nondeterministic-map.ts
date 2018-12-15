@@ -1,13 +1,13 @@
 import {PolicyTrapKind} from "../policy-trap-kind";
 import {TrapConditionMap} from "../trap-condition-map";
 import {NETWORK_MAP} from "../network/network-map";
-import {BuiltInsAndGlobals} from "../../environment/built-in/built-ins-and-globals";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
 
 /**
  * A Map between built-in identifiers and the members that produce non-deterministic results.
- * @type {TrapConditionMap<BuiltInsAndGlobals>}
+ * @type {TrapConditionMap<NodeBuiltInsAndGlobals>}
  */
-export const NONDETERMINISTIC_MAP: TrapConditionMap<BuiltInsAndGlobals> = {
+export const NONDETERMINISTIC_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 	// Any network operation will always be non-deterministic
 	...NETWORK_MAP,
 	Math: {

@@ -1,13 +1,13 @@
 import {PolicyProxyHookOptions} from "../../proxy/policy-proxy-hook";
 import {NONDETERMINISTIC_MAP} from "./nondeterministic-map";
 import {isTrapConditionMet} from "../is-trap-condition-met";
-import {BuiltInsAndGlobals} from "../../environment/built-in/built-ins-and-globals";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
 
 /**
  * Returns true if the given path represents something that is nondeterministic.
- * @param {PolicyProxyHookOptions<BuiltInsAndGlobals>} item
+ * @param {PolicyProxyHookOptions<NodeBuiltInsAndGlobals>} item
  * @returns {boolean}
  */
-export function isNonDeterministic (item: PolicyProxyHookOptions<BuiltInsAndGlobals>): boolean {
+export function isNonDeterministic (item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(NONDETERMINISTIC_MAP, true, item);
 }

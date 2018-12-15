@@ -38,14 +38,15 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 			 * @return {object}
 			 */
 			construct (target: U, argArray: unknown[], newTarget?: unknown): object {
-				hook({
+				// Don't proceed if the hook says no
+				if (!hook({
 					kind: PolicyTrapKind.CONSTRUCT,
 					policy,
 					newTarget,
 					argArray,
 					target,
 					path: stringifyPath(inputPath)
-				});
+				})) return {};
 
 				return Reflect.construct(<Function>target, argArray, newTarget);
 			},
@@ -58,15 +59,17 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 			 * @return {unknown}
 			 */
 			apply (target: U, thisArg: unknown, argArray: unknown[] = []): unknown {
-				hook({
+				// Don't proceed if the hook says no
+				if (!hook({
 					kind: PolicyTrapKind.APPLY,
 					policy,
 					thisArg,
 					argArray,
 					target,
 					path: stringifyPath(inputPath)
-				});
-				return Reflect.apply(<Function>target, thisArg, argArray);
+				})) return;
+
+				return Reflect.apply(target as Function, thisArg, argArray);
 			},
 
 			/**
@@ -79,12 +82,13 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 			get (target: U, property: string, receiver: unknown): unknown {
 				const newPath = [...inputPath, property];
 
-				hook({
+				// Don't proceed if the hook says no
+				if (!hook({
 					kind: PolicyTrapKind.GET,
 					policy,
 					path: stringifyPath(newPath),
 					target
-				});
+				})) return;
 
 				const match = Reflect.get(target, property, receiver);
 
@@ -92,7 +96,6 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 				if (config != null && config.configurable === false && config.writable === false) {
 					return currentItem[property as keyof U];
 				}
-
 				return createAccessTrap(newPath, match);
 			}
 		});

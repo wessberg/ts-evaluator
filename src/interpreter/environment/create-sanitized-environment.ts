@@ -1,4 +1,3 @@
-import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
 import {IndexLiteral} from "../literal/literal";
 import {createPolicyProxy} from "../proxy/create-policy-proxy";
 import {stringifyPolicyTrapKindOnPath} from "../policy/policy-trap-kind";
@@ -13,19 +12,23 @@ import {NetworkError} from "../error/policy-error/network-error/network-error";
 import {isProcessExitOperation} from "../policy/process/is-process-exit-operation";
 import {ProcessError} from "../error/policy-error/process-error/process-error";
 import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-child-operation";
-import {BUILT_IN_NAMES} from "./built-in/built-in-names";
+import {ICreateSanitizedEnvironmentOptions} from "./i-create-sanitized-environment-options";
+import {isConsoleOperation} from "../policy/console/is-console-operation";
 
 // tslint:disable:no-any
 
-
 /**
- * Creates a proxy'ed ECMAScript and Node environment that can intercept calls based on the evaluation policy
- * @param {IEvaluatePolicySanitized} policy
+ * Creates an environment that provide hooks into policy checks
+ * @param {ICreateSanitizedEnvironmentOptions} options
  * @return {IndexLiteral}
  */
-export function createProxyBaseEnvironment (policy: IEvaluatePolicySanitized): IndexLiteral {
+export function createSanitizedEnvironment ({policy, env}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
 
 	const hook = (item: PolicyProxyHookOptions<any>) => {
+
+		if (!policy.console && isConsoleOperation(item)) {
+			return false;
+		}
 
 		if (!policy.io.read && isIoRead(item)) {
 			throw new IoError({kind: "read"});
@@ -50,17 +53,15 @@ export function createProxyBaseEnvironment (policy: IEvaluatePolicySanitized): I
 		if (policy.deterministic && isNonDeterministic(item)) {
 			throw new NonDeterministicError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)});
 		}
+
+		return true;
 	};
 
 	return Object.assign(
 		{},
-		...BUILT_IN_NAMES
-			.filter(name => {
-				if (name === "undefined" || name === "null" || name === "require") return true;
-				return name in global;
-			})
-			.map(name => ({
-				[name]: name === "require" ? new Proxy(require, {
+		...Object.entries(env)
+			.map(([name, implementation]) => ({
+				[name]: name === "require" ? new Proxy(implementation as NodeRequire, {
 
 					/**
 					 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
@@ -81,7 +82,7 @@ export function createProxyBaseEnvironment (policy: IEvaluatePolicySanitized): I
 					}
 				}) : createPolicyProxy({
 					policy,
-					item: global[name as keyof typeof global],
+					item: implementation as object,
 					scope: name,
 					hook
 				})

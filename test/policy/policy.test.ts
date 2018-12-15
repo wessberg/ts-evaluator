@@ -29,7 +29,9 @@ test("Throws on IO read if the policy requires it. #1", t => {
 				}
 			},
 			environment: {
-				IoError
+				extra: {
+					IoError
+				}
 			}
 		}
 	);
@@ -63,7 +65,9 @@ test("Throws on IO read if the policy requires it. #2", t => {
 				}
 			},
 			environment: {
-				IoError
+				extra: {
+					IoError
+				}
 			}
 		}
 	);
@@ -98,7 +102,9 @@ test("Throws on IO read if the policy requires it. #3", t => {
 				}
 			},
 			environment: {
-				IoError
+				extra: {
+					IoError
+				}
 			}
 		}
 	);
@@ -133,7 +139,9 @@ test("Throws on IO read if the policy requires it. #4", t => {
 				}
 			},
 			environment: {
-				IoError
+				extra: {
+					IoError
+				}
 			}
 		}
 	);
@@ -167,7 +175,9 @@ test("Throws on IO read if the policy requires it. #5", t => {
 				}
 			},
 			environment: {
-				IoError
+				extra: {
+					IoError
+				}
 			}
 		}
 	);
@@ -201,7 +211,9 @@ test("Throws on IO read if the policy requires it. #6", t => {
 				}
 			},
 			environment: {
-				IoError
+				extra: {
+					IoError
+				}
 			}
 		}
 	);
@@ -231,7 +243,9 @@ test("Throws on invoking Math.random() read if the policy is non-deterministic. 
 				deterministic: true
 			},
 			environment: {
-				NonDeterministicError
+				extra: {
+					NonDeterministicError
+				}
 			}
 		}
 	);
@@ -261,7 +275,9 @@ test("Doesn't throws on _getting_ Math.random, even if the policy is non-determi
 				deterministic: true
 			},
 			environment: {
-				NonDeterministicError
+				extra: {
+					NonDeterministicError
+				}
 			}
 		}
 	);
@@ -291,7 +307,9 @@ test("Throws on constructing new Date() without arguments if the policy is non-d
 				deterministic: true
 			},
 			environment: {
-				NonDeterministicError
+				extra: {
+					NonDeterministicError
+				}
 			}
 		}
 	);
@@ -322,7 +340,9 @@ test("Doesn't throws on construction of a new Date with a specific date input, e
 				deterministic: true
 			},
 			environment: {
-				NonDeterministicError
+				extra: {
+					NonDeterministicError
+				}
 			}
 		}
 	);
@@ -353,7 +373,9 @@ test("Throws on Network activity if the policy requires it. #1", t => {
 				network: false
 			},
 			environment: {
-				NetworkError
+				extra: {
+					NetworkError
+				}
 			}
 		}
 	);
@@ -384,7 +406,9 @@ test("Throws on Network activity if the policy requires it. #2", t => {
 				network: false
 			},
 			environment: {
-				NetworkError
+				extra: {
+					NetworkError
+				}
 			}
 		}
 	);
@@ -414,7 +438,9 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", t
 				process: false
 			},
 			environment: {
-				ProcessError
+				extra: {
+					ProcessError
+				}
 			}
 		}
 	);
@@ -446,7 +472,9 @@ test("Throws on attempting to spawn a child process if the policy requires it. #
 				process: false
 			},
 			environment: {
-				ProcessError
+				extra: {
+					ProcessError
+				}
 			}
 		}
 	);

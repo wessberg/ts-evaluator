@@ -4,7 +4,7 @@ import {EvaluateResult} from "../src/interpreter/evaluate-result";
 import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChild, getDefaultCompilerOptions, getDefaultLibFileName, Node, NodeArray, ScriptKind, ScriptTarget, SourceFile, Statement, sys} from "typescript";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
 import {readFileSync} from "fs";
-import {LexicalEnvironment} from "../src/interpreter/lexical-environment/lexical-environment";
+import {IEnvironment} from "../src/interpreter/environment/i-environment";
 
 // tslint:disable:no-any
 
@@ -28,7 +28,7 @@ export interface ITestFileResult {
 
 export interface ITestOpts {
 	policy: Partial<IEvaluatePolicy>;
-	environment: LexicalEnvironment["env"];
+	environment: Partial<IEnvironment>;
 	logLevel: LogLevelKind;
 }
 
@@ -47,6 +47,7 @@ export function prepareTest (
 		policy: {
 			deterministic = true,
 			maxOps = 3000,
+			console = false,
 			network = false,
 			io = {
 				read: true,
@@ -143,7 +144,8 @@ export function prepareTest (
 				deterministic,
 				io,
 				process,
-				network
+				network,
+				console
 			},
 			logLevel
 		})

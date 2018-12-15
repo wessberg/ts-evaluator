@@ -1,12 +1,12 @@
 import {PolicyTrapKind} from "../policy-trap-kind";
 import {TrapConditionMap} from "../trap-condition-map";
-import {BuiltInsAndGlobals} from "../../environment/built-in/built-ins-and-globals";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
 
 /**
  * A Map between built-in modules and the kind of IO operations their members performs
- * @type {TrapConditionMap<BuiltInsAndGlobals>}
+ * @type {TrapConditionMap<NodeBuiltInsAndGlobals>}
  */
-export const NETWORK_MAP: TrapConditionMap<BuiltInsAndGlobals> = {
+export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 	http2: {
 		connect: {
 			[PolicyTrapKind.APPLY]: true

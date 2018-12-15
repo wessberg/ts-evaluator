@@ -1,13 +1,13 @@
 import {PolicyTrapKind} from "../policy-trap-kind";
 import {TrapConditionMap} from "../trap-condition-map";
 import {IEvaluateProcessPolicy} from "../i-evaluate-policy";
-import {BuiltInsAndGlobals} from "../../environment/built-in/built-ins-and-globals";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
 
 /**
  * A Map between built-in modules (as well as 'process' and the kind of IO operations their members performs
- * @type {TrapConditionMap<BuiltInsAndGlobals, string>}
+ * @type {TrapConditionMap<NodeBuiltInsAndGlobals, string>}
  */
-export const PROCESS_MAP: TrapConditionMap<BuiltInsAndGlobals, keyof IEvaluateProcessPolicy> = {
+export const PROCESS_MAP: TrapConditionMap<NodeBuiltInsAndGlobals, keyof IEvaluateProcessPolicy> = {
 	process: {
 		exit: {
 			[PolicyTrapKind.APPLY]: "exit"

@@ -27,4 +27,4 @@ export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyP
 }
 
 export type PolicyProxyHookOptions<T extends Object> = IPolicyProxyGetHookOptions<T> | IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
-export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => void;
+export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => boolean;

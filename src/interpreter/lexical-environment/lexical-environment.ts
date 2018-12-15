@@ -1,11 +1,12 @@
 import {Node, NodeArray} from "typescript";
 import {IndexLiteral, Literal, LiteralMatch} from "../literal/literal";
 import {del, get, has, set} from "object-path";
-import {GLOBAL_SYMBOL, GLOBAL_THIS_SYMBOL} from "../util/global/global-symbol";
-import {console} from "./lib/shared/console";
-import {Logger} from "../logger/logger";
 import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
-import {createProxyBaseEnvironment} from "../environment/create-proxy-base-environment";
+import {createSanitizedEnvironment} from "../environment/create-sanitized-environment";
+import {ECMA_GLOBALS} from "../environment/ecma/ecma-globals";
+import {NODE_GLOBALS} from "../environment/node/node-globals";
+import {IEnvironment} from "../environment/i-environment";
+import {EnvironmentPresetKind} from "../environment/environment-preset-kind";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment|undefined;
@@ -119,22 +120,45 @@ export function setLexicalEnvironmentForNode<T extends Node, U extends (T|NodeAr
 
 /**
  * Creates a Lexical Environment
- * @param {LexicalEnvironment["env]} inputEnvironment
+ * @param {IEnvironment} inputEnvironment
  * @param {IEvaluatePolicySanitized} policy
- * @param {Logger} logger
  * @returns {Promise<LexicalEnvironment>}
  */
-export function createLexicalEnvironment (inputEnvironment: LexicalEnvironment["env"], policy: IEvaluatePolicySanitized, logger: Logger): LexicalEnvironment {
+export function createLexicalEnvironment ({preset, extra}: IEnvironment, policy: IEvaluatePolicySanitized): LexicalEnvironment {
 
-	const environment = {
+	let envInput: IndexLiteral;
+
+	switch (preset) {
+		case EnvironmentPresetKind.NONE:
+			envInput = {
+				...extra
+			};
+			break;
+
+		case EnvironmentPresetKind.ECMA:
+			envInput = {
+				...ECMA_GLOBALS(),
+				...extra
+			};
+			break;
+
+		case EnvironmentPresetKind.NODE:
+			envInput = {
+				...NODE_GLOBALS(),
+				...extra
+			};
+			break;
+
+		default:
+			envInput = {};
+			break;
+	}
+
+	return {
 		parentEnv: undefined,
-		env: {
-			...createProxyBaseEnvironment(policy),
-			console: console(logger),
-			...inputEnvironment
-		} as IndexLiteral
+		env: createSanitizedEnvironment({
+			policy,
+			env: envInput
+		})
 	};
-
-	environment.env[GLOBAL_SYMBOL] = environment.env[GLOBAL_THIS_SYMBOL] = environment;
-	return environment;
 }

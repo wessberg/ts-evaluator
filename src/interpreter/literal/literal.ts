@@ -20,7 +20,7 @@ export function isLazyCall (literal: Literal): literal is LazyCall {
 	return literal != null && typeof literal === "object" && LAZY_CALL_FLAG in literal;
 }
 
-export type Literal = object|string|number|boolean|symbol|bigint|null|undefined|LazyCall;
+export type Literal = object|Function|string|number|boolean|symbol|bigint|null|undefined;
 export interface LiteralMatch {
 	literal: Literal;
 }
