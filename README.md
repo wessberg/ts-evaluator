@@ -46,18 +46,18 @@ Let's start off with a very basic example:
 import {evaluate} from "@wessberg/ts-evaluator";
 
 const result = evaluate({
-	node: someNode,
-	typeChecker: someTypeChecker
+  node: someNode,
+  typeChecker: someTypeChecker
 });
 
 // If a value was produced
 if (result.success) {
-	console.log(result.value);
+  console.log(result.value);
 }
 
 // If an error occurred
 else {
-	console.log(result.reason);
+  console.log(result.reason);
 }
 ```
 
@@ -70,27 +70,23 @@ You can define the kind of environment that `evaluate()` assumes when evaluating
 
 The following environment presets are supported:
 
-- `ECMA`
-	-	Assumes a pure ECMAScript environment. This means that no other globals than those that are defined in the ECMAScript spec such as `Math`, `Promise`, `Object`, etc, are available.
-- `NODE` _(default)_
-	- Assumes a Node environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present.
-- `BROWSER`
-	- Assumes a Browser environment. This means that DOM APIs are available and Browser-specific globals such as `window` is present.
-	
+- `ECMA` - Assumes a pure ECMAScript environment. This means that no other globals than those that are defined in the ECMAScript spec such as `Math`, `Promise`, `Object`, etc, are available.
+- `NODE` _(default)_ - Assumes a Node environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present.
+- `BROWSER` - Assumes a Browser environment. This means that DOM APIs are available and Browser-specific globals such as `window` is present.
+
 Beyond presets, you can provide additional globals or override those that comes from the presets.
-	
-Here's how you can configure environment options: 
+Here's how you can configure environment options:
 
 ```typescript
 const result = evaluate({
-	// ...
-	environment: {
-		// The "Node" environment is the default one. You can simply omit this key if you are targeting a Node environment
-		preset: EnvironmentPresetKind.NODE,
-		extra: {
-			someGlobal: "someValue"
-		}
-	}
+  // ...
+  environment: {
+    // The "Node" environment is the default one. You can simply omit this key if you are targeting a Node environment
+    preset: EnvironmentPresetKind.NODE,
+    extra: {
+      someGlobal: "someValue"
+    }
+  }
 });
 ```
 
@@ -103,45 +99,39 @@ By default, IO writes, network calls, and spawning child processes are restricte
 
 ```typescript
 const result = evaluate({
-	// ...
-	policy: {
-		deterministic: false,
-		network: false,
-		console: false,
-		maxOps: Infinity,
-		io: {
-			read: true,
-			write: false
-		},
-  	process: {
-  		exit: false,
-  		spawnChild: false
-  	}
+  // ...
+  policy: {
+    deterministic: false,
+    network: false,
+    console: false,
+    maxOps: Infinity,
+    io: {
+      read: true,
+      write: false
+    },
+    process: {
+      exit: false,
+      spawnChild: false
+    }
   }
 });
 ```
 
 Here's an explainer of the individual policies:
 
-- `deterministic` _(default: `false`)_
-	- If `deterministic` is `true`, only code constructs that always evaluate to the same value is permitted. This means that things like `Math.random()` or `new Date()` without arguments, as well as network calls are restricted.
-	This is useful if you are trying to statically analyze something and need to make sure that the value won't change for each invocation.
+- `deterministic` _(default: `false`)_ - If `deterministic` is `true`, only code constructs that always evaluate to the same value is permitted. This means that things like `Math.random()` or `new Date()` without arguments, as well as network calls are restricted.
+  This is useful if you are trying to statically analyze something and need to make sure that the value won't change for each invocation.
 
-- `network` _(default: `false`)_
-	- If `network` is `true`, network activity is allowed, such as sending an HTTP request or hooking up a server.
+- `network` _(default: `false`)_ - If `network` is `true`, network activity is allowed, such as sending an HTTP request or hooking up a server.
 
-- `console` _(default: `false`)_
-	- If `console` is `true`, logging to the console within evaluated code will produce the side-effect of actually logging to the console of the parent process. Usually, this is unwanted, since you're most likely only interested in the
-	evaluated value, not so much the side-effects, but you can override this behavior by setting `console` to `true`.
+- `console` _(default: `false`)_ - If `console` is `true`, logging to the console within evaluated code will produce the side-effect of actually logging to the console of the parent process. Usually, this is unwanted, since you're most likely only interested in the
+  evaluated value, not so much the side-effects, but you can override this behavior by setting `console` to `true`.
 
-- `maxOps` _(default: `Infinity`)_
-	- If `maxOps` is anything less than Infinity, evaluation will stop when the provided amount of operations has been performed. This is useful to opt-out of running CPU-intensive code, especially if you are embedding this library in an editor or a linter.
+- `maxOps` _(default: `Infinity`)_ - If `maxOps` is anything less than Infinity, evaluation will stop when the provided amount of operations has been performed. This is useful to opt-out of running CPU-intensive code, especially if you are embedding this library in an editor or a linter.
 
-- `io` _(default: `{read: true, write: false}`)_
-	- If `io` permits `READ` operations, files can be read from disk. If `io` permits `WRITE` operations, files can be written to disk.
+- `io` _(default: `{read: true, write: false}`)_ - If `io` permits `READ` operations, files can be read from disk. If `io` permits `WRITE` operations, files can be written to disk.
 
-- `process` _(default: `{exit: false, spawnChild: false}`)_
-	- If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes.
+- `process` _(default: `{exit: false, spawnChild: false}`)_ - If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes.
 
 ### Logging
 
@@ -149,21 +139,17 @@ You can get information about the evaluation process with various levels of logg
 
 ```typescript
 const result = evaluate({
-	// ...
-	logLevel: LogLevelKind.DEBUG
+  // ...
+  logLevel: LogLevelKind.DEBUG
 });
 ```
 
 Here's an explainer of the different log levels:
 
-- `LogLevelKind.SILENT` _(default)_
-	- By default, nothing is logged to the console.
-- `LogLevelKind.INFO`
-	- Intermediate results are logged to the console.
-- `LogLevelKind.VERBOSE`
-	-	Everything that is logged with `LogLevelKind.INFO` as well as lexical environment bindings are logged to the console
-- `LogLevelKind.DEBUG`
-	- Everything that is logged with `LogLevelKind.VERBOSE` as well as all visited Nodes during evaluation are logged to the console
+- `LogLevelKind.SILENT` _(default)_ - By default, nothing is logged to the console.
+- `LogLevelKind.INFO` - Intermediate results are logged to the console.
+- `LogLevelKind.VERBOSE` - Everything that is logged with `LogLevelKind.INFO` as well as lexical environment bindings are logged to the console
+- `LogLevelKind.DEBUG` - Everything that is logged with `LogLevelKind.VERBOSE` as well as all visited Nodes during evaluation are logged to the console
 
 ## Contributing
 
