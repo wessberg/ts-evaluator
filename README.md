@@ -127,23 +127,43 @@ Here's an explainer of the individual policies:
 	- If `deterministic` is `true`, only code constructs that always evaluate to the same value is permitted. This means that things like `Math.random()` or `new Date()` without arguments, as well as network calls are restricted.
 	This is useful if you are trying to statically analyze something and need to make sure that the value won't change for each invocation.
 
-- `network` _(default: `false`)
+- `network` _(default: `false`)_
 	- If `network` is `true`, network activity is allowed, such as sending an HTTP request or hooking up a server.
 
-- `console` _(default: `false`)
+- `console` _(default: `false`)_
 	- If `console` is `true`, logging to the console within evaluated code will produce the side-effect of actually logging to the console of the parent process. Usually, this is unwanted, since you're most likely only interested in the
 	evaluated value, not so much the side-effects, but you can override this behavior by setting `console` to `true`.
 
-- `maxOps` _(default: `Infinity`)
+- `maxOps` _(default: `Infinity`)_
 	- If `maxOps` is anything less than Infinity, evaluation will stop when the provided amount of operations has been performed. This is useful to opt-out of running CPU-intensive code, especially if you are embedding this library in an editor or a linter.
 
-- `io` _(default: `{read: true, write: false}`)
+- `io` _(default: `{read: true, write: false}`)_
 	- If `io` permits `READ` operations, files can be read from disk. If `io` permits `WRITE` operations, files can be written to disk.
 
-- `process` _(default: `{exit: false, spawnChild: false}`)
-	- If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes. 
+- `process` _(default: `{exit: false, spawnChild: false}`)_
+	- If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes.
 
-🚧 Documentation is currently being written
+### Logging
+
+You can get information about the evaluation process with various levels of logging. By default, nothing is logged, but you can override this behavior:
+
+```typescript
+const result = evaluate({
+	// ...
+	logLevel: LogLevelKind.DEBUG
+});
+```
+
+Here's an explainer of the different log levels:
+
+- `LogLevelKind.SILENT` _(default)_
+	- By default, nothing is logged to the console.
+- `LogLevelKind.INFO`
+	- Intermediate results are logged to the console.
+- `LogLevelKind.VERBOSE`
+	-	Everything that is logged with `LogLevelKind.INFO` as well as lexical environment bindings are logged to the console
+- `LogLevelKind.DEBUG`
+	- Everything that is logged with `LogLevelKind.VERBOSE` as well as all visited Nodes during evaluation are logged to the console
 
 ## Contributing
 
@@ -155,7 +175,7 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 ## FAQ
 
-<!-- Write your FAQ here -->
+🚧 Documentation is currently being written
 
 ## Backers 🏅
 

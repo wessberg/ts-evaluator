@@ -111,7 +111,7 @@ export class Logger {
 	 * @param {string} scope
 	 */
 	public logBinding (lValue: string, rValue: Literal, scope?: string): void {
-		if (this.logLevel < LogLevelKind.DEBUG) return;
+		if (this.logLevel < LogLevelKind.VERBOSE) return;
 		console.log(`${scope == null ? "" : chalk.green(`(${scope}): `)}${chalk.red(lValue)} ->`, this.compactValue(rValue));
 	}
 
