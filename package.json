@@ -3,7 +3,6 @@
   "version": "0.0.2",
   "description": "An interpreter for Typescript that can evaluate an arbitrary Node within a Typescript AST",
   "scripts": {
-    "postinstall": "npm run build",
     "generate:readme": "scaffold readme --blacklist intro,faq",
     "generate:license": "scaffold license",
     "generate:contributing": "scaffold contributing",
