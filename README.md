@@ -16,6 +16,9 @@ Rather than interpreting a _program_, or a sequence of `Statement`s, this librar
 This makes the library an effective companion if you're building a linter, framework, language service, partial evaluator, or something else where you may want to know the
 computed value of a specific Node at any point in an AST.
 
+One strength of this plugin is that it opens up entirely new use cases such as partial evaluation directly in the editor experience, for example to catch non-syntactic bugs that would
+only occur on runtime, or more advanced diagnostic for frameworks.
+
 To that end, several _policy_ options can be provided to configure restrictions in terms of what is allowed to be evaluated, such as IO and Network access.
 Additionally, `ts-evaluator` supports both a Browser environment, a Node environment, and a pure ECMAScript environment. See [Setting up an environment](#setting-up-an-environment) for more details.
 
@@ -69,12 +72,76 @@ The following environment presets are supported:
 
 - `ECMA`
 	-	Assumes a pure ECMAScript environment. This means that no other globals than those that are defined in the ECMAScript spec such as `Math`, `Promise`, `Object`, etc, are available.
-- `NODE`
+- `NODE` _(default)_
 	- Assumes a Node environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present.
 - `BROWSER`
 	- Assumes a Browser environment. This means that DOM APIs are available and Browser-specific globals such as `window` is present.
+	
+Beyond presets, you can provide additional globals or override those that comes from the presets.
+	
+Here's how you can configure environment options: 
 
-### 
+```typescript
+const result = evaluate({
+	// ...
+	environment: {
+		// The "Node" environment is the default one. You can simply omit this key if you are targeting a Node environment
+		preset: EnvironmentPresetKind.NODE,
+		extra: {
+			someGlobal: "someValue"
+		}
+	}
+});
+```
+
+### Setting up Policies
+
+With great power comes great responsibility. If you are embedding this plugin in, say, a language service plugin to enhance the editing experience in an editor,
+you may want to apply some restrictions as to what can be evaluated.
+
+By default, IO writes, network calls, and spawning child processes are restricted. You can customize this to your liking:
+
+```typescript
+const result = evaluate({
+	// ...
+	policy: {
+		deterministic: false,
+		network: false,
+		console: false,
+		maxOps: Infinity,
+		io: {
+			read: true,
+			write: false
+		},
+  	process: {
+  		exit: false,
+  		spawnChild: false
+  	}
+  }
+});
+```
+
+Here's an explainer of the individual policies:
+
+- `deterministic` _(default: `false`)_
+	- If `deterministic` is `true`, only code constructs that always evaluate to the same value is permitted. This means that things like `Math.random()` or `new Date()` without arguments, as well as network calls are restricted.
+	This is useful if you are trying to statically analyze something and need to make sure that the value won't change for each invocation.
+
+- `network` _(default: `false`)
+	- If `network` is `true`, network activity is allowed, such as sending an HTTP request or hooking up a server.
+
+- `console` _(default: `false`)
+	- If `console` is `true`, logging to the console within evaluated code will produce the side-effect of actually logging to the console of the parent process. Usually, this is unwanted, since you're most likely only interested in the
+	evaluated value, not so much the side-effects, but you can override this behavior by setting `console` to `true`.
+
+- `maxOps` _(default: `Infinity`)
+	- If `maxOps` is anything less than Infinity, evaluation will stop when the provided amount of operations has been performed. This is useful to opt-out of running CPU-intensive code, especially if you are embedding this library in an editor or a linter.
+
+- `io` _(default: `{read: true, write: false}`)
+	- If `io` permits `READ` operations, files can be read from disk. If `io` permits `WRITE` operations, files can be written to disk.
+
+- `process` _(default: `{exit: false, spawnChild: false}`)
+	- If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes. 
 
 🚧 Documentation is currently being written
 
