@@ -2,7 +2,6 @@ import {test} from "ava";
 import {prepareTest} from "../setup";
 import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error";
 import {NotCallableError} from "../../src/interpreter/error/not-callable-error/not-callable-error";
-import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", t => {
 	const {evaluate} = prepareTest(
@@ -49,7 +48,7 @@ test("Doesn't throw when attempting to reference an identifier that is declared 
 test("Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-		`
+			`
 			let myVar = add;
 
 			var add = function (a: number, b: number): number {
@@ -77,10 +76,7 @@ test("Respects block scoped variables declared with 'let'. #1", t => {
 			}
 			(() => a)();
 		`,
-		"(() =>",
-		{
-			logLevel: LogLevelKind.DEBUG
-		}
+		"(() =>"
 	);
 
 	const result = evaluate();

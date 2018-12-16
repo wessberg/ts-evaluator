@@ -1,6 +1,5 @@
 import {test} from "ava";
 import {prepareTest} from "../setup";
-import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Can resolve symbols via ImportDeclarations. #1", t => {
 	const {evaluate} = prepareTest(
@@ -25,9 +24,6 @@ test("Can resolve symbols via ImportDeclarations. #1", t => {
 		{
 			fileName: "b.ts",
 			match: "(() =>"
-		},
-		{
-			logLevel: LogLevelKind.DEBUG
 		}
 	);
 
@@ -164,6 +160,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 			// language=TypeScript
 				`
 				import {dirname} from "path";
+
 				const foo = dirname("/foo/bar");
 			`
 		],
@@ -180,8 +177,9 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
-			`
+				`
 				import * as path from "path";
+
 				const foo = path.dirname("/foo/bar");
 			`
 		],
@@ -198,8 +196,9 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
-			`
+				`
 				import {readFileSync} from "fs";
+
 				const alias = readFileSync;
 				const foo = JSON.parse(readFileSync("/Users/wessberg/coding/libraries/evaluator/package.json")).name;
 			`
@@ -217,17 +216,17 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #4",
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 			`
-				(() => {
-					import {deepStrictEqual, AssertionError} from "assert";
-					try {
-						deepStrictEqual(3, 4);
-						return false;
-					} catch (ex) {
-						if (ex instanceof AssertionError) return true;
-						else throw ex;
-					}
-				})();
-			`,
+			(() => {
+				import {deepStrictEqual, AssertionError} from "assert";
+				try {
+					deepStrictEqual(3, 4);
+					return false;
+				} catch (ex) {
+					if (ex instanceof AssertionError) return true;
+					else throw ex;
+				}
+			})();
+		`,
 		"(() => "
 	);
 

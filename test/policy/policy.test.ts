@@ -4,7 +4,6 @@ import {IoError} from "../../src/interpreter/error/policy-error/io-error/io-erro
 import {NonDeterministicError} from "../../src/interpreter/error/policy-error/non-deterministic-error/non-deterministic-error";
 import {NetworkError} from "../../src/interpreter/error/policy-error/network-error/network-error";
 import {ProcessError} from "../../src/interpreter/error/policy-error/process-error/process-error";
-import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Throws on IO read if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
@@ -454,7 +453,7 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", t
 test("Throws on attempting to spawn a child process if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-		`
+			`
 			(() => {
 				import {spawn} from "child_process";
 				try {
@@ -467,7 +466,6 @@ test("Throws on attempting to spawn a child process if the policy requires it. #
 		`,
 		"(() => ",
 		{
-			logLevel: LogLevelKind.INFO,
 			policy: {
 				process: false
 			},

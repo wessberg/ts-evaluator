@@ -1,4 +1,3 @@
-import {Node, NodeArray} from "typescript";
 import {IndexLiteral, Literal, LiteralMatch} from "../literal/literal";
 import {del, get, has, set} from "object-path";
 import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
@@ -14,8 +13,6 @@ export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment|undefined;
 	env: IndexLiteral;
 }
-
-const LEXICAL_ENVIRONMENT_MAP: WeakMap<Node|NodeArray<Node>, LexicalEnvironment> = new WeakMap();
 
 /**
  * Gets a value from a Lexical Environment
@@ -107,17 +104,6 @@ export function clearBindingFromLexicalEnvironment (env: LexicalEnvironment, pat
 			}
 		}
 	}
-}
-
-/**
- * Gets the Lexical Environment for the given node
- * @param {Node} node
- * @param {LexicalEnvironment} lexicalEnvironment
- * @returns {LexicalEnvironment}
- */
-export function setLexicalEnvironmentForNode<T extends Node, U extends (T|NodeArray<T>) = T> (node: U, lexicalEnvironment: LexicalEnvironment): LexicalEnvironment {
-	LEXICAL_ENVIRONMENT_MAP.set(node, lexicalEnvironment);
-	return lexicalEnvironment;
 }
 
 /**

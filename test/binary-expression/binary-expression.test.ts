@@ -1,6 +1,5 @@
 import {test} from "ava";
 import {prepareTest} from "../setup";
-import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Can evaluate a simple arithmetic BinaryExpression #1", t => {
 	const {evaluate} = prepareTest(`2 + 2`);
@@ -249,7 +248,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #7", t => {
 });
 
 test("Can evaluate a BinaryExpression with a BigInt #1", t => {
-	const {evaluate} = prepareTest(`123456789123456789123456789n + 123456789123456789123456789n`, undefined, {logLevel: LogLevelKind.DEBUG});
+	const {evaluate} = prepareTest(`123456789123456789123456789n + 123456789123456789123456789n`);
 
 	const result = evaluate();
 
