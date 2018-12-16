@@ -1,4 +1,4 @@
-interface IRafImplementationNamespace {
+export interface IRafImplementationNamespace {
 	requestAnimationFrame (callback: FrameRequestCallback): number;
 	cancelAnimationFrame (handle: number): void;
 }
