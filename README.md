@@ -10,6 +10,12 @@
 
 ## Description
 
+This library is an implementation of an interpreter for Typescript that can evaluate any `Expression`, `ExpressionStatement` or `Declaration` within a Typescript AST.
+Rather than interpreting a _program_, or a sequence of `Statement`s, this library takes a Node within an existing AST and evaluates it based on its' lexical environment.
+
+This makes the library an effective companion if you're building a linter, framework, language service, partial evaluator, or something else where you may want to know the
+computed value of a specific Node at any point in an AST. 
+
 🚧 Documentation is currently being written
 
 ## Install
