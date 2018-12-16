@@ -4,6 +4,7 @@ import {isLazyCall, Literal} from "../literal/literal";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
+import {expressionContainsSuperKeyword} from "../util/expression/expression-contains-super-keyword";
 
 /**
  * Evaluates, or attempts to evaluate, a CallExpression
@@ -22,7 +23,7 @@ export function evaluateCallExpression ({node, environment, evaluate, statementT
 	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as Function;
 
 	if (isLazyCall(expressionResult)) {
-		const currentThisBinding = getFromLexicalEnvironment(environment, THIS_SYMBOL);
+		const currentThisBinding = expressionContainsSuperKeyword(node.expression) ? getFromLexicalEnvironment(environment, THIS_SYMBOL) : undefined;
 		const value = expressionResult.invoke(
 			currentThisBinding != null
 				? currentThisBinding.literal
