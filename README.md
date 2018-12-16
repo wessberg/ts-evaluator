@@ -173,10 +173,6 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 - <a href="https://github.com/wessberg"><img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="11"></img></a> [Frederik Wessberg](https://github.com/wessberg): _Maintainer_
 
-## FAQ
-
-🚧 Documentation is currently being written
-
 ## Backers 🏅
 
 [Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, logo, and link to your site listed here.
