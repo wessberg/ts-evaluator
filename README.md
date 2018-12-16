@@ -16,6 +16,9 @@ Rather than interpreting a _program_, or a sequence of `Statement`s, this librar
 This makes the library an effective companion if you're building a linter, framework, language service, partial evaluator, or something else where you may want to know the
 computed value of a specific Node at any point in an AST.
 
+To that end, several _policy_ options can be provided to configure restrictions in terms of what is allowed to be evaluated, such as IO and Network access.
+Additionally, `ts-evaluator` supports both a Browser environment, a Node environment, and a pure ECMAScript environment. See [Setting up an environment](#setting-up-an-environment) for more details.
+
 If you are looking for a Typescript REPL, or a way to _execute_ a full Typescript program, you're looking for something like [ts-node](https://github.com/TypeStrong/ts-node) instead.
 
 ## Install
@@ -33,6 +36,45 @@ $ yarn add @wessberg/ts-evaluator
 ```
 
 ## Usage
+
+Let's start off with a very basic example:
+
+```typescript
+import {evaluate} from "@wessberg/ts-evaluator";
+
+const result = evaluate({
+	node: someNode,
+	typeChecker: someTypeChecker
+});
+
+// If a value was produced
+if (result.success) {
+	console.log(result.value);
+}
+
+// If an error occurred
+else {
+	console.log(result.reason);
+}
+```
+
+In this example, the referenced bindings within the lexical environment of the Node will be discovered and evaluated before producing a final value. This means that
+you don't have to evaluate the entire program to produce a value which may potentially be a much faster operation.
+
+### Setting up an environment
+
+You can define the kind of environment that `evaluate()` assumes when evaluating the given Node. By default, a `Node` environment is assumed.
+
+The following environment presets are supported:
+
+- `ECMA`
+	-	Assumes a pure ECMAScript environment. This means that no other globals than those that are defined in the ECMAScript spec such as `Math`, `Promise`, `Object`, etc, are available.
+- `NODE`
+	- Assumes a Node environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present.
+- `BROWSER`
+	- Assumes a Browser environment. This means that DOM APIs are available and Browser-specific globals such as `window` is present.
+
+### 
 
 🚧 Documentation is currently being written
 

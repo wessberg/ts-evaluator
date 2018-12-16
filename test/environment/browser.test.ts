@@ -5,7 +5,7 @@ import {EnvironmentPresetKind} from "../../src/interpreter/environment/environme
 test("Can handle a Browser environment. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-		`
+			`
 			(() => {
 				document.body.setAttribute("foo", "bar");
 				return document.body.getAttribute("foo");
@@ -24,5 +24,30 @@ test("Can handle a Browser environment. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, "bar");
+	}
+});
+
+test("Can handle a Browser environment. #2", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+			`
+			(() => {
+				return window.requestAnimationFrame(() => {
+				});
+			})();
+		`,
+		"(() =>",
+		{
+			environment: {
+				preset: EnvironmentPresetKind.BROWSER
+			}
+		}
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else {
+		t.deepEqual(result.value, 1);
 	}
 });

@@ -5,6 +5,7 @@ import {stringifySyntaxKind} from "../util/syntax-kind/stringify-syntax-kind";
 import {Literal, stringifyLiteral} from "../literal/literal";
 import {Stack} from "../stack/stack";
 import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack";
+import {inspect} from "util";
 
 /**
  * A simple logger for printing evaluation-related info
@@ -79,7 +80,7 @@ export class Logger {
 	public logResult (result: Literal, intermediateContext?: string): void {
 		if (this.logLevel < LogLevelKind.INFO) return;
 		if (intermediateContext != null) {
-			console.log(chalk.gray(`(intermediate value from context '${intermediateContext}'): `), chalk.green(`[RESULT]:`), result);
+			console.log(chalk.gray(`(intermediate value from context '${intermediateContext}'): `), chalk.green(`[RESULT]:`), this.compactValue(result));
 		}
 		else console.log(chalk.green(`[RESULT]:`), result);
 	}
@@ -111,7 +112,7 @@ export class Logger {
 	 */
 	public logBinding (lValue: string, rValue: Literal, scope?: string): void {
 		if (this.logLevel < LogLevelKind.DEBUG) return;
-		console.log(`${scope == null ? "" : chalk.green(`(${scope}): `)}${chalk.red(lValue)} ->`, rValue);
+		console.log(`${scope == null ? "" : chalk.green(`(${scope}): `)}${chalk.red(lValue)} ->`, this.compactValue(rValue));
 	}
 
 	/**
@@ -132,7 +133,7 @@ export class Logger {
 	 */
 	public logStack (stack: Stack): void {
 		if (this.logLevel < LogLevelKind.DEBUG) return;
-		console.log(`Stack value: ${chalk.blue(stringifyLiteral(stack[stack.length - 1]))}`);
+		console.log(`Stack value: ${chalk.blue(stringifyLiteral(this.compactValue(stack[stack.length - 1])))}`);
 	}
 
 	// noinspection JSUnusedGlobalSymbols
@@ -143,5 +144,14 @@ export class Logger {
 	public logStatementTraversalStack (stack: StatementTraversalStack): void {
 		if (this.logLevel < LogLevelKind.DEBUG) return;
 		console.log(`[${stack.map(kind => chalk.blue(stringifySyntaxKind(kind))).join(", ")}]`);
+	}
+
+	/**
+	 * Makes a value compact so it is easier on the eyes when printing it
+	 * @param {T} value
+	 * @return {string}
+	 */
+	private compactValue<T> (value: T): string {
+		return inspect(value, {depth: 0, colors: true, compact: true, maxArrayLength: 5});
 	}
 }
