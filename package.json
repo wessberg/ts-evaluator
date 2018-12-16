@@ -60,15 +60,17 @@
   },
   "dependencies": {
     "@types/deasync": "0.1.0",
-    "@types/jsdom": "12.2.0",
     "@types/node": "10.12.15",
     "@types/object-path": "0.9.29",
     "chalk": "2.4.1",
     "deasync": "0.1.14",
-    "jsdom": "13.1.0",
     "object-path": "0.11.4",
     "tslib": "1.9.3",
     "typescript": "3.2.2"
+  },
+  "optionalDependencies": {
+    "@types/jsdom": "12.2.0",
+    "jsdom": "13.1.0"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",
