@@ -9,7 +9,9 @@ import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-nod
  * @param {IEvaluatorOptions<PostfixUnaryExpression>} options
  * @returns {Promise<Literal>}
  */
-export function evaluatePostfixUnaryExpression ({node, environment}: IEvaluatorOptions<PostfixUnaryExpression>): Literal {
+export function evaluatePostfixUnaryExpression ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<PostfixUnaryExpression>): Literal {
+	// Make sure to evaluate the operand to ensure that it is found in the lexical environment
+	evaluate.expression(node.operand, environment, statementTraversalStack);
 
 	switch (node.operator) {
 		case SyntaxKind.PlusPlusToken: {
