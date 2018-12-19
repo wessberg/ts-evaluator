@@ -1,6 +1,5 @@
 import {test} from "ava";
 import {prepareTest} from "../setup";
-import {LogLevelKind} from "../../src/interpreter/logger/log-level";
 
 test("Can handle PostfixUnaryExpressions. #1", t => {
 	// noinspection BadExpressionStatementJS
@@ -8,9 +7,11 @@ test("Can handle PostfixUnaryExpressions. #1", t => {
 		// language=TypeScript
 			`
 			let i = 0;
+
 			function foo () {
 				return i++;
 			}
+
 			(() => foo())();
 		`,
 		"(() =>"
