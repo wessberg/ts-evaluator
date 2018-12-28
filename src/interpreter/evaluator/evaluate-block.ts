@@ -24,7 +24,7 @@ export function evaluateBlock ({node, environment, evaluate}: IEvaluatorOptions<
 		evaluate.statement(statement, localLexicalEnvironment);
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
-		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
 			break;
 		}
 	}

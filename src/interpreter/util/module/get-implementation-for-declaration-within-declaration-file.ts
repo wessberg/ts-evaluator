@@ -22,14 +22,14 @@ export function getImplementationForDeclarationWithinDeclarationFile (options: I
 	}
 
 	// First see if it lives within the lexical environment
-	const matchInLexicalEnvironment = getFromLexicalEnvironment(options.environment, name as string);
+	const matchInLexicalEnvironment = getFromLexicalEnvironment(node, options.environment, name as string);
 	// If so, return it
 	if (matchInLexicalEnvironment != null && matchInLexicalEnvironment.literal != null) {
 		return matchInLexicalEnvironment.literal;
 	}
 
 	// Otherwise, expect it to be something that is require'd on demand
-	const require = getFromLexicalEnvironment(options.environment, "require")!.literal as NodeRequire;
+	const require = getFromLexicalEnvironment(node, options.environment, "require")!.literal as NodeRequire;
 
 	const moduleDeclaration = isModuleDeclaration(node) ? node : findNearestParentNodeOfKind<ModuleDeclaration>(node, SyntaxKind.ModuleDeclaration);
 	if (moduleDeclaration == null) {

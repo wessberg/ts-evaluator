@@ -55,7 +55,7 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 			evaluate.statement(node.body, localLexicalEnvironment);
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
-			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+			if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 				return stack.pop();
 			}
 
@@ -97,7 +97,7 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 			evaluate.statement(node.body, localLexicalEnvironment);
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
-			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+			if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 				return stack.pop();
 			}
 
@@ -115,7 +115,7 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 	// since this particular function comes from the executing context.
 	Object.setPrototypeOf(
 		_functionDeclaration,
-		getFromLexicalEnvironment(environment, "Function")!.literal as Function
+		getFromLexicalEnvironment(node, environment, "Function")!.literal as Function
 	);
 
 	stack.push(_functionDeclaration);

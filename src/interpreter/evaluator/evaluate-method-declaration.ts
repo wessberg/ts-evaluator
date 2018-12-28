@@ -62,7 +62,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			evaluate.statement(node.body, localLexicalEnvironment);
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
-			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+			if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 				return stack.pop();
 			}
 
@@ -108,7 +108,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			evaluate.statement(node.body, localLexicalEnvironment);
 
 			// If a 'return' has occurred within the block, pop the Stack and return that value
-			if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+			if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 				return stack.pop();
 			}
 
@@ -122,7 +122,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 	// since this particular function comes from the executing context.
 	Object.setPrototypeOf(
 		_methodDeclaration,
-		getFromLexicalEnvironment(environment, "Function")!.literal as Function
+		getFromLexicalEnvironment(node, environment, "Function")!.literal as Function
 	);
 
 	parent[nameResult] = _methodDeclaration;

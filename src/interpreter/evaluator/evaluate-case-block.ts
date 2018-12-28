@@ -23,7 +23,7 @@ export function evaluateCaseBlock ({node, evaluate, environment, reporting, stat
 		evaluate.nodeWithArgument(clause, localEnvironment, switchExpression, statementTraversalStack);
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
-		if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
 			break;
 		}
 	}

@@ -15,7 +15,7 @@ export function isBindCallApply (func: Function, environment?: LexicalEnvironmen
 	}
 
 	if (environment != null) {
-		const _Function = getFromLexicalEnvironment(environment, "Function")!.literal as Function;
+		const _Function = getFromLexicalEnvironment(undefined, environment, "Function")!.literal as Function;
 		switch (func) {
 			case _Function.prototype.bind:
 			case _Function.prototype.call:

@@ -47,7 +47,7 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 		evaluate.statement(node.body, localLexicalEnvironment);
 
 		// If a 'return' has occurred within the block, pop the Stack and return that value
-		if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 			return stack.pop();
 		}
 

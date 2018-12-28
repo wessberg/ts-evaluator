@@ -53,11 +53,11 @@ export function evaluateForStatement ({node, environment, evaluate, reporting, s
 		evaluate.statement(node.statement, iterationEnvironment);
 
 		// Check if a 'break' statement has been encountered and break if so
-		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, BREAK_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, BREAK_SYMBOL)) {
 			break;
 		}
 
-		else if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, RETURN_SYMBOL)) {
+		else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, RETURN_SYMBOL)) {
 			return;
 		}
 
@@ -67,7 +67,7 @@ export function evaluateForStatement ({node, environment, evaluate, reporting, s
 		}
 
 		// Always run the incrementor before continuing
-		else if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, CONTINUE_SYMBOL)) {
+		else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, CONTINUE_SYMBOL)) {
 			// noinspection UnnecessaryContinueJS
 			continue;
 		}

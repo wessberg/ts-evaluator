@@ -11,7 +11,7 @@ import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environm
  */
 export function evaluateArrayLiteralExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ArrayLiteralExpression>): Literal {
 	// Get the Array constructor from the realm - not that of the executing context. Otherwise, instanceof checks would fail
-	const arrayCtor = getFromLexicalEnvironment(environment, "Array")!.literal as ArrayConstructor;
+	const arrayCtor = getFromLexicalEnvironment(node, environment, "Array")!.literal as ArrayConstructor;
 	const value: Literal[] = arrayCtor.of();
 
 	for (const element of node.elements) {

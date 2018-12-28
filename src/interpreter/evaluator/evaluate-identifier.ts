@@ -14,7 +14,7 @@ import {getImplementationForDeclarationWithinDeclarationFile} from "../util/modu
 export function evaluateIdentifier ({node, environment, typeChecker, evaluate, stack, logger, reporting, statementTraversalStack, ...rest}: IEvaluatorOptions<Identifier>): Literal {
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
-	const environmentMatch = getFromLexicalEnvironment(environment, node.text);
+	const environmentMatch = getFromLexicalEnvironment(node, environment, node.text);
 	if (environmentMatch != null) {
 		logger.logBinding(node.text, environmentMatch.literal, "Lexical Environment match");
 		// Return the existing evaluated value from the environment

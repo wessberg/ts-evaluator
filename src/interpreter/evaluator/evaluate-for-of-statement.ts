@@ -49,18 +49,18 @@ export function evaluateForOfStatement ({node, environment, evaluate, logger, re
 			evaluate.statement(node.statement, localEnvironment);
 
 			// Check if a 'break' statement has been encountered and break if so
-			if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {
+			if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL)) {
 				logger.logBreak(node);
 				break;
 			}
 
-			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, CONTINUE_SYMBOL)) {
+			else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
 				logger.logContinue(node);
 				// noinspection UnnecessaryContinueJS
 				continue;
 			}
 
-			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, RETURN_SYMBOL)) {
+			else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
 				logger.logReturn(node);
 				return;
 			}
@@ -89,18 +89,18 @@ export function evaluateForOfStatement ({node, environment, evaluate, logger, re
 			evaluate.statement(node.statement, localEnvironment);
 
 			// Check if a 'break' statement has been encountered and break if so
-			if (pathInLexicalEnvironmentEquals(localEnvironment, true, BREAK_SYMBOL)) {
+			if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL)) {
 				logger.logBreak(node);
 				break;
 			}
 
-			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, CONTINUE_SYMBOL)) {
+			else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
 				logger.logContinue(node);
 				// noinspection UnnecessaryContinueJS
 				continue;
 			}
 
-			else if (pathInLexicalEnvironmentEquals(localEnvironment, true, RETURN_SYMBOL)) {
+			else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
 				logger.logReturn(node);
 				return;
 			}

@@ -12,7 +12,7 @@ import {UndefinedIdentifierError} from "../error/undefined-identifier-error/unde
  */
 export function evaluateShorthandPropertyAssignment ({environment, node}: IEvaluatorOptions<ShorthandPropertyAssignment>, parent: IndexLiteral): void {
 	const identifier = node.name.text;
-	const match = getFromLexicalEnvironment(environment, identifier);
+	const match = getFromLexicalEnvironment(node, environment, identifier);
 
 	if (match == null) {
 		throw new UndefinedIdentifierError({identifier: node.name});

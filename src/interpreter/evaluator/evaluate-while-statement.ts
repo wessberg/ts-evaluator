@@ -31,12 +31,12 @@ export function evaluateWhileStatement ({node, environment, evaluate, logger, re
 		evaluate.statement(node.statement, iterationEnvironment);
 
 		// Check if a 'break' statement has been encountered and break if so
-		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, BREAK_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, BREAK_SYMBOL)) {
 			logger.logBreak(node);
 			break;
 		}
 
-		else if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, RETURN_SYMBOL)) {
+		else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, RETURN_SYMBOL)) {
 			logger.logReturn(node);
 			return;
 		}
@@ -44,7 +44,7 @@ export function evaluateWhileStatement ({node, environment, evaluate, logger, re
 		condition = (evaluate.expression(node.expression, environment, statementTraversalStack)) as boolean;
 
 		// Always re-evaluate the condition before continuing
-		if (pathInLexicalEnvironmentEquals(iterationEnvironment, true, CONTINUE_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, CONTINUE_SYMBOL)) {
 			logger.logContinue(node);
 			// noinspection UnnecessaryContinueJS
 			continue;

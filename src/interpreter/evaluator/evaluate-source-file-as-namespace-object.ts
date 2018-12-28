@@ -11,7 +11,7 @@ import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environm
 export function evaluateSourceFileAsNamespaceObject ({node, environment, evaluate, typeChecker, stack, statementTraversalStack}: IEvaluatorOptions<SourceFile>): void {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
-	const objectCtor = getFromLexicalEnvironment(environment, "Object")!.literal as ObjectConstructor;
+	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;
 	const namespaceObject: IndexLiteral = objectCtor.create(objectCtor.prototype);
 
 	const moduleSymbol = typeChecker.getSymbolAtLocation(node);

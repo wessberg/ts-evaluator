@@ -21,7 +21,7 @@ export function evaluateCaseClause ({node, evaluate, environment, statementTrave
 		evaluate.statement(statement, environment);
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
-		if (pathInLexicalEnvironmentEquals(environment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
+		if (pathInLexicalEnvironmentEquals(node, environment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
 			break;
 		}
 	}

@@ -42,7 +42,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 				evaluate.statement(node.body, localLexicalEnvironment);
 
 				// If a 'return' has occurred within the block, pop the Stack and return that value
-				if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+				if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 					return stack.pop();
 				}
 
@@ -80,7 +80,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 				evaluate.statement(node.body, localLexicalEnvironment);
 
 				// If a 'return' has occurred within the block, pop the Stack and return that value
-				if (pathInLexicalEnvironmentEquals(localLexicalEnvironment, true, RETURN_SYMBOL)) {
+				if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 					return stack.pop();
 				}
 
@@ -100,7 +100,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 	// since this particular function comes from the executing context.
 	Object.setPrototypeOf(
 		arrowFunctionExpression,
-		getFromLexicalEnvironment(environment, "Function")!.literal as Function
+		getFromLexicalEnvironment(node, environment, "Function")!.literal as Function
 	);
 
 	return arrowFunctionExpression;
