@@ -9,14 +9,14 @@ import {THIS_SYMBOL} from "../util/this/this-symbol";
  * @param {IEvaluatorOptions<ObjectLiteralExpression>} options
  * @returns {Promise<Literal>}
  */
-export function evaluateObjectLiteralExpression ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<ObjectLiteralExpression>): Literal {
+export function evaluateObjectLiteralExpression ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<ObjectLiteralExpression>): Literal {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(environment, "Object")!.literal as ObjectConstructor;
 	const value: IndexLiteral = objectCtor.create(objectCtor.prototype);
 
 	// Mark the object as the 'this' value of the scope
-	setInLexicalEnvironment(environment, THIS_SYMBOL, value, true);
+	setInLexicalEnvironment({env: environment, path: THIS_SYMBOL, value, newBinding: true, reporting, node});
 
 	for (const property of node.properties) {
 		evaluate.nodeWithArgument(property, environment, value, statementTraversalStack);

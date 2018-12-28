@@ -5,6 +5,7 @@ import {Logger} from "../logger/logger";
 import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack";
 import {Stack} from "../stack/stack";
 import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
+import {ReportingOptions} from "../reporting/i-reporting-options";
 
 export interface IEvaluatorOptions<T extends (Node|NodeArray<Node>)> {
 	node: T;
@@ -12,6 +13,7 @@ export interface IEvaluatorOptions<T extends (Node|NodeArray<Node>)> {
 	evaluate: NodeEvaluator;
 	environment: LexicalEnvironment;
 	policy: IEvaluatePolicySanitized;
+	reporting: ReportingOptions;
 	stack: Stack;
 	statementTraversalStack: StatementTraversalStack;
 	logger: Logger;

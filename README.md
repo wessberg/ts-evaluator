@@ -105,6 +105,7 @@ const result = evaluate({
     network: false,
     console: false,
     maxOps: Infinity,
+    maxOpDuration: Infinity,
     io: {
       read: true,
       write: false
@@ -129,6 +130,8 @@ Here's an explainer of the individual policies:
 
 - `maxOps` _(default: `Infinity`)_ - If `maxOps` is anything less than Infinity, evaluation will stop when the provided amount of operations has been performed. This is useful to opt-out of running CPU-intensive code, especially if you are embedding this library in an editor or a linter.
 
+- `maxOpDuration` _(default: `Infinity`)_ - If `maxOpDuration` is anything less than Infinity, evaluation will stop when the provided amount of milliseconds have passed. This is useful to opt-out of long-running operations, especially if you are embedding this library in an editor or a linter.
+
 - `io` _(default: `{read: true, write: false}`)_ - If `io` permits `READ` operations, files can be read from disk. If `io` permits `WRITE` operations, files can be written to disk.
 
 - `process` _(default: `{exit: false, spawnChild: false}`)_ - If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes.
@@ -150,6 +153,28 @@ Here's an explainer of the different log levels:
 - `LogLevelKind.INFO` - Intermediate results are logged to the console.
 - `LogLevelKind.VERBOSE` - Everything that is logged with `LogLevelKind.INFO` as well as lexical environment bindings are logged to the console
 - `LogLevelKind.DEBUG` - Everything that is logged with `LogLevelKind.VERBOSE` as well as all visited Nodes during evaluation are logged to the console
+
+### Reporting
+
+You can tap into the evaluation process with reporting hooks that will be invoked with useful information while an evaluation is in progress.
+These are useful if you want to understand more about the execution path and work with it programmatically.
+
+```typescript
+const result = evaluate({
+  // ...
+  reporting: {
+  		reportBindings: entry => doSomething(entry),
+  		reportTraversal: entry => someArray.push(entry.node)
+  	}
+});
+```
+
+Here's an explainer of the different reporting hooks:
+
+- `reportBindings(entry: IBindingReportEntry) => void|(Promise<void>)`
+	- Will be invoked for each time a value is bound to the lexical environment of a Node. This is useful to track mutations throughout code execution, for example to understand when and where variables are declared and/or mutated.
+- `reportTraversal(entry: ITraversalReportEntry) => void|(Promise<void>)`
+	- Will be invoked for each time a new Node is visited while evaluating. This is useful to track the path through the AST, for example to compute code coverage.
 
 ## Contributing
 

@@ -11,7 +11,7 @@ import {getImplementationForDeclarationWithinDeclarationFile} from "../util/modu
  * @param {IEvaluatorOptions<Identifier>} options
  * @returns {Promise<Literal>}
  */
-export function evaluateIdentifier ({node, environment, typeChecker, evaluate, stack, logger, statementTraversalStack, ...rest}: IEvaluatorOptions<Identifier>): Literal {
+export function evaluateIdentifier ({node, environment, typeChecker, evaluate, stack, logger, reporting, statementTraversalStack, ...rest}: IEvaluatorOptions<Identifier>): Literal {
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
 	const environmentMatch = getFromLexicalEnvironment(environment, node.text);
@@ -19,10 +19,6 @@ export function evaluateIdentifier ({node, environment, typeChecker, evaluate, s
 		logger.logBinding(node.text, environmentMatch.literal, "Lexical Environment match");
 		// Return the existing evaluated value from the environment
 		return environmentMatch.literal;
-	}
-	else {
-		// Initialize the environmental binding
-		setInLexicalEnvironment(environment, node.text, undefined, true);
 	}
 
 	// Try to get a symbol for whatever the identifier points to and take its value declaration.
@@ -44,9 +40,9 @@ export function evaluateIdentifier ({node, environment, typeChecker, evaluate, s
 	if (valueDeclaration != null) {
 		if (valueDeclaration.getSourceFile().isDeclarationFile) {
 
-			const implementation = getImplementationForDeclarationWithinDeclarationFile({node: valueDeclaration, statementTraversalStack, environment, evaluate, logger, typeChecker, stack, ...rest});
+			const implementation = getImplementationForDeclarationWithinDeclarationFile({node: valueDeclaration, statementTraversalStack, environment, evaluate, logger, reporting, typeChecker, stack, ...rest});
 			// Bind the value placed on the top of the stack to the local environment
-			setInLexicalEnvironment(environment, node.text, implementation);
+			setInLexicalEnvironment({env: environment, path: node.text, value: implementation, reporting, node: valueDeclaration});
 			logger.logBinding(node.text, implementation, `Discovered declaration value${valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`}`);
 			return implementation;
 
@@ -59,7 +55,7 @@ export function evaluateIdentifier ({node, environment, typeChecker, evaluate, s
 			// The 'var' keyword declares a variable that is defined, but which rvalue is still undefined
 			if (isVariableDeclarationList(valueDeclaration.parent) && isVarDeclaration(valueDeclaration.parent)) {
 				const returnValue = undefined;
-				setInLexicalEnvironment(environment, node.text, returnValue, true);
+				setInLexicalEnvironment({env: environment, path: node.text, value: returnValue, newBinding: true, reporting, node: valueDeclaration});
 				logger.logBinding(node.text, returnValue, "Hoisted var declaration");
 				return returnValue;
 			}
@@ -75,7 +71,7 @@ export function evaluateIdentifier ({node, environment, typeChecker, evaluate, s
 		const stackValue = stack.pop();
 
 		// Bind the value placed on the top of the stack to the local environment
-		setInLexicalEnvironment(environment, node.text, stackValue);
+		setInLexicalEnvironment({env: environment, path: node.text, value: stackValue, reporting, node: valueDeclaration});
 		logger.logBinding(node.text, stackValue, `Discovered declaration value${valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`}`);
 		return stackValue;
 	}

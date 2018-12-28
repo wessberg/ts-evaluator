@@ -15,7 +15,7 @@ import {hasModifier} from "../util/modifier/has-modifier";
  * @param {IEvaluatorOptions<FunctionExpression>} options
  * @returns {Promise<Literal>}
  */
-export function evaluateFunctionExpression ({node, environment, evaluate, stack, ...rest}: IEvaluatorOptions<FunctionExpression>): Literal {
+export function evaluateFunctionExpression ({node, environment, evaluate, stack, reporting, ...rest}: IEvaluatorOptions<FunctionExpression>): Literal {
 
 	const nameResult = node.name == null ? undefined : node.name.text;
 
@@ -25,10 +25,10 @@ export function evaluateFunctionExpression ({node, environment, evaluate, stack,
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 			// Define a new binding for a return symbol within the environment
-			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			if (this != null) {
-				setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+				setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 			}
 
 			// Evaluate the parameters based on the given arguments
@@ -37,6 +37,7 @@ export function evaluateFunctionExpression ({node, environment, evaluate, stack,
 					environment: localLexicalEnvironment,
 					evaluate,
 					stack,
+					reporting,
 					...rest
 				}, args
 			);
@@ -58,10 +59,10 @@ export function evaluateFunctionExpression ({node, environment, evaluate, stack,
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 			// Define a new binding for a return symbol within the environment
-			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			if (this != null) {
-				setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+				setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 			}
 
 			// Evaluate the parameters based on the given arguments
@@ -70,6 +71,7 @@ export function evaluateFunctionExpression ({node, environment, evaluate, stack,
 					environment: localLexicalEnvironment,
 					evaluate,
 					stack,
+					reporting,
 					...rest
 				}, args
 			);
@@ -88,7 +90,7 @@ export function evaluateFunctionExpression ({node, environment, evaluate, stack,
 		};
 
 	if (nameResult != null) {
-		setInLexicalEnvironment(environment, nameResult, _functionExpression.bind(_functionExpression));
+		setInLexicalEnvironment({env: environment, path: nameResult, value: _functionExpression.bind(_functionExpression), reporting, node});
 	}
 
 	_functionExpression.toString = () => `[Function${nameResult == null ? "" : `: ${nameResult}`}]`;

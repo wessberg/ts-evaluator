@@ -13,10 +13,10 @@ import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undef
  * @param {IEvaluatorOptions<BinaryExpression>} options
  * @returns {Literal}
  */
-export function evaluateBinaryExpression ({node, environment, evaluate, logger, statementTraversalStack, ...rest}: IEvaluatorOptions<BinaryExpression>): Literal {
+export function evaluateBinaryExpression ({node, environment, evaluate, logger, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<BinaryExpression>): Literal {
 	const leftValue = (evaluate.expression(node.left, environment, statementTraversalStack)) as number;
 	const rightValue = (evaluate.expression(node.right, environment, statementTraversalStack)) as number;
-	const leftIdentifier = getDotPathFromNode({node: node.left, environment, evaluate, logger, statementTraversalStack, ...rest});
+	const leftIdentifier = getDotPathFromNode({node: node.left, environment, evaluate, logger, statementTraversalStack, reporting, ...rest});
 
 	const operator = node.operatorToken.kind;
 	switch (operator) {
@@ -85,7 +85,7 @@ export function evaluateBinaryExpression ({node, environment, evaluate, logger, 
 
 			// Update to the left-value within the environment if it exists there and has been updated
 			if (leftIdentifier != null) {
-				setInLexicalEnvironment(environment, leftIdentifier, computedValue);
+				setInLexicalEnvironment({env: environment, path: leftIdentifier, value: computedValue, reporting, node});
 			}
 
 			// Return the computed value
@@ -132,7 +132,7 @@ export function evaluateBinaryExpression ({node, environment, evaluate, logger, 
 		case SyntaxKind.EqualsToken: {
 			// Update to the left-value within the environment if it exists there and has been updated
 			if (leftIdentifier != null) {
-				setInLexicalEnvironment(environment, leftIdentifier, rightValue);
+				setInLexicalEnvironment({env: environment, path: leftIdentifier, value: rightValue, reporting, node});
 				logger.logBinding(leftIdentifier, rightValue, "Assignment");
 			}
 

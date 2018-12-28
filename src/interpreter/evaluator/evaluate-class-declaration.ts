@@ -8,7 +8,7 @@ import {hasModifier} from "../util/modifier/has-modifier";
  * Evaluates, or attempts to evaluate, a ClassDeclaration
  * @param {IEvaluatorOptions<FunctionDeclaration>} options
  */
-export function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, statementTraversalStack}: IEvaluatorOptions<ClassDeclaration>): void {
+export function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, reporting, statementTraversalStack}: IEvaluatorOptions<ClassDeclaration>): void {
 	let extendedType: Function|undefined;
 	const ctorMember = node.members.find(isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !isConstructorDeclaration(member));
@@ -42,7 +42,7 @@ export function evaluateClassDeclaration ({node, environment, evaluate, stack, l
 	classDeclaration.toString = () => `[Class${name == null ? "" : `: ${name}`}]`;
 
 	if (name != null) {
-		setInLexicalEnvironment(environment, name, classDeclaration, true);
+		setInLexicalEnvironment({env: environment, path: name, value: classDeclaration, newBinding: true, reporting, node});
 	}
 
 	// Walk through all of the class members

@@ -17,7 +17,7 @@ import {createStatementTraversalStack, StatementTraversalStack} from "../../stac
  * @param {ICreateNodeEvaluatorOptions} options
  * @returns {NodeEvaluator}
  */
-export function createNodeEvaluator ({typeChecker, policy, logger, stack}: ICreateNodeEvaluatorOptions): NodeEvaluator {
+export function createNodeEvaluator ({typeChecker, policy, logger, stack, reporting}: ICreateNodeEvaluatorOptions): NodeEvaluator {
 	let ops = 0;
 
 	const handleNewNode = (node: Node, statementTraversalStack: StatementTraversalStack) => {
@@ -32,6 +32,9 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack}: ICrea
 
 		// Update the statementTraversalStack with the node's kind
 		statementTraversalStack.push(node.kind);
+		if (reporting.reportTraversal != null) {
+			reporting.reportTraversal({node});
+		}
 	};
 
 	const nodeEvaluator: NodeEvaluator = {
@@ -69,6 +72,7 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack}: ICrea
 		return {
 			typeChecker,
 			policy,
+			reporting,
 			node,
 			evaluate: nodeEvaluator,
 			environment,

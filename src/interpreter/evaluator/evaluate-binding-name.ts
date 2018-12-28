@@ -9,10 +9,10 @@ import {setInLexicalEnvironment} from "../lexical-environment/lexical-environmen
  * @param {Literal} rightHandValue
  * @returns {Promise<void>}
  */
-export function evaluateBindingName ({node, environment, evaluate, statementTraversalStack ,logger}: IEvaluatorOptions<BindingName>, rightHandValue: Literal): void {
+export function evaluateBindingName ({node, environment, evaluate, statementTraversalStack, reporting, logger}: IEvaluatorOptions<BindingName>, rightHandValue: Literal): void {
 	// If the declaration binds a simple identifier, bind that text to the environment
 	if (isIdentifier(node)) {
-		setInLexicalEnvironment(environment, node.text, rightHandValue, true);
+		setInLexicalEnvironment({env: environment, path: node.text, value: rightHandValue, newBinding: true, reporting, node});
 		logger.logBinding(node.text, rightHandValue, "evaluateBindingName");
 	}
 

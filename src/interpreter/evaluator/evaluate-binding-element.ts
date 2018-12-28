@@ -9,7 +9,7 @@ import {setInLexicalEnvironment} from "../lexical-environment/lexical-environmen
  * @param {Literal} rightHandValue
  * @returns {Promise<void>}
  */
-export function evaluateBindingElement ({environment, node, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<BindingElement>, rightHandValue: Literal): void {
+export function evaluateBindingElement ({environment, node, evaluate, logger, reporting, statementTraversalStack}: IEvaluatorOptions<BindingElement>, rightHandValue: Literal): void {
 	// Compute the initializer value of the BindingElement, if it has any, that is
 	const bindingElementInitializer = node.initializer == null
 		? undefined
@@ -34,12 +34,14 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, st
 			? propertyValue
 			: bindingElementInitializer;
 
-		setInLexicalEnvironment(
-			environment,
-			aliasName,
-			propertyValueWithInitializerFallback,
-			true
-		);
+		setInLexicalEnvironment({
+			env: environment,
+			path: aliasName,
+			value: propertyValueWithInitializerFallback,
+			newBinding: true,
+			node,
+			reporting
+		});
 	}
 
 	// If the name is a simple non-aliased identifier, it directly references, a property from the right-hand value
@@ -60,12 +62,14 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, st
 
 		logger.logBinding(node.name.text, propertyValueWithInitializerFallback);
 
-		setInLexicalEnvironment(
-			environment,
-			node.name.text,
-			propertyValueWithInitializerFallback,
-			true
-		);
+		setInLexicalEnvironment({
+			env: environment,
+			path: node.name.text,
+			value: propertyValueWithInitializerFallback,
+			newBinding: true,
+			node,
+			reporting
+		});
 	}
 
 	// Otherwise, the name is itself a BindingPattern, and the property it is destructuring will always be defined

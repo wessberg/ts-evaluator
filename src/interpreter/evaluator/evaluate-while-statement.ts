@@ -13,7 +13,7 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<WhileStatement>} options
  * @returns {Promise<void>}
  */
-export function evaluateWhileStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<WhileStatement>): void {
+export function evaluateWhileStatement ({node, environment, evaluate, logger, reporting, statementTraversalStack}: IEvaluatorOptions<WhileStatement>): void {
 
 	let condition = (evaluate.expression(node.expression, environment, statementTraversalStack)) as boolean;
 
@@ -22,10 +22,10 @@ export function evaluateWhileStatement ({node, environment, evaluate, logger, st
 		const iterationEnvironment = cloneLexicalEnvironment(environment);
 
 		// Define a new binding for a break symbol within the environment
-		setInLexicalEnvironment(iterationEnvironment, BREAK_SYMBOL, false, true);
+		setInLexicalEnvironment({env: iterationEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Define a new binding for a continue symbol within the environment
-		setInLexicalEnvironment(iterationEnvironment, CONTINUE_SYMBOL, false, true);
+		setInLexicalEnvironment({env: iterationEnvironment, path: CONTINUE_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Execute the Statement
 		evaluate.statement(node.statement, iterationEnvironment);

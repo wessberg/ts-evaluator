@@ -46,12 +46,15 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", t
 	}
 });
 
-
 test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-		`
-			class A extends class {method () {return "foo";}}{
+			`
+			class A extends class {
+				method () {
+					return "foo";
+				}
+			} {
 			}
 
 			(() => A)();
@@ -63,7 +66,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const instance = new (result.value as (new () => {method (): string}))();
+		const instance = new (result.value as (new () => { method (): string }))();
 		t.deepEqual(instance.method(), "foo");
 	}
 });

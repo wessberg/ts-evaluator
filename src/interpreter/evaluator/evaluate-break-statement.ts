@@ -8,6 +8,6 @@ import {BREAK_SYMBOL} from "../util/break/break-symbol";
  * @param {IEvaluatorOptions<BreakStatement>} options
  * @returns {Promise<void>}
  */
-export function evaluateBreakStatement ({environment}: IEvaluatorOptions<BreakStatement>): void {
-	setInLexicalEnvironment(environment, BREAK_SYMBOL, true);
+export function evaluateBreakStatement ({environment, reporting, node}: IEvaluatorOptions<BreakStatement>): void {
+	setInLexicalEnvironment({env: environment, path: BREAK_SYMBOL, value: true, reporting, node});
 }

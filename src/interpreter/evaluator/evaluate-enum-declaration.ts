@@ -8,7 +8,7 @@ import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-env
  * @param {IEvaluatorOptions<EnumDeclaration>} options
  * @returns {Promise<void>}
  */
-export function evaluateEnumDeclaration ({node, environment, evaluate, statementTraversalStack, stack}: IEvaluatorOptions<EnumDeclaration>): void {
+export function evaluateEnumDeclaration ({node, environment, evaluate, statementTraversalStack, reporting, stack}: IEvaluatorOptions<EnumDeclaration>): void {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(environment, "Object")!.literal as ObjectConstructor;
@@ -16,7 +16,7 @@ export function evaluateEnumDeclaration ({node, environment, evaluate, statement
 	const name = node.name.text;
 
 	// Bind the Enum to the lexical environment as a new binding
-	setInLexicalEnvironment(environment, name, enumDeclaration, true);
+	setInLexicalEnvironment({env: environment, path: name, value: enumDeclaration, newBinding: true, reporting, node});
 
 	for (const member of node.members) {
 		evaluate.nodeWithArgument(member, environment, enumDeclaration, statementTraversalStack);

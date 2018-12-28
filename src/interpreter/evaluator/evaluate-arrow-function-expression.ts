@@ -14,7 +14,7 @@ import {hasModifier} from "../util/modifier/has-modifier";
  * @param {IEvaluatorOptions<ArrowFunction>} options
  * @returns {Promise<Literal>}
  */
-export function evaluateArrowFunctionExpression ({node, environment, evaluate, stack, statementTraversalStack, ...rest}: IEvaluatorOptions<ArrowFunction>): Literal {
+export function evaluateArrowFunctionExpression ({node, environment, evaluate, stack, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<ArrowFunction>): Literal {
 
 	const arrowFunctionExpression = hasModifier(node, SyntaxKind.AsyncKeyword)
 		? async (...args: Literal[]) => {
@@ -23,7 +23,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 			// Define a new binding for a return symbol within the environment
-			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
@@ -32,6 +32,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 					evaluate,
 					stack,
 					statementTraversalStack,
+					reporting,
 					...rest
 				}, args
 			);
@@ -60,7 +61,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 			// Define a new binding for a return symbol within the environment
-			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
@@ -69,6 +70,7 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 					evaluate,
 					stack,
 					statementTraversalStack,
+					reporting,
 					...rest
 				}, args
 			);

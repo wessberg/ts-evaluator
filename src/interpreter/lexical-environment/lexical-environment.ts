@@ -8,6 +8,12 @@ import {IEnvironment} from "../environment/i-environment";
 import {EnvironmentPresetKind} from "../environment/environment-preset-kind";
 import {BROWSER_GLOBALS} from "../environment/browser/browser-globals";
 import {mergeDescriptors} from "../util/descriptor/merge-descriptors";
+import {ISetInLexicalEnvironmentOptions} from "./i-set-in-lexical-environment-options";
+import {RETURN_SYMBOL} from "../util/return/return-symbol";
+import {BREAK_SYMBOL} from "../util/break/break-symbol";
+import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
+import {THIS_SYMBOL} from "../util/this/this-symbol";
+import {SUPER_SYMBOL} from "../util/super/super-symbol";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment|undefined;
@@ -55,23 +61,57 @@ export function pathInLexicalEnvironmentEquals (env: LexicalEnvironment, equals:
 }
 
 /**
- * Gets a value from a Lexical Environment
- * @param {LexicalEnvironment} env
- * @param {string} path
+ * Returns true if the given value represents an internal symbol
  * @param {Literal} value
+ * @return {boolean}
+ */
+export function isInternalSymbol (value: Literal): boolean {
+	switch (value) {
+		case RETURN_SYMBOL:
+		case BREAK_SYMBOL:
+		case CONTINUE_SYMBOL:
+		case THIS_SYMBOL:
+		case SUPER_SYMBOL:
+			return true;
+		default:
+			return false;
+	}
+}
+
+/**
+ * Gets a value from a Lexical Environment
+ * @param {ISetInLexicalEnvironmentOptions} options
  * @param {boolean} [newBinding=false]
  */
-export function setInLexicalEnvironment (env: LexicalEnvironment, path: string, value: Literal, newBinding: boolean = false): void {
+export function setInLexicalEnvironment ({env, path, value, reporting, node, newBinding = false}: ISetInLexicalEnvironmentOptions): void {
 	const [firstBinding] = path.split(".");
 	if (has(env.env, firstBinding) || newBinding || env.parentEnv == null) {
+		// If the value didn't change, do no more
+		if (has(env.env, path) && get(env.env, path) === value) return;
+
+		// Otherwise, mutate it
 		set(env.env, path, value);
+
+		// Inform reporting hooks if any is given
+		if (reporting.reportBindings != null && !isInternalSymbol(path)) {
+			reporting.reportBindings({path, value, node});
+		}
 	}
 
 	else {
 		let currentParentEnv: LexicalEnvironment|undefined = env.parentEnv;
 		while (currentParentEnv != null) {
 			if (has(currentParentEnv.env, firstBinding)) {
+				// If the value didn't change, do no more
+				if (has(currentParentEnv.env, path) && get(currentParentEnv.env, path) === value) return;
+
+				// Otherwise, mutate it
 				set(currentParentEnv.env, path, value);
+
+				// Inform reporting hooks if any is given
+				if (reporting.reportBindings != null && !isInternalSymbol(path)) {
+					reporting.reportBindings({path, value, node});
+				}
 				return;
 			}
 			else {

@@ -10,7 +10,7 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<ClassExpression>} options
  * @returns {Literal}
  */
-export function evaluateClassExpression ({node, environment, evaluate, stack, logger, statementTraversalStack}: IEvaluatorOptions<ClassExpression>): Literal {
+export function evaluateClassExpression ({node, environment, evaluate, stack, logger, reporting, statementTraversalStack}: IEvaluatorOptions<ClassExpression>): Literal {
 	let extendedType: Function|undefined;
 	const ctorMember = node.members.find(isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !isConstructorDeclaration(member));
@@ -44,7 +44,7 @@ export function evaluateClassExpression ({node, environment, evaluate, stack, lo
 	classExpression.toString = () => `[Class${name == null ? "" : `: ${name}`}]`;
 
 	if (name != null) {
-		setInLexicalEnvironment(environment, name, classExpression, true);
+		setInLexicalEnvironment({env: environment, path: name, value: classExpression, newBinding: true, reporting, node});
 	}
 
 	// Walk through all of the class members

@@ -15,6 +15,7 @@ export interface IEvaluatePolicy {
 	console: boolean;
 	deterministic: boolean;
 	maxOps: number;
+	maxOpDuration: number;
 }
 
 export interface IEvaluatePolicySanitized {
@@ -24,4 +25,5 @@ export interface IEvaluatePolicySanitized {
 	console: boolean;
 	deterministic: boolean;
 	maxOps: number;
+	maxOpDuration: number;
 }

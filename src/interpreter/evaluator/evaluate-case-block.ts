@@ -13,11 +13,11 @@ import {Literal} from "../literal/literal";
  * @param {Literal} switchExpression
  * @returns {Promise<void>}
  */
-export function evaluateCaseBlock ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<CaseBlock>, switchExpression: Literal): void {
+export function evaluateCaseBlock ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<CaseBlock>, switchExpression: Literal): void {
 	// Prepare a lexical environment for the case block
 	const localEnvironment = cloneLexicalEnvironment(environment);
 	// Define a new binding for a break symbol within the environment
-	setInLexicalEnvironment(localEnvironment, BREAK_SYMBOL, false, true);
+	setInLexicalEnvironment({env: localEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
 
 	for (const clause of node.clauses) {
 		evaluate.nodeWithArgument(clause, localEnvironment, switchExpression, statementTraversalStack);

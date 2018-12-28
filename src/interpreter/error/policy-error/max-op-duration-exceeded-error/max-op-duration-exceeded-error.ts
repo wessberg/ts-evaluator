@@ -1,0 +1,17 @@
+import {IMaxOpDurationExceededErrorOptions} from "./i-max-op-duration-exceeded-error-options";
+import {PolicyError} from "../policy-error";
+
+/**
+ * An Error that can be thrown when the maximum amount of operations dictated by the policy is exceeded
+ */
+export class MaxOpDurationExceededError extends PolicyError {
+	/**
+	 * The total duration of an operation that was being performed before exceeding the limit
+	 */
+	public readonly duration: number;
+
+	constructor ({duration, message = `Maximum operation duration exceeded: ${duration}`}: IMaxOpDurationExceededErrorOptions) {
+		super({violation: "maxOpDuration", message});
+		this.duration = duration;
+	}
+}

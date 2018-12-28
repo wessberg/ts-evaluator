@@ -13,7 +13,7 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ForStatement>} options
  * @returns {Promise<void>}
  */
-export function evaluateForStatement ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ForStatement>): void {
+export function evaluateForStatement ({node, environment, evaluate, reporting, statementTraversalStack}: IEvaluatorOptions<ForStatement>): void {
 
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
@@ -36,10 +36,10 @@ export function evaluateForStatement ({node, environment, evaluate, statementTra
 		const iterationEnvironment = cloneLexicalEnvironment(forEnvironment);
 
 		// Define a new binding for a break symbol within the environment
-		setInLexicalEnvironment(iterationEnvironment, BREAK_SYMBOL, false, true);
+		setInLexicalEnvironment({env: iterationEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Define a new binding for a continue symbol within the environment
-		setInLexicalEnvironment(iterationEnvironment, CONTINUE_SYMBOL, false, true);
+		setInLexicalEnvironment({env: iterationEnvironment, path: CONTINUE_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Evaluate the condition. It may be truthy always
 		const conditionResult = node.condition == null

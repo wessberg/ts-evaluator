@@ -33,6 +33,7 @@ export function evaluate ({
 															network = false,
 															console = false,
 															maxOps = Infinity,
+															maxOpDuration = Infinity,
 															io = {
 																read: true,
 																write: false
@@ -41,7 +42,8 @@ export function evaluate ({
 																exit: false,
 																spawnChild: false
 															}
-														} = {}
+														} = {},
+														reporting = {}
 													}: IEvaluateOptions): EvaluateResult {
 	// Take the simple path first. This may be far more performant than building up an environment
 	const simpleLiteralResult = evaluateSimpleLiteral(node);
@@ -52,6 +54,7 @@ export function evaluate ({
 	const policy: IEvaluatePolicySanitized = {
 		deterministic,
 		maxOps,
+		maxOpDuration,
 		network,
 		console,
 		io: {
@@ -68,7 +71,7 @@ export function evaluate ({
 	const initialEnvironment = createLexicalEnvironment({preset, extra}, policy);
 
 	const stack: Stack = createStack();
-	const nodeEvaluator = createNodeEvaluator({policy, typeChecker, logger, stack});
+	const nodeEvaluator = createNodeEvaluator({policy, typeChecker, logger, stack, reporting});
 
 	try {
 		let value: Literal;

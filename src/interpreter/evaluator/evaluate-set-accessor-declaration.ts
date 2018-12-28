@@ -14,7 +14,7 @@ import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
  * @param {IEvaluatorOptions<SetAccessorDeclaration>} options
  * @param {IndexLiteral} parent
  */
-export function evaluateSetAccessorDeclaration ({node, environment, evaluate, statementTraversalStack, stack, ...rest}: IEvaluatorOptions<SetAccessorDeclaration>, parent: IndexLiteral): void {
+export function evaluateSetAccessorDeclaration ({node, environment, evaluate, statementTraversalStack, reporting, stack, ...rest}: IEvaluatorOptions<SetAccessorDeclaration>, parent: IndexLiteral): void {
 
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
@@ -29,17 +29,20 @@ export function evaluateSetAccessorDeclaration ({node, environment, evaluate, st
 		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 		// Define a new binding for a return symbol within the environment
-		setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		if (this != null) {
-			setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 
 			// Set the 'super' binding, depending on whether or not we're inside a static context
-			setInLexicalEnvironment(localLexicalEnvironment, SUPER_SYMBOL, isStatic
-				? Object.getPrototypeOf(this)
-				: Object.getPrototypeOf((this as Function).constructor).prototype,
-				true
-			);
+			setInLexicalEnvironment({
+				env: localLexicalEnvironment, path: SUPER_SYMBOL, value: isStatic
+					? Object.getPrototypeOf(this)
+					: Object.getPrototypeOf((this as Function).constructor).prototype,
+				newBinding: true,
+				reporting,
+				node
+			});
 		}
 
 		// Evaluate the parameters based on the given arguments
@@ -49,6 +52,7 @@ export function evaluateSetAccessorDeclaration ({node, environment, evaluate, st
 				evaluate,
 				stack,
 				statementTraversalStack,
+				reporting,
 				...rest
 			}, args
 		);

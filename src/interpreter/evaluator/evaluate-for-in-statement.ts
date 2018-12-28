@@ -15,7 +15,7 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ForInStatement>} options
  * @returns {Promise<void>}
  */
-export function evaluateForInStatement ({node, environment, evaluate, logger, statementTraversalStack}: IEvaluatorOptions<ForInStatement>): void {
+export function evaluateForInStatement ({node, environment, evaluate, logger, reporting, statementTraversalStack}: IEvaluatorOptions<ForInStatement>): void {
 
 	// Compute the 'of' part
 	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
@@ -35,10 +35,10 @@ export function evaluateForInStatement ({node, environment, evaluate, logger, st
 		const localEnvironment = cloneLexicalEnvironment(environment);
 
 		// Define a new binding for a break symbol within the environment
-		setInLexicalEnvironment(localEnvironment, BREAK_SYMBOL, false, true);
+		setInLexicalEnvironment({env: localEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Define a new binding for a continue symbol within the environment
-		setInLexicalEnvironment(localEnvironment, CONTINUE_SYMBOL, false, true);
+		setInLexicalEnvironment({env: localEnvironment, path: CONTINUE_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
 		evaluate.nodeWithArgument(node.initializer.declarations[0], localEnvironment, literal, statementTraversalStack);

@@ -17,7 +17,7 @@ import {hasModifier} from "../util/modifier/has-modifier";
  * @param {IEvaluatorOptions<MethodDeclaration>} options
  * @param {IndexLiteral} parent
  */
-export function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent: IndexLiteral): void {
+export function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent: IndexLiteral): void {
 
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
@@ -29,17 +29,20 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 			// Define a new binding for a return symbol within the environment
-			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			if (this != null) {
-				setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+				setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 
 				// Set the 'super' binding, depending on whether or not we're inside a static context
-				setInLexicalEnvironment(localLexicalEnvironment, SUPER_SYMBOL, isStatic
-					? Object.getPrototypeOf(this)
-					: Object.getPrototypeOf((this as Function).constructor).prototype,
-					true
-				);
+				setInLexicalEnvironment({
+					env: localLexicalEnvironment, path: SUPER_SYMBOL, value: isStatic
+						? Object.getPrototypeOf(this)
+						: Object.getPrototypeOf((this as Function).constructor).prototype,
+					newBinding: true,
+					reporting,
+					node
+				});
 			}
 
 			// Evaluate the parameters based on the given arguments
@@ -49,6 +52,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 					evaluate,
 					stack,
 					statementTraversalStack,
+					reporting,
 					...rest
 				}, args
 			);
@@ -71,17 +75,20 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 			// Define a new binding for a return symbol within the environment
-			setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			if (this != null) {
-				setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+				setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 
 				// Set the 'super' binding, depending on whether or not we're inside a static context
-				setInLexicalEnvironment(localLexicalEnvironment, SUPER_SYMBOL, isStatic
-					? Object.getPrototypeOf(this)
-					: Object.getPrototypeOf((this as Function).constructor).prototype,
-					true
-				);
+				setInLexicalEnvironment({
+					env: localLexicalEnvironment, path: SUPER_SYMBOL, value: isStatic
+						? Object.getPrototypeOf(this)
+						: Object.getPrototypeOf((this as Function).constructor).prototype,
+					newBinding: true,
+					reporting,
+					node
+				});
 			}
 
 			// Evaluate the parameters based on the given arguments
@@ -91,6 +98,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 					evaluate,
 					stack,
 					statementTraversalStack,
+					reporting,
 					...rest
 				}, args
 			);

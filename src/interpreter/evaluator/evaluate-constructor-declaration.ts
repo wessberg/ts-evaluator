@@ -12,7 +12,7 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
  * @param {IEvaluatorOptions<ConstructorDeclaration>} options
  * @returns {Promise<void>}
  */
-export function evaluateConstructorDeclaration ({node, environment, evaluate, stack, ...rest}: IEvaluatorOptions<ConstructorDeclaration>): void {
+export function evaluateConstructorDeclaration ({node, environment, evaluate, stack, reporting, ...rest}: IEvaluatorOptions<ConstructorDeclaration>): void {
 
 	/**
 	 * An implementation of a constructor function
@@ -25,10 +25,10 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
 		// Define a new binding for a return symbol within the environment
-		setInLexicalEnvironment(localLexicalEnvironment, RETURN_SYMBOL, false, true);
+		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		if (this != null) {
-			setInLexicalEnvironment(localLexicalEnvironment, THIS_SYMBOL, this, true);
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 		}
 
 		// Evaluate the parameters based on the given arguments
@@ -37,6 +37,7 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 				environment: localLexicalEnvironment,
 				evaluate,
 				stack,
+				reporting,
 				...rest
 			}, args
 		);

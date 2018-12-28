@@ -5,6 +5,7 @@ import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChi
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
 import {readFileSync} from "fs";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
+import {IReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
 
 // tslint:disable:no-any
 
@@ -29,6 +30,7 @@ export interface ITestFileResult {
 export interface ITestOpts {
 	policy: Partial<IEvaluatePolicy>;
 	environment: Partial<IEnvironment>;
+	reporting: IReportingOptions;
 	logLevel: LogLevelKind;
 }
 
@@ -46,7 +48,8 @@ export function prepareTest (
 		environment,
 		policy: {
 			deterministic = true,
-			maxOps = 3000,
+			maxOps = Infinity,
+			maxOpDuration = Infinity,
 			console = false,
 			network = false,
 			io = {
@@ -58,6 +61,7 @@ export function prepareTest (
 				spawnChild: false
 			}
 		} = {},
+		reporting,
 		logLevel = LogLevelKind.SILENT
 	}: Partial<ITestOpts> = {}): ITestFileResult {
 	const arrFiles = Array.isArray(files) ? files : [files];
@@ -139,8 +143,10 @@ export function prepareTest (
 			node: entryNode,
 			typeChecker: program.getTypeChecker(),
 			environment,
+			reporting,
 			policy: {
 				maxOps,
+				maxOpDuration,
 				deterministic,
 				io,
 				process,
