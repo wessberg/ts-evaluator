@@ -11,7 +11,7 @@ import {Literal} from "../literal/literal";
  * @param {IEvaluatorOptions<PrefixUnaryExpression>} options
  * @returns {Promise<Literal>}
  */
-export function evaluatePrefixUnaryExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<PrefixUnaryExpression>): Literal {
+export function evaluatePrefixUnaryExpression ({node, environment, evaluate, reporting, statementTraversalStack}: IEvaluatorOptions<PrefixUnaryExpression>): Literal {
 	const operandValue = (evaluate.expression(node.operand, environment, statementTraversalStack)) as number;
 
 	switch (node.operator) {
@@ -39,7 +39,13 @@ export function evaluatePrefixUnaryExpression ({node, environment, evaluate, sta
 
 			// Find the value associated with the identifier within the environment.
 			const dict = getRelevantDictFromLexicalEnvironment(environment, node.operand.text)!;
-			return ++(dict[node.operand.text]! as number);
+			const value = ++(dict[node.operand.text]! as number);
+
+			// Inform reporting hooks if any is given
+			if (reporting.reportBindings != null) {
+				reporting.reportBindings({path: node.operand.text, value, node});
+			}
+			return value;
 		}
 
 		case SyntaxKind.MinusMinusToken: {
@@ -50,7 +56,13 @@ export function evaluatePrefixUnaryExpression ({node, environment, evaluate, sta
 
 			// Find the value associated with the identifier within the environment.
 			const dict = getRelevantDictFromLexicalEnvironment(environment, node.operand.text)!;
-			return --(dict[node.operand.text]! as number);
+			const value = --(dict[node.operand.text]! as number);
+
+			// Inform reporting hooks if any is given
+			if (reporting.reportBindings != null) {
+				reporting.reportBindings({path: node.operand.text, value, node});
+			}
+			return value;
 		}
 	}
 }

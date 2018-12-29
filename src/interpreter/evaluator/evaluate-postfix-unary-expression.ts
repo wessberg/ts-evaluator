@@ -9,7 +9,7 @@ import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-nod
  * @param {IEvaluatorOptions<PostfixUnaryExpression>} options
  * @returns {Promise<Literal>}
  */
-export function evaluatePostfixUnaryExpression ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<PostfixUnaryExpression>): Literal {
+export function evaluatePostfixUnaryExpression ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<PostfixUnaryExpression>): Literal {
 	// Make sure to evaluate the operand to ensure that it is found in the lexical environment
 	evaluate.expression(node.operand, environment, statementTraversalStack);
 
@@ -21,7 +21,13 @@ export function evaluatePostfixUnaryExpression ({node, evaluate, environment, st
 			}
 
 			// Find the value associated with the identifier within the environment.
-			return (getRelevantDictFromLexicalEnvironment(environment, node.operand.text)![node.operand.text]! as number)++;
+			const value = (getRelevantDictFromLexicalEnvironment(environment, node.operand.text)![node.operand.text]! as number)++;
+
+			// Inform reporting hooks if any is given
+			if (reporting.reportBindings != null) {
+				reporting.reportBindings({path: node.operand.text, value, node});
+			}
+			return value;
 		}
 
 		case SyntaxKind.MinusMinusToken: {
@@ -31,7 +37,13 @@ export function evaluatePostfixUnaryExpression ({node, evaluate, environment, st
 			}
 
 			// Find the value associated with the identifier within the environment.
-			return (getRelevantDictFromLexicalEnvironment(environment, node.operand.text)![node.operand.text]! as number)--;
+			const value = (getRelevantDictFromLexicalEnvironment(environment, node.operand.text)![node.operand.text]! as number)--;
+
+			// Inform reporting hooks if any is given
+			if (reporting.reportBindings != null) {
+				reporting.reportBindings({path: node.operand.text, value, node});
+			}
+			return value;
 		}
 	}
 }

@@ -5,7 +5,7 @@ import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChi
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
 import {readFileSync} from "fs";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
-import {IReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
+import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
 
 // tslint:disable:no-any
 
@@ -30,7 +30,7 @@ export interface ITestFileResult {
 export interface ITestOpts {
 	policy: Partial<IEvaluatePolicy>;
 	environment: Partial<IEnvironment>;
-	reporting: IReportingOptions;
+	reporting: ReportingOptions;
 	logLevel: LogLevelKind;
 }
 

@@ -133,7 +133,7 @@ export class Logger {
 	 */
 	public logStack (stack: Stack): void {
 		if (this.logLevel < LogLevelKind.DEBUG) return;
-		console.log(`Stack value: ${chalk.blue(stringifyLiteral(this.compactValue(stack[stack.length - 1])))}`);
+		console.log(`Stack value: ${chalk.blue(stringifyLiteral(this.compactValue(stack.lastItem)))}`);
 	}
 
 	// noinspection JSUnusedGlobalSymbols

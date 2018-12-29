@@ -10,5 +10,15 @@ import {evaluateNode} from "./evaluate-node";
  */
 export function evaluateExpression (options: IEvaluatorOptions<Expression>): Literal {
 	options.logger.logNode(options.node);
-	return evaluateNode(options) as Promise<Literal>;
+	const value = evaluateNode(options) as Promise<Literal>;
+
+	// Report intermediate results
+	if (options.reporting.reportIntermediateResults != null) {
+		options.reporting.reportIntermediateResults({
+			node: options.node,
+			value
+		});
+	}
+
+	return value;
 }
