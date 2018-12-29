@@ -1,3 +1,7 @@
+## [0.0.12](https://github.com/wessberg/ts-evaluator/compare/v0.0.11...v0.0.12) (2018-12-29)
+
+
+
 ## [0.0.11](https://github.com/wessberg/ts-evaluator/compare/v0.0.10...v0.0.11) (2018-12-28)
 
 
