@@ -95,3 +95,27 @@ test("Can evaluate a simple 'number => number' function. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
+
+test("Can handle the 'arguments' identifier. #1", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+		`
+			function square (a: number): number {
+				return arguments[0] ** 2;
+			}
+
+			square(2);
+		`,
+		"square(",
+		{
+			policy: {
+				console: true
+			}
+		}
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else t.deepEqual(result.value, 4);
+});

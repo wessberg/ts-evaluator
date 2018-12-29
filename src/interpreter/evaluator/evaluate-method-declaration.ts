@@ -31,6 +31,9 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			// Define a new binding for a return symbol within the environment
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
+			// Define a new binding for the arguments given to the function
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+
 			if (this != null) {
 				setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
 
@@ -76,6 +79,9 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 
 			// Define a new binding for a return symbol within the environment
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+
+			// Define a new binding for the arguments given to the function
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			if (this != null) {
 				setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});

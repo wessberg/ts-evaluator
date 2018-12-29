@@ -25,6 +25,9 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 			// Define a new binding for a return symbol within the environment
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
+			// Define a new binding for the arguments given to the function
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
 					node: node.parameters,
@@ -62,6 +65,9 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 
 			// Define a new binding for a return symbol within the environment
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+
+			// Define a new binding for the arguments given to the function
+			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
