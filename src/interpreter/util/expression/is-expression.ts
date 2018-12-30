@@ -1,5 +1,4 @@
 import * as ts from "typescript";
-import {isIdentifier} from "typescript";
 
 /**
  * Returns true if the given Node is an Expression.
@@ -8,5 +7,5 @@ import {isIdentifier} from "typescript";
  * @return {node is Expression}
  */
 export function isExpression (node: ts.Node): node is ts.Expression {
-	return (ts as unknown as {isExpressionNode (node: ts.Node): boolean}).isExpressionNode(node) || isIdentifier(node);
+	return (ts as unknown as { isExpressionNode (node: ts.Node): boolean }).isExpressionNode(node) || ts.isIdentifier(node);
 }
