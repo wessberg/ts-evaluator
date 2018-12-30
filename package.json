@@ -51,7 +51,7 @@
   "license": "MIT",
   "devDependencies": {
     "@wessberg/scaffold": "1.0.5",
-    "@wessberg/rollup-plugin-ts": "1.1.14",
+    "@wessberg/rollup-plugin-ts": "1.1.16",
     "@wessberg/ts-config": "0.0.34",
     "npm-check-updates": "2.15.0",
     "standard-changelog": "2.0.6",
