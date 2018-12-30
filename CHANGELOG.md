@@ -1,3 +1,12 @@
+## [0.0.18](https://github.com/wessberg/ts-evaluator/compare/v0.0.17...v0.0.18) (2018-12-30)
+
+
+### Features
+
+* **reporting:** adds a new reporter: reportErrors. This is a reporting hook that will be invoked for each error that is thrown, both when evaluating a result, and for subsequent invocations on, for example, returned function instances. Holds a reference to the error, as well ast the AST node that threw or caused the Error ([a65e386](https://github.com/wessberg/ts-evaluator/commit/a65e386))
+
+
+
 ## [0.0.17](https://github.com/wessberg/ts-evaluator/compare/v0.0.16...v0.0.17) (2018-12-30)
 
 
