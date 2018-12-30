@@ -1,5 +1,5 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {GetAccessorDeclaration} from "typescript";
+import {GetAccessorDeclaration, isClassLike} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -11,12 +11,25 @@ import {inStaticContext} from "../util/static/in-static-context";
 /**
  * Evaluates, or attempts to evaluate, a GetAccessorDeclaration, before setting it on the given parent
  * @param {IEvaluatorOptions<GetAccessorDeclaration>} options
- * @param {IndexLiteral} parent
+ * @param {IndexLiteral} [parent]
  */
-export function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, reporting, statementTraversalStack}: IEvaluatorOptions<GetAccessorDeclaration>, parent: IndexLiteral): void {
+export function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, reporting, statementTraversalStack}: IEvaluatorOptions<GetAccessorDeclaration>, parent?: IndexLiteral): void {
 
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
+
+	if (parent == null) {
+		let updatedParent: Function & IndexLiteral;
+		if (isClassLike(node.parent)) {
+			evaluate.declaration(node.parent, environment, statementTraversalStack);
+			updatedParent = stack.pop() as Function & IndexLiteral;
+		}
+		else {
+			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as Function & IndexLiteral;
+		}
+		stack.push(isStatic ? updatedParent[nameResult] : updatedParent.prototype[nameResult]);
+		return;
+	}
 
 	/**
 	 * An implementation of the get accessor

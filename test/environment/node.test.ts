@@ -27,3 +27,22 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 		t.deepEqual(result.value, {dirname: "/Users/someone/development/foo", filename: "/Users/someone/development/foo/bar.ts"});
 	}
 });
+
+test("Can handle 'process.cwd()' in a Node environment. #1", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+			`
+			(() => {
+				return process.cwd();
+			})();
+		`,
+		"(() =>"
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else {
+		t.deepEqual(result.value, process.cwd());
+	}
+});

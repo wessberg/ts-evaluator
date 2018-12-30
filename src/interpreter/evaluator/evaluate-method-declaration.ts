@@ -1,5 +1,5 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {isIdentifier, MethodDeclaration, SyntaxKind} from "typescript";
+import {isClassLike, isIdentifier, MethodDeclaration, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -15,12 +15,24 @@ import {hasModifier} from "../util/modifier/has-modifier";
 /**
  * Evaluates, or attempts to evaluate, a MethodDeclaration, before setting it on the given parent
  * @param {IEvaluatorOptions<MethodDeclaration>} options
- * @param {IndexLiteral} parent
+ * @param {IndexLiteral} [parent]
  */
-export function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent: IndexLiteral): void {
-
+export function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent?: IndexLiteral): void {
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
 	const isStatic = inStaticContext(node);
+
+	if (parent == null) {
+		let updatedParent: Function & IndexLiteral;
+		if (isClassLike(node.parent)) {
+			evaluate.declaration(node.parent, environment, statementTraversalStack);
+			updatedParent = stack.pop() as Function & IndexLiteral;
+		}
+		else {
+			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as Function & IndexLiteral;
+		}
+		stack.push(isStatic ? updatedParent[nameResult] : updatedParent.prototype[nameResult]);
+		return;
+	}
 
 	const _methodDeclaration = hasModifier(node, SyntaxKind.AsyncKeyword)
 		? async function methodDeclaration (this: Literal, ...args: Literal[]) {

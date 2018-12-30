@@ -1,5 +1,5 @@
 import {
-	isArrayLiteralExpression, isArrowFunction, isAsExpression, isAwaitExpression, isBigIntLiteral, isBinaryExpression, isBlock, isBreakStatement, isCallExpression, isClassDeclaration, isClassExpression, isComputedPropertyName, isConditionalExpression, isConstructorDeclaration, isContinueStatement, isElementAccessExpression, isEnumDeclaration, isExpressionStatement, isForInStatement, isForOfStatement, isForStatement, isFunctionDeclaration, isFunctionExpression, isIdentifier, isIfStatement, isImportDeclaration, isImportEqualsDeclaration, isModuleDeclaration, isNewExpression, isNonNullExpression, isNumericLiteral, isObjectLiteralExpression, isParenthesizedExpression, isPostfixUnaryExpression, isPrefixUnaryExpression, isPropertyAccessExpression, isRegularExpressionLiteral, isReturnStatement, isSourceFile, isSpreadElement, isStringLiteralLike, isSwitchStatement, isTemplateExpression, isThrowStatement, isTryStatement, isTypeAssertion, isTypeOfExpression, isVariableDeclaration, isVariableDeclarationList, isVariableStatement, isVoidExpression, isWhileStatement, Node
+	isArrayLiteralExpression, isArrowFunction, isAsExpression, isAwaitExpression, isBigIntLiteral, isBinaryExpression, isBlock, isBreakStatement, isCallExpression, isClassDeclaration, isClassExpression, isComputedPropertyName, isConditionalExpression, isConstructorDeclaration, isContinueStatement, isElementAccessExpression, isEnumDeclaration, isExpressionStatement, isForInStatement, isForOfStatement, isForStatement, isFunctionDeclaration, isFunctionExpression, isGetAccessorDeclaration, isIdentifier, isIfStatement, isImportDeclaration, isImportEqualsDeclaration, isMethodDeclaration, isModuleDeclaration, isNewExpression, isNonNullExpression, isNumericLiteral, isObjectLiteralExpression, isParenthesizedExpression, isPostfixUnaryExpression, isPrefixUnaryExpression, isPropertyAccessExpression, isPropertyDeclaration, isRegularExpressionLiteral, isReturnStatement, isSourceFile, isSpreadElement, isStringLiteralLike, isSwitchStatement, isTemplateExpression, isThrowStatement, isTryStatement, isTypeAssertion, isTypeOfExpression, isVariableDeclaration, isVariableDeclarationList, isVariableStatement, isVoidExpression, isWhileStatement, Node
 } from "typescript";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {evaluateVariableDeclaration} from "./evaluate-variable-declaration";
@@ -63,6 +63,9 @@ import {evaluateThrowStatement} from "./evaluate-throw-statement";
 import {evaluateImportEqualsDeclaration} from "./evaluate-import-equals-declaration";
 import {evaluateAwaitExpression} from "./evaluate-await-expression";
 import {evaluateConditionalExpression} from "./evaluate-conditional-expression";
+import {evaluateMethodDeclaration} from "./evaluate-method-declaration";
+import {evaluatePropertyDeclaration} from "./evaluate-property-declaration";
+import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaration";
 
 /**
  * Will get a literal value for the given Node. If it doesn't succeed, the value will be 'undefined'
@@ -121,6 +124,18 @@ export function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): unknown
 
 	else if (isTemplateExpression(node)) {
 		return evaluateTemplateExpression({node, ...rest});
+	}
+
+	else if (isMethodDeclaration(node)) {
+		return evaluateMethodDeclaration({node, ...rest});
+	}
+
+	else if (isPropertyDeclaration(node)) {
+		return evaluatePropertyDeclaration({node, ...rest});
+	}
+
+	else if (isGetAccessorDeclaration(node)) {
+		return evaluateGetAccessorDeclaration({node, ...rest});
 	}
 
 	else if (isArrayLiteralExpression(node)) {
