@@ -252,3 +252,26 @@ test("Can handle SetAccessorDeclarations. #1", t => {
 		t.deepEqual(instance.prop, 2);
 	}
 });
+
+test("Can handle instances properties set via Constructor arguments. #1", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+		`
+			class MyClass {
+				constructor (public foo = 2) {}
+			}
+
+			(() => MyClass)();
+		`,
+		"(() =>"
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else if (result.value == null) t.fail();
+	else {
+		const instance = new (result.value as (new () => { foo: number }))();
+		t.deepEqual(instance.foo, 2);
+	}
+});

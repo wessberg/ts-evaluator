@@ -2,7 +2,7 @@ import {IEvaluatorOptions} from "./i-evaluator-options";
 import {ConstructorDeclaration} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {Literal} from "../literal/literal";
+import {IndexLiteral, Literal} from "../literal/literal";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
@@ -18,7 +18,7 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 	 * An implementation of a constructor function
 	 * @param {Literal} args
 	 */
-	function constructor (this: Literal, ...args: Literal[]) {
+	function constructor (this: IndexLiteral, ...args: Literal[]) {
 		// Don't concern yourself with calling super here as this constructor is called immediately after calling super() in another memory representation of a class
 
 		// Prepare a lexical environment for the function context
@@ -42,7 +42,7 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 				stack,
 				reporting,
 				...rest
-			}, args
+			}, args, this
 		);
 
 		// If the body is a block, evaluate it as a statement
