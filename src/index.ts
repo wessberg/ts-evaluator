@@ -14,7 +14,6 @@ export {EvaluationError} from "./interpreter/error/evaluation-error/evaluation-e
 export {MissingCatchOrFinallyAfterTryError} from "./interpreter/error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error";
 export {ModuleNotFoundError} from "./interpreter/error/module-not-found-error/module-not-found-error";
 export {NotCallableError} from "./interpreter/error/not-callable-error/not-callable-error";
-export {ThrownError} from "./interpreter/error/thrown-error/thrown-error";
 export {PolicyError} from "./interpreter/error/policy-error/policy-error";
 export {UndefinedIdentifierError} from "./interpreter/error/undefined-identifier-error/undefined-identifier-error";
 export {UndefinedLeftValueError} from "./interpreter/error/undefined-left-value-error/undefined-left-value-error";

@@ -165,7 +165,8 @@ const result = evaluate({
   reporting: {
     reportBindings: entry => doSomething(entry),
     reportTraversal: entry => someArray.push(entry.node),
-    reportIntermediateResults: entry => doSomeOtherThing(entry)
+    reportIntermediateResults: entry => doSomeOtherThing(entry),
+    reportErrors: entry => doSomethingWithError(entry)
   }
 });
 ```
@@ -175,6 +176,7 @@ Here's an explainer of the different reporting hooks:
 - `reportBindings(entry: IBindingReportEntry) => void|(Promise<void>)` - Will be invoked for each time a value is bound to the lexical environment of a Node. This is useful to track mutations throughout code execution, for example to understand when and where variables are declared and/or mutated.
 - `reportTraversal(entry: ITraversalReportEntry) => void|(Promise<void>)` - Will be invoked for each time a new Node is visited while evaluating. This is useful to track the path through the AST, for example to compute code coverage.
 - `reportIntermediateResults(entry: IIntermediateResultReportEntry) => void|(Promise<void>)` - Will be invoked for each intermediate result that has been evaluated before producing a final result. This allows you to work programmatically with all expression values during code execution.
+- `reportErrors(entry: IErrorReportEntry) => void|(Promise<void>)` - Will be invoked for each error that is thrown, both when evaluating a result, and for subsequent invocations on, for example, returned function instances. Holds a reference to the error, as well ast the AST node that threw or caused the Error.
 
 ## Contributing
 

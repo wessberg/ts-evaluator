@@ -157,7 +157,7 @@ export function setInLexicalEnvironment ({env, path, value, reporting, node, new
 export function clearBindingFromLexicalEnvironment (env: LexicalEnvironment, path: string): void {
 	const [firstBinding] = path.split(".");
 	if (has(env.env, firstBinding)) {
-		del(firstBinding);
+		del(env.env, path);
 	}
 
 	else {

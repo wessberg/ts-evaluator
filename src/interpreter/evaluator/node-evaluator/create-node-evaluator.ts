@@ -2,7 +2,7 @@ import {Declaration, Expression, Node, Statement} from "typescript";
 import {ICreateNodeEvaluatorOptions} from "./i-create-node-evaluator-options";
 import {NodeEvaluator, NodeWithValue} from "./node-evaluator";
 import {MaxOpsExceededError} from "../../error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error";
-import {LexicalEnvironment} from "../../lexical-environment/lexical-environment";
+import {LexicalEnvironment, pathInLexicalEnvironmentEquals} from "../../lexical-environment/lexical-environment";
 import {evaluateStatement} from "../evaluate-statement";
 import {Literal} from "../../literal/literal";
 import {evaluateExpression} from "../evaluate-expression";
@@ -11,6 +11,8 @@ import {evaluateDeclaration} from "../evaluate-declaration";
 import {evaluateNodeWithArgument} from "../evaluate-node-with-argument";
 import {evaluateNodeWithValue} from "../evaluate-node-with-value";
 import {createStatementTraversalStack, StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack";
+import {reportError} from "../../util/reporting/report-error";
+import {TRY_SYMBOL} from "../../util/try/try-symbol";
 
 /**
  * Creates a Node Evaluator
@@ -38,27 +40,60 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack, report
 		}
 	};
 
+	/**
+	 * Wraps an evaluation action with error reporting
+	 * @param {LexicalEnvironment} environment
+	 * @param {ts.Node} node
+	 * @param {Function} action
+	 */
+	const wrapWithErrorReporting = (environment: LexicalEnvironment, node: Node, action: Function) => {
+		// If we're already inside of a try-block, simply execute the action and do nothing else
+		if (pathInLexicalEnvironmentEquals(node, environment, true, TRY_SYMBOL)) {
+			return action();
+		}
+
+		try {
+			return action();
+		} catch (ex) {
+			// Report the Error
+			reportError(reporting, ex, node);
+
+			// Re-throw the error
+			throw ex;
+		}
+	};
+
 	const nodeEvaluator: NodeEvaluator = {
 		expression: (node: Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal => {
-			handleNewNode(node, statementTraversalStack);
-			return evaluateExpression(getEvaluatorOptions(node, environment, statementTraversalStack));
+			return wrapWithErrorReporting(environment, node, () => {
+				handleNewNode(node, statementTraversalStack);
+				return evaluateExpression(getEvaluatorOptions(node, environment, statementTraversalStack));
+			});
 		},
 		statement: (node: Statement, environment: LexicalEnvironment): void => {
-			const statementTraversalStack = createStatementTraversalStack();
-			handleNewNode(node, statementTraversalStack);
-			return evaluateStatement(getEvaluatorOptions(node, environment, statementTraversalStack));
+			return wrapWithErrorReporting(environment, node, () => {
+				const statementTraversalStack = createStatementTraversalStack();
+				handleNewNode(node, statementTraversalStack);
+				return evaluateStatement(getEvaluatorOptions(node, environment, statementTraversalStack));
+			});
 		},
 		declaration: (node: Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): void => {
-			handleNewNode(node, statementTraversalStack);
-			return evaluateDeclaration(getEvaluatorOptions(node, environment, statementTraversalStack));
+			return wrapWithErrorReporting(environment, node, () => {
+				handleNewNode(node, statementTraversalStack);
+				return evaluateDeclaration(getEvaluatorOptions(node, environment, statementTraversalStack));
+			});
 		},
 		nodeWithArgument: (node: Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack): void => {
-			handleNewNode(node, statementTraversalStack);
-			return evaluateNodeWithArgument(getEvaluatorOptions(node, environment, statementTraversalStack), arg);
+			return wrapWithErrorReporting(environment, node, () => {
+				handleNewNode(node, statementTraversalStack);
+				return evaluateNodeWithArgument(getEvaluatorOptions(node, environment, statementTraversalStack), arg);
+			});
 		},
 		nodeWithValue: (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal => {
-			handleNewNode(node, statementTraversalStack);
-			return evaluateNodeWithValue(getEvaluatorOptions(node, environment, statementTraversalStack));
+			return wrapWithErrorReporting(environment, node, () => {
+				handleNewNode(node, statementTraversalStack);
+				return evaluateNodeWithValue(getEvaluatorOptions(node, environment, statementTraversalStack));
+			});
 		}
 	};
 

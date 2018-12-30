@@ -15,8 +15,9 @@ import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node
 import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
 import {EnvironmentPresetKind} from "./environment/environment-preset-kind";
 import {Node} from "typescript";
-import {EvaluationError} from "./error/evaluation-error/evaluation-error";
-import {ThrownError} from "./error/thrown-error/thrown-error";
+import {reportError} from "./util/reporting/report-error";
+import {createReportedErrorSet} from "./reporting/reported-error-set";
+import {ReportingOptionsSanitized} from "./reporting/i-reporting-options";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
@@ -46,7 +47,7 @@ export function evaluate ({
 																spawnChild: false
 															}
 														} = {},
-														reporting = {}
+														reporting: reportingInput = {}
 													}: IEvaluateOptions): EvaluateResult {
 	// Take the simple path first. This may be far more performant than building up an environment
 	const simpleLiteralResult = evaluateSimpleLiteral(node);
@@ -68,6 +69,12 @@ export function evaluate ({
 			exit: typeof process === "boolean" ? process : process.exit,
 			spawnChild: typeof process === "boolean" ? process : process.spawnChild
 		}
+	};
+
+	// Sanitize the Reporting options based on the input options
+	const reporting: ReportingOptionsSanitized = {
+		...reportingInput,
+		reportedErrorSet: createReportedErrorSet()
 	};
 
 	// Prepare a reference to the Node that is currently being evaluated
@@ -95,7 +102,7 @@ export function evaluate ({
 		typeChecker,
 		logger,
 		stack,
-		reporting,
+		reporting: reporting,
 		nextNode: nextNode => currentNode = nextNode
 	});
 
@@ -129,10 +136,9 @@ export function evaluate ({
 			value
 		};
 	} catch (reason) {
-		// If the Error hasn't been wrapped or wasn't thrown internally, wrap it in a ThrownError
-		if (!(reason instanceof EvaluationError)) {
-			reason = new ThrownError({originalError: reason, node: currentNode});
-		}
+		// Report the Error
+		reportError(reporting, reason, node);
+
 		return {
 			success: false,
 			reason

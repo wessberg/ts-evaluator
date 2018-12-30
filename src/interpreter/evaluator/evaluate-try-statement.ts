@@ -1,24 +1,29 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {TryStatement} from "typescript";
 import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error";
+import {clearBindingFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
+import {TRY_SYMBOL} from "../util/try/try-symbol";
 
 /**
  * Evaluates, or attempts to evaluate, a TryStatement
  * @param {IEvaluatorOptions<TryStatement>} options
  * @returns {Promise<void>}
  */
-export function evaluateTryStatement ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TryStatement>): void {
+export function evaluateTryStatement ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TryStatement>): void {
 	const executeTry = () => {
+		setInLexicalEnvironment({env: environment, reporting, newBinding: true, node, path: TRY_SYMBOL, value: true});
 		// The Block will declare an environment of its own
 		evaluate.statement(node.tryBlock, environment);
 	};
 
 	const executeCatch = (ex: Error) => {
+		clearBindingFromLexicalEnvironment(environment, TRY_SYMBOL);
 		// The CatchClause will declare an environment of its own
 		evaluate.nodeWithArgument(node.catchClause!, environment, ex, statementTraversalStack);
 	};
 
 	const executeFinally = () => {
+		clearBindingFromLexicalEnvironment(environment, TRY_SYMBOL);
 		// The Block will declare an environment of its own
 		evaluate.statement(node.finallyBlock!, environment);
 	};
