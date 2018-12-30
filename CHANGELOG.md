@@ -1,3 +1,12 @@
+## [0.0.14](https://github.com/wessberg/ts-evaluator/compare/v0.0.13...v0.0.14) (2018-12-30)
+
+
+### Bug Fixes
+
+* **bug:** fixes an issue with evaluating a ClassMember such as a MethodDeclaration, PropertyDeclaration, or a GetAccessorDeclaration directly. Fixes [#7](https://github.com/wessberg/ts-evaluator/issues/7) ([ad8bc78](https://github.com/wessberg/ts-evaluator/commit/ad8bc78))
+
+
+
 ## [0.0.13](https://github.com/wessberg/ts-evaluator/compare/v0.0.12...v0.0.13) (2018-12-29)
 
 
