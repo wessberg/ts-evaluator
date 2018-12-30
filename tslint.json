@@ -8,6 +8,7 @@
 		]
 	},
 	"rules": {
-		"interface-name": false
+		"interface-name": false,
+		"completed-docs": false
 	}
 }
