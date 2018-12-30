@@ -12,8 +12,8 @@ export class ModuleNotFoundError extends EvaluationError {
 	 */
 	public readonly path: string;
 
-	constructor ({path, message = `Module '${path}' could not be resolved'`}: IModuleNotFoundErrorOptions) {
-		super({message});
+	constructor ({path, node, message = `Module '${path}' could not be resolved'`}: IModuleNotFoundErrorOptions) {
+		super({message, node});
 		this.path = path;
 	}
 }

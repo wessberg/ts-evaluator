@@ -137,7 +137,7 @@ export function evaluateBinaryExpression ({node, environment, evaluate, logger, 
 			}
 
 			else {
-				throw new UndefinedLeftValueError();
+				throw new UndefinedLeftValueError({node: node.left});
 			}
 
 			// The return value of an assignment is always the assigned value

@@ -12,8 +12,8 @@ export class IoError extends PolicyError {
 	 */
 	public readonly kind: keyof IEvaluateIOPolicy;
 
-	constructor ({kind, message = `${kind} operations are in violation of the policy`}: IIoErrorOptions) {
-		super({violation: "io", message});
+	constructor ({node, kind, message = `${kind} operations are in violation of the policy`}: IIoErrorOptions) {
+		super({violation: "io", message, node});
 		this.kind = kind;
 	}
 }

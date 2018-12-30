@@ -10,8 +10,8 @@ export class MaxOpDurationExceededError extends PolicyError {
 	 */
 	public readonly duration: number;
 
-	constructor ({duration, message = `Maximum operation duration exceeded: ${duration}`}: IMaxOpDurationExceededErrorOptions) {
-		super({violation: "maxOpDuration", message});
+	constructor ({duration, node, message = `Maximum operation duration exceeded: ${duration}`}: IMaxOpDurationExceededErrorOptions) {
+		super({violation: "maxOpDuration", message, node});
 		this.duration = duration;
 	}
 }

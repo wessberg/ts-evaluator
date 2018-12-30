@@ -25,7 +25,7 @@ export function evaluateTryStatement ({node, evaluate, environment, statementTra
 
 	// A TryStatement must have either a catch or a finally block
 	if (node.catchClause == null && node.finallyBlock == null) {
-		throw new MissingCatchOrFinallyAfterTryError({statement: node});
+		throw new MissingCatchOrFinallyAfterTryError({node});
 	}
 
 	// Follows the form: try {...} catch {...}

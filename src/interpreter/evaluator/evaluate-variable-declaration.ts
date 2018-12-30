@@ -17,7 +17,7 @@ export function evaluateVariableDeclaration ({node, environment, evaluate, stack
 
 	// There's no way of destructuring a nullable value
 	if (initializerResult == null && !isIdentifier(node.name)) {
-		throw new EvaluationError();
+		throw new EvaluationError({node});
 	}
 
 	// Evaluate the binding name

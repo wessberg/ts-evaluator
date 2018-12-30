@@ -15,7 +15,7 @@ export function evaluateShorthandPropertyAssignment ({environment, node}: IEvalu
 	const match = getFromLexicalEnvironment(node, environment, identifier);
 
 	if (match == null) {
-		throw new UndefinedIdentifierError({identifier: node.name});
+		throw new UndefinedIdentifierError({node: node.name});
 	}
 
 	parent[identifier] = match.literal;

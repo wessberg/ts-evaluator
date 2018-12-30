@@ -15,7 +15,7 @@ export function evaluateDecorator ({node, environment, evaluate, stack, statemen
 	const decoratorImplementation = evaluate.expression(node.expression, environment, statementTraversalStack);
 
 	if (typeof decoratorImplementation !== "function") {
-		throw new NotCallableError({value: decoratorImplementation, message: `${stringifyLiteral(decoratorImplementation)} is not a valid decorator implementation'`});
+		throw new NotCallableError({node, value: decoratorImplementation, message: `${stringifyLiteral(decoratorImplementation)} is not a valid decorator implementation'`});
 	}
 
 	stack.push(

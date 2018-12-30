@@ -17,17 +17,18 @@ import {createStatementTraversalStack, StatementTraversalStack} from "../../stac
  * @param {ICreateNodeEvaluatorOptions} options
  * @returns {NodeEvaluator}
  */
-export function createNodeEvaluator ({typeChecker, policy, logger, stack, reporting}: ICreateNodeEvaluatorOptions): NodeEvaluator {
+export function createNodeEvaluator ({typeChecker, policy, logger, stack, reporting, nextNode}: ICreateNodeEvaluatorOptions): NodeEvaluator {
 	let ops = 0;
 
 	const handleNewNode = (node: Node, statementTraversalStack: StatementTraversalStack) => {
+		nextNode(node);
 
 		// Increment the amount of encountered ops
 		ops++;
 
 		// Throw an error if the maximum amount of operations has been exceeded
 		if (ops >= policy.maxOps) {
-			throw new MaxOpsExceededError({ops});
+			throw new MaxOpsExceededError({ops, node});
 		}
 
 		// Update the statementTraversalStack with the node's kind

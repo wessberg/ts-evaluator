@@ -6,7 +6,7 @@ import {IUndefinedLeftValueErrorOptions} from "./i-undefined-left-value-error-op
  */
 export class UndefinedLeftValueError extends EvaluationError {
 
-	constructor ({message = `'No leftValue could be determined'`}: IUndefinedLeftValueErrorOptions = {}) {
-		super({message});
+	constructor ({node, message = `'No leftValue could be determined'`}: IUndefinedLeftValueErrorOptions) {
+		super({message, node});
 	}
 }

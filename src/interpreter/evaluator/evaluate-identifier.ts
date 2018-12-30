@@ -62,7 +62,7 @@ export function evaluateIdentifier ({node, environment, typeChecker, evaluate, s
 
 			// In all other cases, both the identifier and the rvalue is still undefined
 			else {
-				throw new UndefinedIdentifierError({identifier: node});
+				throw new UndefinedIdentifierError({node});
 			}
 
 		}
@@ -77,5 +77,5 @@ export function evaluateIdentifier ({node, environment, typeChecker, evaluate, s
 	}
 
 	// Otherwise throw. The identifier is unknown
-	throw new UndefinedIdentifierError({identifier: node});
+	throw new UndefinedIdentifierError({node});
 }

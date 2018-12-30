@@ -22,7 +22,7 @@ import {isConsoleOperation} from "../policy/console/is-console-operation";
  * @param {ICreateSanitizedEnvironmentOptions} options
  * @return {IndexLiteral}
  */
-export function createSanitizedEnvironment ({policy, env}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
+export function createSanitizedEnvironment ({policy, env, getCurrentNode}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
 
 	const hook = (item: PolicyProxyHookOptions<any>) => {
 
@@ -31,27 +31,27 @@ export function createSanitizedEnvironment ({policy, env}: ICreateSanitizedEnvir
 		}
 
 		if (!policy.io.read && isIoRead(item)) {
-			throw new IoError({kind: "read"});
+			throw new IoError({kind: "read", node: getCurrentNode()});
 		}
 
 		if (!policy.io.write && isIoWrite(item)) {
-			throw new IoError({kind: "write"});
+			throw new IoError({kind: "write", node: getCurrentNode()});
 		}
 
 		if (!policy.process.exit && isProcessExitOperation(item)) {
-			throw new ProcessError({kind: "exit"});
+			throw new ProcessError({kind: "exit", node: getCurrentNode()});
 		}
 
 		if (!policy.process.exit && isProcessSpawnChildOperation(item)) {
-			throw new ProcessError({kind: "spawnChild"});
+			throw new ProcessError({kind: "spawnChild", node: getCurrentNode()});
 		}
 
 		if (!policy.network && isNetworkOperation(item)) {
-			throw new NetworkError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)});
+			throw new NetworkError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path), node: getCurrentNode()});
 		}
 
 		if (policy.deterministic && isNonDeterministic(item)) {
-			throw new NonDeterministicError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)});
+			throw new NonDeterministicError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path), node: getCurrentNode()});
 		}
 
 		return true;

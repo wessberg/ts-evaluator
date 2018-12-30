@@ -37,7 +37,7 @@ export function evaluateCallExpression ({node, environment, evaluate, statementT
 	// Otherwise, assume that the expression still needs calling
 	else {
 		if (typeof expressionResult !== "function") {
-			throw new NotCallableError({value: expressionResult});
+			throw new NotCallableError({value: expressionResult, node: node.expression});
 		}
 
 		const value = expressionResult(...evaluatedArgs);

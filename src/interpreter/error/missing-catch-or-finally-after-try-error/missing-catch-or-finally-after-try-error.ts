@@ -8,11 +8,11 @@ import {IMissingCatchOrFinallyAfterTryErrorOptions} from "./i-missing-catch-or-f
 export class MissingCatchOrFinallyAfterTryError extends EvaluationError {
 	/**
 	 * The TryStatement that lacks a catch/finally block
+	 * @type {TryStatement}
 	 */
-	public readonly statement: TryStatement;
+	public readonly node: TryStatement;
 
-	constructor ({statement, message = `Missing catch or finally after try`}: IMissingCatchOrFinallyAfterTryErrorOptions) {
-		super({message});
-		this.statement = statement;
+	constructor ({node, message = `Missing catch or finally after try`}: IMissingCatchOrFinallyAfterTryErrorOptions) {
+		super({node, message});
 	}
 }

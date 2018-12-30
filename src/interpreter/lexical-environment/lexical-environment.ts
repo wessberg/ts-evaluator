@@ -1,10 +1,8 @@
 import {IndexLiteral, Literal, LiteralMatch} from "../literal/literal";
 import {del, get, has, set} from "object-path";
-import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
 import {createSanitizedEnvironment} from "../environment/create-sanitized-environment";
 import {ECMA_GLOBALS} from "../environment/ecma/ecma-globals";
 import {NODE_GLOBALS} from "../environment/node/node-globals";
-import {IEnvironment} from "../environment/i-environment";
 import {EnvironmentPresetKind} from "../environment/environment-preset-kind";
 import {BROWSER_GLOBALS} from "../environment/browser/browser-globals";
 import {mergeDescriptors} from "../util/descriptor/merge-descriptors";
@@ -15,6 +13,7 @@ import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
 import {Node} from "typescript";
+import {ICreateLexicalEnvironmentOptions} from "./i-create-lexical-environment-options";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment|undefined;
@@ -177,11 +176,10 @@ export function clearBindingFromLexicalEnvironment (env: LexicalEnvironment, pat
 
 /**
  * Creates a Lexical Environment
- * @param {IEnvironment} inputEnvironment
- * @param {IEvaluatePolicySanitized} policy
+ * @param {ICreateLexicalEnvironmentOptions} options
  * @returns {Promise<LexicalEnvironment>}
  */
-export function createLexicalEnvironment ({preset, extra}: IEnvironment, policy: IEvaluatePolicySanitized): LexicalEnvironment {
+export function createLexicalEnvironment ({inputEnvironment: {extra, preset}, policy, getCurrentNode}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
 
 	let envInput: IndexLiteral;
 
@@ -212,7 +210,8 @@ export function createLexicalEnvironment ({preset, extra}: IEnvironment, policy:
 		parentEnv: undefined,
 		env: createSanitizedEnvironment({
 			policy,
-			env: envInput
+			env: envInput,
+			getCurrentNode
 		})
 	};
 }

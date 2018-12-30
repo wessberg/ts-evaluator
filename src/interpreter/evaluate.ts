@@ -14,6 +14,9 @@ import {isDeclaration} from "./util/declaration/is-declaration";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
 import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
 import {EnvironmentPresetKind} from "./environment/environment-preset-kind";
+import {Node} from "typescript";
+import {EvaluationError} from "./error/evaluation-error/evaluation-error";
+import {ThrownError} from "./error/thrown-error/thrown-error";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
@@ -67,11 +70,34 @@ export function evaluate ({
 		}
 	};
 
-	const logger = new Logger(logLevel);
-	const initialEnvironment = createLexicalEnvironment({preset, extra}, policy);
+	// Prepare a reference to the Node that is currently being evaluated
+	let currentNode: Node = node;
 
+	// Prepare a logger
+	const logger = new Logger(logLevel);
+
+	// Prepare the initial environment
+	const initialEnvironment = createLexicalEnvironment({
+		inputEnvironment: {
+			preset,
+			extra
+		},
+		policy,
+		getCurrentNode: () => currentNode
+	});
+
+	// Prepare a Stack
 	const stack: Stack = createStack();
-	const nodeEvaluator = createNodeEvaluator({policy, typeChecker, logger, stack, reporting});
+
+	// Prepare a NodeEvaluator
+	const nodeEvaluator = createNodeEvaluator({
+		policy,
+		typeChecker,
+		logger,
+		stack,
+		reporting,
+		nextNode: nextNode => currentNode = nextNode
+	});
 
 	try {
 		let value: Literal;
@@ -103,6 +129,10 @@ export function evaluate ({
 			value
 		};
 	} catch (reason) {
+		// If the Error hasn't been wrapped or wasn't thrown internally, wrap it in a ThrownError
+		if (!(reason instanceof EvaluationError)) {
+			reason = new ThrownError({originalError: reason, node: currentNode});
+		}
 		return {
 			success: false,
 			reason

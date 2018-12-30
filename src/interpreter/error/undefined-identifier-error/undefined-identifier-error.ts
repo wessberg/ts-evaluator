@@ -8,11 +8,11 @@ import {IUndefinedIdentifierErrorOptions} from "./i-undefined-identifier-error-o
 export class UndefinedIdentifierError extends EvaluationError {
 	/**
 	 * The identifier that is undefined in the context that created this error
+	 * @type {Identifier}
 	 */
-	public readonly identifier: Identifier;
+	public readonly node: Identifier;
 
-	constructor ({identifier, message = `'${identifier.text}' is not defined'`}: IUndefinedIdentifierErrorOptions) {
-		super({message});
-		this.identifier = identifier;
+	constructor ({node, message = `'${node.text}' is not defined'`}: IUndefinedIdentifierErrorOptions) {
+		super({message, node});
 	}
 }

@@ -14,7 +14,7 @@ export function evaluateAwaitExpression ({node, environment, evaluate, policy, s
 	const timeout = policy.maxOpDuration === Infinity
 		? undefined
 		: setTimeout(() => {
-			throw new MaxOpDurationExceededError({duration: policy.maxOpDuration});
+			throw new MaxOpDurationExceededError({duration: policy.maxOpDuration, node});
 		}, policy.maxOpDuration);
 
 	const result = syncAwait(evaluate.expression(node.expression, environment, statementTraversalStack) as Promise<Literal>);

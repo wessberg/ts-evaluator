@@ -43,6 +43,6 @@ export function getImplementationForDeclarationWithinDeclarationFile (options: I
 			: module[name];
 	} catch (ex) {
 		if (ex instanceof EvaluationError) throw ex;
-		else throw new ModuleNotFoundError({path: moduleDeclaration.name.text});
+		else throw new ModuleNotFoundError({node: moduleDeclaration, path: moduleDeclaration.name.text});
 	}
 }

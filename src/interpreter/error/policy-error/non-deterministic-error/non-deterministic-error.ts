@@ -12,8 +12,8 @@ export class NonDeterministicError extends PolicyError {
 	 */
 	public readonly operation: string;
 
-	constructor ({operation, message = `The operation: '${operation}' is nondeterministic. That is in violation of the policy`}: INonDeterministicErrorOptions) {
-		super({violation: "deterministic", message});
+	constructor ({operation, node, message = `The operation: '${operation}' is nondeterministic. That is in violation of the policy`}: INonDeterministicErrorOptions) {
+		super({violation: "deterministic", message, node});
 
 		this.operation = operation;
 	}

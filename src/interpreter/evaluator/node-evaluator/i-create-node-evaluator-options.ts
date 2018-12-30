@@ -1,4 +1,4 @@
-import {TypeChecker} from "typescript";
+import {TypeChecker, Node} from "typescript";
 import {Logger} from "../../logger/logger";
 import {Stack} from "../../stack/stack";
 import {IEvaluatePolicySanitized} from "../../policy/i-evaluate-policy";
@@ -10,4 +10,5 @@ export interface ICreateNodeEvaluatorOptions {
 	reporting: ReportingOptions;
 	logger: Logger;
 	stack: Stack;
+	nextNode (node: Node): void;
 }
