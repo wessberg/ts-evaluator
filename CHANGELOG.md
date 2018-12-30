@@ -1,3 +1,17 @@
+## [0.0.17](https://github.com/wessberg/ts-evaluator/compare/v0.0.16...v0.0.17) (2018-12-30)
+
+
+### Bug Fixes
+
+* **bug:** fixes an issue where constructor arguments with a [public|protected|private] modifier wouldn't be set on the class instance as instance properties. Fixes [#10](https://github.com/wessberg/ts-evaluator/issues/10) ([2e091c0](https://github.com/wessberg/ts-evaluator/commit/2e091c0))
+
+
+### Features
+
+* **error:** errors now point to the Node that caused or threw them. Errors caused by the evaluated code itself such as ThrowStatements will produce ThrownError objects that point to the original error as well as the Node that caused or threw it. Fixes [#8](https://github.com/wessberg/ts-evaluator/issues/8) ([134b8ef](https://github.com/wessberg/ts-evaluator/commit/134b8ef))
+
+
+
 ## [0.0.16](https://github.com/wessberg/ts-evaluator/compare/v0.0.15...v0.0.16) (2018-12-30)
 
 
