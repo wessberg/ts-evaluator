@@ -1,4 +1,4 @@
-import {test} from "ava";
+import test from "ava";
 import {prepareTest} from "../setup";
 
 test("Can evaluate a CallExpression for a function with variable assignments. #1", t => {

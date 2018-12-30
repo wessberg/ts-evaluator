@@ -1,4 +1,4 @@
-import {test} from "ava";
+import test from "ava";
 import {prepareTest} from "../setup";
 
 test("Can evaluate a CallExpression with a ForInStatement. #1", t => {

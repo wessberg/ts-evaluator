@@ -1,4 +1,4 @@
-import {test} from "ava";
+import test from "ava";
 import {prepareTest} from "../setup";
 
 test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", t => {

@@ -1,4 +1,4 @@
-import {test} from "ava";
+import test from "ava";
 import {prepareTest} from "../setup";
 import {EnvironmentPresetKind} from "../../src/interpreter/environment/environment-preset-kind";
 

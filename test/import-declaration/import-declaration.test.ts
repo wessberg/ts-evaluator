@@ -1,4 +1,4 @@
-import {test} from "ava";
+import test from "ava";
 import {prepareTest} from "../setup";
 
 test("Can resolve symbols via ImportDeclarations. #1", t => {
@@ -113,7 +113,7 @@ test("Can resolve symbols via ImportDeclarations. #3", t => {
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #3", t => {
+test("Can resolve symbols via ImportDeclarations. #4", t => {
 	const {evaluate} = prepareTest(
 		[
 			{

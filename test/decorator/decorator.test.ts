@@ -1,4 +1,4 @@
-import {test} from "ava";
+import test from "ava";
 import {prepareTest} from "../setup";
 import {IndexLiteral} from "../../src/interpreter/literal/literal";
 
