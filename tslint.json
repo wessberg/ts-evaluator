@@ -1,14 +1,10 @@
 {
-	"extends": "./node_modules/@wessberg/ts-config/tslint/tslint.json",
+	"extends": "./node_modules/@wessberg/ts-config/tslint.json",
 	"linterOptions": {
 		"exclude": [
 			"dist/**/*.*",
 			"compiled/**/*.*",
 			"test123/**/*.*"
 		]
-	},
-	"rules": {
-		"interface-name": false,
-		"completed-docs": false
 	}
 }

@@ -1,8 +1,8 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ArrayLiteralExpression} from "typescript";
+import {ArrayLiteralExpression, isSpreadElement} from "typescript";
 import {Literal} from "../literal/literal";
-import {isIterable} from "../util/iterable/is-iterable";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
+import {isIterable} from "../util/iterable/is-iterable";
 
 /**
  * Evaluates, or attempts to evaluate, a ArrayLiteralExpression
@@ -16,8 +16,13 @@ export function evaluateArrayLiteralExpression ({node, environment, evaluate, st
 
 	for (const element of node.elements) {
 		const nextValue = evaluate.expression(element, environment, statementTraversalStack);
-		if (isIterable(nextValue)) value.push(...nextValue);
-		else value.push(nextValue);
+		if (isSpreadElement(element) && isIterable(nextValue)) {
+			value.push(...nextValue);
+		}
+
+		else {
+			value.push(nextValue);
+		}
 	}
 
 	return value;

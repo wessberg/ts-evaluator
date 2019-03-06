@@ -1,32 +1,14 @@
-<!-- SHADOW_SECTION_LOGO_START -->
-
-<div><img alt="Logo" src="https://raw.githubusercontent.com/wessberg/ts-evaluator/master/documentation/asset/ts-evaluator-logo.png" height="120"   /></div>
-
-<!-- SHADOW_SECTION_LOGO_END -->
-
-<!-- SHADOW_SECTION_DESCRIPTION_SHORT_START -->
+<img alt="Logo for @wessberg/ts-evaluator" src="https://raw.githubusercontent.com/wessberg/ts-evaluator/master/documentation/asset/ts-evaluator-logo.png" height="120"></img><br>
+<a href="https://npmcharts.com/compare/@wessberg/ts-evaluator?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fts-evaluator.svg" height="20"></img></a>
+<a href="https://david-dm.org/wessberg/ts-evaluator"><img alt="Dependencies" src="https://img.shields.io/david/wessberg/ts-evaluator.svg" height="20"></img></a>
+<a href="https://www.npmjs.com/package/@wessberg/ts-evaluator"><img alt="NPM Version" src="https://badge.fury.io/js/%40wessberg%2Fts-evaluator.svg" height="20"></img></a>
+<a href="https://github.com/wessberg/ts-evaluator/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fts-evaluator.svg" height="20"></img></a>
+<a href="https://opensource.org/licenses/MIT"><img alt="MIT License" src="https://img.shields.io/badge/License-MIT-yellow.svg" height="20"></img></a>
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://c5.patreon.com/external/logo/become_a_patron_button@2x.png" height="20"></img></a>
 
 > An interpreter for Typescript that can evaluate an arbitrary Node within a Typescript AST
 
-<!-- SHADOW_SECTION_DESCRIPTION_SHORT_END -->
-
-<!-- SHADOW_SECTION_BADGES_START -->
-
-<a href="https://npmcharts.com/compare/%40wessberg%2Fts-evaluator?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fts-evaluator.svg"    /></a>
-<a href="https://www.npmjs.com/package/%40wessberg%2Fts-evaluator"><img alt="NPM version" src="https://badge.fury.io/js/%40wessberg%2Fts-evaluator.svg"    /></a>
-<a href="https://david-dm.org/wessberg/ts-evaluator"><img alt="Dependencies" src="https://img.shields.io/david/wessberg%2Fts-evaluator.svg"    /></a>
-<a href="https://github.com/wessberg/ts-evaluator/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fts-evaluator.svg"    /></a>
-<a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square"    /></a>
-<a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"    /></a>
-<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Support on Patreon" src="https://img.shields.io/badge/patreon-donate-green.svg"    /></a>
-
-<!-- SHADOW_SECTION_BADGES_END -->
-
-<!-- SHADOW_SECTION_DESCRIPTION_LONG_START -->
-
 ## Description
-
-<!-- SHADOW_SECTION_DESCRIPTION_LONG_END -->
 
 This library is an implementation of an interpreter for Typescript that can evaluate any `Expression`, `ExpressionStatement` or `Declaration` within a Typescript AST.
 Rather than interpreting a _program_, or a sequence of `Statement`s, this library takes a Node within an existing AST and evaluates it based on its' lexical environment.
@@ -42,44 +24,6 @@ Additionally, `ts-evaluator` supports both a Browser environment, a Node environ
 
 If you are looking for a Typescript REPL, or a way to _execute_ a full Typescript program, you're looking for something like [ts-node](https://github.com/TypeStrong/ts-node) instead.
 
-<!-- SHADOW_SECTION_FEATURES_START -->
-
-### Features
-
-<!-- SHADOW_SECTION_FEATURES_END -->
-
-- Evaluate _any_ Node within a Typescript AST and get an actual value back
-- Supports browser-, node, and ECMA environments.
-- Supports several reporting- and diagnostic hooks you can use use
-- Is a full-featured JavaScript virtual machine
-- Supports policy restrictions and sandboxing
-
-<!-- SHADOW_SECTION_FEATURE_IMAGE_START -->
-
-<!-- SHADOW_SECTION_FEATURE_IMAGE_END -->
-
-<!-- SHADOW_SECTION_TOC_START -->
-
-## Table of Contents
-
-- [Description](#description)
-  - [Features](#features)
-- [Table of Contents](#table-of-contents)
-- [Install](#install)
-  - [NPM](#npm)
-  - [Yarn](#yarn)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Maintainers](#maintainers)
-- [Backers](#backers)
-  - [Patreon](#patreon)
-- [FAQ](#faq)
-- [License](#license)
-
-<!-- SHADOW_SECTION_TOC_END -->
-
-<!-- SHADOW_SECTION_INSTALL_START -->
-
 ## Install
 
 ### NPM
@@ -94,13 +38,7 @@ $ npm install @wessberg/ts-evaluator
 $ yarn add @wessberg/ts-evaluator
 ```
 
-<!-- SHADOW_SECTION_INSTALL_END -->
-
-<!-- SHADOW_SECTION_USAGE_START -->
-
 ## Usage
-
-<!-- SHADOW_SECTION_USAGE_END -->
 
 Let's start off with a very basic example:
 
@@ -240,52 +178,18 @@ Here's an explainer of the different reporting hooks:
 - `reportIntermediateResults(entry: IIntermediateResultReportEntry) => void|(Promise<void>)` - Will be invoked for each intermediate result that has been evaluated before producing a final result. This allows you to work programmatically with all expression values during code execution.
 - `reportErrors(entry: IErrorReportEntry) => void|(Promise<void>)` - Will be invoked for each error that is thrown, both when evaluating a result, and for subsequent invocations on, for example, returned function instances. Holds a reference to the error, as well ast the AST node that threw or caused the Error.
 
-<!-- SHADOW_SECTION_CONTRIBUTING_START -->
-
 ## Contributing
 
 Do you want to contribute? Awesome! Please follow [these recommendations](./CONTRIBUTING.md).
 
-<!-- SHADOW_SECTION_CONTRIBUTING_END -->
-
-<!-- SHADOW_SECTION_MAINTAINERS_START -->
-
 ## Maintainers
 
-| <img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   />                   |
-| --------------------------------------------------------------------------------------------------------------------------------- |
-| [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br>[@FredWessberg](https://twitter.com/FredWessberg)<br>_Lead Developer_ |
+- <a href="https://github.com/wessberg"><img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="11"></img></a> [Frederik Wessberg](https://github.com/wessberg): _Maintainer_
 
-<!-- SHADOW_SECTION_MAINTAINERS_END -->
+## Backers 🏅
 
-<!-- SHADOW_SECTION_BACKERS_START -->
+[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, logo, and link to your site listed here.
 
-## Backers
+## License 📄
 
-### Patreon
-
-[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, avatar, and Twitter handle listed here.
-
-<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Backers on Patreon" src="https://patreon-badge.herokuapp.com/11315442.png"  width="500"  /></a>
-
-<!-- SHADOW_SECTION_BACKERS_END -->
-
-<!-- SHADOW_SECTION_FAQ_START -->
-
-## FAQ
-
-<!-- SHADOW_SECTION_FAQ_END -->
-
-### How fast is this?
-
-This is, after all, a virtual machine written on top of another virtual machine (V8), which is built in a dynamically typed high-level language (EcmaScript). This library is _not_ built to be
-comparable in performance to raw V8 execution speed. However, since `ts-evaluator` doesn't require a compile-step and works directly on an AST, for small operations it will most likely be several magnitudes faster than
-both `ts-node` and compiling to JavaScript with `tsc` and executing directly.
-
-<!-- SHADOW_SECTION_LICENSE_START -->
-
-## License
-
-MIT © [Frederik Wessberg](mailto:frederikwessberg@hotmail.com) ([@FredWessberg](https://twitter.com/FredWessberg)) ([Website](https://github.com/wessberg))
-
-<!-- SHADOW_SECTION_LICENSE_END -->
+MIT © [Frederik Wessberg](https://github.com/wessberg)

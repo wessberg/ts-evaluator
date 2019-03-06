@@ -3,9 +3,11 @@ import {evaluate} from "../src/interpreter/evaluate";
 import {EvaluateResult} from "../src/interpreter/evaluate-result";
 import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChild, getDefaultCompilerOptions, getDefaultLibFileName, Node, NodeArray, ScriptKind, ScriptTarget, SourceFile, Statement, sys} from "typescript";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
-import {readFileSync} from "fs";
+import {readFileSync, readdirSync} from "fs";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
 import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
+import {sync} from "find-up"
+import {join} from "path";
 
 // tslint:disable:no-any
 
@@ -65,12 +67,19 @@ export function prepareTest (
 		logLevel = LogLevelKind.SILENT
 	}: Partial<ITestOpts> = {}): ITestFileResult {
 	const arrFiles = Array.isArray(files) ? files : [files];
+	const nodeTypesDir = sync("node_modules/@types/node");
+	const nodeTypeDeclarationFiles = nodeTypesDir == null
+		? []
+		: readdirSync(nodeTypesDir)
+			.filter(file => file.endsWith(".d.ts"))
+			.map(file => join(nodeTypesDir, file));
+
 	const normalizedFiles: ITestFile[] = [
 		...arrFiles.map(file => typeof file === "string" ? ({text: file, fileName: `auto-generated-${Math.floor(Math.random() * 100000)}.ts`}) : file),
-		{
-			fileName: "node_modules/@types/node/index.d.ts",
-			text: readFileSync("node_modules/@types/node/index.d.ts").toString()
-		}
+		...nodeTypeDeclarationFiles.map(file => ({
+			fileName: file,
+			text: readFileSync(file, "utf8")
+		}))
 	];
 	const normalizedEntry = typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
 
