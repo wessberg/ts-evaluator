@@ -6,5 +6,8 @@
 			"compiled/**/*.*",
 			"test123/**/*.*"
 		]
+	},
+	"rules": {
+		"no-nested-switch": false
 	}
 }
