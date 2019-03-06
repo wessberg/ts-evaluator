@@ -1,3 +1,12 @@
+## [0.0.19](https://github.com/wessberg/ts-evaluator/compare/v0.0.18...v0.0.19) (2019-03-06)
+
+
+### Bug Fixes
+
+* **bug:** fixes an issue with ArrayLiteralExpressions and iterables. ([41c6452](https://github.com/wessberg/ts-evaluator/commit/41c6452))
+
+
+
 ## [0.0.18](https://github.com/wessberg/ts-evaluator/compare/v0.0.17...v0.0.18) (2018-12-30)
 
 

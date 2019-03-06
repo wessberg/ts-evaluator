@@ -69,11 +69,16 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
   - [NPM](#npm)
   - [Yarn](#yarn)
 - [Usage](#usage)
+  - [Setting up an environment](#setting-up-an-environment)
+  - [Setting up Policies](#setting-up-policies)
+  - [Logging](#logging)
+  - [Reporting](#reporting)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
 - [Backers](#backers)
   - [Patreon](#patreon)
 - [FAQ](#faq)
+  - [How fast is this?](#how-fast-is-this)
 - [License](#license)
 
 <!-- SHADOW_SECTION_TOC_END -->
@@ -108,18 +113,18 @@ Let's start off with a very basic example:
 import {evaluate} from "@wessberg/ts-evaluator";
 
 const result = evaluate({
-  node: someNode,
-  typeChecker: someTypeChecker
+	node: someNode,
+	typeChecker: someTypeChecker
 });
 
 // If a value was produced
 if (result.success) {
-  console.log(result.value);
+	console.log(result.value);
 }
 
 // If an error occurred
 else {
-  console.log(result.reason);
+	console.log(result.reason);
 }
 ```
 
@@ -141,14 +146,14 @@ Here's how you can configure environment options:
 
 ```typescript
 const result = evaluate({
-  // ...
-  environment: {
-    // The "Node" environment is the default one. You can simply omit this key if you are targeting a Node environment
-    preset: EnvironmentPresetKind.NODE,
-    extra: {
-      someGlobal: "someValue"
-    }
-  }
+	// ...
+	environment: {
+		// The "Node" environment is the default one. You can simply omit this key if you are targeting a Node environment
+		preset: EnvironmentPresetKind.NODE,
+		extra: {
+			someGlobal: "someValue"
+		}
+	}
 });
 ```
 
@@ -161,22 +166,22 @@ By default, IO writes, network calls, and spawning child processes are restricte
 
 ```typescript
 const result = evaluate({
-  // ...
-  policy: {
-    deterministic: false,
-    network: false,
-    console: false,
-    maxOps: Infinity,
-    maxOpDuration: Infinity,
-    io: {
-      read: true,
-      write: false
-    },
-    process: {
-      exit: false,
-      spawnChild: false
-    }
-  }
+	// ...
+	policy: {
+		deterministic: false,
+		network: false,
+		console: false,
+		maxOps: Infinity,
+		maxOpDuration: Infinity,
+		io: {
+			read: true,
+			write: false
+		},
+		process: {
+			exit: false,
+			spawnChild: false
+		}
+	}
 });
 ```
 
@@ -204,8 +209,8 @@ You can get information about the evaluation process with various levels of logg
 
 ```typescript
 const result = evaluate({
-  // ...
-  logLevel: LogLevelKind.DEBUG
+	// ...
+	logLevel: LogLevelKind.DEBUG
 });
 ```
 
@@ -223,13 +228,13 @@ These are useful if you want to understand more about the execution path and wor
 
 ```typescript
 const result = evaluate({
-  // ...
-  reporting: {
-    reportBindings: entry => doSomething(entry),
-    reportTraversal: entry => someArray.push(entry.node),
-    reportIntermediateResults: entry => doSomeOtherThing(entry),
-    reportErrors: entry => doSomethingWithError(entry)
-  }
+	// ...
+	reporting: {
+		reportBindings: entry => doSomething(entry),
+		reportTraversal: entry => someArray.push(entry.node),
+		reportIntermediateResults: entry => doSomeOtherThing(entry),
+		reportErrors: entry => doSomethingWithError(entry)
+	}
 });
 ```
 
