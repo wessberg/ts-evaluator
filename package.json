@@ -48,31 +48,31 @@
   "license": "MIT",
   "devDependencies": {
     "@wessberg/scaffold": "1.0.17",
-    "@wessberg/rollup-plugin-ts": "1.1.34",
+    "@wessberg/rollup-plugin-ts": "1.1.51",
     "@wessberg/ts-config": "0.0.39",
     "standard-changelog": "2.0.7",
-    "tslint": "5.13.1",
-    "ava": "1.3.1",
-    "prettier": "^1.16.4",
+    "tslint": "5.16.0",
+    "ava": "1.4.1",
+    "prettier": "^1.17.0",
     "pretty-quick": "^1.10.0",
-    "husky": "^1.3.1",
-    "np": "^4.0.2",
+    "husky": "^2.1.0",
+    "np": "^5.0.0",
     "find-up": "^3.0.0"
   },
   "dependencies": {
     "@types/deasync": "0.1.0",
-    "@types/node": "11.10.5",
+    "@types/node": "11.13.7",
     "@types/object-path": "0.11.0",
     "@types/find-up": "^2.1.1",
     "chalk": "2.4.2",
     "deasync": "0.1.14",
     "object-path": "0.11.4",
     "tslib": "1.9.3",
-    "typescript": "3.3.3333"
+    "typescript": "3.4.5"
   },
   "optionalDependencies": {
     "@types/jsdom": "12.2.3",
-    "jsdom": "13.2.0"
+    "jsdom": "15.0.0"
   },
   "main": "./dist/cjs/index.js",
   "module": "./dist/esm/index.js",

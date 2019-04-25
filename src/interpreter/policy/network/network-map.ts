@@ -43,9 +43,6 @@ export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 	},
 
 	http: {
-		createClient: {
-			[PolicyTrapKind.APPLY]: true
-		},
 		createServer: {
 			[PolicyTrapKind.APPLY]: true
 		},
