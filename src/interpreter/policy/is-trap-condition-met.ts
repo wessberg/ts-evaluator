@@ -41,7 +41,7 @@ function walkAtoms<T extends object, ConditionType = boolean> (map: TrapConditio
 		}
 
 		else {
-			return walkAtoms(mapEntry, matchCondition, item, tail);
+			return walkAtoms(mapEntry as TrapConditionMap<T, ConditionType>|TrapConditionMemberMap<T, ConditionType>, matchCondition, item, tail);
 		}
 	}
 }

@@ -1,4 +1,4 @@
-import {JSDOM} from "jsdom";
+import {DOMWindow, JSDOM} from "jsdom";
 import {mergeDescriptors} from "../../util/descriptor/merge-descriptors";
 import {ECMA_GLOBALS} from "../ecma/ecma-globals";
 import {subtract} from "../../util/object/subtract";
@@ -9,7 +9,7 @@ export const BROWSER_GLOBALS = () => {
 	const ecmaGlobals = ECMA_GLOBALS();
 	const raf = rafImplementation(window);
 	const merged = mergeDescriptors(
-		subtract(window, ecmaGlobals),
+		subtract(window, ecmaGlobals as Partial<DOMWindow>),
 		subtract(raf, window),
 		ecmaGlobals
 	);

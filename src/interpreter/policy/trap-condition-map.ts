@@ -15,7 +15,7 @@ export type TrapConditionMemberMap<T, ConditionType> = {
 	[Key in keyof T]?: TrapConditionMapValue<T[Key], ConditionType>;
 };
 
-export type TrapConditionMapValue<T, ConditionType> = TrapCondition<ConditionType>|TrapConditionMemberMap<T, ConditionType>|PolicyTrapKindToTrapConditionMap<ConditionType>;
+export type TrapConditionMapValue<T, ConditionType> = TrapCondition<ConditionType>|TrapConditionMemberMap<T, ConditionType>|PolicyTrapKindToTrapConditionMap<ConditionType>|undefined;
 
 /**
  * Returns true if the given item is a TrapCondition

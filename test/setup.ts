@@ -67,7 +67,7 @@ export function prepareTest (
 		logLevel = LogLevelKind.SILENT
 	}: Partial<ITestOpts> = {}): ITestFileResult {
 	const arrFiles = Array.isArray(files) ? files : [files];
-	const nodeTypesDir = sync("node_modules/@types/node");
+	const nodeTypesDir = sync("node_modules/@types/node", {type: "directory"});
 	const nodeTypeDeclarationFiles = nodeTypesDir == null
 		? []
 		: readdirSync(nodeTypesDir)
