@@ -14,7 +14,7 @@ export function evaluateArrayBindingPattern ({node, evaluate, environment, state
 
 	while (elementsCursor < node.elements.length) {
 		const {done, value} = iterator.next();
-		if (done) break;
+		if (done === true) break;
 
 		evaluate.nodeWithArgument(node.elements[elementsCursor++], environment, value, statementTraversalStack);
 	}
