@@ -1,3 +1,12 @@
+## [0.0.23](https://github.com/wessberg/ts-evaluator/compare/v0.0.22...v0.0.23) (2019-10-14)
+
+
+### Features
+
+* **deasync:** make the deasync module an optional dependency since not all environments support it ([814e2f8](https://github.com/wessberg/ts-evaluator/commit/814e2f857132b9ff356a15be0c41217eb5c27f64))
+
+
+
 ## [0.0.22](https://github.com/wessberg/ts-evaluator/compare/v0.0.21...v0.0.22) (2019-09-09)
 
 
@@ -15,7 +24,7 @@
 
 ### Bug Fixes
 
-* **bug:** fixes an issue with ArrayLiteralExpressions and iterables. ([41c6452](https://github.com/wessberg/ts-evaluator/commit/41c6452))
+* **bug:** fixes an issue with ArrayLiteralExpressions and iterables. ([41c6452](https://github.com/wessberg/ts-evaluator/commit/41c6452342b31f606ee5fb9c4c50c6bc2d867e76))
 
 
 
@@ -24,7 +33,7 @@
 
 ### Features
 
-* **reporting:** adds a new reporter: reportErrors. This is a reporting hook that will be invoked for each error that is thrown, both when evaluating a result, and for subsequent invocations on, for example, returned function instances. Holds a reference to the error, as well ast the AST node that threw or caused the Error ([a65e386](https://github.com/wessberg/ts-evaluator/commit/a65e386))
+* **reporting:** adds a new reporter: reportErrors. This is a reporting hook that will be invoked for each error that is thrown, both when evaluating a result, and for subsequent invocations on, for example, returned function instances. Holds a reference to the error, as well ast the AST node that threw or caused the Error ([a65e386](https://github.com/wessberg/ts-evaluator/commit/a65e3861a1659e80ffd46e9c2ed48dff756dfebc))
 
 
 
@@ -33,12 +42,12 @@
 
 ### Bug Fixes
 
-* **bug:** fixes an issue where constructor arguments with a [public|protected|private] modifier wouldn't be set on the class instance as instance properties. Fixes [#10](https://github.com/wessberg/ts-evaluator/issues/10) ([2e091c0](https://github.com/wessberg/ts-evaluator/commit/2e091c0))
+* **bug:** fixes an issue where constructor arguments with a [public|protected|private] modifier wouldn't be set on the class instance as instance properties. Fixes [#10](https://github.com/wessberg/ts-evaluator/issues/10) ([2e091c0](https://github.com/wessberg/ts-evaluator/commit/2e091c034c46832715a493c26dc0a320de8c9ff9))
 
 
 ### Features
 
-* **error:** errors now point to the Node that caused or threw them. Errors caused by the evaluated code itself such as ThrowStatements will produce ThrownError objects that point to the original error as well as the Node that caused or threw it. Fixes [#8](https://github.com/wessberg/ts-evaluator/issues/8) ([134b8ef](https://github.com/wessberg/ts-evaluator/commit/134b8ef))
+* **error:** errors now point to the Node that caused or threw them. Errors caused by the evaluated code itself such as ThrowStatements will produce ThrownError objects that point to the original error as well as the Node that caused or threw it. Fixes [#8](https://github.com/wessberg/ts-evaluator/issues/8) ([134b8ef](https://github.com/wessberg/ts-evaluator/commit/134b8efc4ea5854695883150641ffabac413bd5c))
 
 
 
@@ -55,7 +64,7 @@
 
 ### Bug Fixes
 
-* **bug:** fixes an issue with evaluating a ClassMember such as a MethodDeclaration, PropertyDeclaration, or a GetAccessorDeclaration directly. Fixes [#7](https://github.com/wessberg/ts-evaluator/issues/7) ([ad8bc78](https://github.com/wessberg/ts-evaluator/commit/ad8bc78))
+* **bug:** fixes an issue with evaluating a ClassMember such as a MethodDeclaration, PropertyDeclaration, or a GetAccessorDeclaration directly. Fixes [#7](https://github.com/wessberg/ts-evaluator/issues/7) ([ad8bc78](https://github.com/wessberg/ts-evaluator/commit/ad8bc78f585f13211329ba7345d9c5b2d3b9d201))
 
 
 
