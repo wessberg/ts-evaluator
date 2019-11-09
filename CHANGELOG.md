@@ -1,3 +1,12 @@
+## [0.0.24](https://github.com/wessberg/ts-evaluator/compare/v0.0.23...v0.0.24) (2019-11-09)
+
+
+### Features
+
+* **optional chaining:** add support for optional chaining and nullish coalescing ([7a79b34](https://github.com/wessberg/ts-evaluator/commit/7a79b34e6dd098a87f98bfab64c707a640c55ade))
+
+
+
 ## [0.0.23](https://github.com/wessberg/ts-evaluator/compare/v0.0.22...v0.0.23) (2019-10-14)
 
 
