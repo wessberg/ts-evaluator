@@ -180,6 +180,10 @@ export function evaluateBinaryExpression ({node, environment, evaluate, logger, 
 			return leftValue in (rightValue as unknown as object);
 		}
 
+		// Nullish coalescing (A ?? B)
+		case SyntaxKind.QuestionQuestionToken:
+			return leftValue != null ? leftValue : rightValue;
+
 		case SyntaxKind.InstanceOfKeyword: {
 			return leftValue as unknown as object instanceof (rightValue as unknown as Function);
 		}

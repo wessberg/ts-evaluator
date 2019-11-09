@@ -20,7 +20,7 @@ export function evaluateCallExpression ({node, environment, evaluate, statementT
 	}
 
 	// Evaluate the expression
-	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as Function;
+	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as Function|undefined;
 
 	if (isLazyCall(expressionResult)) {
 		const currentThisBinding = expressionContainsSuperKeyword(node.expression) ? getFromLexicalEnvironment(node, environment, THIS_SYMBOL) : undefined;
@@ -36,11 +36,12 @@ export function evaluateCallExpression ({node, environment, evaluate, statementT
 
 	// Otherwise, assume that the expression still needs calling
 	else {
-		if (typeof expressionResult !== "function") {
+		// Unless optional chaining is being used, throw a NotCallableError
+		if (node.questionDotToken == null && typeof expressionResult !== "function") {
 			throw new NotCallableError({value: expressionResult, node: node.expression});
 		}
 
-		const value = expressionResult(...evaluatedArgs);
+		const value = typeof expressionResult !== "function" ? undefined : expressionResult(...evaluatedArgs);
 		logger.logResult(value, "CallExpression");
 		return value;
 	}
