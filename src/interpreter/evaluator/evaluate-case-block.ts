@@ -1,19 +1,16 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {CaseBlock} from "typescript";
 import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a CaseBlock, based on a switch expression
- * @param {IEvaluatorOptions<CaseBlock>} options
- * @param {Literal} switchExpression
- * @returns {Promise<void>}
  */
-export function evaluateCaseBlock ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<CaseBlock>, switchExpression: Literal): void {
+export function evaluateCaseBlock ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.CaseBlock>, switchExpression: Literal): void {
 	// Prepare a lexical environment for the case block
 	const localEnvironment = cloneLexicalEnvironment(environment);
 	// Define a new binding for a break symbol within the environment

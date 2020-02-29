@@ -5,8 +5,9 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
 
 /**
  * Returns true if the given item represents an operation that prints to console
- * @param {PolicyProxyHookOptions<NodeBuiltInsAndGlobals>} item
- * @returns {boolean}
+ *
+ * @param item
+ * @returns
  */
 export function isConsoleOperation (item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(CONSOLE_MAP, true, item);

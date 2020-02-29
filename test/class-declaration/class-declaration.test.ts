@@ -98,6 +98,37 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", t => {
 	}
 });
 
+test("Can handle ClassDeclarations and preserves their constructors. #2", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+		`
+			class MyClass {
+				#foo: string;
+
+				constructor () {
+					this.#foo = "hello";
+				}
+				
+				get foo () {
+					return this.#foo;
+				}
+			}
+
+			(() => MyClass)();
+		`,
+		"(() =>"
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else if (result.value == null) t.fail();
+	else {
+		const instance = new (result.value as (new () => { foo: string }))();
+		t.deepEqual(instance.foo, "hello");
+	}
+});
+
 test("Inherits PropertyDeclarations from super classes. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript

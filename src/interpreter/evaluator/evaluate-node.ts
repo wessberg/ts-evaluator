@@ -1,6 +1,3 @@
-import {
-	isArrayLiteralExpression, isArrowFunction, isAsExpression, isAwaitExpression, isBigIntLiteral, isBinaryExpression, isBlock, isBreakStatement, isCallExpression, isClassDeclaration, isClassExpression, isComputedPropertyName, isConditionalExpression, isConstructorDeclaration, isContinueStatement, isElementAccessExpression, isEnumDeclaration, isExpressionStatement, isForInStatement, isForOfStatement, isForStatement, isFunctionDeclaration, isFunctionExpression, isGetAccessorDeclaration, isIdentifier, isIfStatement, isImportDeclaration, isImportEqualsDeclaration, isMethodDeclaration, isModuleDeclaration, isNewExpression, isNonNullExpression, isNumericLiteral, isObjectLiteralExpression, isParenthesizedExpression, isPostfixUnaryExpression, isPrefixUnaryExpression, isPropertyAccessExpression, isPropertyDeclaration, isRegularExpressionLiteral, isReturnStatement, isSourceFile, isSpreadElement, isStringLiteralLike, isSwitchStatement, isTemplateExpression, isThrowStatement, isTryStatement, isTypeAssertion, isTypeOfExpression, isVariableDeclaration, isVariableDeclarationList, isVariableStatement, isVoidExpression, isWhileStatement, Node
-} from "typescript";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {evaluateVariableDeclaration} from "./evaluate-variable-declaration";
 import {evaluateBinaryExpression} from "./evaluate-binary-expression";
@@ -66,249 +63,252 @@ import {evaluateConditionalExpression} from "./evaluate-conditional-expression";
 import {evaluateMethodDeclaration} from "./evaluate-method-declaration";
 import {evaluatePropertyDeclaration} from "./evaluate-property-declaration";
 import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaration";
+import {TS} from "../../type/ts";
 
 /**
  * Will get a literal value for the given Node. If it doesn't succeed, the value will be 'undefined'
- * @param {IEvaluatorOptions<Node>} options
- * @returns {Promise<unknown>}
  */
-export function evaluateNode ({node, ...rest}: IEvaluatorOptions<Node>): unknown {
+export function evaluateNode ({node, ...rest}: IEvaluatorOptions<TS.Node>): unknown {
 
-	if (isIdentifier(node)) {
+	if (rest.typescript.isIdentifier(node)) {
 		return evaluateIdentifier({node, ...rest});
 	}
 
-	else if (isStringLiteralLike(node)) {
+	else if (rest.typescript.isPrivateIdentifier?.(node)) {
+		return evaluateIdentifier({node, ...rest});
+	}
+
+	else if (rest.typescript.isStringLiteralLike(node)) {
 		return evaluateStringLiteral({node, ...rest});
 	}
 
-	else if (isNumericLiteral(node)) {
+	else if (rest.typescript.isNumericLiteral(node)) {
 		return evaluateNumericLiteral({node, ...rest});
 	}
 
-	else if (isBooleanLiteral(node)) {
+	else if (isBooleanLiteral(node, rest.typescript)) {
 		return evaluateBooleanLiteral({node, ...rest});
 	}
 
-	else if (isForOfStatement(node)) {
+	else if (rest.typescript.isForOfStatement(node)) {
 		return evaluateForOfStatement({node, ...rest});
 	}
 
-	else if (isForInStatement(node)) {
+	else if (rest.typescript.isForInStatement(node)) {
 		return evaluateForInStatement({node, ...rest});
 	}
 
-	else if (isForStatement(node)) {
+	else if (rest.typescript.isForStatement(node)) {
 		return evaluateForStatement({node, ...rest});
 	}
 
-	else if (isWhileStatement(node)) {
+	else if (rest.typescript.isWhileStatement(node)) {
 		return evaluateWhileStatement({node, ...rest});
 	}
 
-	else if (isRegularExpressionLiteral(node)) {
+	else if (rest.typescript.isRegularExpressionLiteral(node)) {
 		return evaluateRegularExpressionLiteral({node, ...rest});
 	}
 
-	else if (isObjectLiteralExpression(node)) {
+	else if (rest.typescript.isObjectLiteralExpression(node)) {
 		return evaluateObjectLiteralExpression({node, ...rest});
 	}
 
-	else if (isAwaitExpression(node)) {
+	else if (rest.typescript.isAwaitExpression(node)) {
 		return evaluateAwaitExpression({node, ...rest});
 	}
 
-	else if (isTypeAssertion(node)) {
+	else if (rest.typescript.isTypeAssertion(node)) {
 		return evaluateTypeAssertion({node, ...rest});
 	}
 
-	else if (isTemplateExpression(node)) {
+	else if (rest.typescript.isTemplateExpression(node)) {
 		return evaluateTemplateExpression({node, ...rest});
 	}
 
-	else if (isMethodDeclaration(node)) {
+	else if (rest.typescript.isMethodDeclaration(node)) {
 		return evaluateMethodDeclaration({node, ...rest});
 	}
 
-	else if (isPropertyDeclaration(node)) {
+	else if (rest.typescript.isPropertyDeclaration(node)) {
 		return evaluatePropertyDeclaration({node, ...rest});
 	}
 
-	else if (isGetAccessorDeclaration(node)) {
+	else if (rest.typescript.isGetAccessorDeclaration(node)) {
 		return evaluateGetAccessorDeclaration({node, ...rest});
 	}
 
-	else if (isArrayLiteralExpression(node)) {
+	else if (rest.typescript.isArrayLiteralExpression(node)) {
 		return evaluateArrayLiteralExpression({node, ...rest});
 	}
 
-	else if (isSourceFile(node)) {
+	else if (rest.typescript.isSourceFile(node)) {
 		return evaluateSourceFileAsNamespaceObject({node, ...rest});
 	}
 
-	else if (isModuleDeclaration(node)) {
+	else if (rest.typescript.isModuleDeclaration(node)) {
 		return evaluateModuleDeclaration({node, ...rest});
 	}
 
-	else if (isPrefixUnaryExpression(node)) {
+	else if (rest.typescript.isPrefixUnaryExpression(node)) {
 		return evaluatePrefixUnaryExpression({node, ...rest});
 	}
 
-	else if (isPostfixUnaryExpression(node)) {
+	else if (rest.typescript.isPostfixUnaryExpression(node)) {
 		return evaluatePostfixUnaryExpression({node, ...rest});
 	}
 
-	else if (isVariableStatement(node)) {
+	else if (rest.typescript.isVariableStatement(node)) {
 		return evaluateVariableStatement({node, ...rest});
 	}
 
-	else if (isComputedPropertyName(node)) {
+	else if (rest.typescript.isComputedPropertyName(node)) {
 		return evaluateComputedPropertyName({node, ...rest});
 	}
 
-	else if (isVariableDeclarationList(node)) {
+	else if (rest.typescript.isVariableDeclarationList(node)) {
 		return evaluateVariableDeclarationList({node, ...rest});
 	}
 
-	else if (isImportDeclaration(node)) {
+	else if (rest.typescript.isImportDeclaration(node)) {
 		return evaluateImportDeclaration({node, ...rest});
 	}
 
-	else if (isImportEqualsDeclaration(node)) {
+	else if (rest.typescript.isImportEqualsDeclaration(node)) {
 		return evaluateImportEqualsDeclaration({node, ...rest});
 	}
 
-	else if (isThrowStatement(node)) {
+	else if (rest.typescript.isThrowStatement(node)) {
 		return evaluateThrowStatement({node, ...rest});
 	}
 
-	else if (isVariableDeclaration(node)) {
+	else if (rest.typescript.isVariableDeclaration(node)) {
 		return evaluateVariableDeclaration({node, ...rest});
 	}
 
-	else if (isEnumDeclaration(node)) {
+	else if (rest.typescript.isEnumDeclaration(node)) {
 		return evaluateEnumDeclaration({node, ...rest});
 	}
 
-	else if (isConstructorDeclaration(node)) {
+	else if (rest.typescript.isConstructorDeclaration(node)) {
 		return evaluateConstructorDeclaration({node, ...rest});
 	}
 
-	else if (isBinaryExpression(node)) {
+	else if (rest.typescript.isBinaryExpression(node)) {
 		return evaluateBinaryExpression({node, ...rest});
 	}
 
-	else if (isParenthesizedExpression(node)) {
+	else if (rest.typescript.isParenthesizedExpression(node)) {
 		return evaluateParenthesizedExpression({node, ...rest});
 	}
 
-	else if (isExpressionStatement(node)) {
+	else if (rest.typescript.isExpressionStatement(node)) {
 		return evaluateExpressionStatement({node, ...rest});
 	}
 
-	else if (isArrowFunction(node)) {
+	else if (rest.typescript.isArrowFunction(node)) {
 		return evaluateArrowFunctionExpression({node, ...rest});
 	}
 
-	else if (isFunctionDeclaration(node)) {
+	else if (rest.typescript.isFunctionDeclaration(node)) {
 		return evaluateFunctionDeclaration({node, ...rest});
 	}
 
-	else if (isFunctionExpression(node)) {
+	else if (rest.typescript.isFunctionExpression(node)) {
 		return evaluateFunctionExpression({node, ...rest});
 	}
 
-	else if (isClassDeclaration(node)) {
+	else if (rest.typescript.isClassDeclaration(node)) {
 		return evaluateClassDeclaration({node, ...rest});
 	}
 
-	else if (isIfStatement(node)) {
+	else if (rest.typescript.isIfStatement(node)) {
 		return evaluateIfStatement({node, ...rest});
 	}
 
-	else if (isConditionalExpression(node)) {
+	else if (rest.typescript.isConditionalExpression(node)) {
 		return evaluateConditionalExpression({node, ...rest});
 	}
 
-	else if (isPropertyAccessExpression(node)) {
+	else if (rest.typescript.isPropertyAccessExpression(node)) {
 		return evaluatePropertyAccessExpression({node, ...rest});
 	}
 
-	else if (isElementAccessExpression(node)) {
+	else if (rest.typescript.isElementAccessExpression(node)) {
 		return evaluateElementAccessExpression({node, ...rest});
 	}
 
-	else if (isCallExpression(node)) {
+	else if (rest.typescript.isCallExpression(node)) {
 		return evaluateCallExpression({node, ...rest});
 	}
 
-	else if (isSwitchStatement(node)) {
+	else if (rest.typescript.isSwitchStatement(node)) {
 		return evaluateSwitchStatement({node, ...rest});
 	}
 
-	else if (isNewExpression(node)) {
+	else if (rest.typescript.isNewExpression(node)) {
 		return evaluateNewExpression({node, ...rest});
 	}
 
-	else if (isNonNullExpression(node)) {
+	else if (rest.typescript.isNonNullExpression(node)) {
 		return evaluateNonNullExpression({node, ...rest});
 	}
 
-	else if (isAsExpression(node)) {
+	else if (rest.typescript.isAsExpression(node)) {
 		return evaluateAsExpression({node, ...rest});
 	}
 
-	else if (isBlock(node)) {
+	else if (rest.typescript.isBlock(node)) {
 		return evaluateBlock({node, ...rest});
 	}
 
-	else if (isClassExpression(node)) {
+	else if (rest.typescript.isClassExpression(node)) {
 		return evaluateClassExpression({node, ...rest});
 	}
 
-	else if (isSpreadElement(node)) {
+	else if (rest.typescript.isSpreadElement(node)) {
 		return evaluateSpreadElement({node, ...rest});
 	}
 
-	else if (isTryStatement(node)) {
+	else if (rest.typescript.isTryStatement(node)) {
 		return evaluateTryStatement({node, ...rest});
 	}
 
-	else if (isReturnStatement(node)) {
+	else if (rest.typescript.isReturnStatement(node)) {
 		return evaluateReturnStatement({node, ...rest});
 	}
 
-	else if (isThisExpression(node)) {
+	else if (isThisExpression(node, rest.typescript)) {
 		return evaluateThisExpression({node, ...rest});
 	}
 
-	else if (isVoidExpression(node)) {
+	else if (rest.typescript.isVoidExpression(node)) {
 		return evaluateVoidExpression({node, ...rest});
 	}
 
-	else if (isTypeOfExpression(node)) {
+	else if (rest.typescript.isTypeOfExpression(node)) {
 		return evaluateTypeOfExpression({node, ...rest});
 	}
 
-	else if (isSuperExpression(node)) {
+	else if (isSuperExpression(node, rest.typescript)) {
 		return evaluateSuperExpression({node, ...rest});
 	}
 
-	else if (isNullLiteral(node)) {
+	else if (isNullLiteral(node, rest.typescript)) {
 		return evaluateNullLiteral({node, ...rest});
 	}
 
-	else if (isBigIntLiteral(node)) {
+	else if (rest.typescript.isBigIntLiteral(node)) {
 		return evaluateBigIntLiteral({node, ...rest});
 	}
 
-	else if (isBreakStatement(node)) {
+	else if (rest.typescript.isBreakStatement(node)) {
 		return evaluateBreakStatement({node, ...rest});
 	}
 
-	else if (isContinueStatement(node)) {
+	else if (rest.typescript.isContinueStatement(node)) {
 		return evaluateContinueStatement({node, ...rest});
 	}
 
-	throw new UnexpectedNodeError({node});
+	throw new UnexpectedNodeError({node, typescript: rest.typescript});
 }

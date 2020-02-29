@@ -1,5 +1,4 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {isClassLike, isIdentifier, MethodDeclaration, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -9,21 +8,19 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
 import {inStaticContext} from "../util/static/in-static-context";
 import {hasModifier} from "../util/modifier/has-modifier";
-
-// tslint:disable:no-identical-functions
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a MethodDeclaration, before setting it on the given parent
- * @param {IEvaluatorOptions<MethodDeclaration>} options
- * @param {IndexLiteral} [parent]
  */
-export function evaluateMethodDeclaration ({node, environment, evaluate, stack, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<MethodDeclaration>, parent?: IndexLiteral): void {
+export function evaluateMethodDeclaration (options: IEvaluatorOptions<TS.MethodDeclaration>, parent?: IndexLiteral): void {
+	const {node, environment, evaluate, stack, statementTraversalStack, reporting, typescript} = options;
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
-	const isStatic = inStaticContext(node);
+	const isStatic = inStaticContext(node, typescript);
 
 	if (parent == null) {
 		let updatedParent: Function & IndexLiteral;
-		if (isClassLike(node.parent)) {
+		if (typescript.isClassLike(node.parent)) {
 			evaluate.declaration(node.parent, environment, statementTraversalStack);
 			updatedParent = stack.pop() as Function & IndexLiteral;
 		}
@@ -34,7 +31,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 		return;
 	}
 
-	const _methodDeclaration = hasModifier(node, SyntaxKind.AsyncKeyword)
+	const _methodDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function methodDeclaration (this: Literal, ...args: Literal[]) {
 
 			// Prepare a lexical environment for the function context
@@ -44,6 +41,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Define a new binding for the arguments given to the function
+			// eslint-disable-next-line prefer-rest-params
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			if (this != null) {
@@ -62,13 +60,9 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
+				...options,
 					node: node.parameters,
-					environment: localLexicalEnvironment,
-					evaluate,
-					stack,
-					statementTraversalStack,
-					reporting,
-					...rest
+					environment: localLexicalEnvironment
 				}, args
 			);
 
@@ -93,6 +87,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Define a new binding for the arguments given to the function
+			// eslint-disable-next-line prefer-rest-params
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			if (this != null) {
@@ -111,13 +106,9 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
+				...options,
 					node: node.parameters,
-					environment: localLexicalEnvironment,
-					evaluate,
-					stack,
-					statementTraversalStack,
-					reporting,
-					...rest
+					environment: localLexicalEnvironment
 				}, args
 			);
 
@@ -156,7 +147,7 @@ export function evaluateMethodDeclaration ({node, environment, evaluate, stack, 
 	// Also loop through parameters to use their decorators, if any
 	if (node.parameters != null) {
 		// 'this' is a special parameter which is removed from the emitted results
-		const parameters = node.parameters.filter(param => !(isIdentifier(param.name) && param.name.text === "this"));
+		const parameters = node.parameters.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 		for (let i = 0; i < parameters.length; i++) {
 			const parameter = parameters[i];
 			if (parameter.decorators != null) {

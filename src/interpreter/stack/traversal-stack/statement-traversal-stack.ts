@@ -1,10 +1,9 @@
-import {SyntaxKind} from "typescript";
+import {TS} from "../../../type/ts";
 
-export type StatementTraversalStack = SyntaxKind[];
+export type StatementTraversalStack = TS.SyntaxKind[];
 
 /**
  * Creates a StatementTraversalStack
- * @return {StatementTraversalStack}
  */
 export function createStatementTraversalStack (): StatementTraversalStack {
 	return [];

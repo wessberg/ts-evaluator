@@ -1,10 +1,8 @@
-import {Node, NullLiteral, SyntaxKind} from "typescript";
+import {TS} from "../../../type/ts";
 
 /**
  * Returns true if the given node is a NullLiteral
- * @param {Node} node
- * @returns {node is SuperExpression}
  */
-export function isNullLiteral (node: Node): node is NullLiteral {
-	return node.kind === SyntaxKind.NullKeyword;
+export function isNullLiteral (node: TS.Node, typescript: typeof TS): node is TS.NullLiteral {
+	return node.kind === typescript.SyntaxKind.NullKeyword;
 }

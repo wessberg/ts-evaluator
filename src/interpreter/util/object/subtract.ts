@@ -4,9 +4,10 @@ export type Subtract<T, K extends Partial<T>> = {
 
 /**
  * Excludes the properties of B from A
- * @param {A} a
- * @param {B} b
- * @return {Exclude<A, B>}
+ *
+ * @param a
+ * @param b
+ * @return
  */
 export function subtract<A extends object, B extends Partial<A>> (a: A, b: B): Subtract<A, B> {
 	const newA = {} as Exclude<A, keyof B>;

@@ -1,5 +1,4 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {GetAccessorDeclaration, isClassLike} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -7,20 +6,19 @@ import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
 import {inStaticContext} from "../util/static/in-static-context";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a GetAccessorDeclaration, before setting it on the given parent
- * @param {IEvaluatorOptions<GetAccessorDeclaration>} options
- * @param {IndexLiteral} [parent]
  */
-export function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, reporting, statementTraversalStack}: IEvaluatorOptions<GetAccessorDeclaration>, parent?: IndexLiteral): void {
+export function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.GetAccessorDeclaration>, parent?: IndexLiteral): void {
 
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
-	const isStatic = inStaticContext(node);
+	const isStatic = inStaticContext(node, typescript);
 
 	if (parent == null) {
 		let updatedParent: Function & IndexLiteral;
-		if (isClassLike(node.parent)) {
+		if (typescript.isClassLike(node.parent)) {
 			evaluate.declaration(node.parent, environment, statementTraversalStack);
 			updatedParent = stack.pop() as Function & IndexLiteral;
 		}
@@ -43,6 +41,7 @@ export function evaluateGetAccessorDeclaration ({node, environment, evaluate, st
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Define a new binding for the arguments given to the function
+		// eslint-disable-next-line prefer-rest-params
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 		if (this != null) {

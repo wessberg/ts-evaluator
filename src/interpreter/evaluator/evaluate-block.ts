@@ -1,17 +1,16 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {Block, isCallExpression, isConstructorDeclaration, isExpressionStatement} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {isSuperExpression} from "../util/node/is-super-expression";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a Block
- * @param {IEvaluatorOptions<Block>} options
  */
-export function evaluateBlock ({node, environment, evaluate}: IEvaluatorOptions<Block>): void {
+export function evaluateBlock ({node, environment, typescript, evaluate}: IEvaluatorOptions<TS.Block>): void {
 	// Prepare a lexical environment for the Block context
 	const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
@@ -19,7 +18,7 @@ export function evaluateBlock ({node, environment, evaluate}: IEvaluatorOptions<
 		const statement = node.statements[i];
 
 		// Don't execute 'super()' within Constructor Blocks since this is handled in another level
-		if (isConstructorDeclaration(node.parent) && i === 0 && isExpressionStatement(statement) && isCallExpression(statement.expression) && isSuperExpression(statement.expression.expression)) continue;
+		if (typescript.isConstructorDeclaration(node.parent) && i === 0 && typescript.isExpressionStatement(statement) && typescript.isCallExpression(statement.expression) && isSuperExpression(statement.expression.expression, typescript)) continue;
 
 		evaluate.statement(statement, localLexicalEnvironment);
 

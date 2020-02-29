@@ -1,84 +1,83 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {BinaryExpression, SyntaxKind} from "typescript";
 import {getDotPathFromNode} from "../lexical-environment/get-dot-path-from-node";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {Literal} from "../literal/literal";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
 import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undefined-left-value-error";
-
-// tslint:disable:strict-boolean-expressions
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a BinaryExpression
- * @param {IEvaluatorOptions<BinaryExpression>} options
- * @returns {Literal}
  */
-export function evaluateBinaryExpression ({node, environment, evaluate, logger, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<BinaryExpression>): Literal {
+export function evaluateBinaryExpression (options: IEvaluatorOptions<TS.BinaryExpression>): Literal {
+	const {node, environment, evaluate, logger, statementTraversalStack, reporting, typescript} = options;
+
 	const leftValue = (evaluate.expression(node.left, environment, statementTraversalStack)) as number;
 	const rightValue = (evaluate.expression(node.right, environment, statementTraversalStack)) as number;
-	const leftIdentifier = getDotPathFromNode({node: node.left, environment, evaluate, logger, statementTraversalStack, reporting, ...rest});
+	const leftIdentifier = getDotPathFromNode({...options, node: node.left});
 
 	const operator = node.operatorToken.kind;
 	switch (operator) {
 
-		case SyntaxKind.AmpersandToken: {
+		case typescript.SyntaxKind.AmpersandToken: {
 			return leftValue & rightValue;
 		}
 
-		case SyntaxKind.AmpersandAmpersandToken: {
+		case typescript.SyntaxKind.AmpersandAmpersandToken: {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			return leftValue && rightValue;
 		}
 
-		case SyntaxKind.AmpersandEqualsToken:
-		case SyntaxKind.CaretEqualsToken:
-		case SyntaxKind.BarEqualsToken:
-		case SyntaxKind.MinusEqualsToken:
-		case SyntaxKind.PlusEqualsToken:
-		case SyntaxKind.PercentEqualsToken:
-		case SyntaxKind.SlashEqualsToken:
-		case SyntaxKind.AsteriskEqualsToken:
-		case SyntaxKind.AsteriskAsteriskEqualsToken:
-		case SyntaxKind.LessThanLessThanEqualsToken:
-		case SyntaxKind.GreaterThanGreaterThanEqualsToken:
-		case SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken: {
+		case typescript.SyntaxKind.AmpersandEqualsToken:
+		case typescript.SyntaxKind.CaretEqualsToken:
+		case typescript.SyntaxKind.BarEqualsToken:
+		case typescript.SyntaxKind.MinusEqualsToken:
+		case typescript.SyntaxKind.PlusEqualsToken:
+		case typescript.SyntaxKind.PercentEqualsToken:
+		case typescript.SyntaxKind.SlashEqualsToken:
+		case typescript.SyntaxKind.AsteriskEqualsToken:
+		case typescript.SyntaxKind.AsteriskAsteriskEqualsToken:
+		case typescript.SyntaxKind.LessThanLessThanEqualsToken:
+		case typescript.SyntaxKind.GreaterThanGreaterThanEqualsToken:
+		case typescript.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken: {
 
 			// There's nothing in the engine restricting you from applying this kind of arithmetic operation on non-numeric data types
 			let computedValue = leftValue;
 			switch (operator) {
-				case SyntaxKind.AmpersandEqualsToken:
+				case typescript.SyntaxKind.AmpersandEqualsToken:
 					computedValue &= rightValue;
 					break;
-				case SyntaxKind.CaretEqualsToken:
+				case typescript.SyntaxKind.CaretEqualsToken:
 					computedValue ^= rightValue;
 					break;
-				case SyntaxKind.BarEqualsToken:
+				case typescript.SyntaxKind.BarEqualsToken:
 					computedValue |= rightValue;
 					break;
-				case SyntaxKind.AsteriskEqualsToken:
+				case typescript.SyntaxKind.AsteriskEqualsToken:
 					computedValue *= rightValue;
 					break;
-				case SyntaxKind.AsteriskAsteriskEqualsToken:
+				case typescript.SyntaxKind.AsteriskAsteriskEqualsToken:
 					computedValue **= rightValue;
 					break;
-				case SyntaxKind.LessThanLessThanEqualsToken:
+				case typescript.SyntaxKind.LessThanLessThanEqualsToken:
 					computedValue <<= rightValue;
 					break;
-				case SyntaxKind.GreaterThanGreaterThanEqualsToken:
+				case typescript.SyntaxKind.GreaterThanGreaterThanEqualsToken:
 					computedValue >>= rightValue;
 					break;
-				case SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
+				case typescript.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
 					computedValue >>>= rightValue;
 					break;
-				case SyntaxKind.MinusEqualsToken:
+				case typescript.SyntaxKind.MinusEqualsToken:
 					computedValue -= rightValue;
 					break;
-				case SyntaxKind.PlusEqualsToken:
+				case typescript.SyntaxKind.PlusEqualsToken:
 					computedValue += rightValue;
 					break;
-				case SyntaxKind.PercentEqualsToken:
+				case typescript.SyntaxKind.PercentEqualsToken:
 					computedValue %= rightValue;
 					break;
-				case SyntaxKind.SlashEqualsToken:
+				case typescript.SyntaxKind.SlashEqualsToken:
 					computedValue /= rightValue;
 					break;
 			}
@@ -92,44 +91,45 @@ export function evaluateBinaryExpression ({node, environment, evaluate, logger, 
 			return computedValue;
 		}
 
-		case SyntaxKind.AsteriskToken: {
+		case typescript.SyntaxKind.AsteriskToken: {
 			return leftValue * rightValue;
 		}
 
-		case SyntaxKind.AsteriskAsteriskToken: {
+		case typescript.SyntaxKind.AsteriskAsteriskToken: {
 			return leftValue ** rightValue;
 		}
 
-		case SyntaxKind.BarToken: {
+		case typescript.SyntaxKind.BarToken: {
 			return leftValue | rightValue;
 		}
 
-		case SyntaxKind.BarBarToken: {
+		case typescript.SyntaxKind.BarBarToken: {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			return leftValue || rightValue;
 		}
 
-		case SyntaxKind.CaretToken: {
+		case typescript.SyntaxKind.CaretToken: {
 			return leftValue ^ rightValue;
 		}
 
-		case SyntaxKind.CommaToken: {
+		case typescript.SyntaxKind.CommaToken: {
 			return rightValue;
 		}
 
-		case SyntaxKind.MinusToken:
+		case typescript.SyntaxKind.MinusToken:
 			return leftValue - rightValue;
 
-		case SyntaxKind.PlusToken:
+		case typescript.SyntaxKind.PlusToken:
 			logger.logResult(leftValue + rightValue, "BinaryExpression (PlusToken)");
 			return leftValue + rightValue;
 
-		case SyntaxKind.PercentToken:
+		case typescript.SyntaxKind.PercentToken:
 			return leftValue % rightValue;
 
-		case SyntaxKind.SlashToken:
+		case typescript.SyntaxKind.SlashToken:
 			return leftValue / rightValue;
 
-		case SyntaxKind.EqualsToken: {
+		case typescript.SyntaxKind.EqualsToken: {
 			// Update to the left-value within the environment if it exists there and has been updated
 			if (leftIdentifier != null) {
 				setInLexicalEnvironment({env: environment, path: leftIdentifier, value: rightValue, reporting, node});
@@ -144,51 +144,49 @@ export function evaluateBinaryExpression ({node, environment, evaluate, logger, 
 			return rightValue;
 		}
 
-		case SyntaxKind.EqualsEqualsToken: {
-			// tslint:disable:triple-equals
+		case typescript.SyntaxKind.EqualsEqualsToken: {
+			// eslint-disable-next-line eqeqeq
 			return leftValue == rightValue;
-			// tslint:enable:triple-equals
 		}
 
-		case SyntaxKind.EqualsEqualsEqualsToken: {
+		case typescript.SyntaxKind.EqualsEqualsEqualsToken: {
 			return leftValue === rightValue;
 		}
 
-		case SyntaxKind.ExclamationEqualsToken: {
-			// tslint:disable:triple-equals
+		case typescript.SyntaxKind.ExclamationEqualsToken: {
+			// eslint-disable-next-line eqeqeq
 			return leftValue != rightValue;
-			// tslint:enable:triple-equals
 		}
 
-		case SyntaxKind.ExclamationEqualsEqualsToken: {
+		case typescript.SyntaxKind.ExclamationEqualsEqualsToken: {
 			return leftValue !== rightValue;
 		}
 
-		case SyntaxKind.GreaterThanToken:
+		case typescript.SyntaxKind.GreaterThanToken:
 			return leftValue > rightValue;
 
-		case SyntaxKind.GreaterThanEqualsToken:
+		case typescript.SyntaxKind.GreaterThanEqualsToken:
 			return leftValue >= rightValue;
 
-		case SyntaxKind.LessThanToken:
+		case typescript.SyntaxKind.LessThanToken:
 			return leftValue < rightValue;
 
-		case SyntaxKind.LessThanEqualsToken:
+		case typescript.SyntaxKind.LessThanEqualsToken:
 			return leftValue <= rightValue;
 
-		case SyntaxKind.InKeyword: {
+		case typescript.SyntaxKind.InKeyword: {
 			return leftValue in (rightValue as unknown as object);
 		}
 
 		// Nullish coalescing (A ?? B)
-		case SyntaxKind.QuestionQuestionToken:
+		case typescript.SyntaxKind.QuestionQuestionToken:
 			return leftValue != null ? leftValue : rightValue;
 
-		case SyntaxKind.InstanceOfKeyword: {
+		case typescript.SyntaxKind.InstanceOfKeyword: {
 			return leftValue as unknown as object instanceof (rightValue as unknown as Function);
 		}
 	}
 
 	// Throw if the operator couldn't be handled
-	throw new UnexpectedNodeError({node: node.operatorToken});
+	throw new UnexpectedNodeError({node: node.operatorToken, typescript});
 }

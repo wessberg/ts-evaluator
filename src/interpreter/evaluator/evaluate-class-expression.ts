@@ -1,19 +1,20 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ClassExpression, isConstructorDeclaration, SyntaxKind} from "typescript";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {generateClassDeclaration} from "../util/class/generate-class-declaration";
 import {hasModifier} from "../util/modifier/has-modifier";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ClassExpression
- * @param {IEvaluatorOptions<ClassExpression>} options
- * @returns {Literal}
+ *
+ * @param options
+ * @returns
  */
-export function evaluateClassExpression ({node, environment, evaluate, stack, logger, reporting, statementTraversalStack}: IEvaluatorOptions<ClassExpression>): Literal {
+export function evaluateClassExpression ({node, environment, evaluate, stack, logger, reporting, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ClassExpression>): Literal {
 	let extendedType: Function|undefined;
-	const ctorMember = node.members.find(isConstructorDeclaration);
-	const otherMembers = node.members.filter(member => !isConstructorDeclaration(member));
+	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
+	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
 	let ctor: Function|undefined;
 	if (ctorMember != null) {
@@ -22,7 +23,7 @@ export function evaluateClassExpression ({node, environment, evaluate, stack, lo
 	}
 
 	if (node.heritageClauses != null) {
-		const extendsClause = node.heritageClauses.find(clause => clause.token === SyntaxKind.ExtendsKeyword);
+		const extendsClause = node.heritageClauses.find(clause => clause.token === typescript.SyntaxKind.ExtendsKeyword);
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
@@ -52,7 +53,7 @@ export function evaluateClassExpression ({node, environment, evaluate, stack, lo
 		evaluate.nodeWithArgument(
 			member,
 			environment,
-			hasModifier(member, SyntaxKind.StaticKeyword)
+			hasModifier(member, typescript.SyntaxKind.StaticKeyword)
 				? classExpression
 				: classExpression.prototype,
 			statementTraversalStack

@@ -1,23 +1,23 @@
-import {Expression, Node} from "typescript";
 import {ReportedErrorSet} from "./reported-error-set";
+import {TS} from "../../type/ts";
 
 export interface IBindingReportEntry {
 	path: string;
 	value: unknown;
-	node: Node;
+	node: TS.Node;
 }
 
 export interface ITraversalReportEntry {
-	node: Node;
+	node: TS.Node;
 }
 
 export interface IIntermediateResultReportEntry {
-	node: Expression;
+	node: TS.Expression;
 	value: unknown;
 }
 
 export interface IErrorReportEntry {
-	node: Node;
+	node: TS.Node;
 	error: Error;
 }
 

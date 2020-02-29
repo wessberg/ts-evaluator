@@ -1,5 +1,4 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ForInStatement, isVariableDeclarationList} from "typescript";
 import {IndexLiteral} from "../literal/literal";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
@@ -7,27 +6,24 @@ import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexica
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
-
-// tslint:disable:no-redundant-jump
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ForInStatement
- * @param {IEvaluatorOptions<ForInStatement>} options
- * @returns {Promise<void>}
  */
-export function evaluateForInStatement ({node, environment, evaluate, logger, reporting, statementTraversalStack}: IEvaluatorOptions<ForInStatement>): void {
+export function evaluateForInStatement ({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ForInStatement>): void {
 
 	// Compute the 'of' part
 	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
 
 	// Ensure that the initializer is a proper VariableDeclarationList
-	if (!isVariableDeclarationList(node.initializer)) {
-		throw new UnexpectedNodeError({node: node.initializer});
+	if (!typescript.isVariableDeclarationList(node.initializer)) {
+		throw new UnexpectedNodeError({node: node.initializer, typescript});
 	}
 
 	// Only 1 declaration is allowed in a ForOfStatement
 	else if (node.initializer.declarations.length > 1) {
-		throw new UnexpectedNodeError({node: node.initializer.declarations[1]});
+		throw new UnexpectedNodeError({node: node.initializer.declarations[1], typescript});
 	}
 
 	for (const literal in expressionResult) {
@@ -48,18 +44,18 @@ export function evaluateForInStatement ({node, environment, evaluate, logger, re
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL)) {
-			logger.logBreak(node);
+			logger.logBreak(node, typescript);
 			break;
 		}
 
 		else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
-			logger.logContinue(node);
+			logger.logContinue(node, typescript);
 			// noinspection UnnecessaryContinueJS
 			continue;
 		}
 
 		else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
-			logger.logReturn(node);
+			logger.logReturn(node, typescript);
 			return;
 		}
 	}

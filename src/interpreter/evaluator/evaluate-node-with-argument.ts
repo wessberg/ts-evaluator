@@ -1,4 +1,3 @@
-import {isArrayBindingPattern, isBindingElement, isBindingName, isCaseBlock, isCaseClause, isCatchClause, isDecorator, isDefaultClause, isEnumMember, isGetAccessorDeclaration, isMethodDeclaration, isObjectBindingPattern, isOmittedExpression, isParameter, isPropertyAssignment, isPropertyDeclaration, isSetAccessorDeclaration, isShorthandPropertyAssignment, isSpreadAssignment, isVariableDeclaration, Node} from "typescript";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {IndexLiteral, Literal} from "../literal/literal";
 import {evaluateBindingName} from "./evaluate-binding-name";
@@ -22,96 +21,94 @@ import {evaluateOmittedExpression} from "./evaluate-omitted-expression";
 import {evaluatePropertyDeclaration} from "./evaluate-property-declaration";
 import {evaluateDecorator} from "./evaluate-decorator";
 import {evaluateEnumMember} from "./evaluate-enum-member";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates a given node with the provided argument
- * @param {IEvaluatorOptions<Expression>} options
- * @param {Literal} arg
- * @returns {Promise<void>}
  */
-export function evaluateNodeWithArgument (options: IEvaluatorOptions<Node>, arg: Literal): void {
-	options.logger.logNode(options.node, "nodeWithArgument");
+export function evaluateNodeWithArgument (options: IEvaluatorOptions<TS.Node>, arg: Literal): void {
+	options.logger.logNode(options.node, options.typescript, "nodeWithArgument");
 	const {node, ...rest} = options;
 
-	if (isGetAccessorDeclaration(node)) {
+	if (rest.typescript.isGetAccessorDeclaration(node)) {
 		return evaluateGetAccessorDeclaration({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isSetAccessorDeclaration(node)) {
+	else if (rest.typescript.isSetAccessorDeclaration(node)) {
 		return evaluateSetAccessorDeclaration({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isPropertyAssignment(node)) {
+	else if (rest.typescript.isPropertyAssignment(node)) {
 		return evaluatePropertyAssignment({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isPropertyDeclaration(node)) {
+	else if (rest.typescript.isPropertyDeclaration(node)) {
 		return evaluatePropertyDeclaration({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isParameter(node)) {
+	else if (rest.typescript.isParameter(node)) {
 		return evaluateParameterDeclaration({node, ...rest}, arg);
 	}
 
-	else if (isEnumMember(node)) {
+	else if (rest.typescript.isEnumMember(node)) {
 		return evaluateEnumMember({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isShorthandPropertyAssignment(node)) {
+	else if (rest.typescript.isShorthandPropertyAssignment(node)) {
 		return evaluateShorthandPropertyAssignment({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isDecorator(node)) {
+	else if (rest.typescript.isDecorator(node)) {
 		return evaluateDecorator({node, ...rest}, arg as [IndexLiteral, string?]);
 	}
 
-	else if (isSpreadAssignment(node)) {
+	else if (rest.typescript.isSpreadAssignment(node)) {
 		return evaluateSpreadAssignment({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isMethodDeclaration(node)) {
+	else if (rest.typescript.isMethodDeclaration(node)) {
 		return evaluateMethodDeclaration({node, ...rest}, arg as IndexLiteral);
 	}
 
-	else if (isArrayBindingPattern(node)) {
+	else if (rest.typescript.isArrayBindingPattern(node)) {
 		return evaluateArrayBindingPattern({node, ...rest}, arg as Iterable<Literal>);
 	}
 
-	else if (isBindingElement(node)) {
+	else if (rest.typescript.isBindingElement(node)) {
 		return evaluateBindingElement({node, ...rest}, arg);
 	}
 
-	else if (isObjectBindingPattern(node)) {
+	else if (rest.typescript.isObjectBindingPattern(node)) {
 		return evaluateObjectBindingPattern({node, ...rest}, arg);
 	}
 
-	else if (isVariableDeclaration(node)) {
+	else if (rest.typescript.isVariableDeclaration(node)) {
 		return evaluateVariableDeclaration({node, ...rest}, arg);
 	}
 
-	else if (isCaseBlock(node)) {
+	else if (rest.typescript.isCaseBlock(node)) {
 		return evaluateCaseBlock({node, ...rest}, arg);
 	}
 
-	else if (isCaseClause(node)) {
+	else if (rest.typescript.isCaseClause(node)) {
 		return evaluateCaseClause({node, ...rest}, arg);
 	}
 
-	else if (isDefaultClause(node)) {
+	else if (rest.typescript.isDefaultClause(node)) {
 		return evaluateDefaultClause({node, ...rest});
 	}
 
-	else if (isCatchClause(node)) {
+	else if (rest.typescript.isCatchClause(node)) {
 		return evaluateCatchClause({node, ...rest}, arg as Error);
 	}
 
-	else if (isBindingName(node)) {
+	else if (rest.typescript.isBindingName(node)) {
 		return evaluateBindingName({node, ...rest}, arg);
 	}
 
-	else if (isOmittedExpression(node)) {
+	else if (rest.typescript.isOmittedExpression(node)) {
 		return evaluateOmittedExpression({node, ...rest});
 	}
 
-	throw new UnexpectedNodeError({node});
+	throw new UnexpectedNodeError({node, typescript: rest.typescript});
 }

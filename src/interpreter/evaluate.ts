@@ -1,3 +1,4 @@
+import * as TSModule from "typescript";
 import {IEvaluateOptions} from "./i-evaluate-options";
 import {createLexicalEnvironment} from "./lexical-environment/lexical-environment";
 import {EvaluateResult} from "./evaluate-result";
@@ -14,15 +15,13 @@ import {isDeclaration} from "./util/declaration/is-declaration";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
 import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
 import {EnvironmentPresetKind} from "./environment/environment-preset-kind";
-import {Node} from "typescript";
 import {reportError} from "./util/reporting/report-error";
 import {createReportedErrorSet} from "./reporting/reported-error-set";
 import {ReportingOptionsSanitized} from "./reporting/i-reporting-options";
+import {TS} from "../type/ts";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
- * @param {IEvaluateOptions} options
- * @returns {Promise<EvaluateResult>}
  */
 export function evaluate ({
 														typeChecker,
@@ -31,6 +30,7 @@ export function evaluate ({
 															preset = EnvironmentPresetKind.NODE,
 															extra = {}
 														} = {},
+														typescript = TSModule,
 														logLevel = LogLevelKind.SILENT,
 														policy: {
 															deterministic = false,
@@ -50,7 +50,7 @@ export function evaluate ({
 														reporting: reportingInput = {}
 													}: IEvaluateOptions): EvaluateResult {
 	// Take the simple path first. This may be far more performant than building up an environment
-	const simpleLiteralResult = evaluateSimpleLiteral(node);
+	const simpleLiteralResult = evaluateSimpleLiteral(node, typescript);
 	if (simpleLiteralResult.success) return simpleLiteralResult;
 
 	// Otherwise, build an environment and get to work
@@ -78,7 +78,7 @@ export function evaluate ({
 	};
 
 	// Prepare a reference to the Node that is currently being evaluated
-	let currentNode: Node = node;
+	let currentNode: TS.Node = node;
 
 	// Prepare a logger
 	const logger = new Logger(logLevel);
@@ -100,6 +100,7 @@ export function evaluate ({
 	const nodeEvaluator = createNodeEvaluator({
 		policy,
 		typeChecker,
+		typescript,
 		logger,
 		stack,
 		reporting: reporting,
@@ -108,16 +109,16 @@ export function evaluate ({
 
 	try {
 		let value: Literal;
-		if (isExpression(node)) {
+		if (isExpression(node, typescript)) {
 			value = nodeEvaluator.expression(node, initialEnvironment, createStatementTraversalStack());
 		}
 
-		else if (isStatement(node)) {
+		else if (isStatement(node, typescript)) {
 			nodeEvaluator.statement(node, initialEnvironment);
 			value = stack.pop();
 		}
 
-		else if (isDeclaration(node)) {
+		else if (isDeclaration(node, typescript)) {
 			nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
 			value = stack.pop();
 		}
@@ -125,7 +126,7 @@ export function evaluate ({
 		// Otherwise, throw an UnexpectedNodeError
 		else {
 			// noinspection ExceptionCaughtLocallyJS
-			throw new UnexpectedNodeError({node});
+			throw new UnexpectedNodeError({node, typescript});
 		}
 
 		// Log the value before returning

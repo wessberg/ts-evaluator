@@ -3,10 +3,11 @@ import {IPolicyProxyApplyHookOptions, IPolicyProxyConstructHookOptions, PolicyPr
 
 /**
  * Returns true if the given path represents something that is nondeterministic.
- * @param {TrapConditionMap<T, ConditionType>} map
- * @param {ConditionType} condition
- * @param {PolicyProxyHookOptions<T>} item
- * @returns {boolean}
+ *
+ * @param map
+ * @param condition
+ * @param item
+ * @returns
  */
 export function isTrapConditionMet<T extends object, ConditionType = boolean> (map: TrapConditionMap<T, ConditionType>, condition: ConditionType, item: PolicyProxyHookOptions<T>): boolean {
 	const atoms = item.path.split(".") as (keyof T)[];
@@ -15,11 +16,12 @@ export function isTrapConditionMet<T extends object, ConditionType = boolean> (m
 
 /**
  * Walks all atoms of the given item path
- * @param {TrapConditionMap<T, ConditionType>} map
- * @param {ConditionType} matchCondition
- * @param {PolicyProxyHookOptions<T>} item
- * @param {(keyof T)[]} atoms
- * @return {boolean}
+ *
+ * @param map
+ * @param matchCondition
+ * @param item
+ * @param atoms
+ * @return
  */
 function walkAtoms<T extends object, ConditionType = boolean> (map: TrapConditionMap<T, ConditionType>|TrapConditionMemberMap<T, ConditionType>, matchCondition: ConditionType, item: PolicyProxyHookOptions<T>, atoms: (keyof T)[]): boolean {
 	const [head, ...tail] = atoms;
@@ -48,10 +50,11 @@ function walkAtoms<T extends object, ConditionType = boolean> (map: TrapConditio
 
 /**
  * Handles a TrapCondition
- * @param {TrapCondition<ConditionType>} trapCondition
- * @param {ConditionType} matchCondition
- * @param {PolicyProxyHookOptions<T>} item
- * @return {boolean}
+ *
+ * @param trapCondition
+ * @param matchCondition
+ * @param item
+ * @return
  */
 function handleTrapCondition<T extends object, ConditionType> (trapCondition: TrapCondition<ConditionType>, matchCondition: ConditionType, item: PolicyProxyHookOptions<T>): boolean {
 	// If matching the condition depends on the provided arguments, pass them in

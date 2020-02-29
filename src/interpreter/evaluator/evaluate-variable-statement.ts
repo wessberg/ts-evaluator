@@ -1,11 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {VariableStatement} from "typescript";
 import {evaluateVariableDeclarationList} from "./evaluate-variable-declaration-list";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a VariableStatement
- * @param {IEvaluatorOptions<VariableStatement>} options
  */
-export function evaluateVariableStatement ({node, ...rest}: IEvaluatorOptions<VariableStatement>): void {
+export function evaluateVariableStatement ({node, ...rest}: IEvaluatorOptions<TS.VariableStatement>): void {
 	evaluateVariableDeclarationList({node: node.declarationList, ...rest});
 }

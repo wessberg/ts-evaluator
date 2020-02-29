@@ -1,10 +1,8 @@
-import {NodeFlags, VariableDeclarationList} from "typescript";
+import {TS} from "../../../type/ts";
 
 /**
  * Returns true if the given VariableDeclarationList is declared with a 'var' keyword
- * @param {VariableDeclarationList} declarationList
- * @return {boolean}
  */
-export function isVarDeclaration (declarationList: VariableDeclarationList): boolean {
-	return declarationList.flags !== NodeFlags.Const && declarationList.flags !== NodeFlags.Let;
+export function isVarDeclaration (declarationList: TS.VariableDeclarationList, typescript: typeof TS): boolean {
+	return declarationList.flags !== typescript.NodeFlags.Const && declarationList.flags !== typescript.NodeFlags.Let;
 }

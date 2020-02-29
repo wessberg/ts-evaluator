@@ -1,12 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {AsExpression} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, an AsExpression
- * @param {IEvaluatorOptions<AsExpression>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateAsExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<AsExpression>): Literal {
+export function evaluateAsExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.AsExpression>): Literal {
 	return evaluate.expression(node.expression, environment, statementTraversalStack);
 }

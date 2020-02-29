@@ -1,11 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {OmittedExpression} from "typescript";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a OmittedExpression
- * @param {IEvaluatorOptions<OmittedExpression>} _options
- * @returns {Promise<undefined>}
  */
-export function evaluateOmittedExpression (_options: IEvaluatorOptions<OmittedExpression>): undefined {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export function evaluateOmittedExpression(_options: IEvaluatorOptions<TS.OmittedExpression>): undefined {
 	return undefined;
 }

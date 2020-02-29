@@ -1,5 +1,4 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {SetAccessorDeclaration} from "typescript";
 import {LexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -8,20 +7,19 @@ import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {inStaticContext} from "../util/static/in-static-context";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a SetAccessorDeclaration, before setting it on the given parent
- * @param {IEvaluatorOptions<SetAccessorDeclaration>} options
- * @param {IndexLiteral} parent
  */
-export function evaluateSetAccessorDeclaration ({node, environment, evaluate, statementTraversalStack, reporting, stack, ...rest}: IEvaluatorOptions<SetAccessorDeclaration>, parent: IndexLiteral): void {
+export function evaluateSetAccessorDeclaration (options: IEvaluatorOptions<TS.SetAccessorDeclaration>, parent: IndexLiteral): void {
+	const {node, environment, evaluate, statementTraversalStack, reporting, typescript} = options;
 
 	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
-	const isStatic = inStaticContext(node);
+	const isStatic = inStaticContext(node, typescript);
 
 	/**
 	 * An implementation of the set accessor
-	 * @param {Literal} args
 	 */
 	function setAccessorDeclaration (this: Literal, ...args: Literal[]) {
 
@@ -32,6 +30,7 @@ export function evaluateSetAccessorDeclaration ({node, environment, evaluate, st
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Define a new binding for the arguments given to the function
+		// eslint-disable-next-line prefer-rest-params
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 		if (this != null) {
@@ -50,13 +49,9 @@ export function evaluateSetAccessorDeclaration ({node, environment, evaluate, st
 
 		// Evaluate the parameters based on the given arguments
 		evaluateParameterDeclarations({
+			...options,
 				node: node.parameters,
-				environment: localLexicalEnvironment,
-				evaluate,
-				stack,
-				statementTraversalStack,
-				reporting,
-				...rest
+				environment: localLexicalEnvironment
 			}, args
 		);
 

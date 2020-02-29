@@ -24,7 +24,6 @@ export {MaxOpDurationExceededError} from "./interpreter/error/policy-error/max-o
 export {NetworkError} from "./interpreter/error/policy-error/network-error/network-error";
 export {NonDeterministicError} from "./interpreter/error/policy-error/non-deterministic-error/non-deterministic-error";
 export {ProcessError} from "./interpreter/error/policy-error/process-error/process-error";
-export {AsyncNotSupportedError} from "./interpreter/error/async-not-supported-error/async-not-supported-error";
 
 // Reporting
 export {BindingReportCallback, IReportingOptions, ReportingOptions} from "./interpreter/reporting/i-reporting-options";

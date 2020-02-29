@@ -1,22 +1,19 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {BindingElement, isArrayBindingPattern, isIdentifier} from "typescript";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a BindingName, based on an BindingElement
- * @param {IEvaluatorOptions<BindingElement>} options
- * @param {Literal} rightHandValue
- * @returns {Promise<void>}
  */
-export function evaluateBindingElement ({environment, node, evaluate, logger, reporting, statementTraversalStack}: IEvaluatorOptions<BindingElement>, rightHandValue: Literal): void {
+export function evaluateBindingElement ({environment, node, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.BindingElement>, rightHandValue: Literal): void {
 	// Compute the initializer value of the BindingElement, if it has any, that is
 	const bindingElementInitializer = node.initializer == null
 		? undefined
 		: evaluate.expression(node.initializer, environment, statementTraversalStack);
 
 	// If the element is directly references a property, but then aliases, store that alias in the environment.
-	if (isIdentifier(node.name) && node.propertyName != null) {
+	if ((typescript.isIdentifier(node.name) || typescript.isPrivateIdentifier?.(node.name)) && node.propertyName != null) {
 
 		// An element that is aliased cannot have a name that is anything other than an Identifier
 		const aliasName = node.name.text;
@@ -25,7 +22,7 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, re
 		const propertyNameResult = (evaluate.nodeWithValue(node.propertyName, environment, statementTraversalStack)) as IndexLiteralKey;
 
 		// Extract the property value from the initializer. If it is an ArrayBindingPattern, the rightHandValue will be assigned as-is to the identifier
-		const propertyValue = isArrayBindingPattern(node.parent)
+		const propertyValue = typescript.isArrayBindingPattern(node.parent)
 			? rightHandValue
 			: (rightHandValue as IndexLiteral)[propertyNameResult];
 
@@ -45,13 +42,13 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, re
 	}
 
 	// If the name is a simple non-aliased identifier, it directly references, a property from the right-hand value
-	else if (isIdentifier(node.name) && node.propertyName == null) {
+	else if ((typescript.isIdentifier(node.name) || typescript.isPrivateIdentifier?.(node.name)) && node.propertyName == null) {
 
 		// Compute the literal value of the name of the node
 		const nameResult = node.name.text;
 
 		// Extract the property value from the initializer. If it is an ArrayBindingPattern, the rightHandValue will be assigned as-is to the identifier
-		const propertyValue = isArrayBindingPattern(node.parent)
+		const propertyValue = typescript.isArrayBindingPattern(node.parent)
 			? rightHandValue
 			: (rightHandValue as IndexLiteral)[nameResult];
 
@@ -73,12 +70,12 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, re
 	}
 
 	// Otherwise, the name is itself a BindingPattern, and the property it is destructuring will always be defined
-	else if (!isIdentifier(node.name) && node.propertyName != null) {
+	else if (!typescript.isIdentifier(node.name) && !typescript.isPrivateIdentifier?.(node.name) && node.propertyName != null) {
 		// Compute the property name
 		const propertyNameResult = (evaluate.nodeWithValue(node.propertyName, environment, statementTraversalStack)) as IndexLiteralKey;
 
 		// Extract the property value from the initializer. If it is an ArrayBindingPattern, the rightHandValue will be assigned as-is to the identifier
-		const propertyValue = isArrayBindingPattern(node.parent)
+		const propertyValue = typescript.isArrayBindingPattern(node.parent)
 			? rightHandValue
 			: (rightHandValue as IndexLiteral)[propertyNameResult];
 
@@ -92,7 +89,7 @@ export function evaluateBindingElement ({environment, node, evaluate, logger, re
 	}
 
 	// Otherwise, the name itself is a BindingPattern. This will happen for example if an ObjectBindingPattern occurs within an ArrayBindingPattern
-	else if (!isIdentifier(node.name) && node.propertyName == null) {
+	else if (!typescript.isIdentifier(node.name) && !typescript.isPrivateIdentifier?.(node.name) && node.propertyName == null) {
 
 		// Fall back to using the initializer of the BindingElement if the property value is null-like and if it has one
 		const propertyValueWithInitializerFallback = rightHandValue != null

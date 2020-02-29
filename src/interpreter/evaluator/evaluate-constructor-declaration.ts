@@ -1,22 +1,20 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ConstructorDeclaration} from "typescript";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, Literal} from "../literal/literal";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ConstructorDeclaration
- * @param {IEvaluatorOptions<ConstructorDeclaration>} options
- * @returns {Promise<void>}
  */
-export function evaluateConstructorDeclaration ({node, environment, evaluate, stack, reporting, ...rest}: IEvaluatorOptions<ConstructorDeclaration>): void {
+export function evaluateConstructorDeclaration (options: IEvaluatorOptions<TS.ConstructorDeclaration>): void {
+	const {node, environment, evaluate, stack, reporting} = options;
 
 	/**
 	 * An implementation of a constructor function
-	 * @param {Literal} args
 	 */
 	function constructor (this: IndexLiteral, ...args: Literal[]) {
 		// Don't concern yourself with calling super here as this constructor is called immediately after calling super() in another memory representation of a class
@@ -28,6 +26,7 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Define a new binding for the arguments given to the function
+		// eslint-disable-next-line prefer-rest-params
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 		if (this != null) {
@@ -36,12 +35,9 @@ export function evaluateConstructorDeclaration ({node, environment, evaluate, st
 
 		// Evaluate the parameters based on the given arguments
 		evaluateParameterDeclarations({
+				...options,
 				node: node.parameters,
-				environment: localLexicalEnvironment,
-				evaluate,
-				stack,
-				reporting,
-				...rest
+				environment: localLexicalEnvironment
 			}, args, this
 		);
 

@@ -1,6 +1,6 @@
-import {Identifier} from "typescript";
 import {IEvaluationErrorOptions} from "../evaluation-error/i-evaluation-error-options";
+import {TS} from "../../../type/ts";
 
 export interface IUndefinedIdentifierErrorOptions extends IEvaluationErrorOptions {
-	node: Identifier;
+	node: TS.Identifier|TS.PrivateIdentifier;
 }

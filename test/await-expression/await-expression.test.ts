@@ -1,12 +1,12 @@
 import test from "ava";
 import {prepareTest} from "../setup";
 
-test("Can evaluate an AwaitExpression #1", t => {
+test("Can evaluate an AwaitExpression #1", async t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 			`
 			async function myAsyncFunction (): Promise<number> {
-				return new Promise(resolve => setTimeout(() => resolve(1000), 1000));
+				return new Promise(resolve => setTimeout(() => resolve(1000), 1));
 			}
 
 			(async () => {
@@ -17,7 +17,6 @@ test("Can evaluate an AwaitExpression #1", t => {
 	);
 
 	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 1000);
+	else t.deepEqual(await result.value, 1000);
 });

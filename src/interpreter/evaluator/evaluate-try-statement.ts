@@ -1,15 +1,16 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {TryStatement} from "typescript";
 import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error";
 import {clearBindingFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {TRY_SYMBOL} from "../util/try/try-symbol";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a TryStatement
- * @param {IEvaluatorOptions<TryStatement>} options
- * @returns {Promise<void>}
+ *
+ * @param options
+ * @returns
  */
-export function evaluateTryStatement ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TryStatement>): void {
+export function evaluateTryStatement ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.TryStatement>): void {
 	const executeTry = () => {
 		setInLexicalEnvironment({env: environment, reporting, newBinding: true, node, path: TRY_SYMBOL, value: true});
 		// The Block will declare an environment of its own

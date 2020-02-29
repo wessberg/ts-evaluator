@@ -203,6 +203,17 @@ Here's an explainer of the individual policies:
 
 - `process` _(default: `{exit: false, spawnChild: false}`)_ - If `process` permits `exit` operations, the evaluated code is permitted to exit the parent process. If `process` permits `spawnChild` operations, the evaluated code is permitted to spawn child processes.
 
+### Custom TypeScript version
+
+You can provide a specific version of TypeScript to use as an option to `evaluate`. This may come in handy if you're using
+multiple TypeScript versions in your project or if you're receiving the TypeScript version to use as an argument from a third party.
+
+```typescript
+const result = evaluate({
+	// ...
+	typescript: someTypescriptModule
+});
+
 ### Logging
 
 You can get information about the evaluation process with various levels of logging. By default, nothing is logged, but you can override this behavior:

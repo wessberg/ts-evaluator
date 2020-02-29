@@ -5,8 +5,9 @@ import {PolicyTrapKind} from "../policy/policy-trap-kind";
 
 /**
  * Stringifies the given PropertyKey path
- * @param {PropertyKey[]} path
- * @return {string}
+ *
+ * @param path
+ * @return
  */
 function stringifyPath (path: PropertyKey[]): string {
 	return path
@@ -16,27 +17,30 @@ function stringifyPath (path: PropertyKey[]): string {
 
 /**
  * Creates a proxy with hooks to check the given policy
- * @param {ICreatePolicyProxyOptions<T>} options
- * @return {T}
+ *
+ * @param options
+ * @return
  */
 export function createPolicyProxy<T extends object> ({hook, item, scope, policy}: ICreatePolicyProxyOptions<T, object>): T {
 
 	/**
-	 * Creates a trap that captures function invocation
-	 * @param {string[]} inputPath
-	 * @param {U} currentItem
-	 * @return {U}
-	 */
+ * Creates a trap that captures function invocation
+ *
+ * @param inputPath
+ * @param currentItem
+ * @return
+ */
 	function createAccessTrap<U extends object> (inputPath: PropertyKey[], currentItem: U): U {
 		return !canBeObserved(currentItem) || isBindCallApply(currentItem as Function) ? currentItem : new Proxy(currentItem, {
 
 			/**
-			 * Constructs a new instance of the given target
-			 * @param {U} target
-			 * @param {unknown[]} argArray
-			 * @param newTarget
-			 * @return {object}
-			 */
+ * Constructs a new instance of the given target
+ *
+ * @param target
+ * @param argArray
+ * @param newTarget
+ * @return
+ */
 			construct (target: U, argArray: unknown[], newTarget?: unknown): object {
 				// Don't proceed if the hook says no
 				if (!hook({
@@ -52,12 +56,13 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 			},
 
 			/**
-			 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
-			 * @param {NodeRequire} target
-			 * @param thisArg
-			 * @param {unknown[]} argArray
-			 * @return {unknown}
-			 */
+ * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
+ *
+ * @param target
+ * @param thisArg
+ * @param argArray
+ * @return
+ */
 			apply (target: U, thisArg: unknown, argArray: unknown[] = []): unknown {
 				// Don't proceed if the hook says no
 				if (!hook({
@@ -73,12 +78,13 @@ export function createPolicyProxy<T extends object> ({hook, item, scope, policy}
 			},
 
 			/**
-			 * Gets a trap for 'get' accesses
-			 * @param {U} target
-			 * @param {string} property
-			 * @param receiver
-			 * @return {unknown}
-			 */
+ * Gets a trap for 'get' accesses
+ *
+ * @param target
+ * @param property
+ * @param receiver
+ * @return
+ */
 			get (target: U, property: string, receiver: unknown): unknown {
 				const newPath = [...inputPath, property];
 

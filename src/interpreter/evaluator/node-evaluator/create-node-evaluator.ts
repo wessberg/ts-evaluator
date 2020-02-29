@@ -1,4 +1,3 @@
-import {Declaration, Expression, Node, Statement} from "typescript";
 import {ICreateNodeEvaluatorOptions} from "./i-create-node-evaluator-options";
 import {NodeEvaluator, NodeWithValue} from "./node-evaluator";
 import {MaxOpsExceededError} from "../../error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error";
@@ -13,16 +12,23 @@ import {evaluateNodeWithValue} from "../evaluate-node-with-value";
 import {createStatementTraversalStack, StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack";
 import {reportError} from "../../util/reporting/report-error";
 import {TRY_SYMBOL} from "../../util/try/try-symbol";
+import {TS} from "../../../type/ts";
 
 /**
  * Creates a Node Evaluator
- * @param {ICreateNodeEvaluatorOptions} options
- * @returns {NodeEvaluator}
  */
-export function createNodeEvaluator ({typeChecker, policy, logger, stack, reporting, nextNode}: ICreateNodeEvaluatorOptions): NodeEvaluator {
+export function createNodeEvaluator({
+	typeChecker,
+	typescript,
+	policy,
+	logger,
+	stack,
+	reporting,
+	nextNode
+}: ICreateNodeEvaluatorOptions): NodeEvaluator {
 	let ops = 0;
 
-	const handleNewNode = (node: Node, statementTraversalStack: StatementTraversalStack) => {
+	const handleNewNode = (node: TS.Node, statementTraversalStack: StatementTraversalStack) => {
 		nextNode(node);
 
 		// Increment the amount of encountered ops
@@ -42,11 +48,8 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack, report
 
 	/**
 	 * Wraps an evaluation action with error reporting
-	 * @param {LexicalEnvironment} environment
-	 * @param {ts.Node} node
-	 * @param {Function} action
 	 */
-	const wrapWithErrorReporting = (environment: LexicalEnvironment, node: Node, action: Function) => {
+	const wrapWithErrorReporting = (environment: LexicalEnvironment, node: TS.Node, action: Function) => {
 		// If we're already inside of a try-block, simply execute the action and do nothing else
 		if (pathInLexicalEnvironmentEquals(node, environment, true, TRY_SYMBOL)) {
 			return action();
@@ -64,49 +67,45 @@ export function createNodeEvaluator ({typeChecker, policy, logger, stack, report
 	};
 
 	const nodeEvaluator: NodeEvaluator = {
-		expression: (node: Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal => {
-			return wrapWithErrorReporting(environment, node, () => {
+		expression: (node: TS.Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal =>
+			wrapWithErrorReporting(environment, node, () => {
 				handleNewNode(node, statementTraversalStack);
 				return evaluateExpression(getEvaluatorOptions(node, environment, statementTraversalStack));
-			});
-		},
-		statement: (node: Statement, environment: LexicalEnvironment): void => {
-			return wrapWithErrorReporting(environment, node, () => {
+			}),
+		statement: (node: TS.Statement, environment: LexicalEnvironment): void =>
+			wrapWithErrorReporting(environment, node, () => {
 				const statementTraversalStack = createStatementTraversalStack();
 				handleNewNode(node, statementTraversalStack);
 				return evaluateStatement(getEvaluatorOptions(node, environment, statementTraversalStack));
-			});
-		},
-		declaration: (node: Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): void => {
-			return wrapWithErrorReporting(environment, node, () => {
+			}),
+		declaration: (node: TS.Declaration, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): void =>
+			wrapWithErrorReporting(environment, node, () => {
 				handleNewNode(node, statementTraversalStack);
 				return evaluateDeclaration(getEvaluatorOptions(node, environment, statementTraversalStack));
-			});
-		},
-		nodeWithArgument: (node: Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack): void => {
-			return wrapWithErrorReporting(environment, node, () => {
+			}),
+		nodeWithArgument: (node: TS.Node, environment: LexicalEnvironment, arg: Literal, statementTraversalStack: StatementTraversalStack): void =>
+			wrapWithErrorReporting(environment, node, () => {
 				handleNewNode(node, statementTraversalStack);
 				return evaluateNodeWithArgument(getEvaluatorOptions(node, environment, statementTraversalStack), arg);
-			});
-		},
-		nodeWithValue: (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal => {
-			return wrapWithErrorReporting(environment, node, () => {
+			}),
+		nodeWithValue: (node: NodeWithValue, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal =>
+			wrapWithErrorReporting(environment, node, () => {
 				handleNewNode(node, statementTraversalStack);
 				return evaluateNodeWithValue(getEvaluatorOptions(node, environment, statementTraversalStack));
-			});
-		}
+			})
 	};
 
 	/**
 	 * Gets an IEvaluatorOptions object ready for passing to one of the evaluation functions
-	 * @param {T} node
-	 * @param {LexicalEnvironment} environment
-	 * @param {StatementTraversalStack} statementTraversalStack
-	 * @return {IEvaluatorOptions<T>}
 	 */
-	function getEvaluatorOptions<T extends Node> (node: T, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): IEvaluatorOptions<T> {
+	function getEvaluatorOptions<T extends TS.Node>(
+		node: T,
+		environment: LexicalEnvironment,
+		statementTraversalStack: StatementTraversalStack
+	): IEvaluatorOptions<T> {
 		return {
 			typeChecker,
+			typescript,
 			policy,
 			reporting,
 			node,

@@ -1,23 +1,21 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {isIdentifier, PostfixUnaryExpression, SyntaxKind} from "typescript";
 import {Literal} from "../literal/literal";
 import {getRelevantDictFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a PostfixUnaryExpression
- * @param {IEvaluatorOptions<PostfixUnaryExpression>} options
- * @returns {Promise<Literal>}
  */
-export function evaluatePostfixUnaryExpression ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<PostfixUnaryExpression>): Literal {
+export function evaluatePostfixUnaryExpression ({node, evaluate, environment, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
 	// Make sure to evaluate the operand to ensure that it is found in the lexical environment
 	evaluate.expression(node.operand, environment, statementTraversalStack);
 
 	switch (node.operator) {
-		case SyntaxKind.PlusPlusToken: {
+		case typescript.SyntaxKind.PlusPlusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
-			if (!isIdentifier(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand});
+			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
+				throw new UnexpectedNodeError({node: node.operand, typescript});
 			}
 
 			// Find the value associated with the identifier within the environment.
@@ -30,10 +28,10 @@ export function evaluatePostfixUnaryExpression ({node, evaluate, environment, re
 			return value;
 		}
 
-		case SyntaxKind.MinusMinusToken: {
+		case typescript.SyntaxKind.MinusMinusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
-			if (!isIdentifier(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand});
+			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
+				throw new UnexpectedNodeError({node: node.operand, typescript});
 			}
 
 			// Find the value associated with the identifier within the environment.

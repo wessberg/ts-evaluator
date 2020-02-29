@@ -19,9 +19,10 @@ export type TrapConditionMapValue<T, ConditionType> = TrapCondition<ConditionTyp
 
 /**
  * Returns true if the given item is a TrapCondition
- * @param {TrapConditionMapValue<T>>} item
- * @param {ConditionType} condition
- * @return {item is TrapCondition}
+ *
+ * @param item
+ * @param condition
+ * @return
  */
 export function isTrapCondition<ConditionType> (item: unknown, condition: ConditionType): item is TrapCondition<ConditionType> {
 	// noinspection SuspiciousTypeOfGuard
@@ -30,8 +31,9 @@ export function isTrapCondition<ConditionType> (item: unknown, condition: Condit
 
 /**
  * Returns true if the given item is a TrapCondition
- * @param {TrapConditionMapValue<T>>} item
- * @return {item is TrapCondition}
+ *
+ * @param item
+ * @return
  */
 export function isTrapConditionFunction<T, ConditionType = boolean> (item: TrapConditionMapValue<T, ConditionType>): item is TrapConditionFunction<ConditionType> {
 	return typeof item === "function";

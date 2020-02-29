@@ -1,17 +1,13 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {Decorator} from "typescript";
 import {IndexLiteral, stringifyLiteral} from "../literal/literal";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error";
 import {__decorate, __param} from "tslib";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a Decorator
- * @param {IEvaluatorOptions<Decorator>} options
- * @param {*} args
- * @param {IndexLiteral} parent
- * @returns {Promise<void>}
  */
-export function evaluateDecorator ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<Decorator>, [parent, propertyName, index]: [IndexLiteral, string?, number?]): void {
+export function evaluateDecorator ({node, environment, evaluate, stack, statementTraversalStack}: IEvaluatorOptions<TS.Decorator>, [parent, propertyName, index]: [IndexLiteral, string?, number?]): void {
 	const decoratorImplementation = evaluate.expression(node.expression, environment, statementTraversalStack);
 
 	if (typeof decoratorImplementation !== "function") {

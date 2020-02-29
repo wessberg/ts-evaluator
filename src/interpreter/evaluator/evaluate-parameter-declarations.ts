@@ -1,18 +1,15 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {isIdentifier, NodeArray, ParameterDeclaration, SyntaxKind} from "typescript";
 import {IndexLiteral, Literal} from "../literal/literal";
 import {hasModifier} from "../util/modifier/has-modifier";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a NodeArray of ParameterDeclarations
- * @param {IEvaluatorOptions<NodeArray<ParameterDeclaration>>} options
- * @param {Literal[]} boundArguments
- * @param {IndexLiteral} [context]
  */
-export function evaluateParameterDeclarations ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<NodeArray<ParameterDeclaration>>, boundArguments: Literal[], context?: IndexLiteral): void {
+export function evaluateParameterDeclarations ({node, evaluate, environment, statementTraversalStack, typescript}: IEvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>, boundArguments: Literal[], context?: IndexLiteral): void {
 	// 'this' is a special parameter which is removed from the emitted results
-	const parameters = node.filter(param => !(isIdentifier(param.name) && param.name.text === "this"));
+	const parameters = node.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 
 	for (let i = 0; i < parameters.length; i++) {
 		const parameter = parameters[i];
@@ -29,10 +26,10 @@ export function evaluateParameterDeclarations ({node, evaluate, environment, sta
 
 			// If a context is given, and if a [public|protected|private] keyword is in front of the parameter, the initialized value should be
 			// set on the context as an instance property
-			if (context != null && isIdentifier(parameter.name) && (
-				hasModifier(parameter, SyntaxKind.PublicKeyword) ||
-				hasModifier(parameter, SyntaxKind.ProtectedKeyword) ||
-				hasModifier(parameter, SyntaxKind.PrivateKeyword)
+			if (context != null && typescript.isIdentifier(parameter.name) && (
+				hasModifier(parameter, typescript.SyntaxKind.PublicKeyword) ||
+				hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword) ||
+				hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword)
 			)
 			) {
 				const value = getFromLexicalEnvironment(parameter, environment, parameter.name.text);

@@ -1,11 +1,9 @@
-import {SyntaxKind} from "typescript";
+import {TS} from "../../../type/ts";
 
 /**
  * Stringifies the given SyntaxKind
- * @param {SyntaxKind} kind
- * @returns {string}
  */
-export function stringifySyntaxKind (kind: SyntaxKind): string {
-	if (kind === SyntaxKind.NumericLiteral) return "NumericLiteral";
-	return SyntaxKind[kind];
+export function stringifySyntaxKind (kind: TS.SyntaxKind, typescript: typeof TS): string {
+	if (kind === typescript.SyntaxKind.NumericLiteral) return "NumericLiteral";
+	return typescript.SyntaxKind[kind];
 }

@@ -1,10 +1,8 @@
-import {SyntaxKind, ThisExpression, Node} from "typescript";
+import {TS} from "../../../type/ts";
 
 /**
  * Returns true if the given node is a ThisExpression
- * @param {Node} node
- * @returns {node is ThisExpression}
  */
-export function isThisExpression (node: Node): node is ThisExpression {
-	return node.kind === SyntaxKind.ThisKeyword;
+export function isThisExpression (node: TS.Node, typescript: typeof TS): node is TS.ThisExpression {
+	return node.kind === typescript.SyntaxKind.ThisKeyword;
 }

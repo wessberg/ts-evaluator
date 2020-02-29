@@ -1,14 +1,12 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ReturnStatement} from "typescript";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ReturnStatement
- * @param {IEvaluatorOptions<ReturnStatement>} options
- * @returns {Promise<void>}
  */
-export function evaluateReturnStatement ({node, environment, evaluate, stack, reporting, statementTraversalStack}: IEvaluatorOptions<ReturnStatement>): void {
+export function evaluateReturnStatement ({node, environment, evaluate, stack, reporting, statementTraversalStack}: IEvaluatorOptions<TS.ReturnStatement>): void {
 	setInLexicalEnvironment({env: environment, path: RETURN_SYMBOL, value: true, reporting, node});
 
 	// If it is a simple 'return', return undefined

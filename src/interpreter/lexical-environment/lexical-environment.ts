@@ -12,22 +12,23 @@ import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
-import {Node} from "typescript";
 import {ICreateLexicalEnvironmentOptions} from "./i-create-lexical-environment-options";
+import {TS} from "../../type/ts";
 
 export interface LexicalEnvironment {
-	parentEnv: LexicalEnvironment|undefined;
+	parentEnv: LexicalEnvironment | undefined;
 	env: IndexLiteral;
 	preset?: EnvironmentPresetKind;
 }
 
 /**
  * Gets a value from a Lexical Environment
- * @param {LexicalEnvironment} env
- * @param {string} path
- * @returns {LexicalEnvironment["env]|undefined}
+ *
+ * @param env
+ * @param path
+ * @returns
  */
-export function getRelevantDictFromLexicalEnvironment (env: LexicalEnvironment, path: string): LexicalEnvironment["env"]|undefined {
+export function getRelevantDictFromLexicalEnvironment(env: LexicalEnvironment, path: string): LexicalEnvironment["env"] | undefined {
 	const [firstBinding] = path.split(".");
 	if (has(env.env, firstBinding)) return env.env;
 	if (env.parentEnv != null) return getRelevantDictFromLexicalEnvironment(env.parentEnv, path);
@@ -36,10 +37,8 @@ export function getRelevantDictFromLexicalEnvironment (env: LexicalEnvironment, 
 
 /**
  * Gets the EnvironmentPresetKind for the given LexicalEnvironment
- * @param {LexicalEnvironment} env
- * @return {EnvironmentPresetKind}
  */
-export function getPresetForLexicalEnvironment (env: LexicalEnvironment): EnvironmentPresetKind {
+export function getPresetForLexicalEnvironment(env: LexicalEnvironment): EnvironmentPresetKind {
 	if (env.preset != null) return env.preset;
 	else if (env.parentEnv != null) return getPresetForLexicalEnvironment(env.parentEnv);
 	else return EnvironmentPresetKind.NONE;
@@ -47,23 +46,20 @@ export function getPresetForLexicalEnvironment (env: LexicalEnvironment): Enviro
 
 /**
  * Gets a value from a Lexical Environment
- * @param {Node?} node
- * @param {LexicalEnvironment} env
- * @param {string} path
- * @returns {LiteralMatch?}
  */
-export function getFromLexicalEnvironment (node: Node|undefined, env: LexicalEnvironment, path: string): LiteralMatch|undefined {
+export function getFromLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): LiteralMatch | undefined {
 	const [firstBinding] = path.split(".");
 	if (has(env.env, firstBinding)) {
 		const literal = get(env.env, path);
 		switch (path) {
 			// If we're in a Node environment, the "__dirname" and "__filename" meta-properties should report the current directory or file of the SourceFile and not the parent process
 			case "__dirname":
-			case "__filename":
+			case "__filename": {
 				const preset = getPresetForLexicalEnvironment(env);
 				return preset === EnvironmentPresetKind.NODE && typeof literal === "function" && node != null
 					? {literal: literal(node.getSourceFile().fileName)}
 					: {literal};
+			}
 			default:
 				return {literal};
 		}
@@ -75,13 +71,8 @@ export function getFromLexicalEnvironment (node: Node|undefined, env: LexicalEnv
 
 /**
  * Returns true if the given lexical environment contains a value on the given path that equals the given literal
- * @param {Node} node
- * @param {LexicalEnvironment} env
- * @param {Literal} equals
- * @param {string[]} matchPaths
- * @returns {boolean}
  */
-export function pathInLexicalEnvironmentEquals (node: Node, env: LexicalEnvironment, equals: Literal, ...matchPaths: string[]): boolean {
+export function pathInLexicalEnvironmentEquals(node: TS.Node, env: LexicalEnvironment, equals: Literal, ...matchPaths: string[]): boolean {
 	return matchPaths.some(path => {
 		const match = getFromLexicalEnvironment(node, env, path);
 		return match == null ? false : match.literal === equals;
@@ -90,10 +81,11 @@ export function pathInLexicalEnvironmentEquals (node: Node, env: LexicalEnvironm
 
 /**
  * Returns true if the given value represents an internal symbol
- * @param {Literal} value
- * @return {boolean}
+ *
+ * @param value
+ * @return
  */
-export function isInternalSymbol (value: Literal): boolean {
+export function isInternalSymbol(value: Literal): boolean {
 	switch (value) {
 		case RETURN_SYMBOL:
 		case BREAK_SYMBOL:
@@ -108,10 +100,11 @@ export function isInternalSymbol (value: Literal): boolean {
 
 /**
  * Gets a value from a Lexical Environment
- * @param {ISetInLexicalEnvironmentOptions} options
- * @param {boolean} [newBinding=false]
+ *
+ * @param options
+ * @param [newBinding=false]
  */
-export function setInLexicalEnvironment ({env, path, value, reporting, node, newBinding = false}: ISetInLexicalEnvironmentOptions): void {
+export function setInLexicalEnvironment({env, path, value, reporting, node, newBinding = false}: ISetInLexicalEnvironmentOptions): void {
 	const [firstBinding] = path.split(".");
 	if (has(env.env, firstBinding) || newBinding || env.parentEnv == null) {
 		// If the value didn't change, do no more
@@ -124,10 +117,8 @@ export function setInLexicalEnvironment ({env, path, value, reporting, node, new
 		if (reporting.reportBindings != null && !isInternalSymbol(path)) {
 			reporting.reportBindings({path, value, node});
 		}
-	}
-
-	else {
-		let currentParentEnv: LexicalEnvironment|undefined = env.parentEnv;
+	} else {
+		let currentParentEnv: LexicalEnvironment | undefined = env.parentEnv;
 		while (currentParentEnv != null) {
 			if (has(currentParentEnv.env, firstBinding)) {
 				// If the value didn't change, do no more
@@ -141,8 +132,7 @@ export function setInLexicalEnvironment ({env, path, value, reporting, node, new
 					reporting.reportBindings({path, value, node});
 				}
 				return;
-			}
-			else {
+			} else {
 				currentParentEnv = currentParentEnv.parentEnv;
 			}
 		}
@@ -151,23 +141,21 @@ export function setInLexicalEnvironment ({env, path, value, reporting, node, new
 
 /**
  * Clears a binding from a Lexical Environment
- * @param {LexicalEnvironment} env
- * @param {string} path
+ *
+ * @param env
+ * @param path
  */
-export function clearBindingFromLexicalEnvironment (env: LexicalEnvironment, path: string): void {
+export function clearBindingFromLexicalEnvironment(env: LexicalEnvironment, path: string): void {
 	const [firstBinding] = path.split(".");
 	if (has(env.env, firstBinding)) {
 		del(env.env, path);
-	}
-
-	else {
-		let currentParentEnv: LexicalEnvironment|undefined = env.parentEnv;
+	} else {
+		let currentParentEnv: LexicalEnvironment | undefined = env.parentEnv;
 		while (currentParentEnv != null) {
 			if (has(currentParentEnv.env, firstBinding)) {
 				del(currentParentEnv.env, path);
 				return;
-			}
-			else {
+			} else {
 				currentParentEnv = currentParentEnv.parentEnv;
 			}
 		}
@@ -176,11 +164,15 @@ export function clearBindingFromLexicalEnvironment (env: LexicalEnvironment, pat
 
 /**
  * Creates a Lexical Environment
- * @param {ICreateLexicalEnvironmentOptions} options
- * @returns {Promise<LexicalEnvironment>}
+ *
+ * @param options
+ * @returns
  */
-export function createLexicalEnvironment ({inputEnvironment: {extra, preset}, policy, getCurrentNode}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
-
+export function createLexicalEnvironment({
+	inputEnvironment: {extra, preset},
+	policy,
+	getCurrentNode
+}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
 	let envInput: IndexLiteral;
 
 	switch (preset) {

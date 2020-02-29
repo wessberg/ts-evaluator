@@ -19,3 +19,22 @@ test("Can evaluate and retrieve a PropertyDeclaration. #1", t => {
 		t.deepEqual(result.value, 2);
 	}
 });
+
+test("Can evaluate and retrieve a private PropertyDeclaration. #1", t => {
+	const {evaluate} = prepareTest(
+		// language=TypeScript
+		`
+			class Foo {
+				#someInstanceProp = 2;
+			}
+		`,
+		"#someInstanceProp"
+	);
+
+	const result = evaluate();
+
+	if (!result.success) t.fail(result.reason.stack);
+	else {
+		t.deepEqual(result.value, 2);
+	}
+});

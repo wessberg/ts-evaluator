@@ -1,22 +1,19 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ArrowFunction, isBlock, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {Literal} from "../literal/literal";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {hasModifier} from "../util/modifier/has-modifier";
-
-// tslint:disable:no-identical-functions
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, an ArrowFunction
- * @param {IEvaluatorOptions<ArrowFunction>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateArrowFunctionExpression ({node, environment, evaluate, stack, statementTraversalStack, reporting, ...rest}: IEvaluatorOptions<ArrowFunction>): Literal {
+export function evaluateArrowFunctionExpression (options: IEvaluatorOptions<TS.ArrowFunction>): Literal {
+	const {node, environment, evaluate, stack, statementTraversalStack, reporting, typescript} = options;
 
-	const arrowFunctionExpression = hasModifier(node, SyntaxKind.AsyncKeyword)
+	const arrowFunctionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async (...args: Literal[]) => {
 
 			// Prepare a lexical environment for the function context
@@ -26,22 +23,19 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Define a new binding for the arguments given to the function
+			// eslint-disable-next-line prefer-rest-params
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
+				...options,
 					node: node.parameters,
-					environment: localLexicalEnvironment,
-					evaluate,
-					stack,
-					statementTraversalStack,
-					reporting,
-					...rest
+					environment: localLexicalEnvironment
 				}, args
 			);
 
 			// If the body is a block, evaluate it as a statement
-			if (isBlock(node.body)) {
+			if (typescript.isBlock(node.body)) {
 				evaluate.statement(node.body, localLexicalEnvironment);
 
 				// If a 'return' has occurred within the block, pop the Stack and return that value
@@ -67,22 +61,19 @@ export function evaluateArrowFunctionExpression ({node, environment, evaluate, s
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Define a new binding for the arguments given to the function
+			// eslint-disable-next-line prefer-rest-params
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
+				...options,
 					node: node.parameters,
 					environment: localLexicalEnvironment,
-					evaluate,
-					stack,
-					statementTraversalStack,
-					reporting,
-					...rest
 				}, args
 			);
 
 			// If the body is a block, evaluate it as a statement
-			if (isBlock(node.body)) {
+			if (typescript.isBlock(node.body)) {
 				evaluate.statement(node.body, localLexicalEnvironment);
 
 				// If a 'return' has occurred within the block, pop the Stack and return that value

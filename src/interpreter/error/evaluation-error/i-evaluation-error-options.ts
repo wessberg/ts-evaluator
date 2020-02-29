@@ -1,6 +1,6 @@
-import {Node} from "typescript";
+import {TS} from "../../../type/ts";
 
 export interface IEvaluationErrorOptions {
-	node: Node;
+	node: TS.Node;
 	message?: string;
 }

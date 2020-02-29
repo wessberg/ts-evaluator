@@ -1,56 +1,59 @@
-import {isElementAccessExpression, isFunctionDeclaration, isIdentifier, isParenthesizedExpression, isPropertyAccessExpression, isTypeAssertion, Node} from "typescript";
 import {isThisExpression} from "../util/node/is-this-expression";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {isSuperExpression} from "../util/node/is-super-expression";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
 import {IEvaluatorOptions} from "../evaluator/i-evaluator-options";
+import {TS} from "../../type/ts";
 
 /**
  * Gets the path to "dot" into an object with based on the node. For example, if the node is a simple identifier, say, 'foo', the dot path is simply "foo".
  * And, if it is a PropertyAccessExpression, that path may be "console.log" for example
- * @param {IEvaluatorOptions<Node>} options
- * @returns {Promise<string?>}
  */
-export function getDotPathFromNode<T extends Node> ({node, evaluate, ...rest}: IEvaluatorOptions<T>): string|undefined {
-	if (isIdentifier(node)) {
+export function getDotPathFromNode<T extends TS.Node> (options: IEvaluatorOptions<T>): string|undefined {
+	const {node, evaluate, typescript, environment, statementTraversalStack} = options;
+	if (typescript.isIdentifier(node)) {
 		return node.text;
 	}
 
-	else if (isThisExpression(node)) {
+	else if (typescript.isPrivateIdentifier?.(node)) {
+		return node.text;
+	}
+
+	else if (isThisExpression(node, typescript)) {
 		return THIS_SYMBOL;
 	}
 
-	else if (isSuperExpression(node)) {
+	else if (isSuperExpression(node, typescript)) {
 		return SUPER_SYMBOL;
 	}
 
-	else if (isParenthesizedExpression(node)) {
-		return getDotPathFromNode({node: node.expression, evaluate, ...rest});
+	else if (typescript.isParenthesizedExpression(node)) {
+		return getDotPathFromNode({...options, node: node.expression});
 	}
-	else if (isTypeAssertion(node)) {
-		return getDotPathFromNode({node: node.expression, evaluate, ...rest});
+	else if (typescript.isTypeAssertion(node)) {
+		return getDotPathFromNode({...options, node: node.expression});
 	}
 
-	else if (isPropertyAccessExpression(node)) {
-		let leftHand = getDotPathFromNode({node: node.expression, evaluate, ...rest});
-		if (leftHand == null) leftHand = (evaluate.expression(node.expression, rest.environment, rest.statementTraversalStack)) as string;
-		let rightHand = getDotPathFromNode({node: node.name, evaluate, ...rest});
-		if (rightHand == null) rightHand = (evaluate.expression(node.name, rest.environment, rest.statementTraversalStack)) as string;
+	else if (typescript.isPropertyAccessExpression(node)) {
+		let leftHand = getDotPathFromNode({...options, node: node.expression});
+		if (leftHand == null) leftHand = (evaluate.expression(node.expression, environment, statementTraversalStack)) as string;
+		let rightHand = getDotPathFromNode({...options, node: node.name});
+		if (rightHand == null) rightHand = (evaluate.expression(node.name, environment, statementTraversalStack)) as string;
 
 		if (leftHand == null || rightHand == null) return undefined;
 		return `${leftHand}.${rightHand}`;
 	}
 
-	else if (isElementAccessExpression(node)) {
-		let leftHand = getDotPathFromNode({node: node.expression, evaluate, ...rest});
-		if (leftHand == null) leftHand = (evaluate.expression(node.expression, rest.environment, rest.statementTraversalStack)) as string;
-		const rightHand = (evaluate.expression(node.argumentExpression, rest.environment, rest.statementTraversalStack)) as string;
+	else if (typescript.isElementAccessExpression(node)) {
+		let leftHand = getDotPathFromNode({...options, node: node.expression});
+		if (leftHand == null) leftHand = (evaluate.expression(node.expression, environment, statementTraversalStack)) as string;
+		const rightHand = (evaluate.expression(node.argumentExpression, environment, statementTraversalStack)) as string;
 
 		if (leftHand == null || rightHand == null) return undefined;
 		return `${leftHand}.${rightHand}`;
 	}
 
-	else if (isFunctionDeclaration(node)) {
+	else if (typescript.isFunctionDeclaration(node)) {
 		if (node.name == null) return undefined;
 		return node.name.text;
 	}

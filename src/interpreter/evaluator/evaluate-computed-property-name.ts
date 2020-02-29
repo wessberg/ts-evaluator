@@ -1,12 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ComputedPropertyName} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ComputedPropertyName
- * @param {IEvaluatorOptions<ComputedPropertyName>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateComputedPropertyName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<ComputedPropertyName>): Literal {
+export function evaluateComputedPropertyName ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.ComputedPropertyName>): Literal {
 	return evaluate.expression(node.expression, environment, statementTraversalStack);
 }

@@ -1,12 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {StringLiteralLike} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a StringLiteralLike
- * @param {IEvaluatorOptions<StringLiteralLike>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateStringLiteral ({node}: IEvaluatorOptions<StringLiteralLike>): Literal {
+export function evaluateStringLiteral ({node}: IEvaluatorOptions<TS.StringLiteralLike>): Literal {
 	return node.text;
 }

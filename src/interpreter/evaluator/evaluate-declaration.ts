@@ -1,14 +1,12 @@
-import {Declaration} from "typescript";
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {evaluateNode} from "./evaluate-node";
+import {TS} from "../../type/ts";
 
 /**
  * Will get a literal value for the given Declaration. If it doesn't succeed, the value will be 'undefined'
- * @param {IEvaluatorOptions<Declaration>} options
- * @returns {Promise<void>}
  */
-export function evaluateDeclaration (options: IEvaluatorOptions<Declaration>): void {
-	options.logger.logNode(options.node);
+export function evaluateDeclaration (options: IEvaluatorOptions<TS.Declaration>): void {
+	options.logger.logNode(options.node, options.typescript);
 
 	evaluateNode(options);
 }

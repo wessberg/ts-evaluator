@@ -26,5 +26,5 @@ export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyP
 	argArray: unknown[];
 }
 
-export type PolicyProxyHookOptions<T extends Object> = IPolicyProxyGetHookOptions<T> | IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
+export type PolicyProxyHookOptions<T extends Record<string, any>> = IPolicyProxyGetHookOptions<T> | IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
 export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => boolean;

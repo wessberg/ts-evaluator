@@ -6,9 +6,10 @@ export const enum PolicyTrapKind {
 
 /**
  * Stringifies the given PolicyTrapKind on the given path
- * @param {PolicyTrapKind} kind
- * @param {string} path
- * @return {string}
+ *
+ * @param kind
+ * @param path
+ * @return
  */
 export function stringifyPolicyTrapKindOnPath (kind: PolicyTrapKind, path: string): string {
 	switch (kind) {

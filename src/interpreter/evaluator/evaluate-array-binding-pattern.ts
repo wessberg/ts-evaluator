@@ -1,14 +1,11 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ArrayBindingPattern} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, an ArrayBindingPattern, based on an initializer
- * @param {IEvaluatorOptions<ArrayBindingPattern>} options
- * @param {Iterable<Literal>} rightHandValue
- * @returns {Promise<void>}
  */
-export function evaluateArrayBindingPattern ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<ArrayBindingPattern>, rightHandValue: Iterable<Literal>): void {
+export function evaluateArrayBindingPattern ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.ArrayBindingPattern>, rightHandValue: Iterable<Literal>): void {
 	const iterator = rightHandValue[Symbol.iterator]();
 	let elementsCursor = 0;
 

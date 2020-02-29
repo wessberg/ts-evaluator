@@ -1,15 +1,12 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {AwaitExpression} from "typescript";
 import {Literal} from "../literal/literal";
-import {syncAwait} from "../util/await/sync-await";
 import {MaxOpDurationExceededError} from "../error/policy-error/max-op-duration-exceeded-error/max-op-duration-exceeded-error";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, an AwaitExpression
- * @param {IEvaluatorOptions<AwaitExpression>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateAwaitExpression ({node, environment, evaluate, policy, statementTraversalStack}: IEvaluatorOptions<AwaitExpression>): Literal {
+export async function evaluateAwaitExpression ({node, environment, evaluate, policy, statementTraversalStack}: IEvaluatorOptions<TS.AwaitExpression>): Promise<Literal> {
 	// If a maximum duration for any operation is given, set a timeout that will throw a PolicyError when and if the duration is exceeded.
 	const timeout = policy.maxOpDuration === Infinity
 		? undefined
@@ -17,7 +14,7 @@ export function evaluateAwaitExpression ({node, environment, evaluate, policy, s
 			throw new MaxOpDurationExceededError({duration: policy.maxOpDuration, node});
 		}, policy.maxOpDuration);
 
-	const result = syncAwait(evaluate.expression(node.expression, environment, statementTraversalStack) as Promise<Literal>);
+	const result = evaluate.expression(node.expression, environment, statementTraversalStack) as Promise<Literal>;
 
 	// Make sure to clear the timeout if it exists to avoid throwing unnecessarily
 	if (timeout != null) clearTimeout(timeout);

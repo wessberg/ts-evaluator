@@ -1,4 +1,3 @@
-import {SyntaxKind} from "typescript";
 import {EvaluationError} from "../evaluation-error/evaluation-error";
 import {IUnexpectedNodeErrorOptions} from "./i-unexpected-node-error-options";
 
@@ -7,7 +6,7 @@ import {IUnexpectedNodeErrorOptions} from "./i-unexpected-node-error-options";
  */
 export class UnexpectedNodeError extends EvaluationError {
 
-	constructor ({node, message = `Unexpected Node: '${SyntaxKind[node.kind]}'`}: IUnexpectedNodeErrorOptions) {
+	constructor ({node, typescript, message = `Unexpected Node: '${typescript.SyntaxKind[node.kind]}'`}: IUnexpectedNodeErrorOptions) {
 		super({message, node});
 	}
 }

@@ -1,26 +1,22 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ForStatement, isVariableDeclarationList} from "typescript";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
-
-// tslint:disable:no-redundant-jump
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ForStatement
- * @param {IEvaluatorOptions<ForStatement>} options
- * @returns {Promise<void>}
  */
-export function evaluateForStatement ({node, environment, evaluate, reporting, statementTraversalStack}: IEvaluatorOptions<ForStatement>): void {
+export function evaluateForStatement ({node, environment, evaluate, reporting, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ForStatement>): void {
 
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
 
 	// Evaluate the initializer if it is given
 	if (node.initializer !== undefined) {
-		if (isVariableDeclarationList(node.initializer)) {
+		if (typescript.isVariableDeclarationList(node.initializer)) {
 			for (const declaration of node.initializer.declarations) {
 				evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
 			}

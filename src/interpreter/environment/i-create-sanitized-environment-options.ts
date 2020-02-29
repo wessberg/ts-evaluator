@@ -1,9 +1,9 @@
 import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
 import {IndexLiteral} from "../literal/literal";
-import {Node} from "typescript";
+import {TS} from "../../type/ts";
 
 export interface ICreateSanitizedEnvironmentOptions {
 	policy: IEvaluatePolicySanitized;
 	env: IndexLiteral;
-	getCurrentNode (): Node;
+	getCurrentNode (): TS.Node;
 }

@@ -1,12 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {SpreadElement} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a SpreadElement, before applying it on the given parent
- * @param {IEvaluatorOptions<SpreadElement>} options
- * @returns {Promise<Literal[]>}
  */
-export function evaluateSpreadElement ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<SpreadElement>): Literal[] {
+export function evaluateSpreadElement ({environment, node, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.SpreadElement>): Literal[] {
 	return (evaluate.expression(node.expression, environment, statementTraversalStack)) as Literal[];
 }

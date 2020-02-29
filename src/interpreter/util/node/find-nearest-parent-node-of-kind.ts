@@ -1,25 +1,22 @@
-import {getCombinedNodeFlags, isSourceFile, Node, NodeFlags, SyntaxKind} from "typescript";
+import {TS} from "../../../type/ts";
 
 /**
  * Finds the nearest parent node of the given kind from the given Node
- * @param {Node} from
- * @param {SyntaxKind} kind
- * @return {T?}
  */
-export function findNearestParentNodeOfKind<T extends Node> (from: Node, kind: SyntaxKind): T|undefined {
+export function findNearestParentNodeOfKind<T extends TS.Node> (from: TS.Node, kind: TS.SyntaxKind, typescript: typeof TS): T|undefined {
 	let currentParent = from;
 	while (true) {
 		currentParent = currentParent.parent;
 		if (currentParent == null) return undefined;
 		if (currentParent.kind === kind) {
-			const combinedNodeFlags = getCombinedNodeFlags(currentParent);
+			const combinedNodeFlags = typescript.getCombinedNodeFlags(currentParent);
 			const isNamespace = (
-				((combinedNodeFlags & NodeFlags.Namespace) !== 0) ||
-				((combinedNodeFlags & NodeFlags.NestedNamespace) !== 0)
+				((combinedNodeFlags & typescript.NodeFlags.Namespace) !== 0) ||
+				((combinedNodeFlags & typescript.NodeFlags.NestedNamespace) !== 0)
 			);
-			if (!isNamespace) return <T>currentParent;
+			if (!isNamespace) return currentParent as T;
 		}
 
-		if (isSourceFile(currentParent)) return undefined;
+		if (typescript.isSourceFile(currentParent)) return undefined;
 	}
 }

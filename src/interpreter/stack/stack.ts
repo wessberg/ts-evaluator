@@ -12,49 +12,55 @@ export type StackEntry = Literal;
 
 /**
  * Creates a Stack
- * @return {Stack}
+ *
+ * @return
  */
 export function createStack (): Stack {
 	const stack: StackEntry[] = [];
 
 	return {
 		/**
-		 * Gets an iterator for the Stack
-		 * @return {IterableIterator<Literal>}
-		 */
+ * Gets an iterator for the Stack
+ *
+ * @return
+ */
 		[Symbol.iterator] () {
 			return stack[Symbol.iterator]();
 		},
 
 		/**
-		 * Gets the length of the Stack
-		 * @return {number}
-		 */
+ * Gets the length of the Stack
+ *
+ * @return
+ */
 		get length () {
 			return stack.length;
 		},
 
 		/**
-		 * Gets the last item of the Stack
-		 * @return {StackEntry}
-		 */
+ * Gets the last item of the Stack
+ *
+ * @return
+ */
 		get lastItem () {
 			return stack[stack.length - 1];
 		},
 
 		/**
-		 * Pushes the given StackEntries on to the Stack
-		 * @param {StackEntry} values
-		 * @return {number}
-		 */
+ * Pushes the given StackEntries on to the Stack
+ *
+ * @param values
+ * @return
+ */
 		push (...values: StackEntry[]) {
 			return stack.push(...values);
 		},
 
 		/**
-		 * Pops the last item from the stack
-		 * @return {StackEntry | undefined}
-		 */
+ * Pops the last item from the stack
+ *
+ * @return
+ */
 		pop () {
 			return stack.pop();
 		}

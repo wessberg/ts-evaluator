@@ -1,34 +1,36 @@
-import {Declaration, getNameOfDeclaration, isComputedPropertyName, isIdentifier, isNumericLiteral, isStringLiteralLike} from "typescript";
 import {IEvaluatorOptions} from "../../evaluator/i-evaluator-options";
 import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error";
+import {TS} from "../../../type/ts";
 
 /**
  * Gets the name of the given declaration
- * @param {IEvaluatorOptions<Declaration>} options
- * @return {Promise<string|number?>}
  */
-export function getDeclarationName ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<Declaration>): string|number|undefined {
-	const name = getNameOfDeclaration(node);
+export function getDeclarationName ({node, evaluate, environment, typescript, statementTraversalStack}: IEvaluatorOptions<TS.Declaration>): string|number|undefined {
+	const name = typescript.getNameOfDeclaration(node);
 	if (name == null) return undefined;
 
-	if (isIdentifier(name)) {
+	if (typescript.isIdentifier(name)) {
 		return name.text;
 	}
 
-	else if (isStringLiteralLike(name)) {
+	else if (typescript.isPrivateIdentifier?.(name)) {
 		return name.text;
 	}
 
-	else if (isNumericLiteral(name)) {
+	else if (typescript.isStringLiteralLike(name)) {
+		return name.text;
+	}
+
+	else if (typescript.isNumericLiteral(name)) {
 		return Number(name.text);
 	}
 
-	else if (isComputedPropertyName(name)) {
+	else if (typescript.isComputedPropertyName(name)) {
 		return (evaluate.expression(name.expression, environment, statementTraversalStack)) as ReturnType<typeof getDeclarationName>;
 	}
 
 	else {
-		throw new UnexpectedNodeError({node: name});
+		throw new UnexpectedNodeError({node: name, typescript});
 	}
 
 }

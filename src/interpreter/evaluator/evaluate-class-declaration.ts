@@ -1,17 +1,16 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {ClassDeclaration, isConstructorDeclaration, SyntaxKind} from "typescript";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {generateClassDeclaration} from "../util/class/generate-class-declaration";
 import {hasModifier} from "../util/modifier/has-modifier";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ClassDeclaration
- * @param {IEvaluatorOptions<FunctionDeclaration>} options
  */
-export function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, reporting, statementTraversalStack}: IEvaluatorOptions<ClassDeclaration>): void {
+export function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ClassDeclaration>): void {
 	let extendedType: Function|undefined;
-	const ctorMember = node.members.find(isConstructorDeclaration);
-	const otherMembers = node.members.filter(member => !isConstructorDeclaration(member));
+	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
+	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
 	let ctor: Function|undefined;
 	if (ctorMember != null) {
@@ -20,7 +19,7 @@ export function evaluateClassDeclaration ({node, environment, evaluate, stack, l
 	}
 
 	if (node.heritageClauses != null) {
-		const extendsClause = node.heritageClauses.find(clause => clause.token === SyntaxKind.ExtendsKeyword);
+		const extendsClause = node.heritageClauses.find(clause => clause.token === typescript.SyntaxKind.ExtendsKeyword);
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
@@ -50,7 +49,7 @@ export function evaluateClassDeclaration ({node, environment, evaluate, stack, l
 		evaluate.nodeWithArgument(
 			member,
 			environment,
-			hasModifier(member, SyntaxKind.StaticKeyword)
+			hasModifier(member, typescript.SyntaxKind.StaticKeyword)
 				? classDeclaration
 				: classDeclaration.prototype,
 			statementTraversalStack

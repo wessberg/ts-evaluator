@@ -1,40 +1,37 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {isIdentifier, PrefixUnaryExpression, SyntaxKind} from "typescript";
 import {getRelevantDictFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
 import {Literal} from "../literal/literal";
-
-// tslint:disable:strict-boolean-expressions
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a PrefixUnaryExpression
- * @param {IEvaluatorOptions<PrefixUnaryExpression>} options
- * @returns {Promise<Literal>}
  */
-export function evaluatePrefixUnaryExpression ({node, environment, evaluate, reporting, statementTraversalStack}: IEvaluatorOptions<PrefixUnaryExpression>): Literal {
+export function evaluatePrefixUnaryExpression ({node, environment, evaluate, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
 	const operandValue = (evaluate.expression(node.operand, environment, statementTraversalStack)) as number;
 
 	switch (node.operator) {
-		case SyntaxKind.PlusToken: {
+		case typescript.SyntaxKind.PlusToken: {
 			return +operandValue;
 		}
 
-		case SyntaxKind.MinusToken: {
+		case typescript.SyntaxKind.MinusToken: {
 			return -operandValue;
 		}
 
-		case SyntaxKind.TildeToken: {
+		case typescript.SyntaxKind.TildeToken: {
 			return ~operandValue;
 		}
 
-		case SyntaxKind.ExclamationToken: {
+		case typescript.SyntaxKind.ExclamationToken: {
+			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			return !operandValue;
 		}
 
-		case SyntaxKind.PlusPlusToken: {
+		case typescript.SyntaxKind.PlusPlusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
-			if (!isIdentifier(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand});
+			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
+				throw new UnexpectedNodeError({node: node.operand, typescript});
 			}
 
 			// Find the value associated with the identifier within the environment.
@@ -48,10 +45,10 @@ export function evaluatePrefixUnaryExpression ({node, environment, evaluate, rep
 			return value;
 		}
 
-		case SyntaxKind.MinusMinusToken: {
+		case typescript.SyntaxKind.MinusMinusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
-			if (!isIdentifier(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand});
+			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
+				throw new UnexpectedNodeError({node: node.operand, typescript});
 			}
 
 			// Find the value associated with the identifier within the environment.

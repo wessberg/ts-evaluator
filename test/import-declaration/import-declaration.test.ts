@@ -1,5 +1,6 @@
 import test from "ava";
 import {prepareTest} from "../setup";
+import {join} from "path";
 
 test("Can resolve symbols via ImportDeclarations. #1", t => {
 	const {evaluate} = prepareTest(
@@ -200,7 +201,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 				import {readFileSync} from "fs";
 
 				const alias = readFileSync;
-				const foo = JSON.parse(readFileSync("/Users/wessberg/coding/libraries/evaluator/package.json")).name;
+				const foo = JSON.parse(readFileSync("${join(__dirname, "../../package.json")}")).name;
 			`
 		],
 		"foo"

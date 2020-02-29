@@ -2,10 +2,11 @@ import {IGenerateClassDeclarationOptions} from "./i-generate-class-declaration-o
 
 /**
  * A function that uses 'new Function' to auto-generate a class with a dynamic name and extended type
- * @param {string} name
- * @param {Literal} extendedType
- * @param {() => void} ctor
- * @return {Function}
+ *
+ * @param name
+ * @param extendedType
+ * @param ctor
+ * @return
  */
 export function generateClassDeclaration ({name, extendedType, ctor = () => {}}: Partial<IGenerateClassDeclarationOptions>): Function {
 	if (extendedType == null) {

@@ -1,5 +1,4 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {FunctionDeclaration, SyntaxKind} from "typescript";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {Literal} from "../literal/literal";
@@ -8,20 +7,17 @@ import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {RETURN_SYMBOL} from "../util/return/return-symbol";
 import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file";
 import {hasModifier} from "../util/modifier/has-modifier";
-
-// tslint:disable:no-identical-functions
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a FunctionDeclaration
- * @param {IEvaluatorOptions<FunctionDeclaration>} options
- * @returns {Promise<void>}
  */
-export function evaluateFunctionDeclaration (options: IEvaluatorOptions<FunctionDeclaration>): void {
-	const {node, environment, evaluate, stack, reporting, ...rest} = options;
+export function evaluateFunctionDeclaration (options: IEvaluatorOptions<TS.FunctionDeclaration>): void {
+	const {node, environment, evaluate, stack, reporting, typescript} = options;
 
 	const nameResult = node.name == null ? undefined : node.name.text;
 
-	const _functionDeclaration = hasModifier(node, SyntaxKind.AsyncKeyword)
+	const _functionDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function functionDeclaration (this: Literal, ...args: Literal[]) {
 			// Prepare a lexical environment for the function context
 			const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
@@ -30,6 +26,7 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Define a new binding for the arguments given to the function
+			// eslint-disable-next-line prefer-rest-params
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			if (this != null) {
@@ -38,12 +35,9 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
+				...options,
 					node: node.parameters,
-					environment: localLexicalEnvironment,
-					evaluate,
-					stack,
-					reporting,
-					...rest
+					environment: localLexicalEnvironment
 				}, args
 			);
 
@@ -75,6 +69,7 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
 
 			// Define a new binding for the arguments given to the function
+			// eslint-disable-next-line prefer-rest-params
 			setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
 
 			if (this != null) {
@@ -83,12 +78,9 @@ export function evaluateFunctionDeclaration (options: IEvaluatorOptions<Function
 
 			// Evaluate the parameters based on the given arguments
 			evaluateParameterDeclarations({
+					...options,
 					node: node.parameters,
-					environment: localLexicalEnvironment,
-					evaluate,
-					stack,
-					reporting,
-					...rest
+					environment: localLexicalEnvironment
 				}, args
 			);
 

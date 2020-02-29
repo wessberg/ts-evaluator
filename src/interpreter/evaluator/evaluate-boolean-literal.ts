@@ -1,12 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {SyntaxKind, Token} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a BooleanLiteral
- * @param {IEvaluatorOptions<BooleanLiteral>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateBooleanLiteral ({node}: IEvaluatorOptions<Token<SyntaxKind.TrueKeyword|SyntaxKind.FalseKeyword>>): Literal {
-	return node.kind === SyntaxKind.TrueKeyword;
+export function evaluateBooleanLiteral ({node, typescript}: IEvaluatorOptions<TS.Token<TS.SyntaxKind.TrueKeyword|TS.SyntaxKind.FalseKeyword>>): Literal {
+	return node.kind === typescript.SyntaxKind.TrueKeyword;
 }

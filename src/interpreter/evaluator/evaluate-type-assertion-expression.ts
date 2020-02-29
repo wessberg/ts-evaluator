@@ -1,12 +1,10 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {TypeAssertion} from "typescript";
 import {Literal} from "../literal/literal";
+import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a TypeAssertion
- * @param {IEvaluatorOptions<TypeAssertion>} options
- * @returns {Promise<Literal>}
  */
-export function evaluateTypeAssertion ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TypeAssertion>): Literal {
+export function evaluateTypeAssertion ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.TypeAssertion>): Literal {
 	return evaluate.expression(node.expression, environment, statementTraversalStack);
 }

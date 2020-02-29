@@ -1,6 +1,6 @@
-import {Identifier} from "typescript";
 import {EvaluationError} from "../evaluation-error/evaluation-error";
 import {IUndefinedIdentifierErrorOptions} from "./i-undefined-identifier-error-options";
+import {TS} from "../../../type/ts";
 
 /**
  * An Error that can be thrown when an undefined identifier is encountered
@@ -8,9 +8,8 @@ import {IUndefinedIdentifierErrorOptions} from "./i-undefined-identifier-error-o
 export class UndefinedIdentifierError extends EvaluationError {
 	/**
 	 * The identifier that is undefined in the context that created this error
-	 * @type {Identifier}
 	 */
-	public readonly node: Identifier;
+	readonly node: TS.Identifier|TS.PrivateIdentifier;
 
 	constructor ({node, message = `'${node.text}' is not defined'`}: IUndefinedIdentifierErrorOptions) {
 		super({message, node});
