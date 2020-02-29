@@ -8,12 +8,21 @@ import {IGenerateClassDeclarationOptions} from "./i-generate-class-declaration-o
  * @param ctor
  * @return
  */
-export function generateClassDeclaration ({name, extendedType, ctor = () => {}}: Partial<IGenerateClassDeclarationOptions>): Function {
+export function generateClassDeclaration({name, extendedType, ctor = () => {}}: Partial<IGenerateClassDeclarationOptions>): Function {
 	if (extendedType == null) {
-		return new Function("ctor", `return class ${name == null ? "" : name} {constructor () {const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`)(ctor);
-	}
-
-	else {
-		return new Function("extendedType", "ctor", `return class ${name == null ? "" : name} extends extendedType {constructor () {super(...arguments); const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`)(extendedType, ctor);
+		return new Function(
+			"ctor",
+			`return class ${
+				name == null ? "" : name
+			} {constructor () {const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`
+		)(ctor);
+	} else {
+		return new Function(
+			"extendedType",
+			"ctor",
+			`return class ${
+				name == null ? "" : name
+			} extends extendedType {constructor () {super(...arguments); const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`
+		)(extendedType, ctor);
 	}
 }

@@ -7,7 +7,13 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ObjectLiteralExpression
  */
-export function evaluateObjectLiteralExpression ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.ObjectLiteralExpression>): Literal {
+export function evaluateObjectLiteralExpression({
+	node,
+	evaluate,
+	environment,
+	reporting,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.ObjectLiteralExpression>): Literal {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;

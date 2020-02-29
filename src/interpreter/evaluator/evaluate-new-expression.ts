@@ -5,8 +5,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a NewExpression
  */
-export function evaluateNewExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.NewExpression>): Literal {
-
+export function evaluateNewExpression({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.NewExpression>): Literal {
 	const evaluatedArgs: Literal[] = [];
 
 	if (node.arguments != null) {
@@ -16,7 +15,7 @@ export function evaluateNewExpression ({node, environment, evaluate, statementTr
 	}
 
 	// Evaluate the expression
-	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as (new (...args: Literal[]) => Literal);
+	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as new (...args: Literal[]) => Literal;
 
-	return (new expressionResult(...evaluatedArgs));
+	return new expressionResult(...evaluatedArgs);
 }

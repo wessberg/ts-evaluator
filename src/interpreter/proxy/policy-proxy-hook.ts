@@ -16,7 +16,7 @@ export interface IPolicyProxyConstructHookOptions<T extends object> extends IPol
 	kind: PolicyTrapKind.CONSTRUCT;
 	target: T;
 	argArray: unknown[];
-	newTarget: unknown|undefined;
+	newTarget: unknown | undefined;
 }
 
 export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyProxyHookOptions {
@@ -26,5 +26,8 @@ export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyP
 	argArray: unknown[];
 }
 
-export type PolicyProxyHookOptions<T extends Record<string, any>> = IPolicyProxyGetHookOptions<T> | IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
+export type PolicyProxyHookOptions<T extends Record<string, any>> =
+	| IPolicyProxyGetHookOptions<T>
+	| IPolicyProxyApplyHookOptions<T>
+	| IPolicyProxyConstructHookOptions<T>;
 export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => boolean;

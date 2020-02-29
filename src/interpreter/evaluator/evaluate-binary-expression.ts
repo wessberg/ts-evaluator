@@ -9,16 +9,15 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a BinaryExpression
  */
-export function evaluateBinaryExpression (options: IEvaluatorOptions<TS.BinaryExpression>): Literal {
+export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExpression>): Literal {
 	const {node, environment, evaluate, logger, statementTraversalStack, reporting, typescript} = options;
 
-	const leftValue = (evaluate.expression(node.left, environment, statementTraversalStack)) as number;
-	const rightValue = (evaluate.expression(node.right, environment, statementTraversalStack)) as number;
+	const leftValue = evaluate.expression(node.left, environment, statementTraversalStack) as number;
+	const rightValue = evaluate.expression(node.right, environment, statementTraversalStack) as number;
 	const leftIdentifier = getDotPathFromNode({...options, node: node.left});
 
 	const operator = node.operatorToken.kind;
 	switch (operator) {
-
 		case typescript.SyntaxKind.AmpersandToken: {
 			return leftValue & rightValue;
 		}
@@ -40,7 +39,6 @@ export function evaluateBinaryExpression (options: IEvaluatorOptions<TS.BinaryEx
 		case typescript.SyntaxKind.LessThanLessThanEqualsToken:
 		case typescript.SyntaxKind.GreaterThanGreaterThanEqualsToken:
 		case typescript.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken: {
-
 			// There's nothing in the engine restricting you from applying this kind of arithmetic operation on non-numeric data types
 			let computedValue = leftValue;
 			switch (operator) {
@@ -134,9 +132,7 @@ export function evaluateBinaryExpression (options: IEvaluatorOptions<TS.BinaryEx
 			if (leftIdentifier != null) {
 				setInLexicalEnvironment({env: environment, path: leftIdentifier, value: rightValue, reporting, node});
 				logger.logBinding(leftIdentifier, rightValue, "Assignment");
-			}
-
-			else {
+			} else {
 				throw new UndefinedLeftValueError({node: node.left});
 			}
 
@@ -175,7 +171,7 @@ export function evaluateBinaryExpression (options: IEvaluatorOptions<TS.BinaryEx
 			return leftValue <= rightValue;
 
 		case typescript.SyntaxKind.InKeyword: {
-			return leftValue in (rightValue as unknown as object);
+			return leftValue in ((rightValue as unknown) as object);
 		}
 
 		// Nullish coalescing (A ?? B)
@@ -183,7 +179,7 @@ export function evaluateBinaryExpression (options: IEvaluatorOptions<TS.BinaryEx
 			return leftValue != null ? leftValue : rightValue;
 
 		case typescript.SyntaxKind.InstanceOfKeyword: {
-			return leftValue as unknown as object instanceof (rightValue as unknown as Function);
+			return ((leftValue as unknown) as object) instanceof ((rightValue as unknown) as Function);
 		}
 	}
 

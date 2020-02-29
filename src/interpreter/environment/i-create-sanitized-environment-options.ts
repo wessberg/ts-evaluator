@@ -5,5 +5,5 @@ import {TS} from "../../type/ts";
 export interface ICreateSanitizedEnvironmentOptions {
 	policy: IEvaluatePolicySanitized;
 	env: IndexLiteral;
-	getCurrentNode (): TS.Node;
+	getCurrentNode(): TS.Node;
 }

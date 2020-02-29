@@ -7,7 +7,11 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a NodeArray of ParameterDeclarations
  */
-export function evaluateParameterDeclarations ({node, evaluate, environment, statementTraversalStack, typescript}: IEvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>, boundArguments: Literal[], context?: IndexLiteral): void {
+export function evaluateParameterDeclarations(
+	{node, evaluate, environment, statementTraversalStack, typescript}: IEvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>,
+	boundArguments: Literal[],
+	context?: IndexLiteral
+): void {
 	// 'this' is a special parameter which is removed from the emitted results
 	const parameters = node.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 
@@ -19,18 +23,17 @@ export function evaluateParameterDeclarations ({node, evaluate, environment, sta
 			evaluate.nodeWithArgument(parameter, environment, boundArguments.slice(i), statementTraversalStack);
 			// Spread elements must always be the last parameter
 			break;
-		}
-
-		else {
+		} else {
 			evaluate.nodeWithArgument(parameter, environment, boundArguments[i], statementTraversalStack);
 
 			// If a context is given, and if a [public|protected|private] keyword is in front of the parameter, the initialized value should be
 			// set on the context as an instance property
-			if (context != null && typescript.isIdentifier(parameter.name) && (
-				hasModifier(parameter, typescript.SyntaxKind.PublicKeyword) ||
-				hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword) ||
-				hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword)
-			)
+			if (
+				context != null &&
+				typescript.isIdentifier(parameter.name) &&
+				(hasModifier(parameter, typescript.SyntaxKind.PublicKeyword) ||
+					hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword) ||
+					hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword))
 			) {
 				const value = getFromLexicalEnvironment(parameter, environment, parameter.name.text);
 				if (value != null) {

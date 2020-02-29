@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate a CallExpression with a ForStatement. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (): number {
 				const arr = [1, 2, 3];
 				let sum = 0;
@@ -28,7 +28,7 @@ test("Can evaluate a CallExpression with a ForStatement. #1", t => {
 test("Can evaluate a CallExpression with a ForStatement. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (): number {
 				const arr = [1, 2, 3];
 				let sum = 0;
@@ -53,7 +53,7 @@ test("Can evaluate a CallExpression with a ForStatement. #2", t => {
 test("Can evaluate a CallExpression with a ForStatement. #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (): number {
 				const arr = [1, 2, 3];
 				let sum = 0;

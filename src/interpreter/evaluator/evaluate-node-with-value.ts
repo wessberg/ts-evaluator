@@ -7,7 +7,7 @@ import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-nod
 /**
  * Evaluates a given node with the provided argument
  */
-export function evaluateNodeWithValue (options: IEvaluatorOptions<NodeWithValue>): Literal {
+export function evaluateNodeWithValue(options: IEvaluatorOptions<NodeWithValue>): Literal {
 	options.logger.logNode(options.node, options.typescript, "nodeWithValue");
 	const {node, ...rest} = options;
 

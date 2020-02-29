@@ -5,6 +5,6 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a VariableStatement
  */
-export function evaluateVariableStatement ({node, ...rest}: IEvaluatorOptions<TS.VariableStatement>): void {
+export function evaluateVariableStatement({node, ...rest}: IEvaluatorOptions<TS.VariableStatement>): void {
 	evaluateVariableDeclarationList({node: node.declarationList, ...rest});
 }

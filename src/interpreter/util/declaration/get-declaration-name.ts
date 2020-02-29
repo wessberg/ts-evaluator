@@ -5,32 +5,27 @@ import {TS} from "../../../type/ts";
 /**
  * Gets the name of the given declaration
  */
-export function getDeclarationName ({node, evaluate, environment, typescript, statementTraversalStack}: IEvaluatorOptions<TS.Declaration>): string|number|undefined {
+export function getDeclarationName({
+	node,
+	evaluate,
+	environment,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.Declaration>): string | number | undefined {
 	const name = typescript.getNameOfDeclaration(node);
 	if (name == null) return undefined;
 
 	if (typescript.isIdentifier(name)) {
 		return name.text;
-	}
-
-	else if (typescript.isPrivateIdentifier?.(name)) {
+	} else if (typescript.isPrivateIdentifier?.(name)) {
 		return name.text;
-	}
-
-	else if (typescript.isStringLiteralLike(name)) {
+	} else if (typescript.isStringLiteralLike(name)) {
 		return name.text;
-	}
-
-	else if (typescript.isNumericLiteral(name)) {
+	} else if (typescript.isNumericLiteral(name)) {
 		return Number(name.text);
-	}
-
-	else if (typescript.isComputedPropertyName(name)) {
-		return (evaluate.expression(name.expression, environment, statementTraversalStack)) as ReturnType<typeof getDeclarationName>;
-	}
-
-	else {
+	} else if (typescript.isComputedPropertyName(name)) {
+		return evaluate.expression(name.expression, environment, statementTraversalStack) as ReturnType<typeof getDeclarationName>;
+	} else {
 		throw new UnexpectedNodeError({node: name, typescript});
 	}
-
 }

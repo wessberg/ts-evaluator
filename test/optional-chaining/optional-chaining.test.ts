@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Supports optional CallExpressions. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			const foo = {bar: {baz: undefined}};
 			const bar = foo.bar.baz?.();
 		`,

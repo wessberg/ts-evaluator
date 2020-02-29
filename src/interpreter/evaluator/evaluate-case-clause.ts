@@ -9,7 +9,10 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a CaseClause, based on a switch expression
  */
-export function evaluateCaseClause ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.CaseClause>, switchExpression: Literal): void {
+export function evaluateCaseClause(
+	{node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.CaseClause>,
+	switchExpression: Literal
+): void {
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack);
 	// Stop immediately if the expression doesn't match the switch expression
 	if (expressionResult !== switchExpression) return;

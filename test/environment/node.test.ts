@@ -31,7 +31,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 test("Can handle 'process.cwd()' in a Node environment. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				return process.cwd();
 			})();

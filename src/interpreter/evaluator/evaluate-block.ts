@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a Block
  */
-export function evaluateBlock ({node, environment, typescript, evaluate}: IEvaluatorOptions<TS.Block>): void {
+export function evaluateBlock({node, environment, typescript, evaluate}: IEvaluatorOptions<TS.Block>): void {
 	// Prepare a lexical environment for the Block context
 	const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
@@ -18,7 +18,14 @@ export function evaluateBlock ({node, environment, typescript, evaluate}: IEvalu
 		const statement = node.statements[i];
 
 		// Don't execute 'super()' within Constructor Blocks since this is handled in another level
-		if (typescript.isConstructorDeclaration(node.parent) && i === 0 && typescript.isExpressionStatement(statement) && typescript.isCallExpression(statement.expression) && isSuperExpression(statement.expression.expression, typescript)) continue;
+		if (
+			typescript.isConstructorDeclaration(node.parent) &&
+			i === 0 &&
+			typescript.isExpressionStatement(statement) &&
+			typescript.isCallExpression(statement.expression) &&
+			isSuperExpression(statement.expression.expression, typescript)
+		)
+			continue;
 
 		evaluate.statement(statement, localLexicalEnvironment);
 

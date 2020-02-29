@@ -6,7 +6,7 @@ import {NotCallableError} from "../../src/interpreter/error/not-callable-error/n
 test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			add(1, 2);
 
 			const add = function (a: number, b: number): number {
@@ -25,7 +25,7 @@ test("Throws when attempting to reference an identifier that is still not define
 test("Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			let myVar = add;
 
 			var add = function (a: number, b: number): number {
@@ -48,7 +48,7 @@ test("Doesn't throw when attempting to reference an identifier that is declared 
 test("Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			let myVar = add;
 
 			var add = function (a: number, b: number): number {
@@ -70,7 +70,7 @@ test("Throws when attempting to use the rvalue of a referenced identifier that i
 test("Respects block scoped variables declared with 'let'. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			{
 				let a = 2;
 			}
@@ -88,7 +88,7 @@ test("Respects block scoped variables declared with 'let'. #1", t => {
 test("Respects block scoped variables declared with 'var'. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			{
 				var a = 2;
 			}

@@ -36,113 +36,91 @@ export const ECMA_GLOBALS = () => {
 
 	try {
 		base.BigInt = BigInt;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Reflect = Reflect;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.WeakMap = WeakMap;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.WeakSet = WeakSet;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Set = Set;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Map = Map;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Uint8Array = Uint8Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Uint8ClampedArray = Uint8ClampedArray;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Uint16Array = Uint16Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Uint32Array = Uint32Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Intl = Intl;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Int8Array = Int8Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Int16Array = Int16Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Int32Array = Int32Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Float32Array = Float32Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Float64Array = Float64Array;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.ArrayBuffer = ArrayBuffer;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.DataView = DataView;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.isFinite = isFinite;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Promise = Promise;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Proxy = Proxy;
-	} catch {
-	}
+	} catch {}
 
 	try {
 		base.Symbol = Symbol;
-	} catch {
-	}
+	} catch {}
 
 	return base;
 };

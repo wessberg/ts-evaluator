@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate a CallExpression with a SwitchStatement. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (arg: "a"|"b"|"c"): number {
 				switch (arg) {
 					case "a":
@@ -30,7 +30,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #1", t => {
 test("Can evaluate a CallExpression with a SwitchStatement. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (arg: "a"|"b"|"c"): number {
 				switch (arg) {
 					case "a":
@@ -56,7 +56,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #2", t => {
 test("Can evaluate a CallExpression with a SwitchStatement. #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (arg: "a"|"b"|"c"): number {
 				switch (arg) {
 					case "a":
@@ -82,7 +82,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #3", t => {
 test("Can evaluate a CallExpression with a SwitchStatement. #4", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (arg: "a"|"b"|"c"): number {
 				switch (arg) {
 					case "a":
@@ -110,7 +110,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #4", t => {
 test("Can evaluate a CallExpression with a SwitchStatement. #5", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (arg: "a"|"b"|"c"): number {
 				let returnValue: number = -1;
 
@@ -143,7 +143,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #5", t => {
 test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (arg: "a"|"b"|"c"): number {
 				let returnValue: number = -1;
 

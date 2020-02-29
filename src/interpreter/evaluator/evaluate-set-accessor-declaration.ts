@@ -12,17 +12,16 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a SetAccessorDeclaration, before setting it on the given parent
  */
-export function evaluateSetAccessorDeclaration (options: IEvaluatorOptions<TS.SetAccessorDeclaration>, parent: IndexLiteral): void {
+export function evaluateSetAccessorDeclaration(options: IEvaluatorOptions<TS.SetAccessorDeclaration>, parent: IndexLiteral): void {
 	const {node, environment, evaluate, statementTraversalStack, reporting, typescript} = options;
 
-	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
+	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
 	const isStatic = inStaticContext(node, typescript);
 
 	/**
 	 * An implementation of the set accessor
 	 */
-	function setAccessorDeclaration (this: Literal, ...args: Literal[]) {
-
+	function setAccessorDeclaration(this: Literal, ...args: Literal[]) {
 		// Prepare a lexical environment for the function context
 		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
@@ -38,9 +37,9 @@ export function evaluateSetAccessorDeclaration (options: IEvaluatorOptions<TS.Se
 
 			// Set the 'super' binding, depending on whether or not we're inside a static context
 			setInLexicalEnvironment({
-				env: localLexicalEnvironment, path: SUPER_SYMBOL, value: isStatic
-					? Object.getPrototypeOf(this)
-					: Object.getPrototypeOf((this as Function).constructor).prototype,
+				env: localLexicalEnvironment,
+				path: SUPER_SYMBOL,
+				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as Function).constructor).prototype,
 				newBinding: true,
 				reporting,
 				node
@@ -48,11 +47,13 @@ export function evaluateSetAccessorDeclaration (options: IEvaluatorOptions<TS.Se
 		}
 
 		// Evaluate the parameters based on the given arguments
-		evaluateParameterDeclarations({
-			...options,
+		evaluateParameterDeclarations(
+			{
+				...options,
 				node: node.parameters,
 				environment: localLexicalEnvironment
-			}, args
+			},
+			args
 		);
 
 		// If the body is a block, evaluate it as a statement

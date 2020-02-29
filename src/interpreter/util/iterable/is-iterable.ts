@@ -6,6 +6,6 @@ import {Literal} from "../../literal/literal";
  * @param item
  * @return
  */
-export function isIterable (item: Literal): item is Iterable<Literal> {
+export function isIterable(item: Literal): item is Iterable<Literal> {
 	return item != null && (item as Iterable<Literal>)[Symbol.iterator] != null;
 }

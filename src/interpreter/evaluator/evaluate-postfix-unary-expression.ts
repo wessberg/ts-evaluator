@@ -7,7 +7,14 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a PostfixUnaryExpression
  */
-export function evaluatePostfixUnaryExpression ({node, evaluate, environment, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
+export function evaluatePostfixUnaryExpression({
+	node,
+	evaluate,
+	environment,
+	reporting,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
 	// Make sure to evaluate the operand to ensure that it is found in the lexical environment
 	evaluate.expression(node.operand, environment, statementTraversalStack);
 

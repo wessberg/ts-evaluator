@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can handle ClassExpressions. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => class {
 			})();
 		`,
@@ -18,7 +18,6 @@ test("Can handle ClassExpressions. #1", t => {
 		t.true(typeof result.value === "function");
 	}
 });
-
 
 test("Can handle ClassExpressions that extends from other named classes. #1", t => {
 	const {evaluate} = prepareTest(

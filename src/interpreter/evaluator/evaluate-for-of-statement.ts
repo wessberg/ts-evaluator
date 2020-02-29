@@ -12,10 +12,17 @@ import {AsyncIteratorNotSupportedError} from "../error/async-iterator-not-suppor
 /**
  * Evaluates, or attempts to evaluate, a ForOfStatement
  */
-export function evaluateForOfStatement ({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ForOfStatement>): void {
-
+export function evaluateForOfStatement({
+	node,
+	environment,
+	evaluate,
+	logger,
+	reporting,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.ForOfStatement>): void {
 	// Compute the 'of' part
-	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as Iterable<Literal>;
+	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as Iterable<Literal>;
 
 	// Ensure that the initializer is a proper VariableDeclarationList
 	if (!typescript.isVariableDeclarationList(node.initializer)) {
@@ -30,11 +37,8 @@ export function evaluateForOfStatement ({node, environment, evaluate, logger, re
 	// As long as we only offer a synchronous API, there's no way to evaluate an async iterator in a synchronous fashion
 	if (node.awaitModifier != null) {
 		throw new AsyncIteratorNotSupportedError({typescript});
-	}
-
-	else {
+	} else {
 		for (const literal of expressionResult) {
-
 			// Prepare a lexical environment for the current iteration
 			const localEnvironment = cloneLexicalEnvironment(environment);
 
@@ -54,15 +58,11 @@ export function evaluateForOfStatement ({node, environment, evaluate, logger, re
 			if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL)) {
 				logger.logBreak(node, typescript);
 				break;
-			}
-
-			else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
+			} else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
 				logger.logContinue(node, typescript);
 				// noinspection UnnecessaryContinueJS
 				continue;
-			}
-
-			else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
+			} else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
 				logger.logReturn(node, typescript);
 				return;
 			}

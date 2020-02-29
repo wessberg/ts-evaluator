@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate a CallExpression with a WhileStatement. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function myFunc (): number {
 
 				let sum = 0;

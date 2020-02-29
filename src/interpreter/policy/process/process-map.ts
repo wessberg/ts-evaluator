@@ -30,6 +30,5 @@ export const PROCESS_MAP: TrapConditionMap<NodeBuiltInsAndGlobals, keyof IEvalua
 		workers: {
 			[PolicyTrapKind.GET]: "spawnChild"
 		}
-
 	}
 };

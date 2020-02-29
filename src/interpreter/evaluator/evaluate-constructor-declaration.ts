@@ -10,13 +10,13 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ConstructorDeclaration
  */
-export function evaluateConstructorDeclaration (options: IEvaluatorOptions<TS.ConstructorDeclaration>): void {
+export function evaluateConstructorDeclaration(options: IEvaluatorOptions<TS.ConstructorDeclaration>): void {
 	const {node, environment, evaluate, stack, reporting} = options;
 
 	/**
 	 * An implementation of a constructor function
 	 */
-	function constructor (this: IndexLiteral, ...args: Literal[]) {
+	function constructor(this: IndexLiteral, ...args: Literal[]) {
 		// Don't concern yourself with calling super here as this constructor is called immediately after calling super() in another memory representation of a class
 
 		// Prepare a lexical environment for the function context
@@ -34,11 +34,14 @@ export function evaluateConstructorDeclaration (options: IEvaluatorOptions<TS.Co
 		}
 
 		// Evaluate the parameters based on the given arguments
-		evaluateParameterDeclarations({
+		evaluateParameterDeclarations(
+			{
 				...options,
 				node: node.parameters,
 				environment: localLexicalEnvironment
-			}, args, this
+			},
+			args,
+			this
 		);
 
 		// If the body is a block, evaluate it as a statement

@@ -12,7 +12,7 @@ export class PolicyError extends EvaluationError {
 	 */
 	public readonly violation: keyof IEvaluatePolicySanitized;
 
-	constructor ({violation, node, message}: IPolicyErrorOptions) {
+	constructor({violation, node, message}: IPolicyErrorOptions) {
 		super({node, message: `[${violation}]: ${message}`});
 		this.violation = violation;
 	}

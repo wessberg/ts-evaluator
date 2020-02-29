@@ -6,6 +6,6 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a BreakStatement
  */
-export function evaluateBreakStatement ({environment, reporting, node}: IEvaluatorOptions<TS.BreakStatement>): void {
+export function evaluateBreakStatement({environment, reporting, node}: IEvaluatorOptions<TS.BreakStatement>): void {
 	setInLexicalEnvironment({env: environment, path: BREAK_SYMBOL, value: true, reporting, node});
 }

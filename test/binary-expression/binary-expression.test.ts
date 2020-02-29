@@ -76,7 +76,7 @@ test("Can evaluate a simple arithmetic BinaryExpression with type casts #2", t =
 test("Can evaluate equality BinaryExpressions #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const foo: number|null|undefined = Number.MIN_VALUE;
 				if (foo === null) return null;
@@ -97,7 +97,7 @@ test("Can evaluate BinaryExpressions with CommaTokens #1", t => {
 	// noinspection UnnecessaryLocalVariableJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = 0;
 				// noinspection CommaExpressionJS
@@ -117,7 +117,7 @@ test("Can evaluate BinaryExpressions with CommaTokens #1", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = function () {
 				};
@@ -136,7 +136,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #1", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = function () {
 				};
@@ -156,7 +156,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #2", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = [];
 				return a instanceof Array;
@@ -174,7 +174,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #3", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #4", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = {};
 				return a instanceof Object;
@@ -192,7 +192,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #4", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #5", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				// noinspection JSPrimitiveTypeWrapperUsage
 				let a = new String("hello");
@@ -211,7 +211,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #5", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #6", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = /\d+/;
 				return a instanceof RegExp;
@@ -229,7 +229,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #6", t => {
 test("Can evaluate a BinaryExpression with an InstanceOf keyword #7", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = {
 					myMethod () {

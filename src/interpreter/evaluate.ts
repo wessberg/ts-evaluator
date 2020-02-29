@@ -23,32 +23,29 @@ import {TS} from "../type/ts";
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
  */
-export function evaluate ({
-														typeChecker,
-														node,
-														environment: {
-															preset = EnvironmentPresetKind.NODE,
-															extra = {}
-														} = {},
-														typescript = TSModule,
-														logLevel = LogLevelKind.SILENT,
-														policy: {
-															deterministic = false,
-															network = false,
-															console = false,
-															maxOps = Infinity,
-															maxOpDuration = Infinity,
-															io = {
-																read: true,
-																write: false
-															},
-															process = {
-																exit: false,
-																spawnChild: false
-															}
-														} = {},
-														reporting: reportingInput = {}
-													}: IEvaluateOptions): EvaluateResult {
+export function evaluate({
+	typeChecker,
+	node,
+	environment: {preset = EnvironmentPresetKind.NODE, extra = {}} = {},
+	typescript = TSModule,
+	logLevel = LogLevelKind.SILENT,
+	policy: {
+		deterministic = false,
+		network = false,
+		console = false,
+		maxOps = Infinity,
+		maxOpDuration = Infinity,
+		io = {
+			read: true,
+			write: false
+		},
+		process = {
+			exit: false,
+			spawnChild: false
+		}
+	} = {},
+	reporting: reportingInput = {}
+}: IEvaluateOptions): EvaluateResult {
 	// Take the simple path first. This may be far more performant than building up an environment
 	const simpleLiteralResult = evaluateSimpleLiteral(node, typescript);
 	if (simpleLiteralResult.success) return simpleLiteralResult;
@@ -104,21 +101,17 @@ export function evaluate ({
 		logger,
 		stack,
 		reporting: reporting,
-		nextNode: nextNode => currentNode = nextNode
+		nextNode: nextNode => (currentNode = nextNode)
 	});
 
 	try {
 		let value: Literal;
 		if (isExpression(node, typescript)) {
 			value = nodeEvaluator.expression(node, initialEnvironment, createStatementTraversalStack());
-		}
-
-		else if (isStatement(node, typescript)) {
+		} else if (isStatement(node, typescript)) {
 			nodeEvaluator.statement(node, initialEnvironment);
 			value = stack.pop();
-		}
-
-		else if (isDeclaration(node, typescript)) {
+		} else if (isDeclaration(node, typescript)) {
 			nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
 			value = stack.pop();
 		}

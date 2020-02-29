@@ -7,7 +7,7 @@ import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
 import {ReportingOptionsSanitized} from "../reporting/i-reporting-options";
 import {TS} from "../../type/ts";
 
-export interface IEvaluatorOptions<T extends (TS.Node|TS.NodeArray<TS.Node>)> {
+export interface IEvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> {
 	node: T;
 	typeChecker: TS.TypeChecker;
 	typescript: typeof TS;

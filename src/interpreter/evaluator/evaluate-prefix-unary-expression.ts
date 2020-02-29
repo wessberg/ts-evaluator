@@ -7,8 +7,15 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a PrefixUnaryExpression
  */
-export function evaluatePrefixUnaryExpression ({node, environment, evaluate, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
-	const operandValue = (evaluate.expression(node.operand, environment, statementTraversalStack)) as number;
+export function evaluatePrefixUnaryExpression({
+	node,
+	environment,
+	evaluate,
+	reporting,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
+	const operandValue = evaluate.expression(node.operand, environment, statementTraversalStack) as number;
 
 	switch (node.operator) {
 		case typescript.SyntaxKind.PlusToken: {

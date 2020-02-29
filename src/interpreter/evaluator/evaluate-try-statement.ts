@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
  * @param options
  * @returns
  */
-export function evaluateTryStatement ({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.TryStatement>): void {
+export function evaluateTryStatement({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.TryStatement>): void {
 	const executeTry = () => {
 		setInLexicalEnvironment({env: environment, reporting, newBinding: true, node, path: TRY_SYMBOL, value: true});
 		// The Block will declare an environment of its own

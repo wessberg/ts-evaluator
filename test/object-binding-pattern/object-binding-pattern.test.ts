@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const {prop} = {prop: 123};
 				return prop;
@@ -22,7 +22,7 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", t => {
 test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const {prop: {otherProp}} = {prop: {otherProp: 245}};
 				return otherProp;
@@ -40,7 +40,7 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", t => {
 test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(({foo}) => {
 				return foo;
 			})({foo: 2});
@@ -57,7 +57,7 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", t => {
 test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(({foo: alias}) => {
 				return alias;
 			})({foo: 2});

@@ -5,7 +5,7 @@ test("Can handle PostfixUnaryExpressions. #1", t => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			let i = 0;
 
 			function foo () {

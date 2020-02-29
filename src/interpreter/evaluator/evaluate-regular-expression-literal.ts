@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a RegularExpressionLiteral
  */
-export function evaluateRegularExpressionLiteral ({node, environment}: IEvaluatorOptions<TS.RegularExpressionLiteral>): Literal {
+export function evaluateRegularExpressionLiteral({node, environment}: IEvaluatorOptions<TS.RegularExpressionLiteral>): Literal {
 	const functionCtor = getFromLexicalEnvironment(node, environment, "Function")!.literal as FunctionConstructor;
-	return (new functionCtor(`return ${node.text}`)());
+	return new functionCtor(`return ${node.text}`)();
 }

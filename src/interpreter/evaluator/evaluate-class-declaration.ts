@@ -7,12 +7,21 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ClassDeclaration
  */
-export function evaluateClassDeclaration ({node, environment, evaluate, stack, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ClassDeclaration>): void {
-	let extendedType: Function|undefined;
+export function evaluateClassDeclaration({
+	node,
+	environment,
+	evaluate,
+	stack,
+	logger,
+	reporting,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.ClassDeclaration>): void {
+	let extendedType: Function | undefined;
 	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
-	let ctor: Function|undefined;
+	let ctor: Function | undefined;
 	if (ctorMember != null) {
 		evaluate.declaration(ctorMember, environment, statementTraversalStack);
 		ctor = stack.pop() as Function;
@@ -23,7 +32,7 @@ export function evaluateClassDeclaration ({node, environment, evaluate, stack, l
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = (evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack)) as Function;
+				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as Function;
 			}
 		}
 	}
@@ -49,9 +58,7 @@ export function evaluateClassDeclaration ({node, environment, evaluate, stack, l
 		evaluate.nodeWithArgument(
 			member,
 			environment,
-			hasModifier(member, typescript.SyntaxKind.StaticKeyword)
-				? classDeclaration
-				: classDeclaration.prototype,
+			hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classDeclaration : classDeclaration.prototype,
 			statementTraversalStack
 		);
 	}

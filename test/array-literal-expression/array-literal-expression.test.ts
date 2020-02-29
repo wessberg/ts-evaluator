@@ -5,7 +5,7 @@ test("Can handle ArrayLiteralExpressions. #1", t => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(["foo", "bar"])
 		`,
 		"(["

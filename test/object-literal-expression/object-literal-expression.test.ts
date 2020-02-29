@@ -5,7 +5,7 @@ test("Can handle ObjectLiteralExpressions. #1", t => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			({
 				foo: "foo",
 				get bar () {
@@ -20,7 +20,7 @@ test("Can handle ObjectLiteralExpressions. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as { readonly bar: string }).bar, "foo");
+		t.deepEqual((result.value as {readonly bar: string}).bar, "foo");
 	}
 });
 
@@ -28,7 +28,7 @@ test("Can handle ObjectLiteralExpressions. #2", t => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			({
 				foo: "foo",
 				bar () {
@@ -43,7 +43,7 @@ test("Can handle ObjectLiteralExpressions. #2", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as { bar (): string }).bar(), "foo");
+		t.deepEqual((result.value as {bar(): string}).bar(), "foo");
 	}
 });
 
@@ -51,7 +51,7 @@ test("Can handle ObjectLiteralExpressions. #3", t => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			const baz = "someKey";
 			({
 				foo: {
@@ -68,6 +68,6 @@ test("Can handle ObjectLiteralExpressions. #3", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as { foo: { bar: { someKey: number } } }).foo.bar.someKey, 2);
+		t.deepEqual((result.value as {foo: {bar: {someKey: number}}}).foo.bar.someKey, 2);
 	}
 });

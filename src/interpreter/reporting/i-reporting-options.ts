@@ -21,10 +21,10 @@ export interface IErrorReportEntry {
 	error: Error;
 }
 
-export type BindingReportCallback = (entry: IBindingReportEntry) => void|(Promise<void>);
-export type ErrorReportCallback = (entry: IErrorReportEntry) => void|(Promise<void>);
-export type IntermediateResultReportCallback = (entry: IIntermediateResultReportEntry) => void|(Promise<void>);
-export type TraversalReportCallback = (entry: ITraversalReportEntry) => void|(Promise<void>);
+export type BindingReportCallback = (entry: IBindingReportEntry) => void | Promise<void>;
+export type ErrorReportCallback = (entry: IErrorReportEntry) => void | Promise<void>;
+export type IntermediateResultReportCallback = (entry: IIntermediateResultReportEntry) => void | Promise<void>;
+export type TraversalReportCallback = (entry: ITraversalReportEntry) => void | Promise<void>;
 
 export interface IReportingOptions {
 	reportBindings: BindingReportCallback;

@@ -5,7 +5,7 @@ test("Can handle ConditionalExpressions. #1", t => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			// noinspection RedundantConditionalExpressionJS
 			(() => 2 + 2 === 5 ? true : false)()
 		`,

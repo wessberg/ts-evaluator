@@ -7,7 +7,7 @@ import {getFromLexicalEnvironment, LexicalEnvironment} from "../../lexical-envir
  * @param [environment]
  * @return
  */
-export function isBindCallApply (func: Function, environment?: LexicalEnvironment): boolean {
+export function isBindCallApply(func: Function, environment?: LexicalEnvironment): boolean {
 	switch (func) {
 		case Function.prototype.bind:
 		case Function.prototype.call:

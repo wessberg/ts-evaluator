@@ -3,7 +3,7 @@ import {TS} from "../../../type/ts";
 /**
  * Stringifies the given SyntaxKind
  */
-export function stringifySyntaxKind (kind: TS.SyntaxKind, typescript: typeof TS): string {
+export function stringifySyntaxKind(kind: TS.SyntaxKind, typescript: typeof TS): string {
 	if (kind === typescript.SyntaxKind.NumericLiteral) return "NumericLiteral";
 	return typescript.SyntaxKind[kind];
 }

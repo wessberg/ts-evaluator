@@ -7,7 +7,10 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ShorthandPropertyAssignment, before applying it on the given parent
  */
-export function evaluateShorthandPropertyAssignment ({environment, node}: IEvaluatorOptions<TS.ShorthandPropertyAssignment>, parent: IndexLiteral): void {
+export function evaluateShorthandPropertyAssignment(
+	{environment, node}: IEvaluatorOptions<TS.ShorthandPropertyAssignment>,
+	parent: IndexLiteral
+): void {
 	const identifier = node.name.text;
 	const match = getFromLexicalEnvironment(node, environment, identifier);
 

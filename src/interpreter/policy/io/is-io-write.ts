@@ -9,6 +9,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
  * @param item
  * @returns
  */
-export function isIoWrite (item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
+export function isIoWrite(item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(IO_MAP, "write", item);
 }

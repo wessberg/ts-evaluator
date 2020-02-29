@@ -11,10 +11,17 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ForInStatement
  */
-export function evaluateForInStatement ({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ForInStatement>): void {
-
+export function evaluateForInStatement({
+	node,
+	environment,
+	evaluate,
+	logger,
+	reporting,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.ForInStatement>): void {
 	// Compute the 'of' part
-	const expressionResult = (evaluate.expression(node.expression, environment, statementTraversalStack)) as IndexLiteral;
+	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
 
 	// Ensure that the initializer is a proper VariableDeclarationList
 	if (!typescript.isVariableDeclarationList(node.initializer)) {
@@ -46,15 +53,11 @@ export function evaluateForInStatement ({node, environment, evaluate, logger, re
 		if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL)) {
 			logger.logBreak(node, typescript);
 			break;
-		}
-
-		else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
+		} else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, CONTINUE_SYMBOL)) {
 			logger.logContinue(node, typescript);
 			// noinspection UnnecessaryContinueJS
 			continue;
-		}
-
-		else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
+		} else if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, RETURN_SYMBOL)) {
 			logger.logReturn(node, typescript);
 			return;
 		}

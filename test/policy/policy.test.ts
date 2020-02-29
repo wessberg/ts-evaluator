@@ -8,7 +8,7 @@ import {ProcessError} from "../../src/interpreter/error/policy-error/process-err
 test("Throws on IO read if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import {readFileSync} from "fs";
 				try {
@@ -44,7 +44,7 @@ test("Throws on IO read if the policy requires it. #1", t => {
 test("Throws on IO read if the policy requires it. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import * as fs from "fs";
 				try {
@@ -80,7 +80,7 @@ test("Throws on IO read if the policy requires it. #2", t => {
 test("Throws on IO read if the policy requires it. #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import * as fs from "fs";
 				try {
@@ -117,7 +117,7 @@ test("Throws on IO read if the policy requires it. #3", t => {
 test("Throws on IO read if the policy requires it. #4", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import * as fs from "fs";
 				try {
@@ -154,7 +154,7 @@ test("Throws on IO read if the policy requires it. #4", t => {
 test("Throws on IO read if the policy requires it. #5", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import fs = require("fs");
 				try {
@@ -190,7 +190,7 @@ test("Throws on IO read if the policy requires it. #5", t => {
 test("Throws on IO read if the policy requires it. #6", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const {readFileSync} = require("fs");
 				try {
@@ -226,7 +226,7 @@ test("Throws on IO read if the policy requires it. #6", t => {
 test("Throws on invoking Math.random() read if the policy is non-deterministic. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				try {
 					Math.random();
@@ -258,7 +258,7 @@ test("Throws on invoking Math.random() read if the policy is non-deterministic. 
 test("Doesn't throws on _getting_ Math.random, even if the policy is non-deterministic. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				try {
 					const randomFunction = Math.random;
@@ -290,7 +290,7 @@ test("Doesn't throws on _getting_ Math.random, even if the policy is non-determi
 test("Throws on constructing new Date() without arguments if the policy is non-deterministic. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				try {
 					new Date();
@@ -322,7 +322,7 @@ test("Throws on constructing new Date() without arguments if the policy is non-d
 test("Doesn't throws on construction of a new Date with a specific date input, even if the policy is non-deterministic. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				try {
 					new Date("01-01-1991");
@@ -355,7 +355,7 @@ test("Doesn't throws on construction of a new Date with a specific date input, e
 test("Throws on Network activity if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import {request} from "http";
 				try {
@@ -388,7 +388,7 @@ test("Throws on Network activity if the policy requires it. #1", t => {
 test("Throws on Network activity if the policy requires it. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import {globalAgent} from "http";
 				try {
@@ -421,7 +421,7 @@ test("Throws on Network activity if the policy requires it. #2", t => {
 test("Throws on attempting to exit the Process if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				try {
 					process.exit();
@@ -453,7 +453,7 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", t
 test("Throws on attempting to spawn a child process if the policy requires it. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import {spawn} from "child_process";
 				try {

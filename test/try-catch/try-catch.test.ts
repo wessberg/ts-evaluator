@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can capture errors that would otherwise throw with try-catch. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let myVar: string|symbol = Symbol("foo");
 				try {

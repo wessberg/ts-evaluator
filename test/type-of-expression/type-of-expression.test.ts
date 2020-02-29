@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate a TypeOfExpression #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = BigInt(2);
 				return typeof a;
@@ -22,7 +22,7 @@ test("Can evaluate a TypeOfExpression #1", t => {
 test("Can evaluate a TypeOfExpression #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = BigInt(2);
 				if (typeof a === "bigint") return "foo";

@@ -22,10 +22,8 @@ import {isConsoleOperation} from "../policy/console/is-console-operation";
  * @param {ICreateSanitizedEnvironmentOptions} options
  * @return {IndexLiteral}
  */
-export function createSanitizedEnvironment ({policy, env, getCurrentNode}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
-
+export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
 	const hook = (item: PolicyProxyHookOptions<any>) => {
-
 		if (!policy.console && isConsoleOperation(item)) {
 			return false;
 		}
@@ -58,41 +56,45 @@ export function createSanitizedEnvironment ({policy, env, getCurrentNode}: ICrea
 	};
 
 	const descriptors = Object.entries(Object.getOwnPropertyDescriptors(env));
-	const gettersAndSetters = Object.assign({}, ...descriptors
-		.filter(([_, descriptor]) => !("value" in descriptor))
-		.map(([name, descriptor]) => ({[name]: descriptor}))
+	const gettersAndSetters = Object.assign(
+		{},
+		...descriptors.filter(([_, descriptor]) => !("value" in descriptor)).map(([name, descriptor]) => ({[name]: descriptor}))
 	);
 
-	const values = Object.assign({}, ...descriptors
-		.filter(([_, descriptor]) => "value" in descriptor)
-		.map(([name, descriptor]) => ({
-			[name]: name === "require" ? new Proxy(descriptor.value as NodeRequire, {
+	const values = Object.assign(
+		{},
+		...descriptors
+			.filter(([_, descriptor]) => "value" in descriptor)
+			.map(([name, descriptor]) => ({
+				[name]:
+					name === "require"
+						? new Proxy(descriptor.value as NodeRequire, {
+								/**
+								 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
+								 * @param {NodeRequire} target
+								 * @param thisArg
+								 * @param {unknown[]} argArray
+								 * @return {unknown}
+								 */
+								apply(target: NodeRequire, thisArg: unknown, argArray: unknown[] = []): unknown {
+									const [moduleName] = argArray as string[];
 
-					/**
-					 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
-					 * @param {NodeRequire} target
-					 * @param thisArg
-					 * @param {unknown[]} argArray
-					 * @return {unknown}
-					 */
-					apply (target: NodeRequire, thisArg: unknown, argArray: unknown[] = []): unknown {
-						const [moduleName] = argArray as string[];
-
-						return createPolicyProxy({
-							policy,
-							item: Reflect.apply(target, thisArg, argArray),
-							scope: moduleName,
-							hook
-						});
-					}
-				})
-				: createPolicyProxy({
-					policy,
-					item: descriptor.value as object,
-					scope: name,
-					hook
-				})
-		})));
+									return createPolicyProxy({
+										policy,
+										item: Reflect.apply(target, thisArg, argArray),
+										scope: moduleName,
+										hook
+									});
+								}
+						  })
+						: createPolicyProxy({
+								policy,
+								item: descriptor.value as object,
+								scope: name,
+								hook
+						  })
+			}))
+	);
 
 	return Object.defineProperties(values, {
 		...gettersAndSetters

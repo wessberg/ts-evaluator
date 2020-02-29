@@ -7,7 +7,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a SuperExpression
  */
-export function evaluateSuperExpression ({node, environment}: IEvaluatorOptions<TS.SuperExpression>): Literal {
+export function evaluateSuperExpression({node, environment}: IEvaluatorOptions<TS.SuperExpression>): Literal {
 	const match = getFromLexicalEnvironment(node, environment, SUPER_SYMBOL);
 	return match == null ? undefined : match.literal;
 }

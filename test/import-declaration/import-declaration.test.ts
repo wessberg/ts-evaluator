@@ -159,7 +159,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
-				`
+			`
 				import {dirname} from "path";
 
 				const foo = dirname("/foo/bar");
@@ -178,7 +178,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
-				`
+			`
 				import * as path from "path";
 
 				const foo = path.dirname("/foo/bar");
@@ -197,7 +197,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
-				`
+			`
 				import {readFileSync} from "fs";
 
 				const alias = readFileSync;
@@ -216,7 +216,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				import {deepStrictEqual, AssertionError} from "assert";
 				try {

@@ -5,8 +5,6 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ModuleDeclaration
  */
-export function evaluateModuleDeclaration (options: IEvaluatorOptions<TS.ModuleDeclaration>): void {
-	options.stack.push(
-		getImplementationForDeclarationWithinDeclarationFile(options)
-	);
+export function evaluateModuleDeclaration(options: IEvaluatorOptions<TS.ModuleDeclaration>): void {
+	options.stack.push(getImplementationForDeclarationWithinDeclarationFile(options));
 }

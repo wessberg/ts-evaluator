@@ -5,7 +5,7 @@ import {EnvironmentPresetKind} from "../../src/interpreter/environment/environme
 test("Can handle a Browser environment. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				document.body.setAttribute("foo", "bar");
 				return document.body.getAttribute("foo");
@@ -30,7 +30,7 @@ test("Can handle a Browser environment. #1", t => {
 test("Can handle a Browser environment. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				return window.requestAnimationFrame(() => {
 				});

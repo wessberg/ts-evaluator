@@ -4,7 +4,7 @@
  * @param value
  * @returns
  */
-export function isObjectLike<T> (value: T): boolean {
+export function isObjectLike<T>(value: T): boolean {
 	return value != null && (typeof value === "function" || typeof value === "object");
 }
 
@@ -14,6 +14,6 @@ export function isObjectLike<T> (value: T): boolean {
  * @param value
  * @returns
  */
-export function canBeObserved<T> (value: T): boolean {
+export function canBeObserved<T>(value: T): boolean {
 	return isObjectLike(value);
 }

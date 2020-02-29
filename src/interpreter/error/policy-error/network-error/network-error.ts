@@ -11,7 +11,11 @@ export class NetworkError extends PolicyError {
 	 */
 	public readonly operation: string;
 
-	constructor ({operation, node, message = `The operation: '${operation}' is performing network activity. That is in violation of the policy`}: INetworkErrorOptions) {
+	constructor({
+		operation,
+		node,
+		message = `The operation: '${operation}' is performing network activity. That is in violation of the policy`
+	}: INetworkErrorOptions) {
 		super({violation: "deterministic", message, node});
 
 		this.operation = operation;

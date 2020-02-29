@@ -1,12 +1,27 @@
 import {LogLevelKind} from "../src/interpreter/logger/log-level";
 import {evaluate} from "../src/interpreter/evaluate";
 import {EvaluateResult} from "../src/interpreter/evaluate-result";
-import {CompilerOptions, createProgram, createSourceFile, Expression, forEachChild, getDefaultCompilerOptions, getDefaultLibFileName, Node, NodeArray, ScriptKind, ScriptTarget, SourceFile, Statement, sys} from "typescript";
+import {
+	CompilerOptions,
+	createProgram,
+	createSourceFile,
+	Expression,
+	forEachChild,
+	getDefaultCompilerOptions,
+	getDefaultLibFileName,
+	Node,
+	NodeArray,
+	ScriptKind,
+	ScriptTarget,
+	SourceFile,
+	Statement,
+	sys
+} from "typescript";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
 import {readFileSync, readdirSync} from "fs";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
 import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
-import {sync} from "find-up"
+import {sync} from "find-up";
 import {join} from "path";
 
 // tslint:disable:no-any
@@ -16,17 +31,17 @@ export interface ITestFile {
 	text: string;
 }
 
-export type TestFile = ITestFile|string;
+export type TestFile = ITestFile | string;
 
 export interface ITestFileEntry {
 	fileName: string;
 	match: string;
 }
 
-export type TestFileEntry = ITestFileEntry|string;
+export type TestFileEntry = ITestFileEntry | string;
 
 export interface ITestFileResult {
-	evaluate (): EvaluateResult;
+	evaluate(): EvaluateResult;
 }
 
 export interface ITestOpts {
@@ -43,9 +58,9 @@ export interface ITestOpts {
  * @param {Partial<ITestOpts>} [opts={}]
  * @returns {Node}
  */
-export function prepareTest (
-	files: TestFile[]|TestFile,
-	entry?: TestFileEntry|undefined,
+export function prepareTest(
+	files: TestFile[] | TestFile,
+	entry?: TestFileEntry | undefined,
 	{
 		environment,
 		policy: {
@@ -65,77 +80,73 @@ export function prepareTest (
 		} = {},
 		reporting,
 		logLevel = LogLevelKind.SILENT
-	}: Partial<ITestOpts> = {}): ITestFileResult {
+	}: Partial<ITestOpts> = {}
+): ITestFileResult {
 	const arrFiles = Array.isArray(files) ? files : [files];
 	const nodeTypesDir = sync("node_modules/@types/node", {type: "directory"});
-	const nodeTypeDeclarationFiles = nodeTypesDir == null
-		? []
-		: readdirSync(nodeTypesDir)
-			.filter(file => file.endsWith(".d.ts"))
-			.map(file => join(nodeTypesDir, file));
+	const nodeTypeDeclarationFiles =
+		nodeTypesDir == null
+			? []
+			: readdirSync(nodeTypesDir)
+					.filter(file => file.endsWith(".d.ts"))
+					.map(file => join(nodeTypesDir, file));
 
 	const normalizedFiles: ITestFile[] = [
-		...arrFiles.map(file => typeof file === "string" ? ({text: file, fileName: `auto-generated-${Math.floor(Math.random() * 100000)}.ts`}) : file),
+		...arrFiles.map(file => (typeof file === "string" ? {text: file, fileName: `auto-generated-${Math.floor(Math.random() * 100000)}.ts`} : file)),
 		...nodeTypeDeclarationFiles.map(file => ({
 			fileName: file,
 			text: readFileSync(file, "utf8")
 		}))
 	];
-	const normalizedEntry = typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
+	const normalizedEntry =
+		typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
 
 	const rootNames = normalizedFiles.map(({fileName}) => fileName);
 
 	const program = createProgram({
 		rootNames,
 		host: {
-			readFile (fileName: string): string|undefined {
+			readFile(fileName: string): string | undefined {
 				const matchedFile = normalizedFiles.find(file => file.fileName === fileName);
 				return matchedFile == null ? undefined : matchedFile.text;
 			},
 
-			fileExists (fileName: string): boolean {
+			fileExists(fileName: string): boolean {
 				return this.readFile(fileName) != null;
 			},
 
-			getSourceFile (fileName: string, languageVersion: ScriptTarget): SourceFile|undefined {
+			getSourceFile(fileName: string, languageVersion: ScriptTarget): SourceFile | undefined {
 				const sourceText = this.readFile(fileName);
 				if (sourceText == null) return undefined;
 
-				return createSourceFile(
-					fileName,
-					sourceText,
-					languageVersion,
-					true,
-					ScriptKind.TS
-				);
+				return createSourceFile(fileName, sourceText, languageVersion, true, ScriptKind.TS);
 			},
 
-			getCurrentDirectory () {
+			getCurrentDirectory() {
 				return ".";
 			},
 
-			getDirectories (directoryName: string) {
+			getDirectories(directoryName: string) {
 				return sys.getDirectories(directoryName);
 			},
 
-			getDefaultLibFileName (options: CompilerOptions): string {
+			getDefaultLibFileName(options: CompilerOptions): string {
 				return getDefaultLibFileName(options);
 			},
 
-			getCanonicalFileName (fileName: string): string {
+			getCanonicalFileName(fileName: string): string {
 				return this.useCaseSensitiveFileNames() ? fileName : fileName.toLowerCase();
 			},
 
-			getNewLine (): string {
+			getNewLine(): string {
 				return sys.newLine;
 			},
 
-			useCaseSensitiveFileNames () {
+			useCaseSensitiveFileNames() {
 				return sys.useCaseSensitiveFileNames;
 			},
 
-			writeFile: () => {
-			}
+			writeFile: () => {}
 		},
 		options: getDefaultCompilerOptions()
 	});
@@ -148,22 +159,23 @@ export function prepareTest (
 	const entryNode = findEntryExpressionFromStatements(entrySourceFile.statements, normalizedEntry.match);
 
 	return {
-		evaluate: () => evaluate({
-			node: entryNode,
-			typeChecker: program.getTypeChecker(),
-			environment,
-			reporting,
-			policy: {
-				maxOps,
-				maxOpDuration,
-				deterministic,
-				io,
-				process,
-				network,
-				console
-			},
-			logLevel
-		})
+		evaluate: () =>
+			evaluate({
+				node: entryNode,
+				typeChecker: program.getTypeChecker(),
+				environment,
+				reporting,
+				policy: {
+					maxOps,
+					maxOpDuration,
+					deterministic,
+					io,
+					process,
+					network,
+					console
+				},
+				logLevel
+			})
 	};
 }
 
@@ -173,7 +185,7 @@ export function prepareTest (
  * @param {string} match
  * @returns {Expression}
  */
-function findEntryExpressionFromStatements (statements: NodeArray<Statement>, match: string): Expression {
+function findEntryExpressionFromStatements(statements: NodeArray<Statement>, match: string): Expression {
 	for (const statement of statements) {
 		const matchedNode = matchNode(statement, match);
 		if (matchedNode != null) return matchedNode;
@@ -187,7 +199,7 @@ function findEntryExpressionFromStatements (statements: NodeArray<Statement>, ma
  * @param {string} match
  * @returns {Expression | undefined}
  */
-function matchNode (node: Node, match: string): Expression|undefined {
+function matchNode(node: Node, match: string): Expression | undefined {
 	if (isNodeMatched(node, match)) return node;
 	return forEachChild(node, nextNode => matchNode(nextNode, match));
 }
@@ -198,11 +210,9 @@ function matchNode (node: Node, match: string): Expression|undefined {
  * @param {string} match
  * @returns {boolean}
  */
-function isNodeMatched (node: Node, match: string): node is Expression {
-
+function isNodeMatched(node: Node, match: string): node is Expression {
 	try {
 		if (node.getText().startsWith(match)) return true;
-	} catch {
-	}
+	} catch {}
 	return false;
 }

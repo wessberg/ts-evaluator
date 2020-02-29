@@ -11,5 +11,5 @@ export interface ICreateNodeEvaluatorOptions {
 	reporting: ReportingOptionsSanitized;
 	logger: Logger;
 	stack: Stack;
-	nextNode (node: TS.Node): void;
+	nextNode(node: TS.Node): void;
 }

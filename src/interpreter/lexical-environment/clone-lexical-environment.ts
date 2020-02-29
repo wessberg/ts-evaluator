@@ -5,7 +5,7 @@ import {LexicalEnvironment} from "./lexical-environment";
  * @param {LexicalEnvironment} environment
  * @returns {LexicalEnvironment}
  */
-export function cloneLexicalEnvironment (environment: LexicalEnvironment): LexicalEnvironment {
+export function cloneLexicalEnvironment(environment: LexicalEnvironment): LexicalEnvironment {
 	return {
 		parentEnv: environment,
 		env: {}

@@ -5,7 +5,7 @@
  * @param node
  * @param properties
  */
-export function printWithDeepRemovedProperties<T extends object> (node: T|undefined, ...properties: string[]): void {
+export function printWithDeepRemovedProperties<T extends object>(node: T | undefined, ...properties: string[]): void {
 	if (node === undefined) return console.log(undefined);
 	if (properties.length === 0) return console.log(node);
 
@@ -14,15 +14,15 @@ export function printWithDeepRemovedProperties<T extends object> (node: T|undefi
 
 /**
  * Deep-clones the given object, and removes the provided property names along the way
-* from property values
+ * from property values
  *
  * @param obj
  * @param properties
  * @param [seenNestedObjects]
  * @return
  */
-function deepCloneWithRemovedProperty<T extends object, U> (obj: T, properties: (keyof T)[], seenNestedObjects: Set<{}> = new Set()): U {
-	if (seenNestedObjects.has(obj)) return "[Circular]" as unknown as U;
+function deepCloneWithRemovedProperty<T extends object, U>(obj: T, properties: (keyof T)[], seenNestedObjects: Set<{}> = new Set()): U {
+	if (seenNestedObjects.has(obj)) return ("[Circular]" as unknown) as U;
 
 	seenNestedObjects.add(obj);
 	const shallowClone = Array.isArray(obj) ? [...obj] : {...obj};
@@ -32,24 +32,18 @@ function deepCloneWithRemovedProperty<T extends object, U> (obj: T, properties: 
 		shallowClone.forEach((item, index) => {
 			if (typeof item === "object" && item != null) {
 				shallowClone[index] = deepCloneWithRemovedProperty(item, properties, seenNestedObjects);
-			}
-
-			else {
+			} else {
 				shallowClone[index] = item;
 			}
 		});
-	}
-
-	else {
+	} else {
 		Object.entries(shallowClone).forEach(([key, value]) => {
 			if (typeof value === "object" && value != null) {
 				shallowClone[key as keyof T] = deepCloneWithRemovedProperty(value, properties, seenNestedObjects);
-			}
-
-			else {
+			} else {
 				shallowClone[key as keyof T] = value;
 			}
 		});
 	}
-	return shallowClone as unknown as U;
+	return (shallowClone as unknown) as U;
 }

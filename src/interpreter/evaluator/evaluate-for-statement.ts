@@ -9,8 +9,14 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ForStatement
  */
-export function evaluateForStatement ({node, environment, evaluate, reporting, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ForStatement>): void {
-
+export function evaluateForStatement({
+	node,
+	environment,
+	evaluate,
+	reporting,
+	statementTraversalStack,
+	typescript
+}: IEvaluatorOptions<TS.ForStatement>): void {
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
 
@@ -20,9 +26,7 @@ export function evaluateForStatement ({node, environment, evaluate, reporting, s
 			for (const declaration of node.initializer.declarations) {
 				evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
 			}
-		}
-
-		else {
+		} else {
 			evaluate.expression(node.initializer, forEnvironment, statementTraversalStack);
 		}
 	}
@@ -38,9 +42,7 @@ export function evaluateForStatement ({node, environment, evaluate, reporting, s
 		setInLexicalEnvironment({env: iterationEnvironment, path: CONTINUE_SYMBOL, value: false, newBinding: true, reporting, node});
 
 		// Evaluate the condition. It may be truthy always
-		const conditionResult = node.condition == null
-			? true
-			: (evaluate.expression(node.condition, forEnvironment, statementTraversalStack)) as boolean;
+		const conditionResult = node.condition == null ? true : (evaluate.expression(node.condition, forEnvironment, statementTraversalStack) as boolean);
 
 		// If the condition doesn't hold, return immediately
 		if (!conditionResult) return;
@@ -51,9 +53,7 @@ export function evaluateForStatement ({node, environment, evaluate, reporting, s
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, BREAK_SYMBOL)) {
 			break;
-		}
-
-		else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, RETURN_SYMBOL)) {
+		} else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, RETURN_SYMBOL)) {
 			return;
 		}
 
@@ -67,6 +67,5 @@ export function evaluateForStatement ({node, environment, evaluate, reporting, s
 			// noinspection UnnecessaryContinueJS
 			continue;
 		}
-
 	}
 }

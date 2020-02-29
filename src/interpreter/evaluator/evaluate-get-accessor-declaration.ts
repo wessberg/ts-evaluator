@@ -11,9 +11,11 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a GetAccessorDeclaration, before setting it on the given parent
  */
-export function evaluateGetAccessorDeclaration ({node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.GetAccessorDeclaration>, parent?: IndexLiteral): void {
-
-	const nameResult = (evaluate.nodeWithValue(node.name, environment, statementTraversalStack)) as IndexLiteralKey;
+export function evaluateGetAccessorDeclaration(
+	{node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.GetAccessorDeclaration>,
+	parent?: IndexLiteral
+): void {
+	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
 	const isStatic = inStaticContext(node, typescript);
 
 	if (parent == null) {
@@ -21,8 +23,7 @@ export function evaluateGetAccessorDeclaration ({node, environment, evaluate, st
 		if (typescript.isClassLike(node.parent)) {
 			evaluate.declaration(node.parent, environment, statementTraversalStack);
 			updatedParent = stack.pop() as Function & IndexLiteral;
-		}
-		else {
+		} else {
 			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as Function & IndexLiteral;
 		}
 		stack.push(isStatic ? updatedParent[nameResult] : updatedParent.prototype[nameResult]);
@@ -32,8 +33,7 @@ export function evaluateGetAccessorDeclaration ({node, environment, evaluate, st
 	/**
 	 * An implementation of the get accessor
 	 */
-	function getAccessorDeclaration (this: Literal) {
-
+	function getAccessorDeclaration(this: Literal) {
 		// Prepare a lexical environment for the function context
 		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 
@@ -49,9 +49,9 @@ export function evaluateGetAccessorDeclaration ({node, environment, evaluate, st
 
 			// Set the 'super' binding, depending on whether or not we're inside a static context
 			setInLexicalEnvironment({
-				env: localLexicalEnvironment, path: SUPER_SYMBOL, value: isStatic
-					? Object.getPrototypeOf(this)
-					: Object.getPrototypeOf((this as Function).constructor).prototype,
+				env: localLexicalEnvironment,
+				path: SUPER_SYMBOL,
+				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as Function).constructor).prototype,
 				newBinding: true,
 				reporting,
 				node

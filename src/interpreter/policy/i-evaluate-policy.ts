@@ -9,8 +9,8 @@ export interface IEvaluateProcessPolicy {
 }
 
 export interface IEvaluatePolicy {
-	io: boolean|IEvaluateIOPolicy;
-	process: boolean|IEvaluateProcessPolicy;
+	io: boolean | IEvaluateIOPolicy;
+	process: boolean | IEvaluateProcessPolicy;
 	network: boolean;
 	console: boolean;
 	deterministic: boolean;

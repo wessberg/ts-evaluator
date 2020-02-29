@@ -9,6 +9,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
  * @param item
  * @returns
  */
-export function isProcessExitOperation (item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
+export function isProcessExitOperation(item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(PROCESS_MAP, "exit", item);
 }

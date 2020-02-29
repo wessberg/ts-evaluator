@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate and retrieve a GetAccessorDeclaration. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class Foo {
 				get something () {
 					return 2;

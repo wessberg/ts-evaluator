@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, an Identifier or a PrivateIdentifier
  */
 
-export function evaluateIdentifier (options: IEvaluatorOptions<TS.Identifier|TS.PrivateIdentifier>): Literal {
+export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS.PrivateIdentifier>): Literal {
 	const {node, environment, typeChecker, evaluate, stack, logger, reporting, typescript, statementTraversalStack} = options;
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
@@ -24,7 +24,7 @@ export function evaluateIdentifier (options: IEvaluatorOptions<TS.Identifier|TS.
 	// Try to get a symbol for whatever the identifier points to and take its value declaration.
 	// It may not have a symbol, for example if it is an inlined expression such as an initializer or a Block
 	const symbol = typeChecker.getSymbolAtLocation(node);
-	let valueDeclaration: TS.Declaration|undefined = symbol == null ? undefined : symbol.valueDeclaration;
+	let valueDeclaration: TS.Declaration | undefined = symbol == null ? undefined : symbol.valueDeclaration;
 
 	if (symbol != null && valueDeclaration == null) {
 		try {
@@ -39,19 +39,28 @@ export function evaluateIdentifier (options: IEvaluatorOptions<TS.Identifier|TS.
 	// If it has a value declaration, go forward with that one
 	if (valueDeclaration != null) {
 		if (valueDeclaration.getSourceFile().isDeclarationFile) {
-
 			const implementation = getImplementationForDeclarationWithinDeclarationFile({...options, node: valueDeclaration});
 			// Bind the value placed on the top of the stack to the local environment
 			setInLexicalEnvironment({env: environment, path: node.text, value: implementation, reporting, node: valueDeclaration});
-			logger.logBinding(node.text, implementation, `Discovered declaration value${valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`}`);
+			logger.logBinding(
+				node.text,
+				implementation,
+				`Discovered declaration value${
+					valueDeclaration.getSourceFile() === node.getSourceFile()
+						? ""
+						: ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`
+				}`
+			);
 			return implementation;
-
 		}
 
 		// If the value is a variable declaration and is located *after* the current node within the SourceFile
 		// It is potentially a SyntaxError unless it is hoisted (if the 'var' keyword is being used) in which case the variable is defined, but initialized to 'undefined'
-		if (typescript.isVariableDeclaration(valueDeclaration) && valueDeclaration.getSourceFile().fileName === node.getSourceFile().fileName && valueDeclaration.pos > node.pos) {
-
+		if (
+			typescript.isVariableDeclaration(valueDeclaration) &&
+			valueDeclaration.getSourceFile().fileName === node.getSourceFile().fileName &&
+			valueDeclaration.pos > node.pos
+		) {
 			// The 'var' keyword declares a variable that is defined, but which rvalue is still undefined
 			if (typescript.isVariableDeclarationList(valueDeclaration.parent) && isVarDeclaration(valueDeclaration.parent, typescript)) {
 				const returnValue = undefined;
@@ -64,7 +73,6 @@ export function evaluateIdentifier (options: IEvaluatorOptions<TS.Identifier|TS.
 			else {
 				throw new UndefinedIdentifierError({node});
 			}
-
 		}
 
 		evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
@@ -72,7 +80,15 @@ export function evaluateIdentifier (options: IEvaluatorOptions<TS.Identifier|TS.
 
 		// Bind the value placed on the top of the stack to the local environment
 		setInLexicalEnvironment({env: environment, path: node.text, value: stackValue, reporting, node: valueDeclaration});
-		logger.logBinding(node.text, stackValue, `Discovered declaration value${valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`}`);
+		logger.logBinding(
+			node.text,
+			stackValue,
+			`Discovered declaration value${
+				valueDeclaration.getSourceFile() === node.getSourceFile()
+					? ""
+					: ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`
+			}`
+		);
 		return stackValue;
 	}
 

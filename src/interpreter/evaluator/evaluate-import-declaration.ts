@@ -7,5 +7,4 @@ import {TS} from "../../type/ts";
  * rather than manually parsing and resolving imports/exports
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function evaluateImportDeclaration (_options: IEvaluatorOptions<TS.ImportDeclaration>): void {
-}
+export function evaluateImportDeclaration(_options: IEvaluatorOptions<TS.ImportDeclaration>): void {}

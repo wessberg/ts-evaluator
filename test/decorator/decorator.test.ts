@@ -5,7 +5,7 @@ import {IndexLiteral} from "../../src/interpreter/literal/literal";
 test("Can handle Class Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function classDecorator<T extends { new (...args: any[]): {} }> (constructor: T) {
 				return class extends constructor {
 					public prop = "prop";
@@ -25,7 +25,7 @@ test("Can handle Class Decorators. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const instance = new (result.value as (new () => { prop: string }))();
+		const instance = new (result.value as new () => {prop: string})();
 		t.deepEqual(instance.prop, "prop");
 	}
 });
@@ -33,7 +33,7 @@ test("Can handle Class Decorators. #1", t => {
 test("Can handle multiple Class Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function classDecorator<T extends { new (...args: any[]): {} }> (constructor: T) {
 				return class extends constructor {
 					public prop = "prop";
@@ -60,7 +60,7 @@ test("Can handle multiple Class Decorators. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const instance = new (result.value as (new () => { prop: string; otherProp: string }))();
+		const instance = new (result.value as new () => {prop: string; otherProp: string})();
 		t.deepEqual(instance.prop, "prop");
 		t.deepEqual(instance.otherProp, "otherProp");
 	}
@@ -69,7 +69,7 @@ test("Can handle multiple Class Decorators. #1", t => {
 test("Can handle instance Method Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function enumerable (value: boolean) {
 				return function (target: any, propertyKey: string) {
 					let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
@@ -104,7 +104,7 @@ test("Can handle instance Method Decorators. #1", t => {
 test("Can handle static Method Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function enumerable (value: boolean) {
 				return function (target: any, propertyKey: string) {
 					let descriptor = Object.getOwnPropertyDescriptor(target, propertyKey) || {};
@@ -131,7 +131,7 @@ test("Can handle static Method Decorators. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const descriptor = Object.getOwnPropertyDescriptor((result.value as Function), "greet");
+		const descriptor = Object.getOwnPropertyDescriptor(result.value as Function, "greet");
 		t.true(descriptor != null && descriptor.enumerable === false);
 	}
 });
@@ -139,7 +139,7 @@ test("Can handle static Method Decorators. #1", t => {
 test("Can handle instance PropertyDeclaration Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function useProperty (target: any, key: string) {
 				target["_" + key] = "whatever";
 			}
@@ -157,7 +157,7 @@ test("Can handle instance PropertyDeclaration Decorators. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const instance = new (result.value as (new () => { _myProp: string; myProp: string }))();
+		const instance = new (result.value as new () => {_myProp: string; myProp: string})();
 		t.deepEqual(instance._myProp, "whatever");
 	}
 });
@@ -165,7 +165,7 @@ test("Can handle instance PropertyDeclaration Decorators. #1", t => {
 test("Can handle static PropertyDeclaration Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function useProperty (target: any, key: string) {
 				target["_" + key] = "whatever";
 			}
@@ -183,14 +183,14 @@ test("Can handle static PropertyDeclaration Decorators. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as { _myProp: string; myProp: string })._myProp, "whatever");
+		t.deepEqual((result.value as {_myProp: string; myProp: string})._myProp, "whatever");
 	}
 });
 
 test("Can handle Parameter Decorators. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			function countParameter (target, key, index) {
 				const newKey = "paramCounts";
 				if (target[newKey] == null) {
@@ -218,7 +218,7 @@ test("Can handle Parameter Decorators. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const instance = new (result.value as (new () => { paramCounts: IndexLiteral }))();
+		const instance = new (result.value as new () => {paramCounts: IndexLiteral})();
 		t.deepEqual(instance.paramCounts.doSomething, 2);
 	}
 });

@@ -8,7 +8,7 @@ import {TS} from "../../type/ts";
  * @param options
  * @returns
  */
-export function evaluateVoidExpression ({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.VoidExpression>): Literal {
+export function evaluateVoidExpression({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.VoidExpression>): Literal {
 	evaluate.expression(node.expression, environment, statementTraversalStack);
 	// The void operator evaluates the expression and then returns undefined
 	return undefined;

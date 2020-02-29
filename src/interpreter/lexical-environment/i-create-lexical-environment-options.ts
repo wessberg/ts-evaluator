@@ -5,5 +5,5 @@ import {TS} from "../../type/ts";
 export interface ICreateLexicalEnvironmentOptions {
 	inputEnvironment: IEnvironment;
 	policy: IEvaluatePolicySanitized;
-	getCurrentNode (): TS.Node;
+	getCurrentNode(): TS.Node;
 }

@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate a CallExpression for a recursive function. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 
 			function fibonacci (num: number, memo: { [key: number]: number } = {}): number {
 				if (memo[num]) return memo[num];

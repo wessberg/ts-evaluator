@@ -5,7 +5,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a CatchClause, based on a given Error
  */
-export function evaluateCatchClause ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.CatchClause>, ex: Error): void {
+export function evaluateCatchClause({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.CatchClause>, ex: Error): void {
 	// If a catch binding is provided, we must provide a local lexical environment for the CatchBlock
 	const catchEnvironment = node.variableDeclaration == null ? environment : cloneLexicalEnvironment(environment);
 

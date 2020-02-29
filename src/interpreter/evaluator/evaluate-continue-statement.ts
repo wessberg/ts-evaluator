@@ -6,6 +6,6 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ContinueStatement
  */
-export function evaluateContinueStatement ({node, environment, reporting}: IEvaluatorOptions<TS.ContinueStatement>): void {
+export function evaluateContinueStatement({node, environment, reporting}: IEvaluatorOptions<TS.ContinueStatement>): void {
 	setInLexicalEnvironment({env: environment, path: CONTINUE_SYMBOL, value: true, reporting, node});
 }

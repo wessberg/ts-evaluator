@@ -5,8 +5,7 @@ import {IAsyncIteratorNotSupportedErrorOptions} from "./i-async-iterator-not-sup
  * An Error that can be thrown when an async iteration operation is attempted
  */
 export class AsyncIteratorNotSupportedError extends EvaluationError {
-
-	constructor ({message = `It is not possible to evaluate an async iterator'`, typescript}: IAsyncIteratorNotSupportedErrorOptions) {
+	constructor({message = `It is not possible to evaluate an async iterator'`, typescript}: IAsyncIteratorNotSupportedErrorOptions) {
 		super({message, node: typescript.createEmptyStatement()});
 	}
 }

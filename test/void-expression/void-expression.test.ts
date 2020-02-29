@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate VoidExpressions #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let something = 0;
 				const update = () => something++;
@@ -24,7 +24,7 @@ test("Can evaluate VoidExpressions #1", t => {
 test("Can evaluate VoidExpressions #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let something = 0;
 				const update = () => something++;
@@ -43,7 +43,7 @@ test("Can evaluate VoidExpressions #2", t => {
 test("Can evaluate VoidExpressions #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				// noinspection JSUnusedAssignment
 				let a = 0;

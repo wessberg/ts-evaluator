@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can handle ClassDeclarations and preserves their names. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyClass {
 			}
 
@@ -24,7 +24,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", t => {
 test("Can handle ClassDeclarations that extends from other named classes. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class A {
 			}
 
@@ -49,7 +49,7 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", t
 test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class A extends class {
 				method () {
 					return "foo";
@@ -66,7 +66,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const instance = new (result.value as (new () => { method (): string }))();
+		const instance = new (result.value as new () => {method(): string})();
 		t.deepEqual(instance.method(), "foo");
 	}
 });
@@ -74,7 +74,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 test("Can handle ClassDeclarations and preserves their constructors. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyClass {
 				private foo: string;
 
@@ -93,7 +93,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { foo: string }))();
+		const instance = new (result.value as new () => {foo: string})();
 		t.deepEqual(instance.foo, "hello");
 	}
 });
@@ -124,7 +124,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { foo: string }))();
+		const instance = new (result.value as new () => {foo: string})();
 		t.deepEqual(instance.foo, "hello");
 	}
 });
@@ -132,7 +132,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", t => {
 test("Inherits PropertyDeclarations from super classes. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyParentClass {
 				// noinspection JSUnusedLocalSymbols
 				private bar = "hello";
@@ -151,7 +151,7 @@ test("Inherits PropertyDeclarations from super classes. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { bar: string }))();
+		const instance = new (result.value as new () => {bar: string})();
 		t.deepEqual(instance.bar, "hello");
 	}
 });
@@ -159,7 +159,7 @@ test("Inherits PropertyDeclarations from super classes. #1", t => {
 test("Inherits PropertyDeclarations from super classes. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyParentClass {
 				public static bar = "hello";
 			}
@@ -184,14 +184,14 @@ test("Inherits PropertyDeclarations from super classes. #2", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		t.deepEqual((result.value as { doStuff (): string }).doStuff(), "hello");
+		t.deepEqual((result.value as {doStuff(): string}).doStuff(), "hello");
 	}
 });
 
 test("Inherits PropertyDeclarations from super classes. #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyParentClass {
 				doSomethingElse (this: { aMethod (): string }) {
 					return this.aMethod();
@@ -222,7 +222,7 @@ test("Inherits PropertyDeclarations from super classes. #3", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { doStuff (): string }))();
+		const instance = new (result.value as new () => {doStuff(): string})();
 		t.deepEqual(instance.doStuff(), "foo");
 	}
 });
@@ -230,7 +230,7 @@ test("Inherits PropertyDeclarations from super classes. #3", t => {
 test("Can handle GetAccessorDeclarations. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyClass {
 				private _prop = 1;
 				get prop () {
@@ -248,7 +248,7 @@ test("Can handle GetAccessorDeclarations. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { readonly prop: number }))();
+		const instance = new (result.value as new () => {readonly prop: number})();
 		t.deepEqual(instance.prop, 1);
 	}
 });
@@ -256,7 +256,7 @@ test("Can handle GetAccessorDeclarations. #1", t => {
 test("Can handle SetAccessorDeclarations. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			class MyClass {
 				private _prop = 1;
 				set prop (prop: number) {
@@ -278,7 +278,7 @@ test("Can handle SetAccessorDeclarations. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { prop: number }))();
+		const instance = new (result.value as new () => {prop: number})();
 		instance.prop = 2;
 		t.deepEqual(instance.prop, 2);
 	}
@@ -302,7 +302,7 @@ test("Can handle instances properties set via Constructor arguments. #1", t => {
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
-		const instance = new (result.value as (new () => { foo: number }))();
+		const instance = new (result.value as new () => {foo: number})();
 		t.deepEqual(instance.foo, 2);
 	}
 });

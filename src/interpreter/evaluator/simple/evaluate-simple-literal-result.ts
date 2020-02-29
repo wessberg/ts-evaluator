@@ -13,4 +13,4 @@ export interface IEvaluateSimpleLiteralFailureResult extends IEvaluateSimpleLite
 	success: false;
 }
 
-export type EvaluateSimpleLiteralResult = IEvaluateSimpleLiteralSuccessResult|IEvaluateSimpleLiteralFailureResult;
+export type EvaluateSimpleLiteralResult = IEvaluateSimpleLiteralSuccessResult | IEvaluateSimpleLiteralFailureResult;

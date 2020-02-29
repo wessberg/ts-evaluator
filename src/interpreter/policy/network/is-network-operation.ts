@@ -9,6 +9,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
  * @param item
  * @returns
  */
-export function isNetworkOperation (item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
+export function isNetworkOperation(item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(NETWORK_MAP, true, item);
 }

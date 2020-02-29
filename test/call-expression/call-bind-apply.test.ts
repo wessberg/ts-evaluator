@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can evaluate a CallExpression that is called with another 'this' value. #1", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			const myObj = {
 				someProp: 2
 			};
@@ -27,7 +27,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #1
 test("Can evaluate a CallExpression that is called with another 'this' value. #2", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			const myObj = {
 				someProp: 2
 			};
@@ -50,7 +50,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #2
 test("Can evaluate a CallExpression that is called with another 'this' value. #3", t => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			const myObj = {
 				someProp: 2
 			};

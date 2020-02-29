@@ -5,7 +5,10 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, an ArrayBindingPattern, based on an initializer
  */
-export function evaluateArrayBindingPattern ({node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.ArrayBindingPattern>, rightHandValue: Iterable<Literal>): void {
+export function evaluateArrayBindingPattern(
+	{node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.ArrayBindingPattern>,
+	rightHandValue: Iterable<Literal>
+): void {
 	const iterator = rightHandValue[Symbol.iterator]();
 	let elementsCursor = 0;
 

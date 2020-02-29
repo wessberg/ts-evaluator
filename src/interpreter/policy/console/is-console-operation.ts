@@ -9,6 +9,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
  * @param item
  * @returns
  */
-export function isConsoleOperation (item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
+export function isConsoleOperation(item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(CONSOLE_MAP, true, item);
 }

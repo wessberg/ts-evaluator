@@ -8,8 +8,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a DefaultClause, based on a switch expression
  */
-export function evaluateDefaultClause ({node, evaluate, environment}: IEvaluatorOptions<TS.DefaultClause>): void {
-
+export function evaluateDefaultClause({node, evaluate, environment}: IEvaluatorOptions<TS.DefaultClause>): void {
 	for (const statement of node.statements) {
 		evaluate.statement(statement, environment);
 

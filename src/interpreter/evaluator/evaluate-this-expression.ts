@@ -7,7 +7,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ThisExpression
  */
-export function evaluateThisExpression ({node, environment}: IEvaluatorOptions<TS.ThisExpression>): Literal {
+export function evaluateThisExpression({node, environment}: IEvaluatorOptions<TS.ThisExpression>): Literal {
 	const match = getFromLexicalEnvironment(node, environment, THIS_SYMBOL);
 	return match == null ? undefined : match.literal;
 }

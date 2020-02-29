@@ -14,4 +14,4 @@ export interface IEvaluateFailureResult extends IEvaluateResultBase {
 	reason: EvaluationError;
 }
 
-export type EvaluateResult = IEvaluateSuccessResult|IEvaluateFailureResult;
+export type EvaluateResult = IEvaluateSuccessResult | IEvaluateFailureResult;

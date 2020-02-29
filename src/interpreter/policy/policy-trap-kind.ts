@@ -11,7 +11,7 @@ export const enum PolicyTrapKind {
  * @param path
  * @return
  */
-export function stringifyPolicyTrapKindOnPath (kind: PolicyTrapKind, path: string): string {
+export function stringifyPolicyTrapKindOnPath(kind: PolicyTrapKind, path: string): string {
 	switch (kind) {
 		case PolicyTrapKind.GET:
 			return `get ${path}`;

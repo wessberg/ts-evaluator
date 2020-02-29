@@ -9,9 +9,16 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a WhileStatement
  */
-export function evaluateWhileStatement ({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.WhileStatement>): void {
-
-	let condition = (evaluate.expression(node.expression, environment, statementTraversalStack)) as boolean;
+export function evaluateWhileStatement({
+	node,
+	environment,
+	evaluate,
+	logger,
+	reporting,
+	typescript,
+	statementTraversalStack
+}: IEvaluatorOptions<TS.WhileStatement>): void {
+	let condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
 
 	while (condition) {
 		// Prepare a lexical environment for the current iteration
@@ -30,14 +37,12 @@ export function evaluateWhileStatement ({node, environment, evaluate, logger, re
 		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, BREAK_SYMBOL)) {
 			logger.logBreak(node, typescript);
 			break;
-		}
-
-		else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, RETURN_SYMBOL)) {
+		} else if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, RETURN_SYMBOL)) {
 			logger.logReturn(node, typescript);
 			return;
 		}
 
-		condition = (evaluate.expression(node.expression, environment, statementTraversalStack)) as boolean;
+		condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
 
 		// Always re-evaluate the condition before continuing
 		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, CONTINUE_SYMBOL)) {
