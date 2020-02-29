@@ -66,12 +66,13 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
   - [Features](#features)
 - [Table of Contents](#table-of-contents)
 - [Install](#install)
-  - [NPM](#npm)
+  - [npm](#npm)
   - [Yarn](#yarn)
+  - [pnpm](#pnpm)
 - [Usage](#usage)
   - [Setting up an environment](#setting-up-an-environment)
   - [Setting up Policies](#setting-up-policies)
-  - [Logging](#logging)
+  - [Custom TypeScript version](#custom-typescript-version)
   - [Reporting](#reporting)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
@@ -87,7 +88,7 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
 
 ## Install
 
-### NPM
+### npm
 
 ```
 $ npm install @wessberg/ts-evaluator
@@ -97,6 +98,12 @@ $ npm install @wessberg/ts-evaluator
 
 ```
 $ yarn add @wessberg/ts-evaluator
+```
+
+### pnpm
+
+```
+$ pnpm add @wessberg/ts-evaluator
 ```
 
 <!-- SHADOW_SECTION_INSTALL_END -->
@@ -208,7 +215,7 @@ Here's an explainer of the individual policies:
 You can provide a specific version of TypeScript to use as an option to `evaluate`. This may come in handy if you're using
 multiple TypeScript versions in your project or if you're receiving the TypeScript version to use as an argument from a third party.
 
-```typescript
+````typescript
 const result = evaluate({
 	// ...
 	typescript: someTypescriptModule
@@ -223,7 +230,7 @@ const result = evaluate({
 	// ...
 	logLevel: LogLevelKind.DEBUG
 });
-```
+````
 
 Here's an explainer of the different log levels:
 
@@ -268,7 +275,7 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 ## Maintainers
 
-| <img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   />                                                                                                                  |
+| <a href="mailto:frederikwessberg@hotmail.com"><img alt="Frederik Wessberg" src="https://avatars2.githubusercontent.com/u/20454213?s=460&v=4" height="70"   /></a>                                                                |
 | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | [Frederik Wessberg](mailto:frederikwessberg@hotmail.com)<br><strong>Twitter</strong>: [@FredWessberg](https://twitter.com/FredWessberg)<br><strong>Github</strong>: [@wessberg](https://github.com/wessberg)<br>_Lead Developer_ |
 
@@ -278,11 +285,13 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 ## Backers
 
+| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@use_bubbles](https://twitter.com/use_bubbles)                                                                              |
+
 ### Patreon
 
-[Become a backer](https://www.patreon.com/bePatron?u=11315442) and get your name, avatar, and Twitter handle listed here.
-
-<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Backers on Patreon" src="https://patreon-badge.herokuapp.com/11315442.png"  width="500"  /></a>
+<a href="https://www.patreon.com/bePatron?u=11315442"><img alt="Patrons on Patreon" src="https://img.shields.io/endpoint.svg?url=https://shieldsio-patreon.herokuapp.com/wessberg"  width="200"  /></a>
 
 <!-- SHADOW_SECTION_BACKERS_END -->
 
