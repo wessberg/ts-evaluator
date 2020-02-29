@@ -8,7 +8,7 @@ export class MaxOpDurationExceededError extends PolicyError {
 	/**
 	 * The total duration of an operation that was being performed before exceeding the limit
 	 */
-	public readonly duration: number;
+	readonly duration: number;
 
 	constructor({duration, node, message = `Maximum operation duration exceeded: ${duration}`}: IMaxOpDurationExceededErrorOptions) {
 		super({violation: "maxOpDuration", message, node});

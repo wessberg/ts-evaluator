@@ -8,9 +8,8 @@ import {IEvaluateIOPolicy} from "../../../policy/i-evaluate-policy";
 export class IoError extends PolicyError {
 	/**
 	 * The kind of IO operation that was violated
-	 * @type {keyof IEvaluateIOPolicy}
 	 */
-	public readonly kind: keyof IEvaluateIOPolicy;
+	readonly kind: keyof IEvaluateIOPolicy;
 
 	constructor({node, kind, message = `${kind} operations are in violation of the policy`}: IIoErrorOptions) {
 		super({violation: "io", message, node});

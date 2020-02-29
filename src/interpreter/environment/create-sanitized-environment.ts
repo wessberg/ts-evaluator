@@ -15,14 +15,11 @@ import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-c
 import {ICreateSanitizedEnvironmentOptions} from "./i-create-sanitized-environment-options";
 import {isConsoleOperation} from "../policy/console/is-console-operation";
 
-// tslint:disable:no-any
-
 /**
  * Creates an environment that provide hooks into policy checks
- * @param {ICreateSanitizedEnvironmentOptions} options
- * @return {IndexLiteral}
  */
 export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
+	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const hook = (item: PolicyProxyHookOptions<any>) => {
 		if (!policy.console && isConsoleOperation(item)) {
 			return false;
@@ -58,23 +55,24 @@ export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreat
 	const descriptors = Object.entries(Object.getOwnPropertyDescriptors(env));
 	const gettersAndSetters = Object.assign(
 		{},
-		...descriptors.filter(([_, descriptor]) => !("value" in descriptor)).map(([name, descriptor]) => ({[name]: descriptor}))
+		...descriptors.filter(([, descriptor]) => !("value" in descriptor)).map(([name, descriptor]) => ({[name]: descriptor}))
 	);
 
 	const values = Object.assign(
 		{},
 		...descriptors
-			.filter(([_, descriptor]) => "value" in descriptor)
+			.filter(([, descriptor]) => "value" in descriptor)
 			.map(([name, descriptor]) => ({
 				[name]:
 					name === "require"
 						? new Proxy(descriptor.value as NodeRequire, {
 								/**
 								 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
-								 * @param {NodeRequire} target
+								 *
+								 * @param target
 								 * @param thisArg
-								 * @param {unknown[]} argArray
-								 * @return {unknown}
+								 * @param argArray
+								 * @return
 								 */
 								apply(target: NodeRequire, thisArg: unknown, argArray: unknown[] = []): unknown {
 									const [moduleName] = argArray as string[];

@@ -26,6 +26,7 @@ export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyP
 	argArray: unknown[];
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PolicyProxyHookOptions<T extends Record<string, any>> =
 	| IPolicyProxyGetHookOptions<T>
 	| IPolicyProxyApplyHookOptions<T>

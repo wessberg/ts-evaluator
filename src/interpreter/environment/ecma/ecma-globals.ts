@@ -30,6 +30,7 @@ export const ECMA_GLOBALS = () => {
 		Math,
 		escape,
 		unescape,
+		// eslint-disable-next-line no-eval
 		eval,
 		Function
 	};

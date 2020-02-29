@@ -8,9 +8,8 @@ import {IEvaluatePolicySanitized} from "../../policy/i-evaluate-policy";
 export class PolicyError extends EvaluationError {
 	/**
 	 * The kind of policy violation encountered
-	 * @type {string}
 	 */
-	public readonly violation: keyof IEvaluatePolicySanitized;
+	readonly violation: keyof IEvaluatePolicySanitized;
 
 	constructor({violation, node, message}: IPolicyErrorOptions) {
 		super({node, message: `[${violation}]: ${message}`});

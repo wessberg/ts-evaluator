@@ -7,9 +7,8 @@ import {IModuleNotFoundErrorOptions} from "./i-module-not-found-error-options";
 export class ModuleNotFoundError extends EvaluationError {
 	/**
 	 * The path/moduleName that could not be resolved
-	 * @type {string}
 	 */
-	public readonly path: string;
+	readonly path: string;
 
 	constructor({path, node, message = `Module '${path}' could not be resolved'`}: IModuleNotFoundErrorOptions) {
 		super({message, node});

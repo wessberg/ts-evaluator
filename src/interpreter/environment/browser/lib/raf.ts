@@ -5,7 +5,6 @@ export interface IRafImplementationNamespace {
 
 /**
  * Returns an object containing the properties that are relevant to 'requestAnimationFrame' and 'requestIdleCallback'
- * @param {typeof window} global
  */
 export function rafImplementation(global: typeof window): IRafImplementationNamespace {
 	let lastTime = 0;

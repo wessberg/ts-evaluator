@@ -7,9 +7,8 @@ import {PolicyError} from "../policy-error";
 export class NonDeterministicError extends PolicyError {
 	/**
 	 * The kind of operation that was attempted to be performed but was in violation of the policy
-	 * @type {string}
 	 */
-	public readonly operation: string;
+	readonly operation: string;
 
 	constructor({
 		operation,

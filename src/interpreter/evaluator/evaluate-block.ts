@@ -24,8 +24,9 @@ export function evaluateBlock({node, environment, typescript, evaluate}: IEvalua
 			typescript.isExpressionStatement(statement) &&
 			typescript.isCallExpression(statement.expression) &&
 			isSuperExpression(statement.expression.expression, typescript)
-		)
+		) {
 			continue;
+		}
 
 		evaluate.statement(statement, localLexicalEnvironment);
 
