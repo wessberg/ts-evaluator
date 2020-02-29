@@ -215,11 +215,12 @@ Here's an explainer of the individual policies:
 You can provide a specific version of TypeScript to use as an option to `evaluate`. This may come in handy if you're using
 multiple TypeScript versions in your project or if you're receiving the TypeScript version to use as an argument from a third party.
 
-````typescript
+```typescript
 const result = evaluate({
 	// ...
 	typescript: someTypescriptModule
 });
+```
 
 ### Logging
 
