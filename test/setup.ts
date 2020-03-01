@@ -22,7 +22,7 @@ import {readFileSync, readdirSync} from "fs";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
 import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
 import {sync} from "find-up";
-import {join} from "path";
+import {join, normalize} from "path";
 
 // tslint:disable:no-any
 
@@ -53,10 +53,6 @@ export interface ITestOpts {
 
 /**
  * Prepares a test
- * @param {ITestFile[]} files
- * @param {ITestFileEntry?} [entry]
- * @param {Partial<ITestOpts>} [opts={}]
- * @returns {Node}
  */
 export function prepareTest(
 	files: TestFile[] | TestFile,
@@ -83,7 +79,7 @@ export function prepareTest(
 	}: Partial<ITestOpts> = {}
 ): ITestFileResult {
 	const arrFiles = Array.isArray(files) ? files : [files];
-	const nodeTypesDir = sync("node_modules/@types/node", {type: "directory"});
+	const nodeTypesDir = sync(normalize("node_modules/@types/node"), {type: "directory"});
 	const nodeTypeDeclarationFiles =
 		nodeTypesDir == null
 			? []
@@ -146,7 +142,9 @@ export function prepareTest(
 				return sys.useCaseSensitiveFileNames;
 			},
 
-			writeFile: () => {}
+			writeFile: () => {
+				// Noop
+			}
 		},
 		options: getDefaultCompilerOptions()
 	});
@@ -181,9 +179,6 @@ export function prepareTest(
 
 /**
  * Finds an entry node that matches the given text with a NodeArray of Statements
- * @param {NodeArray<Statement>} statements
- * @param {string} match
- * @returns {Expression}
  */
 function findEntryExpressionFromStatements(statements: NodeArray<Statement>, match: string): Expression {
 	for (const statement of statements) {
@@ -195,9 +190,6 @@ function findEntryExpressionFromStatements(statements: NodeArray<Statement>, mat
 
 /**
  * Checks if the given text matches the given node or any of its' children
- * @param {Node} node
- * @param {string} match
- * @returns {Expression | undefined}
  */
 function matchNode(node: Node, match: string): Expression | undefined {
 	if (isNodeMatched(node, match)) return node;
@@ -206,9 +198,6 @@ function matchNode(node: Node, match: string): Expression | undefined {
 
 /**
  * Returns true if the given Node matches the given text
- * @param {Node} node
- * @param {string} match
- * @returns {boolean}
  */
 function isNodeMatched(node: Node, match: string): node is Expression {
 	try {
