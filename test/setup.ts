@@ -23,6 +23,7 @@ import {IEnvironment} from "../src/interpreter/environment/i-environment";
 import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
 import {sync} from "find-up";
 import {join, normalize} from "path";
+import slash from "slash";
 
 // tslint:disable:no-any
 
@@ -91,9 +92,14 @@ export function prepareTest(
 		...arrFiles.map(file => (typeof file === "string" ? {text: file, fileName: `auto-generated-${Math.floor(Math.random() * 100000)}.ts`} : file)),
 		...nodeTypeDeclarationFiles.map(file => ({
 			fileName: file,
-			text: readFileSync(file, "utf8")
+			text: readFileSync(normalize(file), "utf8")
 		}))
-	];
+	]
+		.map(file => ({
+			...file,
+			fileName: slash(file.fileName)
+		}));
+
 	const normalizedEntry =
 		typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
 
@@ -103,7 +109,7 @@ export function prepareTest(
 		rootNames,
 		host: {
 			readFile(fileName: string): string | undefined {
-				const matchedFile = normalizedFiles.find(file => file.fileName === fileName);
+				const matchedFile = normalizedFiles.find(file => file.fileName === slash(fileName));
 				return matchedFile == null ? undefined : matchedFile.text;
 			},
 
@@ -115,7 +121,7 @@ export function prepareTest(
 				const sourceText = this.readFile(fileName);
 				if (sourceText == null) return undefined;
 
-				return createSourceFile(fileName, sourceText, languageVersion, true, ScriptKind.TS);
+				return createSourceFile(slash(fileName), sourceText, languageVersion, true, ScriptKind.TS);
 			},
 
 			getCurrentDirectory() {
@@ -123,15 +129,15 @@ export function prepareTest(
 			},
 
 			getDirectories(directoryName: string) {
-				return sys.getDirectories(directoryName);
+				return sys.getDirectories(slash(directoryName)).map(slash);
 			},
 
 			getDefaultLibFileName(options: CompilerOptions): string {
-				return getDefaultLibFileName(options);
+				return slash(getDefaultLibFileName(options));
 			},
 
 			getCanonicalFileName(fileName: string): string {
-				return this.useCaseSensitiveFileNames() ? fileName : fileName.toLowerCase();
+				return slash(this.useCaseSensitiveFileNames() ? fileName : fileName.toLowerCase());
 			},
 
 			getNewLine(): string {
