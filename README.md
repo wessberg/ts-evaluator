@@ -73,6 +73,7 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
   - [Setting up an environment](#setting-up-an-environment)
   - [Setting up Policies](#setting-up-policies)
   - [Custom TypeScript version](#custom-typescript-version)
+  - [Logging](#logging)
   - [Reporting](#reporting)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
@@ -231,7 +232,7 @@ const result = evaluate({
 	// ...
 	logLevel: LogLevelKind.DEBUG
 });
-````
+```
 
 Here's an explainer of the different log levels:
 

@@ -1,3 +1,12 @@
+## [0.0.25](https://github.com/wessberg/ts-evaluator/compare/v0.0.24...v0.0.25) (2020-03-01)
+
+
+### Features
+
+* add support for TypeScript v3.8. Add support for passing a specific TypeScript version to the evaluate function. Remove dependency on deasync. Return a Promise when evaluating an await-expression. Disallow evaluating async iterators with the synchronous variant of evaluate ([c19e1cc](https://github.com/wessberg/ts-evaluator/commit/c19e1cca6ba84c38bbb63f3c0a8db8f0722a2e63))
+
+
+
 ## [0.0.24](https://github.com/wessberg/ts-evaluator/compare/v0.0.23...v0.0.24) (2019-11-09)
 
 
