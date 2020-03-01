@@ -21,6 +21,7 @@ devDependencies:
   pnpm: 4.10.0
   prettier: 1.19.1
   pretty-quick: 2.0.1_prettier@1.19.1
+  rimraf: 3.0.2
   rollup: 1.32.0
   slash: 3.0.0
   standard-changelog: 2.0.21
@@ -7079,6 +7080,7 @@ specifiers:
   pnpm: ^4.10.0
   prettier: ^1.19.1
   pretty-quick: ^2.0.1
+  rimraf: ^3.0.2
   rollup: ^1.32.0
   slash: ^3.0.0
   standard-changelog: ^2.0.21

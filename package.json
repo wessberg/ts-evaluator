@@ -63,7 +63,8 @@
 		"standard-changelog": "^2.0.21",
 		"ts-node": "^8.6.2",
 		"typescript": "^3.8.3",
-		"slash": "^3.0.0"
+		"slash": "^3.0.0",
+		"rimraf": "^3.0.2"
 	},
 	"dependencies": {
 		"@types/node": "^13.7.7",
