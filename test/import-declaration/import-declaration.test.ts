@@ -201,7 +201,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 				import {readFileSync} from "fs";
 
 				const alias = readFileSync;
-				const foo = JSON.parse(readFileSync("${join(__dirname, "../../package.json").replace(/\\/g, "\\")}")).name;
+				const foo = JSON.parse(readFileSync("${join(__dirname, "../../package.json").replace(/\\/g, "\\\\")}")).name;
 			`
 		],
 		"foo"
