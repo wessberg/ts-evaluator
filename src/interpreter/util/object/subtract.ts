@@ -1,13 +1,11 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
 export type Subtract<T, K extends Partial<T>> = {
 	[Key in Exclude<keyof T, keyof K>]: T[Key];
 };
 
 /**
  * Excludes the properties of B from A
- *
- * @param a
- * @param b
- * @return
  */
 export function subtract<A extends object, B extends Partial<A>>(a: A, b: B): Subtract<A, B> {
 	const newA = {} as Exclude<A, keyof B>;

@@ -39,7 +39,7 @@ export function evaluateSetAccessorDeclaration(options: IEvaluatorOptions<TS.Set
 			setInLexicalEnvironment({
 				env: localLexicalEnvironment,
 				path: SUPER_SYMBOL,
-				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as Function).constructor).prototype,
+				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as CallableFunction).constructor).prototype,
 				newBinding: true,
 				reporting,
 				node

@@ -11,8 +11,7 @@ export function evaluateBindingElement(
 	rightHandValue: Literal
 ): void {
 	// Compute the initializer value of the BindingElement, if it has any, that is
-	const bindingElementInitializer =
-		node.initializer == null ? undefined : evaluate.expression(node.initializer, environment, statementTraversalStack);
+	const bindingElementInitializer = node.initializer == null ? undefined : evaluate.expression(node.initializer, environment, statementTraversalStack);
 
 	// If the element is directly references a property, but then aliases, store that alias in the environment.
 	if ((typescript.isIdentifier(node.name) || typescript.isPrivateIdentifier?.(node.name)) && node.propertyName != null) {

@@ -1,18 +1,12 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {IndexLiteral, IndexLiteralKey, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlag} from "../literal/literal";
+import {IndexLiteral, IndexLiteralKey, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlagKind} from "../literal/literal";
 import {isBindCallApply} from "../util/function/is-bind-call-apply";
 import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ElementAccessExpression
  */
-export function evaluateElementAccessExpression({
-	node,
-	environment,
-	evaluate,
-	statementTraversalStack,
-	typescript
-}: IEvaluatorOptions<TS.ElementAccessExpression>): Literal {
+export function evaluateElementAccessExpression({node, environment, evaluate, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ElementAccessExpression>): Literal {
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
 	const argumentExpressionResult = evaluate.expression(node.argumentExpression, environment, statementTraversalStack) as IndexLiteralKey;
 
@@ -26,11 +20,12 @@ export function evaluateElementAccessExpression({
 	// explicitly bind a 'this' value
 	if (typeof match === "function" && statementTraversalStack.includes(typescript.SyntaxKind.CallExpression)) {
 		return {
-			[LAZY_CALL_FLAG]: LiteralFlag.CALL,
-			invoke: (overriddenThis: object | Function | undefined, ...args: Literal[]) =>
+			[LAZY_CALL_FLAG]: LiteralFlagKind.CALL,
+			invoke: (overriddenThis: Record<string, unknown> | CallableFunction | undefined, ...args: Literal[]) =>
 				overriddenThis != null && !isBindCallApply(match, environment)
-					? (expressionResult[argumentExpressionResult] as Function).call(overriddenThis, ...args)
-					: (expressionResult[argumentExpressionResult] as Function)(...args)
+					? // eslint-disable-next-line @typescript-eslint/ban-types
+					  (expressionResult[argumentExpressionResult] as Function).call(overriddenThis, ...args)
+					: (expressionResult[argumentExpressionResult] as CallableFunction)(...args)
 		} as LazyCall;
 	} else return match;
 }

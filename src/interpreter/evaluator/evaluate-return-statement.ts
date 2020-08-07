@@ -6,14 +6,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ReturnStatement
  */
-export function evaluateReturnStatement({
-	node,
-	environment,
-	evaluate,
-	stack,
-	reporting,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.ReturnStatement>): void {
+export function evaluateReturnStatement({node, environment, evaluate, stack, reporting, statementTraversalStack}: IEvaluatorOptions<TS.ReturnStatement>): void {
 	setInLexicalEnvironment({env: environment, path: RETURN_SYMBOL, value: true, reporting, node});
 
 	// If it is a simple 'return', return undefined

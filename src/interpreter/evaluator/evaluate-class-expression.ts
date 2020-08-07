@@ -21,14 +21,14 @@ export function evaluateClassExpression({
 	statementTraversalStack,
 	typescript
 }: IEvaluatorOptions<TS.ClassExpression>): Literal {
-	let extendedType: Function | undefined;
+	let extendedType: CallableFunction | undefined;
 	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
-	let ctor: Function | undefined;
+	let ctor: CallableFunction | undefined;
 	if (ctorMember != null) {
 		evaluate.declaration(ctorMember, environment, statementTraversalStack);
-		ctor = stack.pop() as Function;
+		ctor = stack.pop() as CallableFunction;
 	}
 
 	if (node.heritageClauses != null) {
@@ -36,7 +36,7 @@ export function evaluateClassExpression({
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as Function;
+				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as CallableFunction;
 			}
 		}
 	}
@@ -47,7 +47,7 @@ export function evaluateClassExpression({
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
 			evaluate.nodeWithArgument(decorator, environment, [classExpression], statementTraversalStack);
-			classExpression = stack.pop() as Function;
+			classExpression = stack.pop() as CallableFunction;
 		}
 	}
 
@@ -59,12 +59,7 @@ export function evaluateClassExpression({
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		evaluate.nodeWithArgument(
-			member,
-			environment,
-			hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classExpression : classExpression.prototype,
-			statementTraversalStack
-		);
+		evaluate.nodeWithArgument(member, environment, hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classExpression : classExpression.prototype, statementTraversalStack);
 	}
 
 	logger.logHeritage(classExpression);

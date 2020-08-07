@@ -12,15 +12,7 @@ import {AsyncIteratorNotSupportedError} from "../error/async-iterator-not-suppor
 /**
  * Evaluates, or attempts to evaluate, a ForOfStatement
  */
-export function evaluateForOfStatement({
-	node,
-	environment,
-	evaluate,
-	logger,
-	reporting,
-	typescript,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.ForOfStatement>): void {
+export function evaluateForOfStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ForOfStatement>): void {
 	// Compute the 'of' part
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as Iterable<Literal>;
 

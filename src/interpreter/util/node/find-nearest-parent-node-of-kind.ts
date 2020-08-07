@@ -10,8 +10,7 @@ export function findNearestParentNodeOfKind<T extends TS.Node>(from: TS.Node, ki
 		if (currentParent == null) return undefined;
 		if (currentParent.kind === kind) {
 			const combinedNodeFlags = typescript.getCombinedNodeFlags(currentParent);
-			const isNamespace =
-				(combinedNodeFlags & typescript.NodeFlags.Namespace) !== 0 || (combinedNodeFlags & typescript.NodeFlags.NestedNamespace) !== 0;
+			const isNamespace = (combinedNodeFlags & typescript.NodeFlags.Namespace) !== 0 || (combinedNodeFlags & typescript.NodeFlags.NestedNamespace) !== 0;
 			if (!isNamespace) return currentParent as T;
 		}
 

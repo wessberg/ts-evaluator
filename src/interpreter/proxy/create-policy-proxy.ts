@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import {canBeObserved} from "../util/proxy/can-be-observed";
 import {ICreatePolicyProxyOptions} from "./i-create-policy-proxy-options";
 import {isBindCallApply} from "../util/function/is-bind-call-apply";
@@ -14,7 +15,6 @@ function stringifyPath(path: PropertyKey[]): string {
  * Creates a proxy with hooks to check the given policy
  */
 export function createPolicyProxy<T extends object>({hook, item, scope, policy}: ICreatePolicyProxyOptions<T, object>): T {
-
 	/**
 	 * Creates a trap that captures function invocation
 	 */

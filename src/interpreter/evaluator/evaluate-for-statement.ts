@@ -9,14 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ForStatement
  */
-export function evaluateForStatement({
-	node,
-	environment,
-	evaluate,
-	reporting,
-	statementTraversalStack,
-	typescript
-}: IEvaluatorOptions<TS.ForStatement>): void {
+export function evaluateForStatement({node, environment, evaluate, reporting, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ForStatement>): void {
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
 

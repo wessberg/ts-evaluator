@@ -171,7 +171,7 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 			return leftValue <= rightValue;
 
 		case typescript.SyntaxKind.InKeyword: {
-			return leftValue in ((rightValue as unknown) as object);
+			return leftValue in ((rightValue as unknown) as Record<string, unknown>);
 		}
 
 		// Nullish coalescing (A ?? B)
@@ -179,7 +179,7 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 			return leftValue != null ? leftValue : rightValue;
 
 		case typescript.SyntaxKind.InstanceOfKeyword: {
-			return ((leftValue as unknown) as object) instanceof ((rightValue as unknown) as Function);
+			return ((leftValue as unknown) as Record<string, unknown>) instanceof ((rightValue as unknown) as CallableFunction);
 		}
 	}
 

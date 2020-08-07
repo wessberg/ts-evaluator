@@ -39,8 +39,6 @@ export function isTrapCondition<ConditionType>(item: unknown, condition: Conditi
  * @param item
  * @return
  */
-export function isTrapConditionFunction<T, ConditionType = boolean>(
-	item: TrapConditionMapValue<T, ConditionType>
-): item is TrapConditionFunction<ConditionType> {
+export function isTrapConditionFunction<T, ConditionType = boolean>(item: TrapConditionMapValue<T, ConditionType>): item is TrapConditionFunction<ConditionType> {
 	return typeof item === "function";
 }

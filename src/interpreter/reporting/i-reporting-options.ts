@@ -12,7 +12,7 @@ export interface ITraversalReportEntry {
 }
 
 export interface IIntermediateResultReportEntry {
-	node: TS.Expression|TS.PrivateIdentifier;
+	node: TS.Expression | TS.PrivateIdentifier;
 	value: unknown;
 }
 

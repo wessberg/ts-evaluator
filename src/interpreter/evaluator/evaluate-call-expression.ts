@@ -9,14 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a CallExpression
  */
-export function evaluateCallExpression({
-	node,
-	environment,
-	evaluate,
-	statementTraversalStack,
-	typescript,
-	logger
-}: IEvaluatorOptions<TS.CallExpression>): Literal {
+export function evaluateCallExpression({node, environment, evaluate, statementTraversalStack, typescript, logger}: IEvaluatorOptions<TS.CallExpression>): Literal {
 	const evaluatedArgs: Literal[] = [];
 
 	for (let i = 0; i < node.arguments.length; i++) {
@@ -24,12 +17,10 @@ export function evaluateCallExpression({
 	}
 
 	// Evaluate the expression
-	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as Function | undefined;
+	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as CallableFunction | undefined;
 
 	if (isLazyCall(expressionResult)) {
-		const currentThisBinding = expressionContainsSuperKeyword(node.expression, typescript)
-			? getFromLexicalEnvironment(node, environment, THIS_SYMBOL)
-			: undefined;
+		const currentThisBinding = expressionContainsSuperKeyword(node.expression, typescript) ? getFromLexicalEnvironment(node, environment, THIS_SYMBOL) : undefined;
 		const value = expressionResult.invoke(currentThisBinding != null ? currentThisBinding.literal : undefined, ...evaluatedArgs);
 		logger.logResult(value, "CallExpression");
 		return value;

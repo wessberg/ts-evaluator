@@ -14,7 +14,7 @@ export function rafImplementation(global: typeof window): IRafImplementationName
 
 		const timeToCall = Math.max(0, 16 - (currTime - lastTime));
 
-		const id = global.setTimeout(function() {
+		const id = global.setTimeout(function () {
 			callback(currTime + timeToCall);
 		}, timeToCall);
 

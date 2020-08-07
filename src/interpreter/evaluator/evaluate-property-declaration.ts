@@ -15,7 +15,7 @@ export function evaluatePropertyDeclaration(
 
 	if (parent == null) {
 		evaluate.declaration(node.parent, environment, statementTraversalStack);
-		const updatedParent = stack.pop() as Function & IndexLiteral;
+		const updatedParent = stack.pop() as CallableFunction & IndexLiteral;
 		const isStatic = inStaticContext(node, typescript);
 		stack.push(isStatic ? updatedParent[propertyNameResult] : updatedParent.prototype[propertyNameResult]);
 		return;

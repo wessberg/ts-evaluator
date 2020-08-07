@@ -17,14 +17,14 @@ export function evaluateClassDeclaration({
 	typescript,
 	statementTraversalStack
 }: IEvaluatorOptions<TS.ClassDeclaration>): void {
-	let extendedType: Function | undefined;
+	let extendedType: CallableFunction | undefined;
 	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
-	let ctor: Function | undefined;
+	let ctor: CallableFunction | undefined;
 	if (ctorMember != null) {
 		evaluate.declaration(ctorMember, environment, statementTraversalStack);
-		ctor = stack.pop() as Function;
+		ctor = stack.pop() as CallableFunction;
 	}
 
 	if (node.heritageClauses != null) {
@@ -32,7 +32,7 @@ export function evaluateClassDeclaration({
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as Function;
+				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as CallableFunction;
 			}
 		}
 	}
@@ -43,7 +43,7 @@ export function evaluateClassDeclaration({
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
 			evaluate.nodeWithArgument(decorator, environment, [classDeclaration], statementTraversalStack);
-			classDeclaration = stack.pop() as Function;
+			classDeclaration = stack.pop() as CallableFunction;
 		}
 	}
 

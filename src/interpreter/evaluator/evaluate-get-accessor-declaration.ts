@@ -19,12 +19,12 @@ export function evaluateGetAccessorDeclaration(
 	const isStatic = inStaticContext(node, typescript);
 
 	if (parent == null) {
-		let updatedParent: Function & IndexLiteral;
+		let updatedParent: CallableFunction & IndexLiteral;
 		if (typescript.isClassLike(node.parent)) {
 			evaluate.declaration(node.parent, environment, statementTraversalStack);
-			updatedParent = stack.pop() as Function & IndexLiteral;
+			updatedParent = stack.pop() as CallableFunction & IndexLiteral;
 		} else {
-			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as Function & IndexLiteral;
+			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as CallableFunction & IndexLiteral;
 		}
 		stack.push(isStatic ? updatedParent[nameResult] : updatedParent.prototype[nameResult]);
 		return;
@@ -51,7 +51,7 @@ export function evaluateGetAccessorDeclaration(
 			setInLexicalEnvironment({
 				env: localLexicalEnvironment,
 				path: SUPER_SYMBOL,
-				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as Function).constructor).prototype,
+				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as CallableFunction).constructor).prototype,
 				newBinding: true,
 				reporting,
 				node

@@ -11,15 +11,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ForInStatement
  */
-export function evaluateForInStatement({
-	node,
-	environment,
-	evaluate,
-	logger,
-	reporting,
-	typescript,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.ForInStatement>): void {
+export function evaluateForInStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ForInStatement>): void {
 	// Compute the 'of' part
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
 

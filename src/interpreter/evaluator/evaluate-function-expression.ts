@@ -1,10 +1,5 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {
-	getFromLexicalEnvironment,
-	LexicalEnvironment,
-	pathInLexicalEnvironmentEquals,
-	setInLexicalEnvironment
-} from "../lexical-environment/lexical-environment";
+import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {Literal} from "../literal/literal";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
@@ -104,7 +99,7 @@ export function evaluateFunctionExpression(options: IEvaluatorOptions<TS.Functio
 
 	// Make sure to use the Function that is contained within the Realm. Otherwise, 'instanceof' checks may fail
 	// since this particular function comes from the executing context.
-	Object.setPrototypeOf(_functionExpression, getFromLexicalEnvironment(node, environment, "Function")!.literal as Function);
+	Object.setPrototypeOf(_functionExpression, getFromLexicalEnvironment(node, environment, "Function")!.literal as CallableFunction);
 
 	return _functionExpression;
 }

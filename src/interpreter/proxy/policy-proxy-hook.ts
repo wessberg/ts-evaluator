@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-types */
 import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
 import {PolicyTrapKind} from "../policy/policy-trap-kind";
 
@@ -27,8 +28,5 @@ export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyP
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type PolicyProxyHookOptions<T extends Record<string, any>> =
-	| IPolicyProxyGetHookOptions<T>
-	| IPolicyProxyApplyHookOptions<T>
-	| IPolicyProxyConstructHookOptions<T>;
+export type PolicyProxyHookOptions<T extends Record<string, any>> = IPolicyProxyGetHookOptions<T> | IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
 export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => boolean;

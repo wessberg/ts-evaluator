@@ -1,6 +1,7 @@
 import {IndexLiteral} from "../../literal/literal";
 
 export const ECMA_GLOBALS = () => {
+	/* eslint-disable @typescript-eslint/naming-convention */
 	const base: IndexLiteral = {
 		Infinity,
 		NaN,
@@ -33,6 +34,7 @@ export const ECMA_GLOBALS = () => {
 		// eslint-disable-next-line no-eval
 		eval,
 		Function
+		/* eslint-enable @typescript-eslint/naming-convention */
 	};
 
 	try {

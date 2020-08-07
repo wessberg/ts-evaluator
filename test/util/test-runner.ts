@@ -67,23 +67,21 @@ function sharedTest<Context = unknown>(title: string, implementation: ExtendedIm
 	if (process.env.TS_VERSION != null) {
 	}
 	for (const [typescript, typescriptModuleSpecifier] of getTsVersionFromEnv() ??
-	([
-		[TS301, "typescript-3-0-1"],
-		[TS311, "typescript-3-1-1"],
-		[TS321, "typescript-3-2-1"],
-		[TS331, "typescript-3-3-1"],
-		[TS341, "typescript-3-4-1"],
-		[TS351, "typescript-3-5-1"],
-		[TS362, "typescript-3-6-2"],
-		[TS372, "typescript-3-7-2"],
-		[TS383, "typescript-3-8-3"],
-		[TS392, "typescript-3-9-2"],
-		[TSCurrent, "typescript"]
-	] as [typeof TS, string][])) {
+		([
+			[TS301, "typescript-3-0-1"],
+			[TS311, "typescript-3-1-1"],
+			[TS321, "typescript-3-2-1"],
+			[TS331, "typescript-3-3-1"],
+			[TS341, "typescript-3-4-1"],
+			[TS351, "typescript-3-5-1"],
+			[TS362, "typescript-3-6-2"],
+			[TS372, "typescript-3-7-2"],
+			[TS383, "typescript-3-8-3"],
+			[TS392, "typescript-3-9-2"],
+			[TSCurrent, "typescript"]
+		] as [typeof TS, string][])) {
 		const func = subMethod != null ? avaTest[subMethod] : avaTest.serial;
-		func(`${title} (TypeScript v${typescript.version})`, ctx =>
-			implementation(ctx as ExecutionContext<Context>, {typescript, typescriptModuleSpecifier})
-		);
+		func(`${title} (TypeScript v${typescript.version})`, ctx => implementation(ctx as ExecutionContext<Context>, {typescript, typescriptModuleSpecifier}));
 	}
 }
 

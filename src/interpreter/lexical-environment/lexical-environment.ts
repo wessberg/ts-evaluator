@@ -56,9 +56,7 @@ export function getFromLexicalEnvironment(node: TS.Node | undefined, env: Lexica
 			case "__dirname":
 			case "__filename": {
 				const preset = getPresetForLexicalEnvironment(env);
-				return preset === EnvironmentPresetKind.NODE && typeof literal === "function" && node != null
-					? {literal: literal(node.getSourceFile().fileName)}
-					: {literal};
+				return preset === EnvironmentPresetKind.NODE && typeof literal === "function" && node != null ? {literal: literal(node.getSourceFile().fileName)} : {literal};
 			}
 			default:
 				return {literal};
@@ -168,11 +166,7 @@ export function clearBindingFromLexicalEnvironment(env: LexicalEnvironment, path
  * @param options
  * @returns
  */
-export function createLexicalEnvironment({
-	inputEnvironment: {extra, preset},
-	policy,
-	getCurrentNode
-}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
+export function createLexicalEnvironment({inputEnvironment: {extra, preset}, policy, getCurrentNode}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
 	let envInput: IndexLiteral;
 
 	switch (preset) {

@@ -81,14 +81,12 @@ export function prepareTest(
 			fileName: file,
 			text: readFileSync(normalize(file), "utf8")
 		}))
-	]
-		.map(file => ({
-			...file,
-			fileName: slash(file.fileName)
-		}));
+	].map(file => ({
+		...file,
+		fileName: slash(file.fileName)
+	}));
 
-	const normalizedEntry =
-		typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
+	const normalizedEntry = typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
 
 	const rootNames = normalizedFiles.map(({fileName}) => fileName);
 

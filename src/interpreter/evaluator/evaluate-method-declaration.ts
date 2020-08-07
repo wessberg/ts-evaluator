@@ -1,10 +1,5 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {
-	getFromLexicalEnvironment,
-	LexicalEnvironment,
-	pathInLexicalEnvironmentEquals,
-	setInLexicalEnvironment
-} from "../lexical-environment/lexical-environment";
+import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
@@ -24,12 +19,12 @@ export function evaluateMethodDeclaration(options: IEvaluatorOptions<TS.MethodDe
 	const isStatic = inStaticContext(node, typescript);
 
 	if (parent == null) {
-		let updatedParent: Function & IndexLiteral;
+		let updatedParent: CallableFunction & IndexLiteral;
 		if (typescript.isClassLike(node.parent)) {
 			evaluate.declaration(node.parent, environment, statementTraversalStack);
-			updatedParent = stack.pop() as Function & IndexLiteral;
+			updatedParent = stack.pop() as CallableFunction & IndexLiteral;
 		} else {
-			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as Function & IndexLiteral;
+			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as CallableFunction & IndexLiteral;
 		}
 		stack.push(isStatic ? updatedParent[nameResult] : updatedParent.prototype[nameResult]);
 		return;
@@ -54,7 +49,7 @@ export function evaluateMethodDeclaration(options: IEvaluatorOptions<TS.MethodDe
 					setInLexicalEnvironment({
 						env: localLexicalEnvironment,
 						path: SUPER_SYMBOL,
-						value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as Function).constructor).prototype,
+						value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as CallableFunction).constructor).prototype,
 						newBinding: true,
 						reporting,
 						node
@@ -101,7 +96,7 @@ export function evaluateMethodDeclaration(options: IEvaluatorOptions<TS.MethodDe
 					setInLexicalEnvironment({
 						env: localLexicalEnvironment,
 						path: SUPER_SYMBOL,
-						value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as Function).constructor).prototype,
+						value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as CallableFunction).constructor).prototype,
 						newBinding: true,
 						reporting,
 						node
@@ -135,7 +130,7 @@ export function evaluateMethodDeclaration(options: IEvaluatorOptions<TS.MethodDe
 
 	// Make sure to use the Function that is contained within the Realm. Otherwise, 'instanceof' checks may fail
 	// since this particular function comes from the executing context.
-	Object.setPrototypeOf(_methodDeclaration, getFromLexicalEnvironment(node, environment, "Function")!.literal as Function);
+	Object.setPrototypeOf(_methodDeclaration, getFromLexicalEnvironment(node, environment, "Function")!.literal as CallableFunction);
 
 	parent[nameResult] = _methodDeclaration;
 

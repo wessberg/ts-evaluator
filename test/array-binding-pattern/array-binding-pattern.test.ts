@@ -4,7 +4,7 @@ import {prepareTest} from "../setup";
 test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const [, two] = [1, 2, 3];
 				return two;
@@ -23,7 +23,7 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", (t, {typescr
 test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const [{foo}] = [{foo: 2}];
 				return foo;
@@ -42,7 +42,7 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", (t, {typescr
 test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				const {foo: [, two]} = {foo: [1, 2, 3]}
 				return two;
@@ -61,7 +61,7 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", (t, {typescr
 test("Can handle ArrayBindingPatterns in ParameterDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(([, {destructured: alias}]) => {
 				return alias;
 			})([1, {destructured: 2}, 3]);

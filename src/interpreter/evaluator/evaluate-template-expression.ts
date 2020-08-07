@@ -5,12 +5,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a TemplateExpression
  */
-export function evaluateTemplateExpression({
-	node,
-	environment,
-	evaluate,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.TemplateExpression>): Literal {
+export function evaluateTemplateExpression({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.TemplateExpression>): Literal {
 	let str = "";
 	str += node.head.text;
 	for (const span of node.templateSpans) {

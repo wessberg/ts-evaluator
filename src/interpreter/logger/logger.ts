@@ -102,7 +102,7 @@ export class Logger {
 	/**
 	 * Logs the heritage of a ClassDeclaration
 	 */
-	logHeritage(classDeclaration: Function): void {
+	logHeritage(classDeclaration: CallableFunction): void {
 		if (this.logLevel < LogLevelKind.DEBUG) return;
 		const parent = Object.getPrototypeOf(classDeclaration);
 		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions

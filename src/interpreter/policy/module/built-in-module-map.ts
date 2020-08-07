@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 export interface IBuiltInModuleMap {
 	async_hooks: typeof import("async_hooks");
 	assert: typeof import("assert");

@@ -53,10 +53,7 @@ export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreat
 	};
 
 	const descriptors = Object.entries(Object.getOwnPropertyDescriptors(env));
-	const gettersAndSetters = Object.assign(
-		{},
-		...descriptors.filter(([, descriptor]) => !("value" in descriptor)).map(([name, descriptor]) => ({[name]: descriptor}))
-	);
+	const gettersAndSetters = Object.assign({}, ...descriptors.filter(([, descriptor]) => !("value" in descriptor)).map(([name, descriptor]) => ({[name]: descriptor})));
 
 	const values = Object.assign(
 		{},
@@ -87,7 +84,7 @@ export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreat
 						  })
 						: createPolicyProxy({
 								policy,
-								item: descriptor.value as object,
+								item: descriptor.value,
 								scope: name,
 								hook
 						  })

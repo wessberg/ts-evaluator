@@ -7,7 +7,7 @@ import {getFromLexicalEnvironment, LexicalEnvironment} from "../../lexical-envir
  * @param [environment]
  * @return
  */
-export function isBindCallApply(func: Function, environment?: LexicalEnvironment): boolean {
+export function isBindCallApply(func: CallableFunction, environment?: LexicalEnvironment): boolean {
 	switch (func) {
 		case Function.prototype.bind:
 		case Function.prototype.call:
@@ -16,7 +16,7 @@ export function isBindCallApply(func: Function, environment?: LexicalEnvironment
 	}
 
 	if (environment != null) {
-		const _Function = getFromLexicalEnvironment(undefined, environment, "Function")!.literal as Function;
+		const _Function = getFromLexicalEnvironment(undefined, environment, "Function")!.literal as CallableFunction;
 		switch (func) {
 			case _Function.prototype.bind:
 			case _Function.prototype.call:

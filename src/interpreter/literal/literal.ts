@@ -1,13 +1,13 @@
 // tslint:disable:no-any
 
-export const enum LiteralFlag {
+export const enum LiteralFlagKind {
 	CALL
 }
 
 export const LAZY_CALL_FLAG = "___lazyCallFlag";
 
 export interface LazyCall {
-	[LAZY_CALL_FLAG]: LiteralFlag;
+	[LAZY_CALL_FLAG]: LiteralFlagKind;
 	invoke(...args: Literal[]): Literal;
 }
 
@@ -21,6 +21,7 @@ export function isLazyCall(literal: Literal): literal is LazyCall {
 	return literal != null && typeof literal === "object" && LAZY_CALL_FLAG in literal;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type Literal = object | Function | string | number | boolean | symbol | bigint | null | undefined;
 export interface LiteralMatch {
 	literal: Literal;

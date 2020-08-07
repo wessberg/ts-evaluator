@@ -1,11 +1,5 @@
-import {
-	isTrapCondition,
-	isTrapConditionFunction,
-	PolicyTrapKindToTrapConditionMap,
-	TrapCondition,
-	TrapConditionMap,
-	TrapConditionMemberMap
-} from "./trap-condition-map";
+/* eslint-disable @typescript-eslint/ban-types */
+import {isTrapCondition, isTrapConditionFunction, PolicyTrapKindToTrapConditionMap, TrapCondition, TrapConditionMap, TrapConditionMemberMap} from "./trap-condition-map";
 import {IPolicyProxyApplyHookOptions, IPolicyProxyConstructHookOptions, PolicyProxyHookOptions} from "../proxy/policy-proxy-hook";
 
 /**

@@ -9,15 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a WhileStatement
  */
-export function evaluateWhileStatement({
-	node,
-	environment,
-	evaluate,
-	logger,
-	reporting,
-	typescript,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.WhileStatement>): void {
+export function evaluateWhileStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.WhileStatement>): void {
 	let condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
 
 	while (condition) {

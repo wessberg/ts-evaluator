@@ -46,9 +46,7 @@ export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS
 				node.text,
 				implementation,
 				`Discovered declaration value${
-					valueDeclaration.getSourceFile() === node.getSourceFile()
-						? ""
-						: ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`
+					valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`
 				}`
 			);
 			return implementation;
@@ -56,11 +54,7 @@ export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS
 
 		// If the value is a variable declaration and is located *after* the current node within the SourceFile
 		// It is potentially a SyntaxError unless it is hoisted (if the 'var' keyword is being used) in which case the variable is defined, but initialized to 'undefined'
-		if (
-			typescript.isVariableDeclaration(valueDeclaration) &&
-			valueDeclaration.getSourceFile().fileName === node.getSourceFile().fileName &&
-			valueDeclaration.pos > node.pos
-		) {
+		if (typescript.isVariableDeclaration(valueDeclaration) && valueDeclaration.getSourceFile().fileName === node.getSourceFile().fileName && valueDeclaration.pos > node.pos) {
 			// The 'var' keyword declares a variable that is defined, but which rvalue is still undefined
 			if (typescript.isVariableDeclarationList(valueDeclaration.parent) && isVarDeclaration(valueDeclaration.parent, typescript)) {
 				const returnValue = undefined;
@@ -84,9 +78,7 @@ export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS
 			node.text,
 			stackValue,
 			`Discovered declaration value${
-				valueDeclaration.getSourceFile() === node.getSourceFile()
-					? ""
-					: ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`
+				valueDeclaration.getSourceFile() === node.getSourceFile() ? "" : ` (imported into '${node.getSourceFile().fileName}' from '${valueDeclaration.getSourceFile().fileName}')`
 			}`
 		);
 		return stackValue;

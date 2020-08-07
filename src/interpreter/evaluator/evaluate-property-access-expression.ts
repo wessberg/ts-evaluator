@@ -1,18 +1,12 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {IndexLiteral, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlag} from "../literal/literal";
+import {IndexLiteral, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlagKind} from "../literal/literal";
 import {isBindCallApply} from "../util/function/is-bind-call-apply";
 import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a PropertyAccessExpression
  */
-export function evaluatePropertyAccessExpression({
-	node,
-	environment,
-	evaluate,
-	typescript,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.PropertyAccessExpression>): Literal {
+export function evaluatePropertyAccessExpression({node, environment, evaluate, typescript, statementTraversalStack}: IEvaluatorOptions<TS.PropertyAccessExpression>): Literal {
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
 
 	const match =
@@ -25,11 +19,12 @@ export function evaluatePropertyAccessExpression({
 	// explicitly bind a 'this' value
 	if (typeof match === "function" && statementTraversalStack.includes(typescript.SyntaxKind.CallExpression)) {
 		return {
-			[LAZY_CALL_FLAG]: LiteralFlag.CALL,
-			invoke: (overriddenThis: object | Function | undefined, ...args: Literal[]) =>
+			[LAZY_CALL_FLAG]: LiteralFlagKind.CALL,
+			invoke: (overriddenThis: Record<string, unknown> | CallableFunction | undefined, ...args: Literal[]) =>
 				overriddenThis != null && !isBindCallApply(match, environment)
-					? (expressionResult[node.name.text] as Function).call(overriddenThis, ...args)
-					: (expressionResult[node.name.text] as Function)(...args)
+					? // eslint-disable-next-line @typescript-eslint/ban-types
+					  (expressionResult[node.name.text] as Function).call(overriddenThis, ...args)
+					: (expressionResult[node.name.text] as CallableFunction)(...args)
 		} as LazyCall;
 	} else return match;
 }

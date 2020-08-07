@@ -10,10 +10,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a CaseBlock, based on a switch expression
  */
-export function evaluateCaseBlock(
-	{node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.CaseBlock>,
-	switchExpression: Literal
-): void {
+export function evaluateCaseBlock({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.CaseBlock>, switchExpression: Literal): void {
 	// Prepare a lexical environment for the case block
 	const localEnvironment = cloneLexicalEnvironment(environment);
 	// Define a new binding for a break symbol within the environment

@@ -1,10 +1,5 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
-import {
-	getFromLexicalEnvironment,
-	LexicalEnvironment,
-	pathInLexicalEnvironmentEquals,
-	setInLexicalEnvironment
-} from "../lexical-environment/lexical-environment";
+import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {Literal} from "../literal/literal";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
@@ -51,7 +46,7 @@ export function evaluateFunctionDeclaration(options: IEvaluatorOptions<TS.Functi
 				const sourceFile = node.getSourceFile();
 				if (nameResult != null && sourceFile.isDeclarationFile) {
 					const implementation = getImplementationForDeclarationWithinDeclarationFile(options);
-					return (implementation as Function)(...args);
+					return (implementation as CallableFunction)(...args);
 				}
 
 				// If the body is a block, evaluate it as a statement
@@ -96,7 +91,7 @@ export function evaluateFunctionDeclaration(options: IEvaluatorOptions<TS.Functi
 				const sourceFile = node.getSourceFile();
 				if (nameResult != null && sourceFile.isDeclarationFile) {
 					const implementation = getImplementationForDeclarationWithinDeclarationFile(options);
-					return (implementation as Function)(...args);
+					return (implementation as CallableFunction)(...args);
 				}
 
 				// If the body is a block, evaluate it as a statement
@@ -120,7 +115,7 @@ export function evaluateFunctionDeclaration(options: IEvaluatorOptions<TS.Functi
 
 	// Make sure to use the Function that is contained within the Realm. Otherwise, 'instanceof' checks may fail
 	// since this particular function comes from the executing context.
-	Object.setPrototypeOf(_functionDeclaration, getFromLexicalEnvironment(node, environment, "Function")!.literal as Function);
+	Object.setPrototypeOf(_functionDeclaration, getFromLexicalEnvironment(node, environment, "Function")!.literal as CallableFunction);
 
 	stack.push(_functionDeclaration);
 }

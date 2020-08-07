@@ -17,15 +17,7 @@ import {TS} from "../../../type/ts";
 /**
  * Creates a Node Evaluator
  */
-export function createNodeEvaluator({
-	typeChecker,
-	typescript,
-	policy,
-	logger,
-	stack,
-	reporting,
-	nextNode
-}: ICreateNodeEvaluatorOptions): NodeEvaluator {
+export function createNodeEvaluator({typeChecker, typescript, policy, logger, stack, reporting, nextNode}: ICreateNodeEvaluatorOptions): NodeEvaluator {
 	let ops = 0;
 
 	const handleNewNode = (node: TS.Node, statementTraversalStack: StatementTraversalStack) => {
@@ -67,7 +59,7 @@ export function createNodeEvaluator({
 	};
 
 	const nodeEvaluator: NodeEvaluator = {
-		expression: (node: TS.Expression|TS.PrivateIdentifier, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal =>
+		expression: (node: TS.Expression | TS.PrivateIdentifier, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal =>
 			wrapWithErrorReporting(environment, node, () => {
 				handleNewNode(node, statementTraversalStack);
 				return evaluateExpression(getEvaluatorOptions(node, environment, statementTraversalStack));
@@ -98,11 +90,7 @@ export function createNodeEvaluator({
 	/**
 	 * Gets an IEvaluatorOptions object ready for passing to one of the evaluation functions
 	 */
-	function getEvaluatorOptions<T extends TS.Node>(
-		node: T,
-		environment: LexicalEnvironment,
-		statementTraversalStack: StatementTraversalStack
-	): IEvaluatorOptions<T> {
+	function getEvaluatorOptions<T extends TS.Node>(node: T, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): IEvaluatorOptions<T> {
 		return {
 			typeChecker,
 			typescript,

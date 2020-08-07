@@ -5,13 +5,7 @@ import {TS} from "../../../type/ts";
 /**
  * Gets the name of the given declaration
  */
-export function getDeclarationName({
-	node,
-	evaluate,
-	environment,
-	typescript,
-	statementTraversalStack
-}: IEvaluatorOptions<TS.Declaration>): string | number | undefined {
+export function getDeclarationName({node, evaluate, environment, typescript, statementTraversalStack}: IEvaluatorOptions<TS.Declaration>): string | number | undefined {
 	const name = typescript.getNameOfDeclaration(node);
 	if (name == null) return undefined;
 

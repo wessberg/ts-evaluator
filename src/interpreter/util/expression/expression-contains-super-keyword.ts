@@ -9,9 +9,7 @@ export function expressionContainsSuperKeyword(expression: TS.Expression | TS.Pr
 	else if (typescript.isPropertyAccessExpression(expression)) {
 		return expressionContainsSuperKeyword(expression.expression, typescript) || expressionContainsSuperKeyword(expression.name, typescript);
 	} else if (typescript.isElementAccessExpression(expression)) {
-		return (
-			expressionContainsSuperKeyword(expression.expression, typescript) || expressionContainsSuperKeyword(expression.argumentExpression, typescript)
-		);
+		return expressionContainsSuperKeyword(expression.expression, typescript) || expressionContainsSuperKeyword(expression.argumentExpression, typescript);
 	} else if (typescript.isParenthesizedExpression(expression)) return expressionContainsSuperKeyword(expression.expression, typescript);
 	else if (typescript.isAsExpression(expression)) return expressionContainsSuperKeyword(expression.expression, typescript);
 	else if (typescript.isTypeAssertion(expression)) return expressionContainsSuperKeyword(expression.expression, typescript);

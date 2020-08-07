@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/ban-types */
+
 /**
  * Merges all of the given descriptors
  * @param {A} a
