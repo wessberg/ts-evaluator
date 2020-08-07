@@ -1,3 +1,12 @@
+## [0.0.26](https://github.com/wessberg/ts-evaluator/compare/v0.0.25...v0.0.26) (2020-08-07)
+
+
+### Features
+
+* **logical assignment:** add support for Logical Assignments ([639bc5c](https://github.com/wessberg/ts-evaluator/commit/639bc5ce192de9b1d7d87ac525038af409d4a4b3))
+
+
+
 ## [0.0.25](https://github.com/wessberg/ts-evaluator/compare/v0.0.24...v0.0.25) (2020-03-01)
 
 
