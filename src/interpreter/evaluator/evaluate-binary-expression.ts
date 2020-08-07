@@ -38,7 +38,10 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 		case typescript.SyntaxKind.AsteriskAsteriskEqualsToken:
 		case typescript.SyntaxKind.LessThanLessThanEqualsToken:
 		case typescript.SyntaxKind.GreaterThanGreaterThanEqualsToken:
-		case typescript.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken: {
+		case typescript.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
+		case typescript.SyntaxKind.QuestionQuestionEqualsToken:
+		case typescript.SyntaxKind.BarBarEqualsToken:
+		case typescript.SyntaxKind.AmpersandAmpersandEqualsToken:{
 			// There's nothing in the engine restricting you from applying this kind of arithmetic operation on non-numeric data types
 			let computedValue = leftValue;
 			switch (operator) {
@@ -77,6 +80,19 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 					break;
 				case typescript.SyntaxKind.SlashEqualsToken:
 					computedValue /= rightValue;
+					break;
+				case typescript.SyntaxKind.QuestionQuestionEqualsToken:
+					computedValue = leftValue == null ? rightValue : leftValue;
+					break;
+				case typescript.SyntaxKind.BarBarEqualsToken:
+					if (!leftValue) {
+						computedValue = rightValue;
+					}
+					break;
+				case typescript.SyntaxKind.AmpersandAmpersandEqualsToken:
+					if (leftValue) {
+						computedValue = rightValue;
+					}
 					break;
 			}
 
