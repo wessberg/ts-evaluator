@@ -69,6 +69,7 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
   - [npm](#npm)
   - [Yarn](#yarn)
   - [pnpm](#pnpm)
+  - [Peer Dependencies](#peer-dependencies)
 - [Usage](#usage)
   - [Setting up an environment](#setting-up-an-environment)
   - [Setting up Policies](#setting-up-policies)
@@ -106,6 +107,10 @@ $ yarn add @wessberg/ts-evaluator
 ```
 $ pnpm add @wessberg/ts-evaluator
 ```
+
+### Peer Dependencies
+
+`@wessberg/ts-evaluator` depends on `typescript`, so you need to manually install this as well.
 
 <!-- SHADOW_SECTION_INSTALL_END -->
 
@@ -287,9 +292,11 @@ Do you want to contribute? Awesome! Please follow [these recommendations](./CONT
 
 ## Backers
 
-| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@use_bubbles](https://twitter.com/use_bubbles)                                                                              |
+[Become a sponsor/backer](https://github.com/wessberg/ts-evaluator?sponsor=1) and get your logo listed here.
+
+| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> | <a href="https://github.com/cblanc"><img alt="Christopher Blanchard" src="https://avatars0.githubusercontent.com/u/2160685?s=400&v=4" height="70"   /></a> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@use_bubbles](https://twitter.com/use_bubbles)                                                                              | [Christopher Blanchard](https://github.com/cblanc)                                                                                                         |
 
 ### Patreon
 
