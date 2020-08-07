@@ -1,8 +1,8 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {IndexLiteral} from "../../src/interpreter/literal/literal";
 
-test("Can handle Class Decorators. #1", t => {
+test("Can handle Class Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -18,7 +18,8 @@ test("Can handle Class Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -30,7 +31,7 @@ test("Can handle Class Decorators. #1", t => {
 	}
 });
 
-test("Can handle multiple Class Decorators. #1", t => {
+test("Can handle multiple Class Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -53,7 +54,8 @@ test("Can handle multiple Class Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -66,7 +68,7 @@ test("Can handle multiple Class Decorators. #1", t => {
 	}
 });
 
-test("Can handle instance Method Decorators. #1", t => {
+test("Can handle instance Method Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -89,19 +91,20 @@ test("Can handle instance Method Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const descriptor = Object.getOwnPropertyDescriptor((result.value as Function).prototype, "greet");
+		const descriptor = Object.getOwnPropertyDescriptor((result.value as CallableFunction).prototype, "greet");
 		t.true(descriptor != null && descriptor.enumerable === false);
 	}
 });
 
-test("Can handle static Method Decorators. #1", t => {
+test("Can handle static Method Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -124,19 +127,20 @@ test("Can handle static Method Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		const descriptor = Object.getOwnPropertyDescriptor(result.value as Function, "greet");
+		const descriptor = Object.getOwnPropertyDescriptor(result.value as CallableFunction, "greet");
 		t.true(descriptor != null && descriptor.enumerable === false);
 	}
 });
 
-test("Can handle instance PropertyDeclaration Decorators. #1", t => {
+test("Can handle instance PropertyDeclaration Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -150,7 +154,8 @@ test("Can handle instance PropertyDeclaration Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -162,7 +167,7 @@ test("Can handle instance PropertyDeclaration Decorators. #1", t => {
 	}
 });
 
-test("Can handle static PropertyDeclaration Decorators. #1", t => {
+test("Can handle static PropertyDeclaration Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -176,7 +181,8 @@ test("Can handle static PropertyDeclaration Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -187,7 +193,7 @@ test("Can handle static PropertyDeclaration Decorators. #1", t => {
 	}
 });
 
-test("Can handle Parameter Decorators. #1", t => {
+test("Can handle Parameter Decorators. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -211,7 +217,8 @@ test("Can handle Parameter Decorators. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

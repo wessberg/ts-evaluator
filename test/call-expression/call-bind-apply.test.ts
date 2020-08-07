@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #1", t => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -15,7 +15,8 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #1
 
 			myFunc.call(myObj, 2);
 		`,
-		"myFunc.call("
+		"myFunc.call(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -24,7 +25,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #1
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #2", t => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -38,7 +39,8 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #2
 
 			myFunc.bind(myObj, 2)();
 		`,
-		"myFunc.bind("
+		"myFunc.bind(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -47,7 +49,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #2
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #3", t => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -61,7 +63,8 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #3
 
 			myFunc.apply(myObj, [2]);
 		`,
-		"myFunc.apply("
+		"myFunc.apply(",
+		{typescript}
 	);
 
 	const result = evaluate();

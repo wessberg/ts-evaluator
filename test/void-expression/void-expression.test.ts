@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate VoidExpressions #1", t => {
+test("Can evaluate VoidExpressions #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -12,7 +12,8 @@ test("Can evaluate VoidExpressions #1", t => {
 				return something;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -21,7 +22,7 @@ test("Can evaluate VoidExpressions #1", t => {
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate VoidExpressions #2", t => {
+test("Can evaluate VoidExpressions #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -31,7 +32,8 @@ test("Can evaluate VoidExpressions #2", t => {
 				return (() => void update())();
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -40,7 +42,7 @@ test("Can evaluate VoidExpressions #2", t => {
 	else t.deepEqual(result.value, undefined);
 });
 
-test("Can evaluate VoidExpressions #3", t => {
+test("Can evaluate VoidExpressions #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -51,7 +53,8 @@ test("Can evaluate VoidExpressions #3", t => {
 				return [a, b];
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

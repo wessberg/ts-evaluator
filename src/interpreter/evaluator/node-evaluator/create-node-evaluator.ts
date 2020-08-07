@@ -49,7 +49,7 @@ export function createNodeEvaluator({
 	/**
 	 * Wraps an evaluation action with error reporting
 	 */
-	const wrapWithErrorReporting = (environment: LexicalEnvironment, node: TS.Node, action: Function) => {
+	const wrapWithErrorReporting = (environment: LexicalEnvironment, node: TS.Node, action: CallableFunction) => {
 		// If we're already inside of a try-block, simply execute the action and do nothing else
 		if (pathInLexicalEnvironmentEquals(node, environment, true, TRY_SYMBOL)) {
 			return action();
@@ -67,7 +67,7 @@ export function createNodeEvaluator({
 	};
 
 	const nodeEvaluator: NodeEvaluator = {
-		expression: (node: TS.Expression, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal =>
+		expression: (node: TS.Expression|TS.PrivateIdentifier, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): Literal =>
 			wrapWithErrorReporting(environment, node, () => {
 				handleNewNode(node, statementTraversalStack);
 				return evaluateExpression(getEvaluatorOptions(node, environment, statementTraversalStack));

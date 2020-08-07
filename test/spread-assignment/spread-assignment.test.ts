@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle Spread assignments to objects. #1", t => {
+test("Can handle Spread assignments to objects. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -17,7 +17,8 @@ test("Can handle Spread assignments to objects. #1", t => {
 				return b;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

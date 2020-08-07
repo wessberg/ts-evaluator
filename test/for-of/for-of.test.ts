@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a CallExpression with a ForOfStatement. #1", t => {
+test("Can evaluate a CallExpression with a ForOfStatement. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -15,7 +15,8 @@ test("Can evaluate a CallExpression with a ForOfStatement. #1", t => {
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -24,7 +25,7 @@ test("Can evaluate a CallExpression with a ForOfStatement. #1", t => {
 	else t.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", t => {
+test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -39,7 +40,8 @@ test("Can evaluate a CallExpression with a ForOfStatement and a break statement.
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -48,7 +50,7 @@ test("Can evaluate a CallExpression with a ForOfStatement and a break statement.
 	else t.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", t => {
+test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -63,7 +65,8 @@ test("Can evaluate a CallExpression with a ForOfStatement and a continue stateme
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -72,7 +75,7 @@ test("Can evaluate a CallExpression with a ForOfStatement and a continue stateme
 	else t.deepEqual(result.value, 5);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", t => {
+test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -87,7 +90,8 @@ test("Can evaluate a CallExpression with a ForOfStatement and a return statement
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();

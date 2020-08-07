@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a TypeOfExpression #1", t => {
+test("Can evaluate a TypeOfExpression #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -10,7 +10,8 @@ test("Can evaluate a TypeOfExpression #1", t => {
 				return typeof a;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -19,7 +20,7 @@ test("Can evaluate a TypeOfExpression #1", t => {
 	else t.deepEqual(result.value, "bigint");
 });
 
-test("Can evaluate a TypeOfExpression #2", t => {
+test("Can evaluate a TypeOfExpression #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -29,7 +30,8 @@ test("Can evaluate a TypeOfExpression #2", t => {
 				else return "bar";
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

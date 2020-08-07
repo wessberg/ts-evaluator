@@ -1,7 +1,8 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
+import {lt} from "semver";
 
-test("Can handle ClassDeclarations and preserves their names. #1", t => {
+test("Can handle ClassDeclarations and preserves their names. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -10,7 +11,8 @@ test("Can handle ClassDeclarations and preserves their names. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -21,7 +23,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", t => {
 	}
 });
 
-test("Can handle ClassDeclarations that extends from other named classes. #1", t => {
+test("Can handle ClassDeclarations that extends from other named classes. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -33,7 +35,8 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", t
 
 			(() => [A, B])();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -46,7 +49,7 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", t
 	}
 });
 
-test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
+test("Can handle ClassDeclarations that extends from Expressions. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -59,7 +62,8 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 
 			(() => A)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -71,7 +75,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", t => {
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #1", t => {
+test("Can handle ClassDeclarations and preserves their constructors. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -85,7 +89,8 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -98,7 +103,12 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", t => {
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #2", t => {
+test("Can handle ClassDeclarations and preserves their constructors. #2", (t, {typescript}) => {
+	if (lt(typescript.version, "3.8.0")) {
+		t.pass(`Current TypeScript version (${typescript.version} does not support private class fields. Skipping...`);
+		return;
+	}
+
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -116,7 +126,8 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -129,7 +140,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", t => {
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #1", t => {
+test("Inherits PropertyDeclarations from super classes. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -143,7 +154,8 @@ test("Inherits PropertyDeclarations from super classes. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -156,7 +168,7 @@ test("Inherits PropertyDeclarations from super classes. #1", t => {
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #2", t => {
+test("Inherits PropertyDeclarations from super classes. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -176,7 +188,8 @@ test("Inherits PropertyDeclarations from super classes. #2", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -188,7 +201,7 @@ test("Inherits PropertyDeclarations from super classes. #2", t => {
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #3", t => {
+test("Inherits PropertyDeclarations from super classes. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -214,7 +227,8 @@ test("Inherits PropertyDeclarations from super classes. #3", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -227,7 +241,7 @@ test("Inherits PropertyDeclarations from super classes. #3", t => {
 	}
 });
 
-test("Can handle GetAccessorDeclarations. #1", t => {
+test("Can handle GetAccessorDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -240,7 +254,8 @@ test("Can handle GetAccessorDeclarations. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -253,7 +268,7 @@ test("Can handle GetAccessorDeclarations. #1", t => {
 	}
 });
 
-test("Can handle SetAccessorDeclarations. #1", t => {
+test("Can handle SetAccessorDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -270,7 +285,8 @@ test("Can handle SetAccessorDeclarations. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -284,7 +300,7 @@ test("Can handle SetAccessorDeclarations. #1", t => {
 	}
 });
 
-test("Can handle instances properties set via Constructor arguments. #1", t => {
+test("Can handle instances properties set via Constructor arguments. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -294,7 +310,8 @@ test("Can handle instances properties set via Constructor arguments. #1", t => {
 
 			(() => MyClass)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

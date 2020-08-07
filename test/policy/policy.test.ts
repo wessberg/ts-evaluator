@@ -1,11 +1,12 @@
-import test from "ava";
+/* eslint-disable @typescript-eslint/naming-convention */
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {IoError} from "../../src/interpreter/error/policy-error/io-error/io-error";
 import {NonDeterministicError} from "../../src/interpreter/error/policy-error/non-deterministic-error/non-deterministic-error";
 import {NetworkError} from "../../src/interpreter/error/policy-error/network-error/network-error";
 import {ProcessError} from "../../src/interpreter/error/policy-error/process-error/process-error";
 
-test("Throws on IO read if the policy requires it. #1", t => {
+test("Throws on IO read if the policy requires it. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -21,6 +22,7 @@ test("Throws on IO read if the policy requires it. #1", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				io: {
 					read: false,
@@ -41,7 +43,7 @@ test("Throws on IO read if the policy requires it. #1", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #2", t => {
+test("Throws on IO read if the policy requires it. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -57,6 +59,7 @@ test("Throws on IO read if the policy requires it. #2", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				io: {
 					read: false,
@@ -77,7 +80,7 @@ test("Throws on IO read if the policy requires it. #2", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #3", t => {
+test("Throws on IO read if the policy requires it. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -94,6 +97,7 @@ test("Throws on IO read if the policy requires it. #3", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				io: {
 					read: false,
@@ -114,7 +118,7 @@ test("Throws on IO read if the policy requires it. #3", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #4", t => {
+test("Throws on IO read if the policy requires it. #4", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -131,6 +135,7 @@ test("Throws on IO read if the policy requires it. #4", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				io: {
 					read: false,
@@ -151,7 +156,7 @@ test("Throws on IO read if the policy requires it. #4", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #5", t => {
+test("Throws on IO read if the policy requires it. #5", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -167,6 +172,7 @@ test("Throws on IO read if the policy requires it. #5", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				io: {
 					read: false,
@@ -187,7 +193,7 @@ test("Throws on IO read if the policy requires it. #5", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #6", t => {
+test("Throws on IO read if the policy requires it. #6", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -203,6 +209,7 @@ test("Throws on IO read if the policy requires it. #6", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				io: {
 					read: false,
@@ -223,7 +230,7 @@ test("Throws on IO read if the policy requires it. #6", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on invoking Math.random() read if the policy is non-deterministic. #1", t => {
+test("Throws on invoking Math.random() read if the policy is non-deterministic. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -238,6 +245,7 @@ test("Throws on invoking Math.random() read if the policy is non-deterministic. 
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				deterministic: true
 			},
@@ -255,7 +263,7 @@ test("Throws on invoking Math.random() read if the policy is non-deterministic. 
 	else t.deepEqual(result.value, true);
 });
 
-test("Doesn't throws on _getting_ Math.random, even if the policy is non-deterministic. #1", t => {
+test("Doesn't throws on _getting_ Math.random, even if the policy is non-deterministic. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -270,6 +278,7 @@ test("Doesn't throws on _getting_ Math.random, even if the policy is non-determi
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				deterministic: true
 			},
@@ -287,7 +296,7 @@ test("Doesn't throws on _getting_ Math.random, even if the policy is non-determi
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on constructing new Date() without arguments if the policy is non-deterministic. #1", t => {
+test("Throws on constructing new Date() without arguments if the policy is non-deterministic. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -302,6 +311,7 @@ test("Throws on constructing new Date() without arguments if the policy is non-d
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				deterministic: true
 			},
@@ -319,7 +329,7 @@ test("Throws on constructing new Date() without arguments if the policy is non-d
 	else t.deepEqual(result.value, true);
 });
 
-test("Doesn't throws on construction of a new Date with a specific date input, even if the policy is non-deterministic. #1", t => {
+test("Doesn't throws on construction of a new Date with a specific date input, even if the policy is non-deterministic. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -335,6 +345,7 @@ test("Doesn't throws on construction of a new Date with a specific date input, e
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				deterministic: true
 			},
@@ -352,7 +363,7 @@ test("Doesn't throws on construction of a new Date with a specific date input, e
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on Network activity if the policy requires it. #1", t => {
+test("Throws on Network activity if the policy requires it. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -368,6 +379,7 @@ test("Throws on Network activity if the policy requires it. #1", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				network: false
 			},
@@ -385,7 +397,7 @@ test("Throws on Network activity if the policy requires it. #1", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on Network activity if the policy requires it. #2", t => {
+test("Throws on Network activity if the policy requires it. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -401,6 +413,7 @@ test("Throws on Network activity if the policy requires it. #2", t => {
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				network: false
 			},
@@ -418,7 +431,7 @@ test("Throws on Network activity if the policy requires it. #2", t => {
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on attempting to exit the Process if the policy requires it. #1", t => {
+test("Throws on attempting to exit the Process if the policy requires it. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -433,6 +446,7 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", t
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				process: false
 			},
@@ -450,7 +464,7 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", t
 	else t.deepEqual(result.value, true);
 });
 
-test("Throws on attempting to spawn a child process if the policy requires it. #1", t => {
+test("Throws on attempting to spawn a child process if the policy requires it. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -466,6 +480,7 @@ test("Throws on attempting to spawn a child process if the policy requires it. #
 		`,
 		"(() => ",
 		{
+			typescript,
 			policy: {
 				process: false
 			},

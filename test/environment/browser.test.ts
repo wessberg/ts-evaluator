@@ -1,8 +1,8 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {EnvironmentPresetKind} from "../../src/interpreter/environment/environment-preset-kind";
 
-test("Can handle a Browser environment. #1", t => {
+test("Can handle a Browser environment. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -13,6 +13,7 @@ test("Can handle a Browser environment. #1", t => {
 		`,
 		"(() =>",
 		{
+			typescript,
 			environment: {
 				preset: EnvironmentPresetKind.BROWSER
 			}
@@ -27,7 +28,7 @@ test("Can handle a Browser environment. #1", t => {
 	}
 });
 
-test("Can handle a Browser environment. #2", t => {
+test("Can handle a Browser environment. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -38,6 +39,7 @@ test("Can handle a Browser environment. #2", t => {
 		`,
 		"(() =>",
 		{
+			typescript,
 			environment: {
 				preset: EnvironmentPresetKind.BROWSER
 			}

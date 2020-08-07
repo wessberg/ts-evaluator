@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can capture errors that would otherwise throw with try-catch. #1", t => {
+test("Can capture errors that would otherwise throw with try-catch. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -15,7 +15,8 @@ test("Can capture errors that would otherwise throw with try-catch. #1", t => {
 				return myVar;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

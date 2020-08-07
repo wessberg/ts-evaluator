@@ -1,8 +1,8 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {join} from "path";
 
-test("Can resolve symbols via ImportDeclarations. #1", t => {
+test("Can resolve symbols via ImportDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			{
@@ -25,7 +25,8 @@ test("Can resolve symbols via ImportDeclarations. #1", t => {
 		{
 			fileName: "b.ts",
 			match: "(() =>"
-		}
+		},
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -34,7 +35,7 @@ test("Can resolve symbols via ImportDeclarations. #1", t => {
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #2", t => {
+test("Can resolve symbols via ImportDeclarations. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			{
@@ -64,7 +65,8 @@ test("Can resolve symbols via ImportDeclarations. #2", t => {
 		{
 			fileName: "c.ts",
 			match: "(() =>"
-		}
+		},
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -73,7 +75,7 @@ test("Can resolve symbols via ImportDeclarations. #2", t => {
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #3", t => {
+test("Can resolve symbols via ImportDeclarations. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			{
@@ -105,7 +107,8 @@ test("Can resolve symbols via ImportDeclarations. #3", t => {
 		{
 			fileName: "c.ts",
 			match: "(() =>"
-		}
+		},
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -114,7 +117,7 @@ test("Can resolve symbols via ImportDeclarations. #3", t => {
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #4", t => {
+test("Can resolve symbols via ImportDeclarations. #4", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			{
@@ -146,7 +149,8 @@ test("Can resolve symbols via ImportDeclarations. #4", t => {
 		{
 			fileName: "c.ts",
 			match: "(() =>"
-		}
+		},
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -155,7 +159,7 @@ test("Can resolve symbols via ImportDeclarations. #4", t => {
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", t => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
@@ -165,7 +169,8 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 				const foo = dirname("/foo/bar");
 			`
 		],
-		"foo"
+		"foo",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -174,7 +179,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 	else t.deepEqual(result.value, "/foo");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", t => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
@@ -184,7 +189,8 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 				const foo = path.dirname("/foo/bar");
 			`
 		],
-		"foo"
+		"foo",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -193,7 +199,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 	else t.deepEqual(result.value, "/foo");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", t => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		[
 			// language=TypeScript
@@ -204,7 +210,8 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 				const foo = JSON.parse(readFileSync("${join(__dirname, "../../package.json").replace(/\\/g, "\\\\")}")).name;
 			`
 		],
-		"foo"
+		"foo",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -213,7 +220,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 	else t.deepEqual(result.value, "@wessberg/ts-evaluator");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", t => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -228,7 +235,8 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #4",
 				}
 			})();
 		`,
-		"(() => "
+		"(() => ",
+		{typescript}
 	);
 
 	const result = evaluate();

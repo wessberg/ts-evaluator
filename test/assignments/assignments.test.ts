@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a CallExpression for a function with variable assignments. #1", t => {
+test("Can evaluate a CallExpression for a function with variable assignments. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -13,7 +13,8 @@ test("Can evaluate a CallExpression for a function with variable assignments. #1
 
 			square(2);
 		`,
-		"square("
+		"square(",
+		{typescript}
 	);
 
 	const result = evaluate();

@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate an AwaitExpression #1", async t => {
+test("Can evaluate an AwaitExpression #1", async (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -13,7 +13,8 @@ test("Can evaluate an AwaitExpression #1", async t => {
 				return await myAsyncFunction();
 			})();
 		`,
-		"return await myAsyncFunction()"
+		"return await myAsyncFunction()",
+		{typescript}
 	);
 
 	const result = evaluate();

@@ -93,7 +93,7 @@ export function evaluateNode({node, ...rest}: IEvaluatorOptions<TS.Node>): unkno
 		return evaluateObjectLiteralExpression({node, ...rest});
 	} else if (rest.typescript.isAwaitExpression(node)) {
 		return evaluateAwaitExpression({node, ...rest});
-	} else if (rest.typescript.isTypeAssertion(node)) {
+	} else if (rest.typescript.isTypeAssertionExpression?.(node) || rest.typescript.isTypeAssertion(node)) {
 		return evaluateTypeAssertion({node, ...rest});
 	} else if (rest.typescript.isTemplateExpression(node)) {
 		return evaluateTemplateExpression({node, ...rest});
@@ -183,7 +183,7 @@ export function evaluateNode({node, ...rest}: IEvaluatorOptions<TS.Node>): unkno
 		return evaluateSuperExpression({node, ...rest});
 	} else if (isNullLiteral(node, rest.typescript)) {
 		return evaluateNullLiteral({node, ...rest});
-	} else if (rest.typescript.isBigIntLiteral(node)) {
+	} else if (rest.typescript.isBigIntLiteral?.(node)) {
 		return evaluateBigIntLiteral({node, ...rest});
 	} else if (rest.typescript.isBreakStatement(node)) {
 		return evaluateBreakStatement({node, ...rest});

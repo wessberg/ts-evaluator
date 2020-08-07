@@ -1,9 +1,9 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error";
 import {NotCallableError} from "../../src/interpreter/error/not-callable-error/not-callable-error";
 
-test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", t => {
+test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -13,7 +13,8 @@ test("Throws when attempting to reference an identifier that is still not define
 				return a + b;
 			}
 		`,
-		"add("
+		"add(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -22,7 +23,7 @@ test("Throws when attempting to reference an identifier that is still not define
 	else t.true(result.reason instanceof UndefinedIdentifierError);
 });
 
-test("Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1", t => {
+test("Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -34,7 +35,8 @@ test("Doesn't throw when attempting to reference an identifier that is declared 
 
 			(() => myVar)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -45,7 +47,7 @@ test("Doesn't throw when attempting to reference an identifier that is declared 
 	else t.deepEqual(result.value, undefined);
 });
 
-test("Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1", t => {
+test("Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -57,7 +59,8 @@ test("Throws when attempting to use the rvalue of a referenced identifier that i
 
 			(() => myVar(1, 2))();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -67,7 +70,7 @@ test("Throws when attempting to use the rvalue of a referenced identifier that i
 	else t.true(result.reason instanceof NotCallableError);
 });
 
-test("Respects block scoped variables declared with 'let'. #1", t => {
+test("Respects block scoped variables declared with 'let'. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -76,7 +79,8 @@ test("Respects block scoped variables declared with 'let'. #1", t => {
 			}
 			(() => a)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -85,7 +89,7 @@ test("Respects block scoped variables declared with 'let'. #1", t => {
 	else t.true(result.reason instanceof UndefinedIdentifierError);
 });
 
-test("Respects block scoped variables declared with 'var'. #1", t => {
+test("Respects block scoped variables declared with 'var'. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -94,7 +98,8 @@ test("Respects block scoped variables declared with 'var'. #1", t => {
 			}
 			(() => a)();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

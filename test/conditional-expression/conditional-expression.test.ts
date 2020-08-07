@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle ConditionalExpressions. #1", t => {
+test("Can handle ConditionalExpressions. #1", (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -9,7 +9,8 @@ test("Can handle ConditionalExpressions. #1", t => {
 			// noinspection RedundantConditionalExpressionJS
 			(() => 2 + 2 === 5 ? true : false)()
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -20,7 +21,7 @@ test("Can handle ConditionalExpressions. #1", t => {
 	}
 });
 
-test("Can handle ConditionalExpressions. #2", t => {
+test("Can handle ConditionalExpressions. #2", (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -28,7 +29,8 @@ test("Can handle ConditionalExpressions. #2", t => {
 			// noinspection RedundantConditionalExpressionJS
 			(() => 2 + 2 === 4 ? true : false)()
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

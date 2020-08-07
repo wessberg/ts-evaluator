@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate and retrieve a GetAccessorDeclaration. #1", t => {
+test("Can evaluate and retrieve a GetAccessorDeclaration. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -11,7 +11,8 @@ test("Can evaluate and retrieve a GetAccessorDeclaration. #1", t => {
 				}
 			}
 		`,
-		"get"
+		"get",
+		{typescript}
 	);
 
 	const result = evaluate();

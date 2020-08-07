@@ -1,22 +1,6 @@
 import {LogLevelKind} from "../src/interpreter/logger/log-level";
 import {evaluate} from "../src/interpreter/evaluate";
 import {EvaluateResult} from "../src/interpreter/evaluate-result";
-import {
-	CompilerOptions,
-	createProgram,
-	createSourceFile,
-	Expression,
-	forEachChild,
-	getDefaultCompilerOptions,
-	getDefaultLibFileName,
-	Node,
-	NodeArray,
-	ScriptKind,
-	ScriptTarget,
-	SourceFile,
-	Statement,
-	sys
-} from "typescript";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
 import {readFileSync, readdirSync} from "fs";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
@@ -24,6 +8,7 @@ import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options
 import {sync} from "find-up";
 import {join, normalize} from "path";
 import slash from "slash";
+import {TS} from "../src/type/ts";
 
 // tslint:disable:no-any
 
@@ -50,6 +35,7 @@ export interface ITestOpts {
 	environment: Partial<IEnvironment>;
 	reporting: ReportingOptions;
 	logLevel: LogLevelKind;
+	typescript: typeof TS;
 }
 
 /**
@@ -59,6 +45,7 @@ export function prepareTest(
 	files: TestFile[] | TestFile,
 	entry?: TestFileEntry | undefined,
 	{
+		typescript = TS,
 		environment,
 		policy: {
 			deterministic = true,
@@ -105,7 +92,7 @@ export function prepareTest(
 
 	const rootNames = normalizedFiles.map(({fileName}) => fileName);
 
-	const program = createProgram({
+	const program = typescript.createProgram({
 		rootNames,
 		host: {
 			readFile(fileName: string): string | undefined {
@@ -117,11 +104,11 @@ export function prepareTest(
 				return this.readFile(fileName) != null;
 			},
 
-			getSourceFile(fileName: string, languageVersion: ScriptTarget): SourceFile | undefined {
+			getSourceFile(fileName: string, languageVersion: TS.ScriptTarget): TS.SourceFile | undefined {
 				const sourceText = this.readFile(fileName);
 				if (sourceText == null) return undefined;
 
-				return createSourceFile(slash(fileName), sourceText, languageVersion, true, ScriptKind.TS);
+				return typescript.createSourceFile(slash(fileName), sourceText, languageVersion, true, typescript.ScriptKind.TS);
 			},
 
 			getCurrentDirectory() {
@@ -129,11 +116,11 @@ export function prepareTest(
 			},
 
 			getDirectories(directoryName: string) {
-				return sys.getDirectories(slash(directoryName)).map(slash);
+				return typescript.sys.getDirectories(slash(directoryName)).map(slash);
 			},
 
-			getDefaultLibFileName(options: CompilerOptions): string {
-				return slash(getDefaultLibFileName(options));
+			getDefaultLibFileName(options: TS.CompilerOptions): string {
+				return slash(typescript.getDefaultLibFileName(options));
 			},
 
 			getCanonicalFileName(fileName: string): string {
@@ -141,18 +128,18 @@ export function prepareTest(
 			},
 
 			getNewLine(): string {
-				return sys.newLine;
+				return typescript.sys.newLine;
 			},
 
 			useCaseSensitiveFileNames() {
-				return sys.useCaseSensitiveFileNames;
+				return typescript.sys.useCaseSensitiveFileNames;
 			},
 
 			writeFile: () => {
 				// Noop
 			}
 		},
-		options: getDefaultCompilerOptions()
+		options: typescript.getDefaultCompilerOptions()
 	});
 
 	const entrySourceFile = program.getSourceFile(normalizedEntry.fileName);
@@ -160,13 +147,14 @@ export function prepareTest(
 		throw new ReferenceError(`No such SourceFile: '${normalizedEntry.fileName}'`);
 	}
 
-	const entryNode = findEntryExpressionFromStatements(entrySourceFile.statements, normalizedEntry.match);
+	const entryNode = findEntryExpressionFromStatements(entrySourceFile.statements, normalizedEntry.match, typescript);
 
 	return {
 		evaluate: () =>
 			evaluate({
 				node: entryNode,
 				typeChecker: program.getTypeChecker(),
+				typescript,
 				environment,
 				reporting,
 				policy: {
@@ -186,9 +174,9 @@ export function prepareTest(
 /**
  * Finds an entry node that matches the given text with a NodeArray of Statements
  */
-function findEntryExpressionFromStatements(statements: NodeArray<Statement>, match: string): Expression {
+function findEntryExpressionFromStatements(statements: TS.NodeArray<TS.Statement>, match: string, typescript: typeof TS): TS.Expression {
 	for (const statement of statements) {
-		const matchedNode = matchNode(statement, match);
+		const matchedNode = matchNode(statement, match, typescript);
 		if (matchedNode != null) return matchedNode;
 	}
 	throw new ReferenceError(`Could not match: '${match}' inside NodeArray of Statements`);
@@ -197,15 +185,15 @@ function findEntryExpressionFromStatements(statements: NodeArray<Statement>, mat
 /**
  * Checks if the given text matches the given node or any of its' children
  */
-function matchNode(node: Node, match: string): Expression | undefined {
+function matchNode(node: TS.Node, match: string, typescript: typeof TS): TS.Expression | undefined {
 	if (isNodeMatched(node, match)) return node;
-	return forEachChild(node, nextNode => matchNode(nextNode, match));
+	return typescript.forEachChild(node, nextNode => matchNode(nextNode, match, typescript));
 }
 
 /**
  * Returns true if the given Node matches the given text
  */
-function isNodeMatched(node: Node, match: string): node is Expression {
+function isNodeMatched(node: TS.Node, match: string): node is TS.Expression {
 	try {
 		if (node.getText().startsWith(match)) return true;
 	} catch {}

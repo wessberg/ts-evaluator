@@ -1,8 +1,8 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {EnvironmentPresetKind} from "../../src/interpreter/environment/environment-preset-kind";
 
-test("Can handle the '__dirname' and '__filename' meta properties in a Node environment. #1", t => {
+test("Can handle the '__dirname' and '__filename' meta properties in a Node environment. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		{
@@ -14,6 +14,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 		},
 		"(() =>",
 		{
+			typescript,
 			environment: {
 				preset: EnvironmentPresetKind.NODE
 			}
@@ -28,7 +29,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 	}
 });
 
-test("Can handle 'process.cwd()' in a Node environment. #1", t => {
+test("Can handle 'process.cwd()' in a Node environment. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -36,7 +37,8 @@ test("Can handle 'process.cwd()' in a Node environment. #1", t => {
 				return process.cwd();
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

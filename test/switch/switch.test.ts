@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a CallExpression with a SwitchStatement. #1", t => {
+test("Can evaluate a CallExpression with a SwitchStatement. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -18,7 +18,8 @@ test("Can evaluate a CallExpression with a SwitchStatement. #1", t => {
 
 			myFunc("a");
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -27,7 +28,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #1", t => {
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #2", t => {
+test("Can evaluate a CallExpression with a SwitchStatement. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -44,7 +45,8 @@ test("Can evaluate a CallExpression with a SwitchStatement. #2", t => {
 
 			myFunc("b");
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -53,7 +55,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #2", t => {
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #3", t => {
+test("Can evaluate a CallExpression with a SwitchStatement. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -70,7 +72,8 @@ test("Can evaluate a CallExpression with a SwitchStatement. #3", t => {
 
 			myFunc("c");
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -79,7 +82,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #3", t => {
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #4", t => {
+test("Can evaluate a CallExpression with a SwitchStatement. #4", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -98,7 +101,8 @@ test("Can evaluate a CallExpression with a SwitchStatement. #4", t => {
 
 			myFunc("c");
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -107,7 +111,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #4", t => {
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #5", t => {
+test("Can evaluate a CallExpression with a SwitchStatement. #5", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -131,7 +135,8 @@ test("Can evaluate a CallExpression with a SwitchStatement. #5", t => {
 
 			myFunc("a");
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -140,7 +145,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #5", t => {
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", t => {
+test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -164,7 +169,8 @@ test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. 
 
 			myFunc("b");
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();

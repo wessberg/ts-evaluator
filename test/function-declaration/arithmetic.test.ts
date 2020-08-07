@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a simple '(number, number) => number' function. #1", t => {
+test("Can evaluate a simple '(number, number) => number' function. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -11,7 +11,8 @@ test("Can evaluate a simple '(number, number) => number' function. #1", t => {
 
 			add(1, 2);
 		`,
-		"add("
+		"add(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -20,7 +21,7 @@ test("Can evaluate a simple '(number, number) => number' function. #1", t => {
 	else t.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #2", t => {
+test("Can evaluate a simple '(number, number) => number' function. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -30,7 +31,8 @@ test("Can evaluate a simple '(number, number) => number' function. #2", t => {
 
 			minus(1, 2);
 		`,
-		"minus("
+		"minus(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -39,7 +41,7 @@ test("Can evaluate a simple '(number, number) => number' function. #2", t => {
 	else t.deepEqual(result.value, -1);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #3", t => {
+test("Can evaluate a simple '(number, number) => number' function. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -49,7 +51,8 @@ test("Can evaluate a simple '(number, number) => number' function. #3", t => {
 
 			multiply(1, 2);
 		`,
-		"multiply("
+		"multiply(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -58,7 +61,7 @@ test("Can evaluate a simple '(number, number) => number' function. #3", t => {
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #4", t => {
+test("Can evaluate a simple '(number, number) => number' function. #4", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -68,7 +71,8 @@ test("Can evaluate a simple '(number, number) => number' function. #4", t => {
 
 			divide(1, 2);
 		`,
-		"divide("
+		"divide(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -77,7 +81,7 @@ test("Can evaluate a simple '(number, number) => number' function. #4", t => {
 	else t.deepEqual(result.value, 0.5);
 });
 
-test("Can evaluate a simple 'number => number' function. #1", t => {
+test("Can evaluate a simple 'number => number' function. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -87,7 +91,8 @@ test("Can evaluate a simple 'number => number' function. #1", t => {
 
 			square(2);
 		`,
-		"square("
+		"square(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -96,7 +101,7 @@ test("Can evaluate a simple 'number => number' function. #1", t => {
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can handle the 'arguments' identifier. #1", t => {
+test("Can handle the 'arguments' identifier. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -108,6 +113,7 @@ test("Can handle the 'arguments' identifier. #1", t => {
 		`,
 		"square(",
 		{
+			typescript,
 			policy: {
 				console: true
 			}

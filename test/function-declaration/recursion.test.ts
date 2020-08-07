@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a CallExpression for a recursive function. #1", t => {
+test("Can evaluate a CallExpression for a recursive function. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -15,7 +15,8 @@ test("Can evaluate a CallExpression for a recursive function. #1", t => {
 
 			fibonacci(5);
 		`,
-		"fibonacci(5"
+		"fibonacci(5",
+		{typescript}
 	);
 
 	const result = evaluate();

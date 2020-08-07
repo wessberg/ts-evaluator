@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", t => {
+test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -10,7 +10,8 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", t => {
 				return prop;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -19,7 +20,7 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", t => {
 	else t.deepEqual(result.value, 123);
 });
 
-test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", t => {
+test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -28,7 +29,8 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", t => {
 				return otherProp;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -37,7 +39,7 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", t => {
 	else t.deepEqual(result.value, 245);
 });
 
-test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", t => {
+test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -45,7 +47,8 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", t => {
 				return foo;
 			})({foo: 2});
 		`,
-		"(({foo}) =>"
+		"(({foo}) =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -54,7 +57,7 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", t => {
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", t => {
+test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -62,7 +65,8 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", t => {
 				return alias;
 			})({foo: 2});
 		`,
-		"(({foo: alias}) =>"
+		"(({foo: alias}) =>",
+		{typescript}
 	);
 
 	const result = evaluate();

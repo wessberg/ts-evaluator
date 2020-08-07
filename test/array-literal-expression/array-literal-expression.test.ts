@@ -1,14 +1,15 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle ArrayLiteralExpressions. #1", t => {
+test("Can handle ArrayLiteralExpressions. #1", (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
 			(["foo", "bar"])
 		`,
-		"(["
+		"([",
+		{typescript}
 	);
 
 	const result = evaluate();

@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle ObjectLiteralExpressions. #1", t => {
+test("Can handle ObjectLiteralExpressions. #1", (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -13,7 +13,8 @@ test("Can handle ObjectLiteralExpressions. #1", t => {
 				}
 			})
 		`,
-		"({"
+		"({",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -24,7 +25,7 @@ test("Can handle ObjectLiteralExpressions. #1", t => {
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #2", t => {
+test("Can handle ObjectLiteralExpressions. #2", (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -36,7 +37,8 @@ test("Can handle ObjectLiteralExpressions. #2", t => {
 				}
 			})
 		`,
-		"({"
+		"({",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -47,7 +49,7 @@ test("Can handle ObjectLiteralExpressions. #2", t => {
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #3", t => {
+test("Can handle ObjectLiteralExpressions. #3", (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -61,7 +63,8 @@ test("Can handle ObjectLiteralExpressions. #3", t => {
 				}
 			})
 		`,
-		"({"
+		"({",
+		{typescript}
 	);
 
 	const result = evaluate();

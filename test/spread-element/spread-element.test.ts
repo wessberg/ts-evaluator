@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle Spread Elements in arrays. #1", t => {
+test("Can handle Spread Elements in arrays. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -11,7 +11,8 @@ test("Can handle Spread Elements in arrays. #1", t => {
 				return b;
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -20,7 +21,7 @@ test("Can handle Spread Elements in arrays. #1", t => {
 	else t.deepEqual(result.value as number[], [1, 2, 3]);
 });
 
-test("Can handle Spread Elements in CallExpressions. #1", t => {
+test("Can handle Spread Elements in CallExpressions. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -33,7 +34,8 @@ test("Can handle Spread Elements in CallExpressions. #1", t => {
 				return foo(2, 2, "foo")
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

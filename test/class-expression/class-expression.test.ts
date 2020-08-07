@@ -1,14 +1,15 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can handle ClassExpressions. #1", t => {
+test("Can handle ClassExpressions. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
 			(() => class {
 			})();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -19,7 +20,7 @@ test("Can handle ClassExpressions. #1", t => {
 	}
 });
 
-test("Can handle ClassExpressions that extends from other named classes. #1", t => {
+test("Can handle ClassExpressions that extends from other named classes. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -28,7 +29,8 @@ test("Can handle ClassExpressions that extends from other named classes. #1", t 
 
 			(() => [A, class extends A {}])();
 		`,
-		"(() =>"
+		"(() =>",
+		{typescript}
 	);
 
 	const result = evaluate();

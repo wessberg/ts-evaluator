@@ -1,7 +1,7 @@
-import test from "ava";
+import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 
-test("Can evaluate a CallExpression with a ForStatement. #1", t => {
+test("Can evaluate a CallExpression with a ForStatement. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -16,7 +16,8 @@ test("Can evaluate a CallExpression with a ForStatement. #1", t => {
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -25,7 +26,7 @@ test("Can evaluate a CallExpression with a ForStatement. #1", t => {
 	else t.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForStatement. #2", t => {
+test("Can evaluate a CallExpression with a ForStatement. #2", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -41,7 +42,8 @@ test("Can evaluate a CallExpression with a ForStatement. #2", t => {
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
@@ -50,7 +52,7 @@ test("Can evaluate a CallExpression with a ForStatement. #2", t => {
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression with a ForStatement. #3", t => {
+test("Can evaluate a CallExpression with a ForStatement. #3", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -66,7 +68,8 @@ test("Can evaluate a CallExpression with a ForStatement. #3", t => {
 
 			myFunc();
 		`,
-		"myFunc("
+		"myFunc(",
+		{typescript}
 	);
 
 	const result = evaluate();
