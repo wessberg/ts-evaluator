@@ -19,7 +19,6 @@ devDependencies:
   eslint-plugin-import: 2.22.1_eslint@7.11.0
   eslint-plugin-jsdoc: 30.7.3_eslint@7.11.0
   fast-glob: 3.2.4
-  find-up: 5.0.0
   husky: 4.3.0
   np: 5.2.1
   pnpm: 5.9.3
@@ -3177,15 +3176,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-PpOwAdQ/YlXQ2vj8a3h8IipDuYRi3wceVQQGYWxNINccq40Anw7BlsEXCMbt1Zt+OLA6Fq9suIpIWD0OsnISlw==
-  /find-up/5.0.0:
-    dependencies:
-      locate-path: 6.0.0
-      path-exists: 4.0.0
-    dev: true
-    engines:
-      node: '>=10'
-    resolution:
-      integrity: sha512-78/PXT1wlLLDgTzDs7sjq9hzz0vXD+zn+7wypEe4fXQxCmdmqfGsEPQxmiCSQI3ajFV91bVSsvNtrJRiW6nGng==
   /find-versions/3.2.0:
     dependencies:
       semver-regex: 2.0.0
@@ -4500,14 +4490,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-t7hw9pI+WvuwNJXwk5zVHpyhIqzg2qTlklJOf0mVxGSbe3Fp2VieZcduNYjaLDoy6p9uGpQEGWG87WpMKlNq8g==
-  /locate-path/6.0.0:
-    dependencies:
-      p-locate: 5.0.0
-    dev: true
-    engines:
-      node: '>=10'
-    resolution:
-      integrity: sha512-iPZK6eYjbxRu3uB4/WZ3EsEIMJFMqAoopl3R+zuq0UjcAm/MO6KCweDgPfP3elTztoKP3KtnVHxTn2NHBSDVUw==
   /lodash._reinterpolate/3.0.0:
     dev: true
     resolution:
@@ -5265,14 +5247,6 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-//88mFWSJx8lxCzwdAABTJL2MyWB12+eIY7MDL2SqLmAkeKU9qxRvWuSyTjm3FUmpBEMuFfckAIqEaVGUDxb6w==
-  /p-limit/3.0.2:
-    dependencies:
-      p-try: 2.2.0
-    dev: true
-    engines:
-      node: '>=10'
-    resolution:
-      integrity: sha512-iwqZSOoWIW+Ew4kAGUlN16J4M7OB3ysMLSZtnhmqx7njIHFPlxWBX8xo3lVTyFVq6mI/lL9qt2IsN1sHwaxJkg==
   /p-locate/2.0.0:
     dependencies:
       p-limit: 1.3.0
@@ -5297,14 +5271,6 @@ packages:
       node: '>=8'
     resolution:
       integrity: sha512-R79ZZ/0wAxKGu3oYMlz8jy/kbhsNrS7SKZ7PxEHBgJ5+F2mtFW2fK2cOtBh1cHYkQsbzFV7I+EoRKe6Yt0oK7A==
-  /p-locate/5.0.0:
-    dependencies:
-      p-limit: 3.0.2
-    dev: true
-    engines:
-      node: '>=10'
-    resolution:
-      integrity: sha512-LaNjtRWUBY++zB5nE/NwcaoMylSPk+S+ZHNB1TzdbMJMny6dynpAGt7X/tl/QYq3TIeE6nxHppbo2LGymrG5Pw==
   /p-map/2.1.0:
     dev: true
     engines:
@@ -7409,7 +7375,6 @@ specifiers:
   eslint-plugin-import: ^2.22.1
   eslint-plugin-jsdoc: ^30.7.3
   fast-glob: ^3.2.4
-  find-up: ^5.0.0
   husky: ^4.3.0
   jsdom: ^16.4.0
   np: 5.2.1
