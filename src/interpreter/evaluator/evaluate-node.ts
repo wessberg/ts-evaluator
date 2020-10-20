@@ -64,6 +64,8 @@ import {evaluateMethodDeclaration} from "./evaluate-method-declaration";
 import {evaluatePropertyDeclaration} from "./evaluate-property-declaration";
 import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaration";
 import {TS} from "../../type/ts";
+import {evaluateTypeAliasDeclaration} from "./evaluate-type-alias-declaration";
+import {evaluateInterfaceDeclaration} from "./evaluate-interface-declaration";
 
 /**
  * Will get a literal value for the given Node. If it doesn't succeed, the value will be 'undefined'
@@ -189,6 +191,10 @@ export function evaluateNode({node, ...rest}: IEvaluatorOptions<TS.Node>): unkno
 		return evaluateBreakStatement({node, ...rest});
 	} else if (rest.typescript.isContinueStatement(node)) {
 		return evaluateContinueStatement({node, ...rest});
+	} else if (rest.typescript.isTypeAliasDeclaration(node)) {
+		return evaluateTypeAliasDeclaration({node, ...rest});
+	} else if (rest.typescript.isInterfaceDeclaration(node)) {
+		return evaluateInterfaceDeclaration({node, ...rest});
 	}
 
 	throw new UnexpectedNodeError({node, typescript: rest.typescript});

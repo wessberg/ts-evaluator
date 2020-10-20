@@ -1,6 +1,7 @@
 import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {EnvironmentPresetKind} from "../../src/interpreter/environment/environment-preset-kind";
+import {normalize} from "path";
 
 test("Can handle the '__dirname' and '__filename' meta properties in a Node environment. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
@@ -10,10 +11,11 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 				(() => {
 					return {dirname: __dirname, filename: __filename};
 				})();`,
-			fileName: "/Users/someone/development/foo/bar.ts"
+			fileName: "bar.ts"
 		},
 		"(() =>",
 		{
+			cwd: normalize("/Users/someone/development/foo"),
 			typescript,
 			environment: {
 				preset: EnvironmentPresetKind.NODE

@@ -19,7 +19,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", (t, {typescri
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		t.true(result.value != null && (result.value as Function).name === "MyClass");
+		t.true(result.value != null && (result.value as CallableFunction).name === "MyClass");
 	}
 });
 
@@ -300,7 +300,7 @@ test("Can handle SetAccessorDeclarations. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle instances properties set via Constructor arguments. #1", (t, {typescript}) => {
+test("Can handle instance properties set via Constructor arguments. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

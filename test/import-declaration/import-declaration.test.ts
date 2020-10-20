@@ -1,6 +1,7 @@
 import test from "../util/test-runner";
 import {prepareTest} from "../setup";
 import {join} from "path";
+import {lt} from "semver";
 
 test("Can resolve symbols via ImportDeclarations. #1", (t, {typescript}) => {
 	const {evaluate} = prepareTest(
@@ -221,6 +222,10 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 });
 
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", (t, {typescript}) => {
+	if (lt(typescript.version, "3.1.0")) {
+		t.pass(`Current TypeScript version (${typescript.version} does not support importing AssertionError from the Node.js typings. Skipping...`);
+		return;
+	}
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

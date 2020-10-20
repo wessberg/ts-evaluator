@@ -2,15 +2,27 @@ import {LogLevelKind} from "../src/interpreter/logger/log-level";
 import {evaluate} from "../src/interpreter/evaluate";
 import {EvaluateResult} from "../src/interpreter/evaluate-result";
 import {IEvaluatePolicy} from "../src/interpreter/policy/i-evaluate-policy";
-import {readFileSync, readdirSync} from "fs";
+import {Dirent, readdirSync} from "fs";
+import fastGlob from "fast-glob";
 import {IEnvironment} from "../src/interpreter/environment/i-environment";
 import {ReportingOptions} from "../src/interpreter/reporting/i-reporting-options";
-import {sync} from "find-up";
-import {join, normalize} from "path";
+import {dirname, isAbsolute, join, normalize, sep} from "path";
 import slash from "slash";
 import {TS} from "../src/type/ts";
 
-// tslint:disable:no-any
+/**
+ * Gets the NewLineCharacter to use for a NewLineKind
+ */
+function getNewLineCharacter(newLine: TS.NewLineKind, typescript: typeof TS): string {
+	switch (newLine) {
+		case typescript.NewLineKind.CarriageReturnLineFeed:
+			return "\r\n";
+		case typescript.NewLineKind.LineFeed:
+			return "\n";
+	}
+}
+
+const _process = process;
 
 export interface ITestFile {
 	fileName: string;
@@ -36,17 +48,19 @@ export interface ITestOpts {
 	reporting: ReportingOptions;
 	logLevel: LogLevelKind;
 	typescript: typeof TS;
+	cwd: string;
 }
 
 /**
  * Prepares a test
  */
 export function prepareTest(
-	files: TestFile[] | TestFile,
+	inputFiles: TestFile[] | TestFile,
 	entry?: TestFileEntry | undefined,
 	{
 		typescript = TS,
 		environment,
+		cwd = _process.cwd(),
 		policy: {
 			deterministic = true,
 			maxOps = Infinity,
@@ -66,40 +80,102 @@ export function prepareTest(
 		logLevel = LogLevelKind.SILENT
 	}: Partial<ITestOpts> = {}
 ): ITestFileResult {
-	const arrFiles = Array.isArray(files) ? files : [files];
-	const nodeTypesDir = sync(normalize("node_modules/@types/node"), {type: "directory"});
-	const nodeTypeDeclarationFiles =
-		nodeTypesDir == null
-			? []
-			: readdirSync(nodeTypesDir)
-					.filter(file => file.endsWith(".d.ts"))
-					.map(file => join(nodeTypesDir, file));
 
-	const normalizedFiles: ITestFile[] = [
-		...arrFiles.map(file => (typeof file === "string" ? {text: file, fileName: `auto-generated-${Math.floor(Math.random() * 100000)}.ts`} : file)),
-		...nodeTypeDeclarationFiles.map(file => ({
-			fileName: file,
-			text: readFileSync(normalize(file), "utf8")
-		}))
-	].map(file => ({
-		...file,
-		fileName: slash(file.fileName)
-	}));
+	const files: ITestFile[] = (Array.isArray(inputFiles) ? inputFiles : [inputFiles])
+		.map(file =>
+			typeof file === "string"
+				? {
+						text: file,
+						fileName: `auto-generated-${Math.floor(Math.random() * 100000)}.ts`,
+						entry: true
+				  }
+				: file
+		)
+		.map(file => ({...file, fileName: join(cwd, file.fileName)}));
 
-	const normalizedEntry = typeof entry === "string" || entry == null ? {fileName: normalizedFiles[0].fileName, match: entry == null ? "" : entry} : entry;
-
-	const rootNames = normalizedFiles.map(({fileName}) => fileName);
+	const directories = new Set(files.map(file => normalize(dirname(file.fileName))));
+	const normalizedEntry = typeof entry === "string" || entry == null ? {fileName: files[0].fileName, match: entry == null ? "" : entry} : entry;
+	const rootNames = files.map(({fileName}) => fileName);
+	const compilerOptions = typescript.getDefaultCompilerOptions();
 
 	const program = typescript.createProgram({
 		rootNames,
 		host: {
 			readFile(fileName: string): string | undefined {
-				const matchedFile = normalizedFiles.find(file => file.fileName === slash(fileName));
-				return matchedFile == null ? undefined : matchedFile.text;
+				const normalized = normalize(fileName);
+				const absoluteFileName = isAbsolute(normalized) ? normalized : join(cwd, normalized);
+
+				const file = files.find(currentFile => currentFile.fileName === absoluteFileName);
+				if (file != null) return file.text;
+				return typescript.sys.readFile(absoluteFileName);
 			},
 
 			fileExists(fileName: string): boolean {
-				return this.readFile(fileName) != null;
+				const normalized = normalize(fileName);
+				const absoluteFileName = isAbsolute(normalized) ? normalized : join(cwd, normalized);
+				if (files.some(file => file.fileName === absoluteFileName)) {
+					return true;
+				}
+				return typescript.sys.fileExists(absoluteFileName);
+			},
+
+			directoryExists: dirName => {
+				const normalized = normalize(dirName);
+				if (directories.has(normalized)) return true;
+				return typescript.sys.directoryExists(normalized);
+			},
+			realpath(path: string): string {
+				return normalize(path);
+			},
+			readDirectory(rootDir: string, extensions: readonly string[], excludes: readonly string[] | undefined, includes: readonly string[], depth?: number): string[] {
+				const nativeNormalizedRootDir = normalize(rootDir);
+				const realResult = typescript.sys.readDirectory(rootDir, extensions, excludes, includes, depth);
+
+				// Making the glob filter of the virtual file system to match the behavior of TypeScript as close as possible.
+				const virtualFiles = fastGlob
+					.sync([...includes], {
+						cwd: nativeNormalizedRootDir,
+						ignore: [...(excludes ?? [])],
+						fs: {
+							readdirSync: (((path: string, {withFileTypes}: {withFileTypes?: boolean}) => {
+								path = normalize(path);
+
+								return files
+									.filter(file => file.fileName.startsWith(path))
+									.map(file => {
+										const fileName = file.fileName.slice(
+											path.length + 1,
+											file.fileName.includes(sep, path.length + 1) ? file.fileName.indexOf(sep, path.length + 1) : undefined
+										);
+
+										const isDirectory = !file.fileName.endsWith(fileName);
+										const isFile = file.fileName.endsWith(fileName);
+
+										return withFileTypes === true
+											? ({
+													name: fileName,
+													isDirectory() {
+														return isDirectory;
+													},
+													isFile() {
+														return isFile;
+													},
+													isSymbolicLink() {
+														return false;
+													}
+											  } as Partial<Dirent>)
+											: fileName;
+									});
+							}) as unknown) as typeof readdirSync
+						}
+					})
+					.map(file => join(nativeNormalizedRootDir, file));
+
+				return [...new Set([...realResult, ...virtualFiles])].map(normalize);
+			},
+
+			getDirectories(path: string): string[] {
+				return typescript.sys.getDirectories(path).map(normalize);
 			},
 
 			getSourceFile(fileName: string, languageVersion: TS.ScriptTarget): TS.SourceFile | undefined {
@@ -110,23 +186,19 @@ export function prepareTest(
 			},
 
 			getCurrentDirectory() {
-				return ".";
-			},
-
-			getDirectories(directoryName: string) {
-				return typescript.sys.getDirectories(slash(directoryName)).map(slash);
+				return normalize(cwd);
 			},
 
 			getDefaultLibFileName(options: TS.CompilerOptions): string {
-				return slash(typescript.getDefaultLibFileName(options));
+				return typescript.getDefaultLibFileName(options);
 			},
 
 			getCanonicalFileName(fileName: string): string {
-				return slash(this.useCaseSensitiveFileNames() ? fileName : fileName.toLowerCase());
+				return this.useCaseSensitiveFileNames() ? fileName : fileName.toLowerCase();
 			},
 
 			getNewLine(): string {
-				return typescript.sys.newLine;
+				return compilerOptions.newLine != null ? getNewLineCharacter(compilerOptions.newLine, typescript) : typescript.sys.newLine;
 			},
 
 			useCaseSensitiveFileNames() {
@@ -137,7 +209,7 @@ export function prepareTest(
 				// Noop
 			}
 		},
-		options: typescript.getDefaultCompilerOptions()
+		options: compilerOptions
 	});
 
 	const entrySourceFile = program.getSourceFile(normalizedEntry.fileName);
