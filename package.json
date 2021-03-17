@@ -1,6 +1,6 @@
 {
 	"name": "@wessberg/ts-evaluator",
-	"version": "0.0.27",
+	"version": "0.0.28",
 	"description": "An interpreter for Typescript that can evaluate an arbitrary Node within a Typescript AST",
 	"scripts": {
 		"generate:scaffold": "scaffold all --yes",
