@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Understands TypeAliasDeclarations. #1", (t, {typescript}) => {
+test("Understands TypeAliasDeclarations. #1", withTypeScript, (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript

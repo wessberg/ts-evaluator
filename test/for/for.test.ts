@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate a CallExpression with a ForStatement. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForStatement. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -26,7 +27,7 @@ test("Can evaluate a CallExpression with a ForStatement. #1", (t, {typescript}) 
 	else t.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForStatement. #2", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForStatement. #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -52,7 +53,7 @@ test("Can evaluate a CallExpression with a ForStatement. #2", (t, {typescript}) 
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression with a ForStatement. #3", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForStatement. #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

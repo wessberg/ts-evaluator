@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can handle ConditionalExpressions. #1", (t, {typescript}) => {
+test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -21,7 +22,7 @@ test("Can handle ConditionalExpressions. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle ConditionalExpressions. #2", (t, {typescript}) => {
+test("Can handle ConditionalExpressions. #2", withTypeScript, (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS
 	const {evaluate} = prepareTest(
 		// language=TypeScript

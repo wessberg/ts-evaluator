@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate a TypeOfExpression #1", (t, {typescript}) => {
+test("Can evaluate a TypeOfExpression #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -20,7 +21,7 @@ test("Can evaluate a TypeOfExpression #1", (t, {typescript}) => {
 	else t.deepEqual(result.value, "bigint");
 });
 
-test("Can evaluate a TypeOfExpression #2", (t, {typescript}) => {
+test("Can evaluate a TypeOfExpression #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

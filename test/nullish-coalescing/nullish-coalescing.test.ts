@@ -1,12 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
-import {lt} from "semver";
+import {withTypeScriptVersions} from "../util/ts-macro";
 
-test("Supports nullish coalescing with null-like values. #1", (t, {typescript}) => {
-	if (lt(typescript.version, "3.7.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support '??' syntax. Skipping...`);
-		return;
-	}
+test("Supports nullish coalescing with null-like values. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript

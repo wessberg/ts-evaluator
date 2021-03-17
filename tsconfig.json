@@ -2,6 +2,7 @@
 	"extends": "@wessberg/ts-config",
 	"compilerOptions": {
 		"module": "commonjs",
-		"target": "es2017"
+		"target": "es2017",
+		"resolveJsonModule": true
 	}
 }

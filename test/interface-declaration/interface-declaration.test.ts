@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Understands InterfaceDeclarations. #1", (t, {typescript}) => {
+test("Understands InterfaceDeclarations. #1", withTypeScript, (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript

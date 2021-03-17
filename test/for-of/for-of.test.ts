@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate a CallExpression with a ForOfStatement. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -25,7 +26,7 @@ test("Can evaluate a CallExpression with a ForOfStatement. #1", (t, {typescript}
 	else t.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -50,7 +51,7 @@ test("Can evaluate a CallExpression with a ForOfStatement and a break statement.
 	else t.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -75,7 +76,7 @@ test("Can evaluate a CallExpression with a ForOfStatement and a continue stateme
 	else t.deepEqual(result.value, 5);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

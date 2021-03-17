@@ -1,8 +1,9 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 import {IndexLiteral} from "../../src/interpreter/literal/literal";
 
-test("Can handle Class Decorators. #1", (t, {typescript}) => {
+test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -31,7 +32,7 @@ test("Can handle Class Decorators. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle multiple Class Decorators. #1", (t, {typescript}) => {
+test("Can handle multiple Class Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -68,7 +69,7 @@ test("Can handle multiple Class Decorators. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle instance Method Decorators. #1", (t, {typescript}) => {
+test("Can handle instance Method Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -104,7 +105,7 @@ test("Can handle instance Method Decorators. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle static Method Decorators. #1", (t, {typescript}) => {
+test("Can handle static Method Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -140,7 +141,7 @@ test("Can handle static Method Decorators. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle instance PropertyDeclaration Decorators. #1", (t, {typescript}) => {
+test("Can handle instance PropertyDeclaration Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -167,7 +168,7 @@ test("Can handle instance PropertyDeclaration Decorators. #1", (t, {typescript})
 	}
 });
 
-test("Can handle static PropertyDeclaration Decorators. #1", (t, {typescript}) => {
+test("Can handle static PropertyDeclaration Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -193,7 +194,7 @@ test("Can handle static PropertyDeclaration Decorators. #1", (t, {typescript}) =
 	}
 });
 
-test("Can handle Parameter Decorators. #1", (t, {typescript}) => {
+test("Can handle Parameter Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

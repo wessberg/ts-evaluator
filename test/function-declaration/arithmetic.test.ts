@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate a simple '(number, number) => number' function. #1", (t, {typescript}) => {
+test("Can evaluate a simple '(number, number) => number' function. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -21,7 +22,7 @@ test("Can evaluate a simple '(number, number) => number' function. #1", (t, {typ
 	else t.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #2", (t, {typescript}) => {
+test("Can evaluate a simple '(number, number) => number' function. #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -41,7 +42,7 @@ test("Can evaluate a simple '(number, number) => number' function. #2", (t, {typ
 	else t.deepEqual(result.value, -1);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #3", (t, {typescript}) => {
+test("Can evaluate a simple '(number, number) => number' function. #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -61,7 +62,7 @@ test("Can evaluate a simple '(number, number) => number' function. #3", (t, {typ
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #4", (t, {typescript}) => {
+test("Can evaluate a simple '(number, number) => number' function. #4", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -81,7 +82,7 @@ test("Can evaluate a simple '(number, number) => number' function. #4", (t, {typ
 	else t.deepEqual(result.value, 0.5);
 });
 
-test("Can evaluate a simple 'number => number' function. #1", (t, {typescript}) => {
+test("Can evaluate a simple 'number => number' function. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -101,7 +102,7 @@ test("Can evaluate a simple 'number => number' function. #1", (t, {typescript}) 
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can handle the 'arguments' identifier. #1", (t, {typescript}) => {
+test("Can handle the 'arguments' identifier. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

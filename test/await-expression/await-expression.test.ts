@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate an AwaitExpression #1", async (t, {typescript}) => {
+test("Can evaluate an AwaitExpression #1", withTypeScript, async (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

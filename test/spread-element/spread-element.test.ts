@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can handle Spread Elements in arrays. #1", (t, {typescript}) => {
+test("Can handle Spread Elements in arrays. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -21,7 +22,7 @@ test("Can handle Spread Elements in arrays. #1", (t, {typescript}) => {
 	else t.deepEqual(result.value as number[], [1, 2, 3]);
 });
 
-test("Can handle Spread Elements in CallExpressions. #1", (t, {typescript}) => {
+test("Can handle Spread Elements in CallExpressions. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

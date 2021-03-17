@@ -25,7 +25,7 @@ export function createPolicyProxy<T extends object>({hook, item, scope, policy}:
 					/**
 					 * Constructs a new instance of the given target
 					 */
-					construct(target: U, argArray: unknown[], newTarget?: unknown): object {
+					construct(target: U, argArray: unknown[], newTarget?: Function): object {
 						// Don't proceed if the hook says no
 						if (
 							!hook({

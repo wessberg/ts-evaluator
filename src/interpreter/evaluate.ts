@@ -14,7 +14,6 @@ import {createStack, Stack} from "./stack/stack";
 import {isDeclaration} from "./util/declaration/is-declaration";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
 import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
-import {EnvironmentPresetKind} from "./environment/environment-preset-kind";
 import {reportError} from "./util/reporting/report-error";
 import {createReportedErrorSet} from "./reporting/reported-error-set";
 import {ReportingOptionsSanitized} from "./reporting/i-reporting-options";
@@ -26,7 +25,7 @@ import {TS} from "../type/ts";
 export function evaluate({
 	typeChecker,
 	node,
-	environment: {preset = EnvironmentPresetKind.NODE, extra = {}} = {},
+	environment: {preset = "NODE", extra = {}} = {},
 	typescript = TSModule,
 	logLevel = LogLevelKind.SILENT,
 	policy: {

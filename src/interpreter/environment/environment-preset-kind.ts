@@ -1,6 +1,1 @@
-export enum EnvironmentPresetKind {
-	NONE = "NONE",
-	ECMA = "ECMA",
-	BROWSER = "BROWSER",
-	NODE = "NODE"
-}
+export type EnvironmentPresetKind = "NONE"|"ECMA"|"BROWSER"|"NODE";

@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", (t, {typescript}) => {
+test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -20,7 +21,7 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", (t, {typescr
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", (t, {typescript}) => {
+test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -39,7 +40,7 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", (t, {typescr
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", (t, {typescript}) => {
+test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -58,7 +59,7 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", (t, {typescr
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can handle ArrayBindingPatterns in ParameterDeclarations. #1", (t, {typescript}) => {
+test("Can handle ArrayBindingPatterns in ParameterDeclarations. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

@@ -1,8 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
-import {lt} from "semver";
+import {withTypeScript, withTypeScriptVersions} from "../util/ts-macro";
 
-test("Can handle ClassDeclarations and preserves their names. #1", (t, {typescript}) => {
+test("Can handle ClassDeclarations and preserves their names. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -23,7 +23,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", (t, {typescri
 	}
 });
 
-test("Can handle ClassDeclarations that extends from other named classes. #1", (t, {typescript}) => {
+test("Can handle ClassDeclarations that extends from other named classes. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -49,7 +49,7 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", (
 	}
 });
 
-test("Can handle ClassDeclarations that extends from Expressions. #1", (t, {typescript}) => {
+test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -75,7 +75,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", (t, {type
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #1", (t, {typescript}) => {
+test("Can handle ClassDeclarations and preserves their constructors. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -103,11 +103,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", (t, {t
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #2", (t, {typescript}) => {
-	if (lt(typescript.version, "3.8.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support private class fields. Skipping...`);
-		return;
-	}
+test("Can handle ClassDeclarations and preserves their constructors. #2", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript
@@ -140,7 +136,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", (t, {t
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #1", (t, {typescript}) => {
+test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -168,7 +164,7 @@ test("Inherits PropertyDeclarations from super classes. #1", (t, {typescript}) =
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #2", (t, {typescript}) => {
+test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -201,7 +197,7 @@ test("Inherits PropertyDeclarations from super classes. #2", (t, {typescript}) =
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #3", (t, {typescript}) => {
+test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -241,7 +237,7 @@ test("Inherits PropertyDeclarations from super classes. #3", (t, {typescript}) =
 	}
 });
 
-test("Can handle GetAccessorDeclarations. #1", (t, {typescript}) => {
+test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -268,7 +264,7 @@ test("Can handle GetAccessorDeclarations. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle SetAccessorDeclarations. #1", (t, {typescript}) => {
+test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -300,7 +296,7 @@ test("Can handle SetAccessorDeclarations. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle instance properties set via Constructor arguments. #1", (t, {typescript}) => {
+test("Can handle instance properties set via Constructor arguments. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

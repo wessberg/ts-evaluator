@@ -4,11 +4,6 @@ import {IPolicyProxyApplyHookOptions, IPolicyProxyConstructHookOptions, PolicyPr
 
 /**
  * Returns true if the given path represents something that is nondeterministic.
- *
- * @param map
- * @param condition
- * @param item
- * @returns
  */
 export function isTrapConditionMet<T extends object, ConditionType = boolean>(
 	map: TrapConditionMap<T, ConditionType>,
@@ -21,12 +16,6 @@ export function isTrapConditionMet<T extends object, ConditionType = boolean>(
 
 /**
  * Walks all atoms of the given item path
- *
- * @param map
- * @param matchCondition
- * @param item
- * @param atoms
- * @return
  */
 function walkAtoms<T extends object, ConditionType = boolean>(
 	map: TrapConditionMap<T, ConditionType> | TrapConditionMemberMap<T, ConditionType>,
@@ -56,11 +45,6 @@ function walkAtoms<T extends object, ConditionType = boolean>(
 
 /**
  * Handles a TrapCondition
- *
- * @param trapCondition
- * @param matchCondition
- * @param item
- * @return
  */
 function handleTrapCondition<T extends object, ConditionType>(
 	trapCondition: TrapCondition<ConditionType>,

@@ -7,6 +7,7 @@ export const NODE_GLOBALS = () => {
 	const ecmaGlobals = ECMA_GLOBALS();
 	const merged = mergeDescriptors(subtract(global, ecmaGlobals), ecmaGlobals, {
 		require,
+		process,
 		__dirname: (fileName: string) => dirname(fileName),
 		__filename: (fileName: string) => fileName
 	});

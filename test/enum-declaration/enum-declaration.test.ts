@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can handle EnumDeclarations. #1", (t, {typescript}) => {
+test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -28,7 +29,7 @@ test("Can handle EnumDeclarations. #1", (t, {typescript}) => {
 	}
 });
 
-test("Can handle EnumDeclarations. #2", (t, {typescript}) => {
+test("Can handle EnumDeclarations. #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -55,7 +56,7 @@ test("Can handle EnumDeclarations. #2", (t, {typescript}) => {
 	}
 });
 
-test("Can handle EnumDeclarations. #3", (t, {typescript}) => {
+test("Can handle EnumDeclarations. #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -82,7 +83,7 @@ test("Can handle EnumDeclarations. #3", (t, {typescript}) => {
 	}
 });
 
-test("Can handle EnumDeclarations. #4", (t, {typescript}) => {
+test("Can handle EnumDeclarations. #4", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

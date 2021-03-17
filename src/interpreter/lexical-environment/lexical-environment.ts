@@ -41,7 +41,7 @@ export function getRelevantDictFromLexicalEnvironment(env: LexicalEnvironment, p
 export function getPresetForLexicalEnvironment(env: LexicalEnvironment): EnvironmentPresetKind {
 	if (env.preset != null) return env.preset;
 	else if (env.parentEnv != null) return getPresetForLexicalEnvironment(env.parentEnv);
-	else return EnvironmentPresetKind.NONE;
+	else return "NONE";
 }
 
 /**
@@ -56,7 +56,7 @@ export function getFromLexicalEnvironment(node: TS.Node | undefined, env: Lexica
 			case "__dirname":
 			case "__filename": {
 				const preset = getPresetForLexicalEnvironment(env);
-				return preset === EnvironmentPresetKind.NODE && typeof literal === "function" && node != null ? {literal: literal(node.getSourceFile().fileName)} : {literal};
+				return preset === "NODE" && typeof literal === "function" && node != null ? {literal: literal(node.getSourceFile().fileName)} : {literal};
 			}
 			default:
 				return {literal};
@@ -170,19 +170,19 @@ export function createLexicalEnvironment({inputEnvironment: {extra, preset}, pol
 	let envInput: IndexLiteral;
 
 	switch (preset) {
-		case EnvironmentPresetKind.NONE:
+		case "NONE":
 			envInput = mergeDescriptors(extra);
 			break;
 
-		case EnvironmentPresetKind.ECMA:
+		case "ECMA":
 			envInput = mergeDescriptors(ECMA_GLOBALS(), extra);
 			break;
 
-		case EnvironmentPresetKind.NODE:
+		case "NODE":
 			envInput = mergeDescriptors(NODE_GLOBALS(), extra);
 			break;
 
-		case EnvironmentPresetKind.BROWSER:
+		case "BROWSER":
 			envInput = mergeDescriptors(BROWSER_GLOBALS(), extra);
 			break;
 

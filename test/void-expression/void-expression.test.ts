@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate VoidExpressions #1", (t, {typescript}) => {
+test("Can evaluate VoidExpressions #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -22,7 +23,7 @@ test("Can evaluate VoidExpressions #1", (t, {typescript}) => {
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate VoidExpressions #2", (t, {typescript}) => {
+test("Can evaluate VoidExpressions #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -42,7 +43,7 @@ test("Can evaluate VoidExpressions #2", (t, {typescript}) => {
 	else t.deepEqual(result.value, undefined);
 });
 
-test("Can evaluate VoidExpressions #3", (t, {typescript}) => {
+test("Can evaluate VoidExpressions #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

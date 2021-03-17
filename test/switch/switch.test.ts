@@ -1,7 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
+import {withTypeScript} from "../util/ts-macro";
 
-test("Can evaluate a CallExpression with a SwitchStatement. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -28,7 +29,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #1", (t, {typescript
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #2", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #2", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -55,7 +56,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #2", (t, {typescript
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #3", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #3", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -82,7 +83,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #3", (t, {typescript
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #4", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #4", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -111,7 +112,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #4", (t, {typescript
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #5", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #5", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -145,7 +146,7 @@ test("Can evaluate a CallExpression with a SwitchStatement. #5", (t, {typescript
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

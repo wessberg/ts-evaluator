@@ -1,16 +1,11 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
-import {lt} from "semver";
+import {withTypeScriptVersions} from "../util/ts-macro";
 
-test("Supports logical assignment. #1", (t, {typescript}) => {
-	if (typescript.version !== "4.0.0-beta" && lt(typescript.version, "4.0.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support Logical Assignment. Skipping...`);
-		return;
-	}
-
+test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let values: string[];
 				(values ??= []).push("hello");
@@ -29,15 +24,10 @@ test("Supports logical assignment. #1", (t, {typescript}) => {
 	}
 });
 
-test("Supports logical assignment. #2", (t, {typescript}) => {
-	if (typescript.version !== "4.0.0-beta" && lt(typescript.version, "4.0.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support Logical Assignment. Skipping...`);
-		return;
-	}
-
+test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let values: string[] = ["hi"];
 				(values ??= []).push("hello");
@@ -56,15 +46,11 @@ test("Supports logical assignment. #2", (t, {typescript}) => {
 	}
 });
 
-test("Supports logical assignment. #3", (t, {typescript}) => {
-	if (typescript.version !== "4.0.0-beta" && lt(typescript.version, "4.0.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support Logical Assignment. Skipping...`);
-		return;
-	}
+test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a;
 				let b = "foo";
@@ -84,15 +70,11 @@ test("Supports logical assignment. #3", (t, {typescript}) => {
 	}
 });
 
-test("Supports logical assignment. #4", (t, {typescript}) => {
-	if (typescript.version !== "4.0.0-beta" && lt(typescript.version, "4.0.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support Logical Assignment. Skipping...`);
-		return;
-	}
+test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = "foo";
 				let b = "bar";
@@ -112,15 +94,11 @@ test("Supports logical assignment. #4", (t, {typescript}) => {
 	}
 });
 
-test("Supports logical assignment. #5", (t, {typescript}) => {
-	if (typescript.version !== "4.0.0-beta" && lt(typescript.version, "4.0.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support Logical Assignment. Skipping...`);
-		return;
-	}
+test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a = "foo";
 				let b = "bar";
@@ -140,15 +118,11 @@ test("Supports logical assignment. #5", (t, {typescript}) => {
 	}
 });
 
-test("Supports logical assignment. #6", (t, {typescript}) => {
-	if (typescript.version !== "4.0.0-beta" && lt(typescript.version, "4.0.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support Logical Assignment. Skipping...`);
-		return;
-	}
+test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript
-			`
+		`
 			(() => {
 				let a;
 				let b = "bar";

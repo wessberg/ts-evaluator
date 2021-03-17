@@ -1,8 +1,8 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
-import {lt} from "semver";
+import {withTypeScript, withTypeScriptVersions} from "../util/ts-macro";
 
-test("Can evaluate and retrieve a PropertyDeclaration. #1", (t, {typescript}) => {
+test("Can evaluate and retrieve a PropertyDeclaration. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -22,11 +22,7 @@ test("Can evaluate and retrieve a PropertyDeclaration. #1", (t, {typescript}) =>
 	}
 });
 
-test("Can evaluate and retrieve a private PropertyDeclaration. #1", (t, {typescript}) => {
-	if (lt(typescript.version, "3.8.0")) {
-		t.pass(`Current TypeScript version (${typescript.version} does not support private class fields. Skipping...`);
-		return;
-	}
+test("Can evaluate and retrieve a private PropertyDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
 
 	const {evaluate} = prepareTest(
 		// language=TypeScript

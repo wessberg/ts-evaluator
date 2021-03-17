@@ -1,9 +1,9 @@
-import test from "../util/test-runner";
+import test from "ava";
 import {prepareTest} from "../setup";
-import {EnvironmentPresetKind} from "../../src/interpreter/environment/environment-preset-kind";
+import {withTypeScript} from "../util/ts-macro";
 import {normalize} from "path";
 
-test("Can handle the '__dirname' and '__filename' meta properties in a Node environment. #1", (t, {typescript}) => {
+test("Can handle the '__dirname' and '__filename' meta properties in a Node environment. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		{
@@ -18,7 +18,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 			cwd: normalize("/Users/someone/development/foo"),
 			typescript,
 			environment: {
-				preset: EnvironmentPresetKind.NODE
+				preset: "NODE"
 			}
 		}
 	);
@@ -31,7 +31,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 	}
 });
 
-test("Can handle 'process.cwd()' in a Node environment. #1", (t, {typescript}) => {
+test("Can handle 'process.cwd()' in a Node environment. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

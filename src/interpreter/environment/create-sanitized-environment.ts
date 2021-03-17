@@ -65,11 +65,6 @@ export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreat
 						? new Proxy(descriptor.value as NodeRequire, {
 								/**
 								 * A trap for a function call. Used to create new proxies for methods on the retrieved module objects
-								 *
-								 * @param target
-								 * @param thisArg
-								 * @param argArray
-								 * @return
 								 */
 								apply(target: NodeRequire, thisArg: unknown, argArray: unknown[] = []): unknown {
 									const [moduleName] = argArray as string[];
