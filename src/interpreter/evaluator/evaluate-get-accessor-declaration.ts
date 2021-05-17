@@ -15,6 +15,12 @@ export function evaluateGetAccessorDeclaration(
 	{node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.GetAccessorDeclaration>,
 	parent?: IndexLiteral
 ): void {
+	// We might be attempting to evaluate GetAccessorDeclaration that is placed within an ambient
+	// context such as an InterfaceDeclaration, in which case there's nothing to evaluate
+	if (typescript.isTypeLiteralNode(node.parent) || typescript.isInterfaceDeclaration(node.parent)) {
+		return;
+	}
+
 	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
 	const isStatic = inStaticContext(node, typescript);
 
