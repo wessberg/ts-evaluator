@@ -104,7 +104,6 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", withTy
 });
 
 test("Can handle ClassDeclarations and preserves their constructors. #2", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

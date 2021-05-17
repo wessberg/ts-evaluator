@@ -24,10 +24,13 @@ test("Throws when attempting to reference an identifier that is still not define
 	else t.true(result.reason instanceof UndefinedIdentifierError);
 });
 
-test("Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
-		// language=TypeScript
-		`
+test(
+	"Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1",
+	withTypeScript,
+	(t, {typescript}) => {
+		const {evaluate} = prepareTest(
+			// language=TypeScript
+			`
 			let myVar = add;
 
 			var add = function (a: number, b: number): number {
@@ -36,22 +39,26 @@ test("Doesn't throw when attempting to reference an identifier that is declared 
 
 			(() => myVar)();
 		`,
-		"(() =>",
-		{typescript}
-	);
+			"(() =>",
+			{typescript}
+		);
 
-	const result = evaluate();
+		const result = evaluate();
 
-	if (!result.success) t.fail(result.reason.stack);
-	// myVar aliases 'add', but before add received an rvalue. My the time it was aliased, it was initialized to the primitive
-	// value 'undefined', so myVar will still be assigned to undefined
-	else t.deepEqual(result.value, undefined);
-});
+		if (!result.success) t.fail(result.reason.stack);
+		// myVar aliases 'add', but before add received an rvalue. My the time it was aliased, it was initialized to the primitive
+		// value 'undefined', so myVar will still be assigned to undefined
+		else t.deepEqual(result.value, undefined);
+	}
+);
 
-test("Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
-		// language=TypeScript
-		`
+test(
+	"Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1",
+	withTypeScript,
+	(t, {typescript}) => {
+		const {evaluate} = prepareTest(
+			// language=TypeScript
+			`
 			let myVar = add;
 
 			var add = function (a: number, b: number): number {
@@ -60,16 +67,17 @@ test("Throws when attempting to use the rvalue of a referenced identifier that i
 
 			(() => myVar(1, 2))();
 		`,
-		"(() =>",
-		{typescript}
-	);
+			"(() =>",
+			{typescript}
+		);
 
-	const result = evaluate();
+		const result = evaluate();
 
-	if (result.success) t.fail();
-	// The identifier is not undefined, but the rvalue is.
-	else t.true(result.reason instanceof NotCallableError);
-});
+		if (result.success) t.fail();
+		// The identifier is not undefined, but the rvalue is.
+		else t.true(result.reason instanceof NotCallableError);
+	}
+);
 
 test("Respects block scoped variables declared with 'let'. #1", withTypeScript, (t, {typescript}) => {
 	const {evaluate} = prepareTest(

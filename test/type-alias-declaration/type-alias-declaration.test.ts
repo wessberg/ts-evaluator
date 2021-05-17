@@ -3,7 +3,6 @@ import {prepareTest} from "../setup";
 import {withTypeScript} from "../util/ts-macro";
 
 test("Understands TypeAliasDeclarations. #1", withTypeScript, (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

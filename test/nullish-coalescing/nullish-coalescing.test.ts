@@ -3,7 +3,6 @@ import {prepareTest} from "../setup";
 import {withTypeScriptVersions} from "../util/ts-macro";
 
 test("Supports nullish coalescing with null-like values. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

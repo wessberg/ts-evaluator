@@ -47,7 +47,6 @@ test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -71,7 +70,6 @@ test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -95,7 +93,6 @@ test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -119,7 +116,6 @@ test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

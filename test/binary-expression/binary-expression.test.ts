@@ -260,7 +260,6 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #7", withTypeSc
 });
 
 test("Can evaluate a BinaryExpression with a BigInt #1", withTypeScriptVersions(">=3.2"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(`123456789123456789123456789n + 123456789123456789123456789n`, undefined, {typescript});
 
 	const result = evaluate();
@@ -270,7 +269,6 @@ test("Can evaluate a BinaryExpression with a BigInt #1", withTypeScriptVersions(
 });
 
 test("Can evaluate a BinaryExpression with an InKeyword #1", withTypeScript, (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(`"foo" in {}`, undefined, {typescript});
 
 	const result = evaluate();
@@ -280,7 +278,6 @@ test("Can evaluate a BinaryExpression with an InKeyword #1", withTypeScript, (t,
 });
 
 test("Can evaluate a BinaryExpression with an InKeyword #2", withTypeScript, (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(`"foo" in {foo: 123}`, undefined, {typescript});
 
 	const result = evaluate();
@@ -290,7 +287,6 @@ test("Can evaluate a BinaryExpression with an InKeyword #2", withTypeScript, (t,
 });
 
 test("Can evaluate a BinaryExpression with an InKeyword #3", withTypeScript, (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(`"foo" in 42`, undefined, {typescript});
 
 	const result = evaluate();

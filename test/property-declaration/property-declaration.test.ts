@@ -23,7 +23,6 @@ test("Can evaluate and retrieve a PropertyDeclaration. #1", withTypeScript, (t, 
 });
 
 test("Can evaluate and retrieve a private PropertyDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

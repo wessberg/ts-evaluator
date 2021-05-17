@@ -41,7 +41,7 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 		case typescript.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken:
 		case typescript.SyntaxKind.QuestionQuestionEqualsToken:
 		case typescript.SyntaxKind.BarBarEqualsToken:
-		case typescript.SyntaxKind.AmpersandAmpersandEqualsToken:{
+		case typescript.SyntaxKind.AmpersandAmpersandEqualsToken: {
 			// There's nothing in the engine restricting you from applying this kind of arithmetic operation on non-numeric data types
 			let computedValue = leftValue;
 			switch (operator) {
@@ -187,7 +187,7 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 			return leftValue <= rightValue;
 
 		case typescript.SyntaxKind.InKeyword: {
-			return leftValue in ((rightValue as unknown) as Record<string, unknown>);
+			return leftValue in (rightValue as unknown as Record<string, unknown>);
 		}
 
 		// Nullish coalescing (A ?? B)
@@ -195,7 +195,7 @@ export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExp
 			return leftValue != null ? leftValue : rightValue;
 
 		case typescript.SyntaxKind.InstanceOfKeyword: {
-			return ((leftValue as unknown) as Record<string, unknown>) instanceof ((rightValue as unknown) as CallableFunction);
+			return (leftValue as unknown as Record<string, unknown>) instanceof (rightValue as unknown as CallableFunction);
 		}
 	}
 

@@ -1,1 +1,1 @@
-export type EnvironmentPresetKind = "NONE"|"ECMA"|"BROWSER"|"NODE";
+export type EnvironmentPresetKind = "NONE" | "ECMA" | "BROWSER" | "NODE";

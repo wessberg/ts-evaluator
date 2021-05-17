@@ -3,7 +3,6 @@ import {prepareTest} from "../setup";
 import {withTypeScriptVersions} from "../util/ts-macro";
 
 test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -23,7 +22,6 @@ test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (
 });
 
 test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`
@@ -43,7 +41,6 @@ test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions("
 });
 
 test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-
 	const {evaluate} = prepareTest(
 		// language=TypeScript
 		`

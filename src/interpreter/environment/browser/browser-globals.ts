@@ -7,7 +7,7 @@ import {rafImplementation} from "./lib/raf";
 export const BROWSER_GLOBALS = () => {
 	const {window} = new JSDOM("", {url: "https://example.com"});
 	const ecmaGlobals = ECMA_GLOBALS();
-	const raf = rafImplementation((window as unknown) as Window & typeof globalThis);
+	const raf = rafImplementation(window as unknown as Window & typeof globalThis);
 	const merged = mergeDescriptors(subtract(window, ecmaGlobals as Partial<DOMWindow>), subtract(raf, window), ecmaGlobals);
 
 	Object.defineProperties(merged, {

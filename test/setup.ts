@@ -80,7 +80,6 @@ export function prepareTest(
 		logLevel = LogLevelKind.SILENT
 	}: Partial<ITestOpts> = {}
 ): ITestFileResult {
-
 	const files: ITestFile[] = (Array.isArray(inputFiles) ? inputFiles : [inputFiles])
 		.map(file =>
 			typeof file === "string"
@@ -137,16 +136,13 @@ export function prepareTest(
 						cwd: nativeNormalizedRootDir,
 						ignore: [...(excludes ?? [])],
 						fs: {
-							readdirSync: (((path: string, {withFileTypes}: {withFileTypes?: boolean}) => {
+							readdirSync: ((path: string, {withFileTypes}: {withFileTypes?: boolean}) => {
 								path = normalize(path);
 
 								return files
 									.filter(file => file.fileName.startsWith(path))
 									.map(file => {
-										const fileName = file.fileName.slice(
-											path.length + 1,
-											file.fileName.includes(sep, path.length + 1) ? file.fileName.indexOf(sep, path.length + 1) : undefined
-										);
+										const fileName = file.fileName.slice(path.length + 1, file.fileName.includes(sep, path.length + 1) ? file.fileName.indexOf(sep, path.length + 1) : undefined);
 
 										const isDirectory = !file.fileName.endsWith(fileName);
 										const isFile = file.fileName.endsWith(fileName);
@@ -166,7 +162,7 @@ export function prepareTest(
 											  } as Partial<Dirent>)
 											: fileName;
 									});
-							}) as unknown) as typeof readdirSync
+							}) as unknown as typeof readdirSync
 						}
 					})
 					.map(file => join(nativeNormalizedRootDir, file));

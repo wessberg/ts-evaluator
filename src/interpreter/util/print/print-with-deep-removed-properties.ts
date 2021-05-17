@@ -16,7 +16,7 @@ export function printWithDeepRemovedProperties<T extends object>(node: T | undef
  * from property values
  */
 function deepCloneWithRemovedProperty<T extends object, U>(obj: T, properties: (keyof T)[], seenNestedObjects: Set<{}> = new Set()): U {
-	if (seenNestedObjects.has(obj)) return ("[Circular]" as unknown) as U;
+	if (seenNestedObjects.has(obj)) return "[Circular]" as unknown as U;
 
 	seenNestedObjects.add(obj);
 	const shallowClone = Array.isArray(obj) ? [...obj] : {...obj};
@@ -39,5 +39,5 @@ function deepCloneWithRemovedProperty<T extends object, U>(obj: T, properties: (
 			}
 		});
 	}
-	return (shallowClone as unknown) as U;
+	return shallowClone as unknown as U;
 }
