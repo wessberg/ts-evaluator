@@ -1,5 +1,6 @@
 import ts from "@wessberg/rollup-plugin-ts";
 import packageJSON from "./package.json";
+import {builtinModules} from "module";
 
 // noinspection JSUnusedGlobalSymbols
 export default {
@@ -22,9 +23,5 @@ export default {
 			tsconfig: "tsconfig.build.json"
 		})
 	],
-	external: [
-		...Object.keys(packageJSON.dependencies),
-		...Object.keys(packageJSON.devDependencies),
-		"util", "path"
-	]
+	external: [...builtinModules, ...Object.keys(packageJSON.dependencies), ...Object.keys(packageJSON.devDependencies)]
 };

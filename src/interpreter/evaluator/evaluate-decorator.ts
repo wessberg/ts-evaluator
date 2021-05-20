@@ -1,8 +1,8 @@
 import {IEvaluatorOptions} from "./i-evaluator-options";
 import {IndexLiteral, stringifyLiteral} from "../literal/literal";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error";
-import {__decorate, __param} from "tslib";
 import {TS} from "../../type/ts";
+import {__decorate, __param} from "../util/tslib/tslib-util";
 
 /**
  * Evaluates, or attempts to evaluate, a Decorator
