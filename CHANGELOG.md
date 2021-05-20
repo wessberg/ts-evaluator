@@ -1,3 +1,9 @@
+# [0.1.0](https://github.com/wessberg/ts-evaluator/compare/v0.0.29...v0.1.0) (2021-05-20)
+
+### Performance Improvements
+
+- remove runtime dependency on tslib ([684fe07](https://github.com/wessberg/ts-evaluator/commit/684fe0739c62d083228311907e98392e7865878c))
+
 ## [0.0.29](https://github.com/wessberg/ts-evaluator/compare/v0.0.28...v0.0.29) (2021-05-17)
 
 ### Features
