@@ -1,5 +1,5 @@
 {
-	"name": "@wessberg/ts-evaluator",
+	"name": "ts-evaluator",
 	"version": "0.0.29",
 	"description": "An interpreter for Typescript that can evaluate an arbitrary Node within a Typescript AST",
 	"scripts": {

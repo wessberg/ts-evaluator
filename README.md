@@ -12,8 +12,8 @@
 
 <!-- SHADOW_SECTION_BADGES_START -->
 
-<a href="https://npmcharts.com/compare/%40wessberg%2Fts-evaluator?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/%40wessberg%2Fts-evaluator.svg"    /></a>
-<a href="https://www.npmjs.com/package/%40wessberg%2Fts-evaluator"><img alt="NPM version" src="https://badge.fury.io/js/%40wessberg%2Fts-evaluator.svg"    /></a>
+<a href="https://npmcharts.com/compare/ts-evaluator?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/ts-evaluator.svg"    /></a>
+<a href="https://www.npmjs.com/package/ts-evaluator"><img alt="NPM version" src="https://badge.fury.io/js/ts-evaluator.svg"    /></a>
 <a href="https://david-dm.org/wessberg/ts-evaluator"><img alt="Dependencies" src="https://img.shields.io/david/wessberg%2Fts-evaluator.svg"    /></a>
 <a href="https://github.com/wessberg/ts-evaluator/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fts-evaluator.svg"    /></a>
 <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg"    /></a>
@@ -109,24 +109,24 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
 ### npm
 
 ```
-$ npm install @wessberg/ts-evaluator
+$ npm install ts-evaluator
 ```
 
 ### Yarn
 
 ```
-$ yarn add @wessberg/ts-evaluator
+$ yarn add ts-evaluator
 ```
 
 ### pnpm
 
 ```
-$ pnpm add @wessberg/ts-evaluator
+$ pnpm add ts-evaluator
 ```
 
 ### Peer Dependencies
 
-`@wessberg/ts-evaluator` depends on `typescript`, so you need to manually install this as well.
+`ts-evaluator` depends on `typescript`, so you need to manually install this as well.
 
 <!-- SHADOW_SECTION_INSTALL_END -->
 
@@ -139,7 +139,7 @@ $ pnpm add @wessberg/ts-evaluator
 Let's start off with a very basic example:
 
 ```typescript
-import {evaluate} from "@wessberg/ts-evaluator";
+import {evaluate} from "ts-evaluator";
 
 const result = evaluate({
 	node: someNode,

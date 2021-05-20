@@ -218,7 +218,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "@wessberg/ts-evaluator");
+	else t.deepEqual(result.value, "ts-evaluator");
 });
 
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", withTypeScriptVersions(">=3.1"), (t, {typescript}) => {
