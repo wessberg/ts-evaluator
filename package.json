@@ -17,8 +17,8 @@
 		"preversion": "pnpm run lint && pnpm run build",
 		"version": "pnpm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn --no-tests",
-		"update:check": "pnpx npm-check-updates -x np -x slash --dep dev,prod",
-		"update:commit": "pnpx npm-check-updates -u -x np,slash --dep dev,prod && pnpm update && pnpm install"
+		"update:check": "pnpx npm-check-updates -x slash --dep dev,prod",
+		"update:commit": "pnpx npm-check-updates -u -x slash --dep dev,prod && pnpm update && pnpm install"
 	},
 	"keywords": [
 		"typescript",
@@ -59,7 +59,7 @@
 		"eslint-plugin-import": "^2.23.2",
 		"eslint-plugin-jsdoc": "^34.8.2",
 		"husky": "^6.0.0",
-		"np": "5.2.1",
+		"np": "7.5.0",
 		"pnpm": "^6.4.0",
 		"prettier": "^2.3.0",
 		"fast-glob": "^3.2.5",
