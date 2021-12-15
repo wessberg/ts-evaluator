@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -12,7 +12,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, a GetAccessorDeclaration, before setting it on the given parent
  */
 export function evaluateGetAccessorDeclaration(
-	{node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.GetAccessorDeclaration>,
+	{node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.GetAccessorDeclaration>,
 	parent?: IndexLiteral
 ): void {
 	// We might be attempting to evaluate GetAccessorDeclaration that is placed within an ambient

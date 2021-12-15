@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {TS} from "../../type/ts";
 
@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, an ArrayBindingPattern, based on an initializer
  */
 export function evaluateArrayBindingPattern(
-	{node, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.ArrayBindingPattern>,
+	{node, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.ArrayBindingPattern>,
 	rightHandValue: Iterable<Literal>
 ): void {
 	const iterator = rightHandValue[Symbol.iterator]();

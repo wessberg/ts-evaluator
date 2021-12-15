@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -20,8 +20,6 @@ test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript}) =
 		}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, "bar");
@@ -29,7 +27,7 @@ test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript}) =
 });
 
 test("Can handle a Browser environment. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -45,8 +43,6 @@ test("Can handle a Browser environment. #2", withTypeScript, (t, {typescript}) =
 			}
 		}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

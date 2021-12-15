@@ -1,6 +1,6 @@
 import {IEvaluationErrorOptions} from "../../evaluation-error/i-evaluation-error-options";
-import {IEvaluateProcessPolicy} from "../../../policy/i-evaluate-policy";
+import {EvaluateProcessPolicy} from "../../../policy/evaluate-policy";
 
 export interface IProcessErrorOptions extends IEvaluationErrorOptions {
-	kind: keyof IEvaluateProcessPolicy;
+	kind: keyof EvaluateProcessPolicy;
 }

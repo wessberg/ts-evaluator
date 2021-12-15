@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can capture errors that would otherwise throw with try-catch. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -19,8 +19,6 @@ test("Can capture errors that would otherwise throw with try-catch. #1", withTyp
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.true(result.value instanceof Error);

@@ -1,10 +1,10 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
-import {normalize} from "path";
+import path from "crosspath";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can handle the '__dirname' and '__filename' meta properties in a Node environment. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result, setup} = executeProgram(
 		// language=TypeScript
 		{
 			text: `
@@ -15,7 +15,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 		},
 		"(() =>",
 		{
-			cwd: normalize("/Users/someone/development/foo"),
+			cwd: "/Users/someone/development/foo",
 			typescript,
 			environment: {
 				preset: "NODE"
@@ -23,16 +23,14 @@ test("Can handle the '__dirname' and '__filename' meta properties in a Node envi
 		}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		t.deepEqual(result.value, {dirname: "/Users/someone/development/foo", filename: "/Users/someone/development/foo/bar.ts"});
+		t.deepEqual(result.value, {dirname: path.native.join(setup.fileStructure.dir.src), filename: path.native.join(setup.fileStructure.dir.src, "bar.ts")});
 	}
 });
 
 test("Can handle 'process.cwd()' in a Node environment. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -42,8 +40,6 @@ test("Can handle 'process.cwd()' in a Node environment. #1", withTypeScript, (t,
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

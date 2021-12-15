@@ -1,11 +1,11 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a NewExpression
  */
-export function evaluateNewExpression({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.NewExpression>): Literal {
+export function evaluateNewExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.NewExpression>): Literal {
 	const evaluatedArgs: Literal[] = [];
 
 	if (node.arguments != null) {

@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {TS} from "../../type/ts";
@@ -7,7 +7,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, a BindingName, based on an BindingElement
  */
 export function evaluateBindingElement(
-	{environment, node, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.BindingElement>,
+	{environment, node, evaluate, logger, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.BindingElement>,
 	rightHandValue: Literal
 ): void {
 	// Compute the initializer value of the BindingElement, if it has any, that is

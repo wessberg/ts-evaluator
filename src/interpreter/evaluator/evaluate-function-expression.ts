@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {Literal} from "../literal/literal";
@@ -11,7 +11,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a FunctionExpression
  */
-export function evaluateFunctionExpression(options: IEvaluatorOptions<TS.FunctionExpression>): Literal {
+export function evaluateFunctionExpression(options: EvaluatorOptions<TS.FunctionExpression>): Literal {
 	const {node, environment, evaluate, stack, reporting, typescript} = options;
 	const nameResult = node.name == null ? undefined : node.name.text;
 

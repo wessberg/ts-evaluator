@@ -1,10 +1,10 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, an IfStatement
  */
-export function evaluateIfStatement({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.IfStatement>): void {
+export function evaluateIfStatement({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.IfStatement>): void {
 	const expressionValue = evaluate.expression(node.expression, environment, statementTraversalStack);
 
 	// We have to perform a loose boolean expression here to conform with actual spec behavior

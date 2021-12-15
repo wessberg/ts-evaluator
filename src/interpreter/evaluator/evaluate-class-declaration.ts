@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {generateClassDeclaration} from "../util/class/generate-class-declaration";
 import {hasModifier} from "../util/modifier/has-modifier";
@@ -16,7 +16,7 @@ export function evaluateClassDeclaration({
 	reporting,
 	typescript,
 	statementTraversalStack
-}: IEvaluatorOptions<TS.ClassDeclaration>): void {
+}: EvaluatorOptions<TS.ClassDeclaration>): void {
 	let extendedType: CallableFunction | undefined;
 	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));

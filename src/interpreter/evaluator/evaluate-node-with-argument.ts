@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral, Literal} from "../literal/literal";
 import {evaluateBindingName} from "./evaluate-binding-name";
 import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaration";
@@ -26,7 +26,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates a given node with the provided argument
  */
-export function evaluateNodeWithArgument(options: IEvaluatorOptions<TS.Node>, arg: Literal): void {
+export function evaluateNodeWithArgument(options: EvaluatorOptions<TS.Node>, arg: Literal): void {
 	options.logger.logNode(options.node, options.typescript, "nodeWithArgument");
 	const {node, ...rest} = options;
 

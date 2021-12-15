@@ -1,10 +1,10 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript, withTypeScriptVersions} from "../util/ts-macro";
-import {join} from "path";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro";
+import path from "crosspath";
 
 test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			{
 				fileName: "a.ts",
@@ -30,14 +30,12 @@ test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {type
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
 test("Can resolve symbols via ImportDeclarations. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			{
 				fileName: "a.ts",
@@ -70,14 +68,12 @@ test("Can resolve symbols via ImportDeclarations. #2", withTypeScript, (t, {type
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
 test("Can resolve symbols via ImportDeclarations. #3", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			{
 				fileName: "a.ts",
@@ -112,14 +108,12 @@ test("Can resolve symbols via ImportDeclarations. #3", withTypeScript, (t, {type
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
 test("Can resolve symbols via ImportDeclarations. #4", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			{
 				fileName: "a.ts",
@@ -154,14 +148,12 @@ test("Can resolve symbols via ImportDeclarations. #4", withTypeScript, (t, {type
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			// language=TypeScript
 			`
@@ -174,14 +166,12 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "/foo");
 });
 
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			// language=TypeScript
 			`
@@ -194,35 +184,31 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "/foo");
 });
 
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		[
 			// language=TypeScript
 			`
 				import {readFileSync} from "fs";
 
 				const alias = readFileSync;
-				const foo = JSON.parse(readFileSync("${join(__dirname, "../../package.json").replace(/\\/g, "\\\\")}")).name;
+				const foo = JSON.parse(readFileSync("${path.join(__dirname, "../../package.json").replace(/\\/g, "\\\\")}")).name;
 			`
 		],
 		"foo",
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "ts-evaluator");
 });
 
 test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", withTypeScriptVersions(">=3.1"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -239,8 +225,6 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #4",
 		"(() => ",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, true);

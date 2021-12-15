@@ -31,6 +31,10 @@ function walkAtoms<T extends object, ConditionType = boolean>(
 	// If nothing was matched within the namespace, the trap wasn't matched
 	if (mapEntry == null) return false;
 
+	if (typeof mapEntry === "string") {
+		return walkAtoms(map, matchCondition, item, [mapEntry as keyof T, ...tail]);
+	}
+
 	if (isTrapCondition<ConditionType>(mapEntry, matchCondition)) {
 		return handleTrapCondition(mapEntry, matchCondition, item);
 	} else {

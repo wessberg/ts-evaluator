@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {getRelevantDictFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
 import {Literal} from "../literal/literal";
@@ -7,7 +7,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a PrefixUnaryExpression
  */
-export function evaluatePrefixUnaryExpression({node, environment, evaluate, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
+export function evaluatePrefixUnaryExpression({node, environment, evaluate, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
 	const operandValue = evaluate.expression(node.operand, environment, statementTraversalStack) as number;
 
 	switch (node.operator) {

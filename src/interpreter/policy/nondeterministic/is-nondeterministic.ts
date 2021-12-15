@@ -5,9 +5,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
 
 /**
  * Returns true if the given path represents something that is nondeterministic.
- *
- * @param item
- * @returns
  */
 export function isNonDeterministic(item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(NONDETERMINISTIC_MAP, true, item);

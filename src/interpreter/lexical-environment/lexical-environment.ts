@@ -68,6 +68,21 @@ export function getFromLexicalEnvironment(node: TS.Node | undefined, env: Lexica
 }
 
 /**
+ * Returns true if a path maps to an identifier that has been declared within the Lexical Environment
+ */
+ export function hasInLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): boolean {
+	const [firstBinding] = path.split(".");
+	if (has(env.env, firstBinding)) {
+		return true;
+	}
+
+	if (env.parentEnv != null) {
+		return hasInLexicalEnvironment(node, env.parentEnv, path);
+	}
+	return false;
+}
+
+/**
  * Returns true if the given lexical environment contains a value on the given path that equals the given literal
  */
 export function pathInLexicalEnvironmentEquals(node: TS.Node, env: LexicalEnvironment, equals: Literal, ...matchPaths: string[]): boolean {
@@ -98,9 +113,6 @@ export function isInternalSymbol(value: Literal): boolean {
 
 /**
  * Gets a value from a Lexical Environment
- *
- * @param options
- * @param [newBinding=false]
  */
 export function setInLexicalEnvironment({env, path, value, reporting, node, newBinding = false}: ISetInLexicalEnvironmentOptions): void {
 	const [firstBinding] = path.split(".");
@@ -139,9 +151,6 @@ export function setInLexicalEnvironment({env, path, value, reporting, node, newB
 
 /**
  * Clears a binding from a Lexical Environment
- *
- * @param env
- * @param path
  */
 export function clearBindingFromLexicalEnvironment(env: LexicalEnvironment, path: string): void {
 	const [firstBinding] = path.split(".");
@@ -162,9 +171,6 @@ export function clearBindingFromLexicalEnvironment(env: LexicalEnvironment, path
 
 /**
  * Creates a Lexical Environment
- *
- * @param options
- * @returns
  */
 export function createLexicalEnvironment({inputEnvironment: {extra, preset}, policy, getCurrentNode}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
 	let envInput: IndexLiteral;

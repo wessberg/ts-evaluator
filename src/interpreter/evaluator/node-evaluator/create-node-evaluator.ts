@@ -5,7 +5,7 @@ import {LexicalEnvironment, pathInLexicalEnvironmentEquals} from "../../lexical-
 import {evaluateStatement} from "../evaluate-statement";
 import {Literal} from "../../literal/literal";
 import {evaluateExpression} from "../evaluate-expression";
-import {IEvaluatorOptions} from "../i-evaluator-options";
+import {EvaluatorOptions} from "../evaluator-options";
 import {evaluateDeclaration} from "../evaluate-declaration";
 import {evaluateNodeWithArgument} from "../evaluate-node-with-argument";
 import {evaluateNodeWithValue} from "../evaluate-node-with-value";
@@ -51,7 +51,7 @@ export function createNodeEvaluator({typeChecker, typescript, policy, logger, st
 			return action();
 		} catch (ex) {
 			// Report the Error
-			reportError(reporting, ex, node);
+			reportError(reporting, ex as Error, node);
 
 			// Re-throw the error
 			throw ex;
@@ -90,7 +90,7 @@ export function createNodeEvaluator({typeChecker, typescript, policy, logger, st
 	/**
 	 * Gets an IEvaluatorOptions object ready for passing to one of the evaluation functions
 	 */
-	function getEvaluatorOptions<T extends TS.Node>(node: T, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): IEvaluatorOptions<T> {
+	function getEvaluatorOptions<T extends TS.Node>(node: T, environment: LexicalEnvironment, statementTraversalStack: StatementTraversalStack): EvaluatorOptions<T> {
 		return {
 			typeChecker,
 			typescript,

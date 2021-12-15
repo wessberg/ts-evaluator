@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
@@ -8,7 +8,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a DefaultClause, based on a switch expression
  */
-export function evaluateDefaultClause({node, evaluate, environment}: IEvaluatorOptions<TS.DefaultClause>): void {
+export function evaluateDefaultClause({node, evaluate, environment}: EvaluatorOptions<TS.DefaultClause>): void {
 	for (const statement of node.statements) {
 		evaluate.statement(statement, environment);
 

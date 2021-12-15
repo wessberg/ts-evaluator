@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			enum Foo {
@@ -18,8 +18,6 @@ test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript}) => {
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const value = result.value as {a: number; b: number; c: number};
@@ -30,7 +28,7 @@ test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript}) => {
 });
 
 test("Can handle EnumDeclarations. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			enum Foo {
@@ -45,8 +43,6 @@ test("Can handle EnumDeclarations. #2", withTypeScript, (t, {typescript}) => {
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const value = result.value as {a: number; b: number; c: number};
@@ -57,7 +53,7 @@ test("Can handle EnumDeclarations. #2", withTypeScript, (t, {typescript}) => {
 });
 
 test("Can handle EnumDeclarations. #3", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			enum Foo {
@@ -72,8 +68,6 @@ test("Can handle EnumDeclarations. #3", withTypeScript, (t, {typescript}) => {
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const value = result.value as {a: number; b: number; c: number};
@@ -84,7 +78,7 @@ test("Can handle EnumDeclarations. #3", withTypeScript, (t, {typescript}) => {
 });
 
 test("Can handle EnumDeclarations. #4", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			enum Foo {
@@ -98,8 +92,6 @@ test("Can handle EnumDeclarations. #4", withTypeScript, (t, {typescript}) => {
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

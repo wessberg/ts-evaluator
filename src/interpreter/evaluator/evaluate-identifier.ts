@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {Literal} from "../literal/literal";
 import {UndefinedIdentifierError} from "../error/undefined-identifier-error/undefined-identifier-error";
@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, an Identifier or a PrivateIdentifier
  */
 
-export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS.PrivateIdentifier>): Literal {
+export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.PrivateIdentifier>): Literal {
 	const {node, environment, typeChecker, evaluate, stack, logger, reporting, typescript, statementTraversalStack} = options;
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
@@ -23,7 +23,7 @@ export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS
 
 	// Try to get a symbol for whatever the identifier points to and take its value declaration.
 	// It may not have a symbol, for example if it is an inlined expression such as an initializer or a Block
-	const symbol = typeChecker.getSymbolAtLocation(node);
+	const symbol = typescript.isShorthandPropertyAssignment(node.parent) ? typeChecker.getShorthandAssignmentValueSymbol(node.parent) : typeChecker.getSymbolAtLocation(node);
 	let valueDeclaration: TS.Declaration | undefined = symbol == null ? undefined : symbol.valueDeclaration;
 
 	if (symbol != null && valueDeclaration == null) {
@@ -35,6 +35,7 @@ export function evaluateIdentifier(options: IEvaluatorOptions<TS.Identifier | TS
 			// OK, it didn't alias anything
 		}
 	}
+
 
 	// If it has a value declaration, go forward with that one
 	if (valueDeclaration != null) {

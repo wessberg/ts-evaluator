@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {Literal} from "../literal/literal";
@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, an ArrowFunction
  */
-export function evaluateArrowFunctionExpression(options: IEvaluatorOptions<TS.ArrowFunction>): Literal {
+export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.ArrowFunction>): Literal {
 	const {node, environment, evaluate, stack, statementTraversalStack, reporting, typescript} = options;
 
 	const arrowFunctionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)

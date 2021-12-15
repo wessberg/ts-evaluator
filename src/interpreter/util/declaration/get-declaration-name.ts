@@ -1,11 +1,11 @@
-import {IEvaluatorOptions} from "../../evaluator/i-evaluator-options";
+import {EvaluatorOptions} from "../../evaluator/evaluator-options";
 import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error";
 import {TS} from "../../../type/ts";
 
 /**
  * Gets the name of the given declaration
  */
-export function getDeclarationName({node, evaluate, environment, typescript, statementTraversalStack}: IEvaluatorOptions<TS.Declaration>): string | number | undefined {
+export function getDeclarationName({node, evaluate, environment, typescript, statementTraversalStack}: EvaluatorOptions<TS.Declaration>): string | number | undefined {
 	const name = typescript.getNameOfDeclaration(node);
 	if (name == null) return undefined;
 

@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {getDotPathFromNode} from "../lexical-environment/get-dot-path-from-node";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {Literal} from "../literal/literal";
@@ -9,7 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a BinaryExpression
  */
-export function evaluateBinaryExpression(options: IEvaluatorOptions<TS.BinaryExpression>): Literal {
+export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpression>): Literal {
 	const {node, environment, evaluate, logger, statementTraversalStack, reporting, typescript} = options;
 
 	const leftValue = evaluate.expression(node.left, environment, statementTraversalStack) as number;

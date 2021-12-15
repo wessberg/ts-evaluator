@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a Block
  */
-export function evaluateBlock({node, environment, typescript, evaluate}: IEvaluatorOptions<TS.Block>): void {
+export function evaluateBlock({node, environment, typescript, evaluate}: EvaluatorOptions<TS.Block>): void {
 	// Prepare a lexical environment for the Block context
 	const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
 

@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
@@ -12,7 +12,7 @@ import {AsyncIteratorNotSupportedError} from "../error/async-iterator-not-suppor
 /**
  * Evaluates, or attempts to evaluate, a ForOfStatement
  */
-export function evaluateForOfStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.ForOfStatement>): void {
+export function evaluateForOfStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.ForOfStatement>): void {
 	// Compute the 'of' part
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as Iterable<Literal>;
 

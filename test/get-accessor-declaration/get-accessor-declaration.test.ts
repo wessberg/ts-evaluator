@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can evaluate and retrieve a GetAccessorDeclaration. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class Foo {
@@ -15,8 +15,6 @@ test("Can evaluate and retrieve a GetAccessorDeclaration. #1", withTypeScript, (
 		"get",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

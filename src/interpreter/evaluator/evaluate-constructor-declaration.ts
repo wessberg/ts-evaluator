@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, Literal} from "../literal/literal";
@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ConstructorDeclaration
  */
-export function evaluateConstructorDeclaration(options: IEvaluatorOptions<TS.ConstructorDeclaration>): void {
+export function evaluateConstructorDeclaration(options: EvaluatorOptions<TS.ConstructorDeclaration>): void {
 	const {node, environment, evaluate, stack, reporting} = options;
 
 	/**

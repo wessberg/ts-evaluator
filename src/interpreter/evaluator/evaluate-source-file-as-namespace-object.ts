@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral} from "../literal/literal";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {TS} from "../../type/ts";
@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a SourceFile as a namespace object
  */
-export function evaluateSourceFileAsNamespaceObject({node, environment, evaluate, typeChecker, stack, statementTraversalStack}: IEvaluatorOptions<TS.SourceFile>): void {
+export function evaluateSourceFileAsNamespaceObject({node, environment, evaluate, typeChecker, stack, statementTraversalStack}: EvaluatorOptions<TS.SourceFile>): void {
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;

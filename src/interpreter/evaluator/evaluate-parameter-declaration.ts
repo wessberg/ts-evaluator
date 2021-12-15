@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {TS} from "../../type/ts";
 
@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, a ParameterDeclaration
  */
 export function evaluateParameterDeclaration(
-	{node, environment, evaluate, statementTraversalStack, logger}: IEvaluatorOptions<TS.ParameterDeclaration>,
+	{node, environment, evaluate, statementTraversalStack, logger}: EvaluatorOptions<TS.ParameterDeclaration>,
 	boundArgument: Literal
 ): void {
 	// Use the bound argument if it is given unless it is nullable and the node itself has an initializer

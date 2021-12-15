@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {TS} from "../../type/ts";
@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a BigIntLiteral
  */
-export function evaluateBigIntLiteral({node, environment}: IEvaluatorOptions<TS.BigIntLiteral>): Literal {
+export function evaluateBigIntLiteral({node, environment}: EvaluatorOptions<TS.BigIntLiteral>): Literal {
 	// Use BigInt from the Realm instead of the executing context such that instanceof checks won't fail, etc.
 	const _BigInt = getFromLexicalEnvironment(node, environment, "BigInt")!.literal as BigIntConstructor;
 

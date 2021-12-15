@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -15,14 +15,12 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScr
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 123);
 });
 
 test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -34,14 +32,12 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScr
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 245);
 });
 
 test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(({foo}) => {
@@ -52,14 +48,12 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeSc
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 2);
 });
 
 test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(({foo: alias}) => {
@@ -69,8 +63,6 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", withTypeSc
 		"(({foo: alias}) =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 2);

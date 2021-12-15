@@ -8,6 +8,7 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
  * @type {TrapConditionMap<NodeBuiltInsAndGlobals>}
  */
 export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
+	"node:http2": "http2",
 	http2: {
 		connect: {
 			[PolicyTrapKind.APPLY]: true
@@ -19,6 +20,8 @@ export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 			[PolicyTrapKind.APPLY]: true
 		}
 	},
+
+	"node:https": "https",
 
 	https: {
 		createServer: {
@@ -42,6 +45,8 @@ export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 			[PolicyTrapKind.CONSTRUCT]: true
 		}
 	},
+
+	"node:http": "http",
 
 	http: {
 		createServer: {
@@ -69,11 +74,16 @@ export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 		}
 	},
 
+	"node:dgram": "dgram",
+
 	dgram: {
 		createSocket: {
 			[PolicyTrapKind.APPLY]: true
 		}
 	},
+
+	"node:dns": "dns",
+
 	dns: {
 		lookup: {
 			[PolicyTrapKind.APPLY]: true
@@ -124,6 +134,9 @@ export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 			[PolicyTrapKind.CONSTRUCT]: true
 		}
 	},
+
+	"node:net": "net",
+
 	net: {
 		createServer: {
 			[PolicyTrapKind.APPLY]: true
@@ -138,6 +151,9 @@ export const NETWORK_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 			[PolicyTrapKind.CONSTRUCT]: true
 		}
 	},
+
+	"node:tls": "tls",
+
 	tls: {
 		createServer: {
 			[PolicyTrapKind.APPLY]: true

@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can handle Spread Elements in arrays. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -16,14 +16,12 @@ test("Can handle Spread Elements in arrays. #1", withTypeScript, (t, {typescript
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value as number[], [1, 2, 3]);
 });
 
 test("Can handle Spread Elements in CallExpressions. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -38,8 +36,6 @@ test("Can handle Spread Elements in CallExpressions. #1", withTypeScript, (t, {t
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value as string, "FOO-4");

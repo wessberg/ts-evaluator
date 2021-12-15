@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript, withTypeScriptVersions} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro";
 
 test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class Foo {
@@ -16,8 +16,6 @@ test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {t
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.true(typeof result.value === "function");
@@ -25,7 +23,7 @@ test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {t
 });
 
 test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class Foo {
@@ -38,8 +36,6 @@ test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScript
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.true(typeof result.value === "function");
@@ -47,7 +43,7 @@ test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScript
 });
 
 test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class Foo {
@@ -66,8 +62,6 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, 4);
@@ -75,7 +69,7 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 });
 
 test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #2", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class Foo {
@@ -93,8 +87,6 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 		"result",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

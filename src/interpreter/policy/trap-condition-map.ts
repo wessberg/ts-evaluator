@@ -8,25 +8,26 @@ export type PolicyTrapKindToTrapConditionMap<ConditionType> = {
 };
 
 export type TrapConditionMap<T, ConditionType = boolean> = {
-	[Key in keyof T]?: TrapConditionMapValue<T[Key], ConditionType>;
+	[Key in keyof T]?: TrapConditionMapValue<T[Key], ConditionType, T>;
 };
 
 export type TrapConditionMemberMap<T, ConditionType> = {
-	[Key in keyof T]?: TrapConditionMapValue<T[Key], ConditionType>;
+	[Key in keyof T]?: TrapConditionMapValue<T[Key], ConditionType, T>;
 };
 
-export type TrapConditionMapValue<T, ConditionType> =
+export type TrapConditionMapValue<T, ConditionType, Parent = never> =
 	| TrapCondition<ConditionType>
 	| TrapConditionMemberMap<T, ConditionType>
 	| PolicyTrapKindToTrapConditionMap<ConditionType>
+
+	/**
+	 * Useful if two modules are identical and should follow the same rules
+	 */
+	| keyof Parent
 	| undefined;
 
 /**
  * Returns true if the given item is a TrapCondition
- *
- * @param item
- * @param condition
- * @return
  */
 export function isTrapCondition<ConditionType>(item: unknown, condition: ConditionType): item is TrapCondition<ConditionType> {
 	// noinspection SuspiciousTypeOfGuard
@@ -35,9 +36,6 @@ export function isTrapCondition<ConditionType>(item: unknown, condition: Conditi
 
 /**
  * Returns true if the given item is a TrapCondition
- *
- * @param item
- * @return
  */
 export function isTrapConditionFunction<T, ConditionType = boolean>(item: TrapConditionMapValue<T, ConditionType>): item is TrapConditionFunction<ConditionType> {
 	return typeof item === "function";

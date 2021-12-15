@@ -5,9 +5,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
 
 /**
  * Returns true if the given member represents a WRITE operation from IO
- *
- * @param item
- * @returns
  */
 export function isIoWrite(item: PolicyProxyHookOptions<NodeBuiltInsAndGlobals>): boolean {
 	return isTrapConditionMet(IO_MAP, "write", item);

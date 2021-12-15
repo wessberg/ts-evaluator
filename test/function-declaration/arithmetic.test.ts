@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can evaluate a simple '(number, number) => number' function. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function add (a: number, b: number): number {
@@ -16,14 +16,12 @@ test("Can evaluate a simple '(number, number) => number' function. #1", withType
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 3);
 });
 
 test("Can evaluate a simple '(number, number) => number' function. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function minus (a: number, b: number): number {
@@ -36,14 +34,12 @@ test("Can evaluate a simple '(number, number) => number' function. #2", withType
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, -1);
 });
 
 test("Can evaluate a simple '(number, number) => number' function. #3", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function multiply (a: number, b: number): number {
@@ -56,14 +52,12 @@ test("Can evaluate a simple '(number, number) => number' function. #3", withType
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 2);
 });
 
 test("Can evaluate a simple '(number, number) => number' function. #4", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function divide (a: number, b: number): number {
@@ -76,14 +70,12 @@ test("Can evaluate a simple '(number, number) => number' function. #4", withType
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 0.5);
 });
 
 test("Can evaluate a simple 'number => number' function. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function square (a: number): number {
@@ -96,14 +88,12 @@ test("Can evaluate a simple 'number => number' function. #1", withTypeScript, (t
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
 
 test("Can handle the 'arguments' identifier. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function square (a: number): number {
@@ -120,8 +110,6 @@ test("Can handle the 'arguments' identifier. #1", withTypeScript, (t, {typescrip
 			}
 		}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);

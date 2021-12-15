@@ -1,5 +1,5 @@
 import * as TSModule from "typescript";
-import {IEvaluateOptions} from "./i-evaluate-options";
+import {EvaluateOptions} from "./evaluate-options";
 import {createLexicalEnvironment} from "./lexical-environment/lexical-environment";
 import {EvaluateResult} from "./evaluate-result";
 import {evaluateSimpleLiteral} from "./evaluator/simple/evaluate-simple-literal";
@@ -13,11 +13,12 @@ import {isStatement} from "./util/statement/is-statement";
 import {createStack, Stack} from "./stack/stack";
 import {isDeclaration} from "./util/declaration/is-declaration";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
-import {IEvaluatePolicySanitized} from "./policy/i-evaluate-policy";
+import {EvaluatePolicySanitized} from "./policy/evaluate-policy";
 import {reportError} from "./util/reporting/report-error";
 import {createReportedErrorSet} from "./reporting/reported-error-set";
 import {ReportingOptionsSanitized} from "./reporting/i-reporting-options";
 import {TS} from "../type/ts";
+import { EvaluationError } from "./error/evaluation-error/evaluation-error";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
@@ -44,14 +45,14 @@ export function evaluate({
 		}
 	} = {},
 	reporting: reportingInput = {}
-}: IEvaluateOptions): EvaluateResult {
+}: EvaluateOptions): EvaluateResult {
 	// Take the simple path first. This may be far more performant than building up an environment
 	const simpleLiteralResult = evaluateSimpleLiteral(node, typescript);
 	if (simpleLiteralResult.success) return simpleLiteralResult;
 
 	// Otherwise, build an environment and get to work
 	// Sanitize the evaluation policy based on the input options
-	const policy: IEvaluatePolicySanitized = {
+	const policy: EvaluatePolicySanitized = {
 		deterministic,
 		maxOps,
 		maxOpDuration,
@@ -130,11 +131,11 @@ export function evaluate({
 		};
 	} catch (reason) {
 		// Report the Error
-		reportError(reporting, reason, node);
+		reportError(reporting, reason as EvaluationError, node);
 
 		return {
 			success: false,
-			reason
+			reason: reason as EvaluationError
 		};
 	}
 }

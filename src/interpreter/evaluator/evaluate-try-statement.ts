@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error";
 import {clearBindingFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {TRY_SYMBOL} from "../util/try/try-symbol";
@@ -10,7 +10,7 @@ import {TS} from "../../type/ts";
  * @param options
  * @returns
  */
-export function evaluateTryStatement({node, evaluate, environment, reporting, statementTraversalStack}: IEvaluatorOptions<TS.TryStatement>): void {
+export function evaluateTryStatement({node, evaluate, environment, reporting, statementTraversalStack}: EvaluatorOptions<TS.TryStatement>): void {
 	const executeTry = () => {
 		setInLexicalEnvironment({env: environment, reporting, newBinding: true, node, path: TRY_SYMBOL, value: true});
 		// The Block will declare an environment of its own
@@ -39,7 +39,7 @@ export function evaluateTryStatement({node, evaluate, environment, reporting, st
 		try {
 			executeTry();
 		} catch (ex) {
-			executeCatch(ex);
+			executeCatch(ex as Error);
 		}
 	}
 
@@ -48,7 +48,7 @@ export function evaluateTryStatement({node, evaluate, environment, reporting, st
 		try {
 			executeTry();
 		} catch (ex) {
-			executeCatch(ex);
+			executeCatch(ex as Error);
 		} finally {
 			executeFinally();
 		}

@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {MaxOpDurationExceededError} from "../error/policy-error/max-op-duration-exceeded-error/max-op-duration-exceeded-error";
 import {TS} from "../../type/ts";
@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, an AwaitExpression
  */
-export async function evaluateAwaitExpression({node, environment, evaluate, policy, statementTraversalStack}: IEvaluatorOptions<TS.AwaitExpression>): Promise<Literal> {
+export async function evaluateAwaitExpression({node, environment, evaluate, policy, statementTraversalStack}: EvaluatorOptions<TS.AwaitExpression>): Promise<Literal> {
 	// If a maximum duration for any operation is given, set a timeout that will throw a PolicyError when and if the duration is exceeded.
 	const timeout =
 		policy.maxOpDuration === Infinity

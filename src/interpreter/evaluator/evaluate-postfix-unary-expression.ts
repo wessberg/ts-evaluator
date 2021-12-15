@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {getRelevantDictFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
@@ -14,7 +14,7 @@ export function evaluatePostfixUnaryExpression({
 	reporting,
 	typescript,
 	statementTraversalStack
-}: IEvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
+}: EvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
 	// Make sure to evaluate the operand to ensure that it is found in the lexical environment
 	evaluate.expression(node.operand, environment, statementTraversalStack);
 

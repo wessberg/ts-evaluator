@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {EvaluationError} from "../error/evaluation-error/evaluation-error";
 import {Literal} from "../literal/literal";
 import {TS} from "../../type/ts";
@@ -7,7 +7,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, a VariableDeclaration
  */
 export function evaluateVariableDeclaration(
-	{node, environment, evaluate, stack, typescript, statementTraversalStack}: IEvaluatorOptions<TS.VariableDeclaration>,
+	{node, environment, evaluate, stack, typescript, statementTraversalStack}: EvaluatorOptions<TS.VariableDeclaration>,
 	initializer?: Literal
 ): void {
 	const initializerResult =

@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {NodeWithValue} from "./node-evaluator/node-evaluator";
 import {evaluatePropertyName} from "./evaluate-property-name";
@@ -7,7 +7,7 @@ import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-nod
 /**
  * Evaluates a given node with the provided argument
  */
-export function evaluateNodeWithValue(options: IEvaluatorOptions<NodeWithValue>): Literal {
+export function evaluateNodeWithValue(options: EvaluatorOptions<NodeWithValue>): Literal {
 	options.logger.logNode(options.node, options.typescript, "nodeWithValue");
 	const {node, ...rest} = options;
 

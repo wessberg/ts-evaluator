@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {LexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -12,7 +12,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a SetAccessorDeclaration, before setting it on the given parent
  */
-export function evaluateSetAccessorDeclaration(options: IEvaluatorOptions<TS.SetAccessorDeclaration>, parent: IndexLiteral): void {
+export function evaluateSetAccessorDeclaration(options: EvaluatorOptions<TS.SetAccessorDeclaration>, parent: IndexLiteral): void {
 	const {node, environment, evaluate, statementTraversalStack, reporting, typescript} = options;
 
 	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;

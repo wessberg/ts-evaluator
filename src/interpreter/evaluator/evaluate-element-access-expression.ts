@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral, IndexLiteralKey, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlagKind} from "../literal/literal";
 import {isBindCallApply} from "../util/function/is-bind-call-apply";
 import {TS} from "../../type/ts";
@@ -6,7 +6,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ElementAccessExpression
  */
-export function evaluateElementAccessExpression({node, environment, evaluate, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ElementAccessExpression>): Literal {
+export function evaluateElementAccessExpression({node, environment, evaluate, statementTraversalStack, typescript}: EvaluatorOptions<TS.ElementAccessExpression>): Literal {
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as IndexLiteral;
 	const argumentExpressionResult = evaluate.expression(node.argumentExpression, environment, statementTraversalStack) as IndexLiteralKey;
 

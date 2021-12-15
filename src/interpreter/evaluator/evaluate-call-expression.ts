@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {isLazyCall, Literal} from "../literal/literal";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -9,7 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a CallExpression
  */
-export function evaluateCallExpression({node, environment, evaluate, statementTraversalStack, typescript, logger}: IEvaluatorOptions<TS.CallExpression>): Literal {
+export function evaluateCallExpression({node, environment, evaluate, statementTraversalStack, typescript, logger}: EvaluatorOptions<TS.CallExpression>): Literal {
 	const evaluatedArgs: Literal[] = [];
 
 	for (let i = 0; i < node.arguments.length; i++) {

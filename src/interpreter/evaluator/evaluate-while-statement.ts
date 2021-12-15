@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
@@ -9,7 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a WhileStatement
  */
-export function evaluateWhileStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: IEvaluatorOptions<TS.WhileStatement>): void {
+export function evaluateWhileStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.WhileStatement>): void {
 	let condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
 
 	while (condition) {

@@ -2,7 +2,7 @@ import {findNearestParentNodeOfKind} from "../node/find-nearest-parent-node-of-k
 import {Literal} from "../../literal/literal";
 import {ModuleNotFoundError} from "../../error/module-not-found-error/module-not-found-error";
 import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error";
-import {IEvaluatorOptions} from "../../evaluator/i-evaluator-options";
+import {EvaluatorOptions} from "../../evaluator/evaluator-options";
 import {getDeclarationName} from "../declaration/get-declaration-name";
 import {EvaluationError} from "../../error/evaluation-error/evaluation-error";
 import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment";
@@ -11,7 +11,7 @@ import {TS} from "../../../type/ts";
 /**
  * Gets an implementation for the given declaration that lives within a declaration file
  */
-export function getImplementationForDeclarationWithinDeclarationFile(options: IEvaluatorOptions<TS.Declaration>): Literal {
+export function getImplementationForDeclarationWithinDeclarationFile(options: EvaluatorOptions<TS.Declaration>): Literal {
 	const {node, typescript} = options;
 	const name = getDeclarationName(options);
 

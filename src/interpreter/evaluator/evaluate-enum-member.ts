@@ -1,11 +1,11 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral, IndexLiteralKey} from "../literal/literal";
 import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, an EnumMember
  */
-export function evaluateEnumMember({node, typeChecker, evaluate, environment, statementTraversalStack}: IEvaluatorOptions<TS.EnumMember>, parent: IndexLiteral): void {
+export function evaluateEnumMember({node, typeChecker, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.EnumMember>, parent: IndexLiteral): void {
 	const constantValue = typeChecker.getConstantValue(node) as number | string;
 	const propertyName = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
 

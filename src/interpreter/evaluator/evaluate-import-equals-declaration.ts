@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {TS} from "../../type/ts";
 
 /**
@@ -7,6 +7,6 @@ import {TS} from "../../type/ts";
  * rather than manually parsing and resolving imports/exports
  */
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-export function evaluateImportEqualsDeclaration(_options: IEvaluatorOptions<TS.ImportEqualsDeclaration>): void {
+export function evaluateImportEqualsDeclaration(_options: EvaluatorOptions<TS.ImportEqualsDeclaration>): void {
 	// Noop
 }

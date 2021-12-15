@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import {IEvaluatePolicySanitized} from "../policy/i-evaluate-policy";
+import {EvaluatePolicySanitized} from "../policy/evaluate-policy";
 import {PolicyTrapKind} from "../policy/policy-trap-kind";
 
 export interface IPolicyProxyHookOptions {
 	kind: PolicyTrapKind;
-	policy: IEvaluatePolicySanitized;
+	policy: EvaluatePolicySanitized;
 	path: string;
 }
 

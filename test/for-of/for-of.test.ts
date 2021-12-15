@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 
 test("Can evaluate a CallExpression with a ForOfStatement. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function myFunc (): number {
@@ -20,14 +20,12 @@ test("Can evaluate a CallExpression with a ForOfStatement. #1", withTypeScript, 
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 6);
 });
 
 test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function myFunc (): number {
@@ -45,14 +43,12 @@ test("Can evaluate a CallExpression with a ForOfStatement and a break statement.
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 3);
 });
 
 test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function myFunc (): number {
@@ -70,14 +66,12 @@ test("Can evaluate a CallExpression with a ForOfStatement and a continue stateme
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 5);
 });
 
 test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function myFunc (): number {
@@ -94,8 +88,6 @@ test("Can evaluate a CallExpression with a ForOfStatement and a return statement
 		"myFunc(",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 3);

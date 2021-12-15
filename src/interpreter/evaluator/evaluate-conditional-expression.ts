@@ -1,11 +1,11 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {Literal} from "../literal/literal";
 import {TS} from "../../type/ts";
 
 /**
  * Evaluates, or attempts to evaluate, a ConditionalExpression
  */
-export function evaluateConditionalExpression({node, environment, evaluate, statementTraversalStack}: IEvaluatorOptions<TS.ConditionalExpression>): Literal {
+export function evaluateConditionalExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.ConditionalExpression>): Literal {
 	const conditionValue = evaluate.expression(node.condition, environment, statementTraversalStack);
 
 	// We have to perform a loose boolean expression here to conform with actual spec behavior

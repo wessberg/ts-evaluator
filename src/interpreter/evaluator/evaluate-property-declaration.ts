@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral, IndexLiteralKey} from "../literal/literal";
 import {inStaticContext} from "../util/static/in-static-context";
 import {TS} from "../../type/ts";
@@ -7,7 +7,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, a PropertyDeclaration, before applying it on the given parent
  */
 export function evaluatePropertyDeclaration(
-	{environment, node, evaluate, statementTraversalStack, typescript, stack}: IEvaluatorOptions<TS.PropertyDeclaration>,
+	{environment, node, evaluate, statementTraversalStack, typescript, stack}: EvaluatorOptions<TS.PropertyDeclaration>,
 	parent?: IndexLiteral
 ): void {
 	// Compute the property name

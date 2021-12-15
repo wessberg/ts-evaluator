@@ -1,15 +1,15 @@
 import {mergeDescriptors} from "../../util/descriptor/merge-descriptors";
 import {ECMA_GLOBALS} from "../ecma/ecma-globals";
 import {subtract} from "../../util/object/subtract";
-import {dirname} from "path";
+import path from "crosspath";
 
 export const NODE_GLOBALS = () => {
 	const ecmaGlobals = ECMA_GLOBALS();
 	const merged = mergeDescriptors(subtract(global, ecmaGlobals), ecmaGlobals, {
 		require,
 		process,
-		__dirname: (fileName: string) => dirname(fileName),
-		__filename: (fileName: string) => fileName
+		__dirname: (fileName: string) => path.native.normalize(path.native.dirname(fileName)),
+		__filename: (fileName: string) => path.native.normalize(fileName)
 	});
 
 	Object.defineProperties(merged, {

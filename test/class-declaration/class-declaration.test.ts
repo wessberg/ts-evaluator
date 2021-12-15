@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript, withTypeScriptVersions} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro";
 
 test("Can handle ClassDeclarations and preserves their names. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyClass {
@@ -15,8 +15,6 @@ test("Can handle ClassDeclarations and preserves their names. #1", withTypeScrip
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.true(result.value != null && (result.value as CallableFunction).name === "MyClass");
@@ -24,7 +22,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", withTypeScrip
 });
 
 test("Can handle ClassDeclarations that extends from other named classes. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class A {
@@ -39,8 +37,6 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", w
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (!Array.isArray(result.value)) t.fail();
 	else {
@@ -50,7 +46,7 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", w
 });
 
 test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class A extends class {
@@ -66,8 +62,6 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeS
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {method(): string})();
@@ -76,7 +70,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeS
 });
 
 test("Can handle ClassDeclarations and preserves their constructors. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyClass {
@@ -93,8 +87,6 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", withTy
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -104,7 +96,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", withTy
 });
 
 test("Can handle ClassDeclarations and preserves their constructors. #2", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyClass {
@@ -125,8 +117,6 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", withTy
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -136,7 +126,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", withTy
 });
 
 test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyParentClass {
@@ -153,8 +143,6 @@ test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t,
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -164,7 +152,7 @@ test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t,
 });
 
 test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyParentClass {
@@ -187,8 +175,6 @@ test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t,
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -197,7 +183,7 @@ test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t,
 });
 
 test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyParentClass {
@@ -226,8 +212,6 @@ test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t,
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -237,7 +221,7 @@ test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t,
 });
 
 test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyClass {
@@ -253,8 +237,6 @@ test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -264,7 +246,7 @@ test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 });
 
 test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyClass {
@@ -284,8 +266,6 @@ test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();
 	else {
@@ -296,7 +276,7 @@ test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 });
 
 test("Can handle instance properties set via Constructor arguments. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			class MyClass {
@@ -308,8 +288,6 @@ test("Can handle instance properties set via Constructor arguments. #1", withTyp
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else if (result.value == null) t.fail();

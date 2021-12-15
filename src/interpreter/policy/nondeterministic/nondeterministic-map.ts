@@ -6,7 +6,6 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
 
 /**
  * A Map between built-in identifiers and the members that produce non-deterministic results.
- * @type {TrapConditionMap<NodeBuiltInsAndGlobals>}
  */
 export const NONDETERMINISTIC_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
 	// Any network operation will always be non-deterministic

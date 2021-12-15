@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {evaluateVariableDeclaration} from "./evaluate-variable-declaration";
 import {evaluateBinaryExpression} from "./evaluate-binary-expression";
 import {evaluateCallExpression} from "./evaluate-call-expression";
@@ -66,11 +66,14 @@ import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaratio
 import {TS} from "../../type/ts";
 import {evaluateTypeAliasDeclaration} from "./evaluate-type-alias-declaration";
 import {evaluateInterfaceDeclaration} from "./evaluate-interface-declaration";
+import { evaluateImportClause } from "./evaluate-import-clause";
+import { evaluateImportSpecifier } from "./evaluate-import-specifier";
+import { evaluateNamespaceImport } from "./evaluate-namespace-import";
 
 /**
  * Will get a literal value for the given Node. If it doesn't succeed, the value will be 'undefined'
  */
-export function evaluateNode({node, ...rest}: IEvaluatorOptions<TS.Node>): unknown {
+export function evaluateNode({node, ...rest}: EvaluatorOptions<TS.Node>): unknown {
 	if (rest.typescript.isIdentifier(node)) {
 		return evaluateIdentifier({node, ...rest});
 	} else if (rest.typescript.isPrivateIdentifier?.(node)) {
@@ -123,6 +126,12 @@ export function evaluateNode({node, ...rest}: IEvaluatorOptions<TS.Node>): unkno
 		return evaluateVariableDeclarationList({node, ...rest});
 	} else if (rest.typescript.isImportDeclaration(node)) {
 		return evaluateImportDeclaration({node, ...rest});
+	} else if (rest.typescript.isImportClause(node)) {
+		return evaluateImportClause({node, ...rest});
+	} else if (rest.typescript.isImportSpecifier(node)) {
+		return evaluateImportSpecifier({node, ...rest});
+	} else if (rest.typescript.isNamespaceImport(node)) {
+		return evaluateNamespaceImport({node, ...rest});
 	} else if (rest.typescript.isImportEqualsDeclaration(node)) {
 		return evaluateImportEqualsDeclaration({node, ...rest});
 	} else if (rest.typescript.isThrowStatement(node)) {

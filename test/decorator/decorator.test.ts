@@ -1,10 +1,10 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScript} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScript} from "../setup/ts-macro";
 import {IndexLiteral} from "../../src/interpreter/literal/literal";
 
 test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function classDecorator<T extends { new (...args: any[]): {} }> (constructor: T) {
@@ -23,8 +23,6 @@ test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript}) => {
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {prop: string})();
@@ -33,7 +31,7 @@ test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript}) => {
 });
 
 test("Can handle multiple Class Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function classDecorator<T extends { new (...args: any[]): {} }> (constructor: T) {
@@ -59,8 +57,6 @@ test("Can handle multiple Class Decorators. #1", withTypeScript, (t, {typescript
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {prop: string; otherProp: string})();
@@ -70,7 +66,7 @@ test("Can handle multiple Class Decorators. #1", withTypeScript, (t, {typescript
 });
 
 test("Can handle instance Method Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function enumerable (value: boolean) {
@@ -96,8 +92,6 @@ test("Can handle instance Method Decorators. #1", withTypeScript, (t, {typescrip
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const descriptor = Object.getOwnPropertyDescriptor((result.value as CallableFunction).prototype, "greet");
@@ -106,7 +100,7 @@ test("Can handle instance Method Decorators. #1", withTypeScript, (t, {typescrip
 });
 
 test("Can handle static Method Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function enumerable (value: boolean) {
@@ -132,8 +126,6 @@ test("Can handle static Method Decorators. #1", withTypeScript, (t, {typescript}
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const descriptor = Object.getOwnPropertyDescriptor(result.value as CallableFunction, "greet");
@@ -142,7 +134,7 @@ test("Can handle static Method Decorators. #1", withTypeScript, (t, {typescript}
 });
 
 test("Can handle instance PropertyDeclaration Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function useProperty (target: any, key: string) {
@@ -159,8 +151,6 @@ test("Can handle instance PropertyDeclaration Decorators. #1", withTypeScript, (
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {_myProp: string; myProp: string})();
@@ -169,7 +159,7 @@ test("Can handle instance PropertyDeclaration Decorators. #1", withTypeScript, (
 });
 
 test("Can handle static PropertyDeclaration Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function useProperty (target: any, key: string) {
@@ -186,8 +176,6 @@ test("Can handle static PropertyDeclaration Decorators. #1", withTypeScript, (t,
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual((result.value as {_myProp: string; myProp: string})._myProp, "whatever");
@@ -195,7 +183,7 @@ test("Can handle static PropertyDeclaration Decorators. #1", withTypeScript, (t,
 });
 
 test("Can handle Parameter Decorators. #1", withTypeScript, (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			function countParameter (target, key, index) {
@@ -221,8 +209,6 @@ test("Can handle Parameter Decorators. #1", withTypeScript, (t, {typescript}) =>
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

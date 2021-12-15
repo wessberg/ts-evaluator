@@ -1,13 +1,14 @@
 import {TrapConditionMap} from "../trap-condition-map";
 import {PolicyTrapKind} from "../policy-trap-kind";
-import {IEvaluateIOPolicy} from "../i-evaluate-policy";
+import {EvaluateIOPolicy} from "../evaluate-policy";
 import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
 
 /**
  * A Map between built-in modules and the kind of IO operations their members performs
  * @type {TrapConditionMap<NodeBuiltInsAndGlobals, "read"|"write">}
  */
-export const IO_MAP: TrapConditionMap<NodeBuiltInsAndGlobals, keyof IEvaluateIOPolicy> = {
+export const IO_MAP: TrapConditionMap<NodeBuiltInsAndGlobals, keyof EvaluateIOPolicy> = {
+	"node:fs": "fs",
 	fs: {
 		readFile: {
 			[PolicyTrapKind.APPLY]: "read"

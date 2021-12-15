@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScriptVersions} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScriptVersions} from "../setup/ts-macro";
 
 test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			const foo = {bar: {baz: undefined}};
@@ -13,8 +13,6 @@ test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, undefined);
@@ -22,7 +20,7 @@ test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (
 });
 
 test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			const foo = {bar: undefined};
@@ -32,8 +30,6 @@ test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions("
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, undefined);
@@ -41,7 +37,7 @@ test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions("
 });
 
 test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			const foo = {bar: undefined};
@@ -50,8 +46,6 @@ test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">
 		`foo.bar?.["baz"]`,
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

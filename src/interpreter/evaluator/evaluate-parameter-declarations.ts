@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {IndexLiteral, Literal} from "../literal/literal";
 import {hasModifier} from "../util/modifier/has-modifier";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
@@ -8,7 +8,7 @@ import {TS} from "../../type/ts";
  * Evaluates, or attempts to evaluate, a NodeArray of ParameterDeclarations
  */
 export function evaluateParameterDeclarations(
-	{node, evaluate, environment, statementTraversalStack, typescript}: IEvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>,
+	{node, evaluate, environment, statementTraversalStack, typescript}: EvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>,
 	boundArguments: Literal[],
 	context?: IndexLiteral
 ): void {

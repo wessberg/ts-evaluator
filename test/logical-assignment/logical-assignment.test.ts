@@ -1,9 +1,9 @@
 import test from "ava";
-import {prepareTest} from "../setup";
-import {withTypeScriptVersions} from "../util/ts-macro";
+import {executeProgram} from "../setup/execute-program";
+import {withTypeScriptVersions} from "../setup/ts-macro";
 
 test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -16,8 +16,6 @@ test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {ty
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, ["hello"]);
@@ -25,7 +23,7 @@ test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -38,8 +36,6 @@ test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {ty
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, ["hi", "hello"]);
@@ -47,7 +43,7 @@ test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -61,8 +57,6 @@ test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {ty
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, "foo");
@@ -70,7 +64,7 @@ test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -84,8 +78,6 @@ test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {ty
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, "foo");
@@ -93,7 +85,7 @@ test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -107,8 +99,6 @@ test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {ty
 		{typescript}
 	);
 
-	const result = evaluate();
-
 	if (!result.success) t.fail(result.reason.stack);
 	else {
 		t.deepEqual(result.value, "bar");
@@ -116,7 +106,7 @@ test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {ty
 });
 
 test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
-	const {evaluate} = prepareTest(
+	const {result} = executeProgram(
 		// language=TypeScript
 		`
 			(() => {
@@ -129,8 +119,6 @@ test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {ty
 		"(() =>",
 		{typescript}
 	);
-
-	const result = evaluate();
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {

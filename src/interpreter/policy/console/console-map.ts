@@ -4,10 +4,11 @@ import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-
 
 /**
  * A Map between built-in modules (as well as 'console' and the operations that print to console
- * @type {TrapConditionMap<NodeBuiltInsAndGlobals>}
  */
 export const CONSOLE_MAP: TrapConditionMap<NodeBuiltInsAndGlobals> = {
+	"node:console": "console",
 	console: {
 		[PolicyTrapKind.APPLY]: true
-	}
+	},
+	
 };

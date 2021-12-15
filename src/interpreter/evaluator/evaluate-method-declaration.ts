@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
@@ -13,7 +13,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a MethodDeclaration, before setting it on the given parent
  */
-export function evaluateMethodDeclaration(options: IEvaluatorOptions<TS.MethodDeclaration>, parent?: IndexLiteral): void {
+export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDeclaration>, parent?: IndexLiteral): void {
 	const {node, environment, evaluate, stack, statementTraversalStack, reporting, typescript} = options;
 	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
 	const isStatic = inStaticContext(node, typescript);

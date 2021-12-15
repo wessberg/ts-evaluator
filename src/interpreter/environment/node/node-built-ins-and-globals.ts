@@ -1,3 +1,3 @@
-import {IBuiltInModuleMap} from "../../policy/module/built-in-module-map";
+import {BuiltInModuleMap} from "../../policy/module/built-in-module-map";
 
-export type NodeBuiltInsAndGlobals = IBuiltInModuleMap & typeof global;
+export type NodeBuiltInsAndGlobals = BuiltInModuleMap & typeof global;

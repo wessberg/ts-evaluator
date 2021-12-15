@@ -1,4 +1,4 @@
-import {IEvaluatorOptions} from "./i-evaluator-options";
+import {EvaluatorOptions} from "./evaluator-options";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
 import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
 import {BREAK_SYMBOL} from "../util/break/break-symbol";
@@ -9,7 +9,7 @@ import {TS} from "../../type/ts";
 /**
  * Evaluates, or attempts to evaluate, a ForStatement
  */
-export function evaluateForStatement({node, environment, evaluate, reporting, statementTraversalStack, typescript}: IEvaluatorOptions<TS.ForStatement>): void {
+export function evaluateForStatement({node, environment, evaluate, reporting, statementTraversalStack, typescript}: EvaluatorOptions<TS.ForStatement>): void {
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment);
 

@@ -2,14 +2,14 @@ import {isThisExpression} from "../util/node/is-this-expression";
 import {THIS_SYMBOL} from "../util/this/this-symbol";
 import {isSuperExpression} from "../util/node/is-super-expression";
 import {SUPER_SYMBOL} from "../util/super/super-symbol";
-import {IEvaluatorOptions} from "../evaluator/i-evaluator-options";
+import {EvaluatorOptions} from "../evaluator/evaluator-options";
 import {TS} from "../../type/ts";
 
 /**
  * Gets the path to "dot" into an object with based on the node. For example, if the node is a simple identifier, say, 'foo', the dot path is simply "foo".
  * And, if it is a PropertyAccessExpression, that path may be "console.log" for example
  */
-export function getDotPathFromNode<T extends TS.Node>(options: IEvaluatorOptions<T>): string | undefined {
+export function getDotPathFromNode<T extends TS.Node>(options: EvaluatorOptions<T>): string | undefined {
 	const {node, evaluate, typescript, environment, statementTraversalStack} = options;
 	if (typescript.isIdentifier(node)) {
 		return node.text;
