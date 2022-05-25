@@ -1,6 +1,6 @@
 {
 	"name": "ts-evaluator",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"description": "An interpreter for Typescript that can evaluate an arbitrary Node within a Typescript AST",
 	"scripts": {
 		"generate:sandhog": "sandhog all --yes",
@@ -105,7 +105,6 @@
 			"optional": true
 		}
 	},
-
 	"main": "./dist/cjs/index.js",
 	"module": "./dist/esm/index.js",
 	"browser": "./dist/esm/index.js",
