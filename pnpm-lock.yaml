@@ -7,7 +7,6 @@ specifiers:
   '@types/semver': ^7.3.9
   '@typescript-eslint/eslint-plugin': ^5.26.0
   '@typescript-eslint/parser': ^5.26.0
-  '@wessberg/rollup-plugin-ts': ^2.0.4
   '@wessberg/ts-config': ^2.0.2
   ava: ^3.15.0
   chalk: ^4.1.2
@@ -28,6 +27,7 @@ specifiers:
   pretty-quick: ^3.1.3
   rimraf: ^3.0.2
   rollup: ^2.74.1
+  rollup-plugin-ts: 2.0.7
   sandhog: ^1.0.43
   semver: 7.3.7
   standard-changelog: ^2.0.27
@@ -57,7 +57,6 @@ devDependencies:
   '@types/semver': 7.3.9
   '@typescript-eslint/eslint-plugin': 5.26.0_hzuh7e2up357pvq3mkokjvu2lq
   '@typescript-eslint/parser': 5.26.0_xztl6dhthcahlo6akmb2bmjmle
-  '@wessberg/rollup-plugin-ts': 2.0.4_durm56y4qsrp7annnznb67puce
   '@wessberg/ts-config': 2.0.2
   ava: 3.15.0
   chalk: 4.1.2
@@ -77,6 +76,7 @@ devDependencies:
   pretty-quick: 3.1.3_prettier@2.6.2
   rimraf: 3.0.2
   rollup: 2.74.1
+  rollup-plugin-ts: 2.0.7_durm56y4qsrp7annnznb67puce
   sandhog: 1.0.43
   semver: 7.3.7
   standard-changelog: 2.0.27
@@ -579,46 +579,6 @@ packages:
     dependencies:
       '@typescript-eslint/types': 5.26.0
       eslint-visitor-keys: 3.3.0
-    dev: true
-
-  /@wessberg/rollup-plugin-ts/2.0.4_durm56y4qsrp7annnznb67puce:
-    resolution: {integrity: sha512-+p5eRldRODlsCZs0vpBgl64jChzoxad0RxutvFGhhJyiXrN8lwewTo1MAwae/dsanK+L2WUCGZsMyxIYY8JGfA==}
-    engines: {node: '>=10.0.0', npm: '>=7.0.0', pnpm: '>=3.2.0', yarn: '>=1.13'}
-    peerDependencies:
-      '@babel/core': '>=6.x || >=7.x'
-      '@babel/plugin-transform-runtime': '>=6.x || >=7.x'
-      '@babel/preset-env': '>=6.x || >=7.x'
-      '@babel/runtime': '>=6.x || >=7.x'
-      '@swc/core': '>=1.x'
-      '@swc/helpers': '>=0.2'
-      rollup: '>=1.x || >=2.x'
-      typescript: '>=3.2.x || >= 4.x'
-    peerDependenciesMeta:
-      '@babel/core':
-        optional: true
-      '@babel/plugin-transform-runtime':
-        optional: true
-      '@babel/preset-env':
-        optional: true
-      '@babel/runtime':
-        optional: true
-      '@swc/core':
-        optional: true
-      '@swc/helpers':
-        optional: true
-    dependencies:
-      '@rollup/pluginutils': 4.2.1
-      '@wessberg/stringutil': 1.0.19
-      browserslist: 4.20.3
-      browserslist-generator: 1.0.66
-      chalk: 4.1.2
-      compatfactory: 0.0.12_typescript@4.7.2
-      crosspath: 1.0.0
-      magic-string: 0.25.9
-      rollup: 2.74.1
-      ts-clone-node: 0.3.32_typescript@4.7.2
-      tslib: 2.4.0
-      typescript: 4.7.2
     dev: true
 
   /@wessberg/stringutil/1.0.19:
@@ -1451,16 +1411,6 @@ packages:
     dependencies:
       array-ify: 1.0.0
       dot-prop: 5.3.0
-    dev: true
-
-  /compatfactory/0.0.12_typescript@4.7.2:
-    resolution: {integrity: sha512-DD5S1s2mIoVIpYfhCqNZPbOFlt9JDLkXc4d8fAZaeWWIsl7w3bmVS0HNlUkU2SB6iZOdXOjYZgeJZClmL1xnRg==}
-    engines: {node: '>=10.0.0'}
-    peerDependencies:
-      typescript: '>=3.x || >= 4.x'
-    dependencies:
-      helpertypes: 0.0.17
-      typescript: 4.7.2
     dev: true
 
   /compatfactory/0.0.13_typescript@4.7.2:
@@ -3773,8 +3723,9 @@ packages:
     engines: {node: '>=12'}
     dev: true
 
-  /magic-string/0.25.9:
-    resolution: {integrity: sha512-RmF0AsMzgt25qzqqLc1+MbHmhdx0ojF2Fvs4XnOqz2ZOBXzzkEwc/dJQZCYHAn7v1jbVOjAZfK8msRn4BxO4VQ==}
+  /magic-string/0.26.2:
+    resolution: {integrity: sha512-NzzlXpclt5zAbmo6h6jNc8zl2gNRGHvmsZW4IvZhTC4W7k4OlLP+S5YLussa/r3ixNT66KOQfNORlXHSOy/X4A==}
+    engines: {node: '>=12'}
     dependencies:
       sourcemap-codec: 1.4.8
     dev: true
@@ -5207,6 +5158,46 @@ packages:
     hasBin: true
     dependencies:
       glob: 7.2.3
+    dev: true
+
+  /rollup-plugin-ts/2.0.7_durm56y4qsrp7annnznb67puce:
+    resolution: {integrity: sha512-M9sppRKX6y/b2KXbGdUdHid0tshAEK/sEeYLBHBJiBa4swukSsoFVXKGGZasLcjaXhgUnnizFuvFFj6znxwvSA==}
+    engines: {node: '>=10.0.0', npm: '>=7.0.0', pnpm: '>=3.2.0', yarn: '>=1.13'}
+    peerDependencies:
+      '@babel/core': '>=6.x || >=7.x'
+      '@babel/plugin-transform-runtime': '>=6.x || >=7.x'
+      '@babel/preset-env': '>=6.x || >=7.x'
+      '@babel/runtime': '>=6.x || >=7.x'
+      '@swc/core': '>=1.x'
+      '@swc/helpers': '>=0.2'
+      rollup: '>=1.x || >=2.x'
+      typescript: '>=3.2.x || >= 4.x'
+    peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@babel/plugin-transform-runtime':
+        optional: true
+      '@babel/preset-env':
+        optional: true
+      '@babel/runtime':
+        optional: true
+      '@swc/core':
+        optional: true
+      '@swc/helpers':
+        optional: true
+    dependencies:
+      '@rollup/pluginutils': 4.2.1
+      '@wessberg/stringutil': 1.0.19
+      browserslist: 4.20.3
+      browserslist-generator: 1.0.66
+      chalk: 4.1.2
+      compatfactory: 0.0.13_typescript@4.7.2
+      crosspath: 1.0.0
+      magic-string: 0.26.2
+      rollup: 2.74.1
+      ts-clone-node: 0.3.32_typescript@4.7.2
+      tslib: 2.4.0
+      typescript: 4.7.2
     dev: true
 
   /rollup/2.74.1:
