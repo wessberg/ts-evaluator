@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import {PolicyTrapKind} from "../policy-trap-kind";
 import {TrapConditionMap} from "../trap-condition-map";
 import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
