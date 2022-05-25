@@ -74,7 +74,7 @@
 		"chalk": "^4.1.2",
 		"standard-changelog": "^2.0.27",
 		"ts-node": "^10.8.0",
-		"typescript": "^4.7.2",
+		"typescript": "4.6.4",
 		"typescript-3-4-1": "npm:typescript@3.4.1",
 		"typescript-3-5-1": "npm:typescript@3.5.1",
 		"typescript-3-6-2": "npm:typescript@3.6.2",
