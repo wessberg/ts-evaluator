@@ -1,3 +1,12 @@
+# [1.0.0](https://github.com/wessberg/ts-evaluator/compare/v0.2.0...v1.0.0) (2022-06-07)
+
+
+### Features
+
+* add TypeScript v4.7 support. Add NODE_ESM preset. Add support for evaluating new.target and import.meta meta properties ([dbe0433](https://github.com/wessberg/ts-evaluator/commit/dbe0433270c96540950a2b0a4b552249dbab50cf))
+
+
+
 # [0.2.0](https://github.com/wessberg/ts-evaluator/compare/v0.1.0...v0.2.0) (2022-05-25)
 
 
