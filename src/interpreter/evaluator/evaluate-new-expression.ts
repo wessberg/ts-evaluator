@@ -1,11 +1,12 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {Literal} from "../literal/literal";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {Literal} from "../literal/literal.js";
+import {TS} from "../../type/ts.js";
+import { setInLexicalEnvironment } from "../lexical-environment/lexical-environment.js";
 
 /**
  * Evaluates, or attempts to evaluate, a NewExpression
  */
-export function evaluateNewExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.NewExpression>): Literal {
+export function evaluateNewExpression({node, environment, evaluate, statementTraversalStack, reporting}: EvaluatorOptions<TS.NewExpression>): Literal {
 	const evaluatedArgs: Literal[] = [];
 
 	if (node.arguments != null) {
@@ -16,6 +17,11 @@ export function evaluateNewExpression({node, environment, evaluate, statementTra
 
 	// Evaluate the expression
 	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as new (...args: Literal[]) => Literal;
+
+	// If the expression evaluated to a function, mark it as the [[NewTarget]], as per https://tc39.es/ecma262/multipage/executable-code-and-execution-contexts.html#sec-getnewtarget
+	if (typeof expressionResult === "function") {
+		setInLexicalEnvironment({env: environment, path: "[[NewTarget]]", value: expressionResult, newBinding: true, reporting, node});
+	}
 
 	return new expressionResult(...evaluatedArgs);
 }

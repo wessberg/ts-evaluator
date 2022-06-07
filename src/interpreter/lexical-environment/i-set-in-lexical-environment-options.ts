@@ -1,7 +1,7 @@
-import {Literal} from "../literal/literal";
-import {LexicalEnvironment} from "./lexical-environment";
-import {ReportingOptionsSanitized} from "../reporting/i-reporting-options";
-import {TS} from "../../type/ts";
+import {Literal} from "../literal/literal.js";
+import {LexicalEnvironment} from "./lexical-environment.js";
+import {ReportingOptionsSanitized} from "../reporting/i-reporting-options.js";
+import {TS} from "../../type/ts.js";
 
 export interface ISetInLexicalEnvironmentOptions {
 	env: LexicalEnvironment;

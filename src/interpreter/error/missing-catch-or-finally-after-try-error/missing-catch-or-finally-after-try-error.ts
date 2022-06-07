@@ -1,6 +1,6 @@
-import {EvaluationError} from "../evaluation-error/evaluation-error";
-import {IMissingCatchOrFinallyAfterTryErrorOptions} from "./i-missing-catch-or-finally-after-try-error-options";
-import {TS} from "../../../type/ts";
+import {EvaluationError} from "../evaluation-error/evaluation-error.js";
+import {IMissingCatchOrFinallyAfterTryErrorOptions} from "./i-missing-catch-or-finally-after-try-error-options.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * An Error that can be thrown when a TryStatement is encountered without neither a catch {...} nor a finally {...} block

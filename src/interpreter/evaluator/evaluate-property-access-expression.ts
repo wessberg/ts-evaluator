@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {IndexLiteral, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlagKind} from "../literal/literal";
-import {isBindCallApply} from "../util/function/is-bind-call-apply";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {IndexLiteral, LAZY_CALL_FLAG, LazyCall, Literal, LiteralFlagKind} from "../literal/literal.js";
+import {isBindCallApply} from "../util/function/is-bind-call-apply.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a PropertyAccessExpression

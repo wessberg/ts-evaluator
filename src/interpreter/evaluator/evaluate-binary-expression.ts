@@ -1,16 +1,17 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {getDotPathFromNode} from "../lexical-environment/get-dot-path-from-node";
-import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {Literal} from "../literal/literal";
-import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
-import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undefined-left-value-error";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {getDotPathFromNode} from "../lexical-environment/get-dot-path-from-node.js";
+import {findLexicalEnvironmentInSameContext, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {Literal} from "../literal/literal.js";
+import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
+import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undefined-left-value-error.js";
+import {TS} from "../../type/ts.js";
+import {getInnerNode} from "../util/node/get-inner-node.js";
 
 /**
  * Evaluates, or attempts to evaluate, a BinaryExpression
  */
 export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpression>): Literal {
-	const {node, environment, evaluate, logger, statementTraversalStack, reporting, typescript} = options;
+	const {node, environment, evaluate, logger, typeChecker, statementTraversalStack, reporting, typescript} = options;
 
 	const leftValue = evaluate.expression(node.left, environment, statementTraversalStack) as number;
 	const rightValue = evaluate.expression(node.right, environment, statementTraversalStack) as number;
@@ -146,8 +147,16 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 		case typescript.SyntaxKind.EqualsToken: {
 			// Update to the left-value within the environment if it exists there and has been updated
 			if (leftIdentifier != null) {
-				setInLexicalEnvironment({env: environment, path: leftIdentifier, value: rightValue, reporting, node});
+				const innerLeftIdentifier = getInnerNode(node.left, typescript);
+				const leftIdentifierSymbol = typeChecker.getSymbolAtLocation(innerLeftIdentifier);
+				const leftIdentifierValueDeclaration = leftIdentifierSymbol?.valueDeclaration;
+
+				const bestLexicalEnvironment =
+					leftIdentifierValueDeclaration == null ? environment : findLexicalEnvironmentInSameContext(environment, leftIdentifierValueDeclaration, typescript) ?? environment;
+
+				setInLexicalEnvironment({env: bestLexicalEnvironment, path: leftIdentifier, value: rightValue, reporting, node});
 				logger.logBinding(leftIdentifier, rightValue, "Assignment");
+
 			} else {
 				throw new UndefinedLeftValueError({node: node.left});
 			}

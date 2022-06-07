@@ -1,5 +1,5 @@
-import {EnvironmentPresetKind} from "./environment-preset-kind";
-import {LexicalEnvironment} from "../lexical-environment/lexical-environment";
+import {EnvironmentPresetKind} from "./environment-preset-kind.js";
+import {LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 
 export interface IEnvironment {
 	preset: EnvironmentPresetKind;

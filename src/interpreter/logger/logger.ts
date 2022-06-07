@@ -1,12 +1,12 @@
-import {LogLevelKind} from "./log-level";
-import {stringifySyntaxKind} from "../util/syntax-kind/stringify-syntax-kind";
-import {Literal, stringifyLiteral} from "../literal/literal";
-import {Stack} from "../stack/stack";
-import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack";
+import {LogLevelKind} from "./log-level.js";
+import {stringifySyntaxKind} from "../util/syntax-kind/stringify-syntax-kind.js";
+import {Literal, stringifyLiteral} from "../literal/literal.js";
+import {Stack} from "../stack/stack.js";
+import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack.js";
 import {inspect} from "util";
-import {TS} from "../../type/ts";
+import {TS} from "../../type/ts.js";
 import {PartialDeep} from "helpertypes";
-import {loadChalk} from "../util/loader/optional-peer-dependency-loader";
+import color from "ansi-colors";
 
 export type LoggerColor = "white" | "cyan" | "yellow" | "magenta" | "gray" | "red";
 
@@ -184,8 +184,7 @@ export class Logger {
 		return inspect(value, {depth: 0, colors: true, compact: true, maxArrayLength: 5});
 	}
 
-	private formatWithColor(color: LoggerColor, message: string): string {
-		const chalk = loadChalk(false);
-		return chalk != null ? chalk[color](message) : message;
+	private formatWithColor(loggerColor: LoggerColor, message: string): string {
+		return color[loggerColor](message);
 	}
 }

@@ -1,36 +1,35 @@
-import {IndexLiteral, Literal, LiteralMatch} from "../literal/literal";
-import {del, get, has, set} from "object-path";
-import {createSanitizedEnvironment} from "../environment/create-sanitized-environment";
-import {ECMA_GLOBALS} from "../environment/ecma/ecma-globals";
-import {NODE_GLOBALS} from "../environment/node/node-globals";
-import {EnvironmentPresetKind} from "../environment/environment-preset-kind";
-import {BROWSER_GLOBALS} from "../environment/browser/browser-globals";
-import {mergeDescriptors} from "../util/descriptor/merge-descriptors";
-import {ISetInLexicalEnvironmentOptions} from "./i-set-in-lexical-environment-options";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {BREAK_SYMBOL} from "../util/break/break-symbol";
-import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
-import {THIS_SYMBOL} from "../util/this/this-symbol";
-import {SUPER_SYMBOL} from "../util/super/super-symbol";
-import {ICreateLexicalEnvironmentOptions} from "./i-create-lexical-environment-options";
-import {TS} from "../../type/ts";
+import {IndexLiteral, Literal, LiteralMatch} from "../literal/literal.js";
+import objectPath from "object-path";
+import {createSanitizedEnvironment} from "../environment/create-sanitized-environment.js";
+import {ECMA_GLOBALS} from "../environment/ecma/ecma-globals.js";
+import {NODE_CJS_GLOBALS} from "../environment/node/node-cjs-globals.js";
+import {EnvironmentPresetKind} from "../environment/environment-preset-kind.js";
+import {BROWSER_GLOBALS} from "../environment/browser/browser-globals.js";
+import {mergeDescriptors} from "../util/descriptor/merge-descriptors.js";
+import {ISetInLexicalEnvironmentOptions} from "./i-set-in-lexical-environment-options.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
+import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";
+import {THIS_SYMBOL} from "../util/this/this-symbol.js";
+import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
+import {ICreateLexicalEnvironmentOptions} from "./i-create-lexical-environment-options.js";
+import {TS} from "../../type/ts.js";
+import {NODE_ESM_GLOBALS} from "../environment/node/node-esm-globals.js";
+import {getStatementContext} from "../util/node/find-nearest-parent-node-of-kind.js";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment | undefined;
 	env: IndexLiteral;
+	startingNode: TS.Node;
 	preset?: EnvironmentPresetKind;
 }
 
 /**
  * Gets a value from a Lexical Environment
- *
- * @param env
- * @param path
- * @returns
  */
 export function getRelevantDictFromLexicalEnvironment(env: LexicalEnvironment, path: string): LexicalEnvironment["env"] | undefined {
 	const [firstBinding] = path.split(".");
-	if (has(env.env, firstBinding)) return env.env;
+	if (objectPath.has(env.env, firstBinding)) return env.env;
 	if (env.parentEnv != null) return getRelevantDictFromLexicalEnvironment(env.parentEnv, path);
 	return undefined;
 }
@@ -47,16 +46,45 @@ export function getPresetForLexicalEnvironment(env: LexicalEnvironment): Environ
 /**
  * Gets a value from a Lexical Environment
  */
+export function findLexicalEnvironmentUp(from: LexicalEnvironment, path: string): LexicalEnvironment | undefined {
+	const [firstBinding] = path.split(".");
+	if (objectPath.has(from.env, firstBinding)) return from;
+	if (from.parentEnv != null) return findLexicalEnvironmentUp(from.parentEnv, path);
+	return undefined;
+}
+
+export function findLexicalEnvironmentInSameContext(from: LexicalEnvironment, node: TS.Node, typescript: typeof TS): LexicalEnvironment | undefined {
+	const startingNodeContext = getStatementContext(from.startingNode, typescript);
+	const nodeContext = getStatementContext(node, typescript);
+
+	if (startingNodeContext?.pos === nodeContext?.pos) {
+		return from;
+	}
+
+	if (from.parentEnv == null) {
+		return undefined;
+	}
+
+	return findLexicalEnvironmentInSameContext(from.parentEnv, node, typescript);
+}
+
+/**
+ * Gets a value from a Lexical Environment
+ */
 export function getFromLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): LiteralMatch | undefined {
 	const [firstBinding] = path.split(".");
-	if (has(env.env, firstBinding)) {
-		const literal = get(env.env, path);
+	if (objectPath.has(env.env, firstBinding)) {
+		const literal = objectPath.get(env.env, path);
 		switch (path) {
 			// If we're in a Node environment, the "__dirname" and "__filename" meta-properties should report the current directory or file of the SourceFile and not the parent process
 			case "__dirname":
 			case "__filename": {
 				const preset = getPresetForLexicalEnvironment(env);
-				return preset === "NODE" && typeof literal === "function" && node != null ? {literal: literal(node.getSourceFile().fileName)} : {literal};
+				return (preset === "NODE" || preset === "NODE_CJS") && typeof literal === "function" && node != null ? {literal: literal(node.getSourceFile().fileName)} : {literal};
+			}
+			case "import.meta": {
+				const preset = getPresetForLexicalEnvironment(env);
+				return (preset === "NODE_ESM" || preset === "BROWSER" || preset === "ECMA") && typeof literal === "object" && literal != null && typeof literal.url === "function" && node != null ? {literal: {url: literal.url(node.getSourceFile().fileName)}} : {literal};
 			}
 			default:
 				return {literal};
@@ -70,9 +98,9 @@ export function getFromLexicalEnvironment(node: TS.Node | undefined, env: Lexica
 /**
  * Returns true if a path maps to an identifier that has been declared within the Lexical Environment
  */
- export function hasInLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): boolean {
+export function hasInLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): boolean {
 	const [firstBinding] = path.split(".");
-	if (has(env.env, firstBinding)) {
+	if (objectPath.has(env.env, firstBinding)) {
 		return true;
 	}
 
@@ -94,9 +122,6 @@ export function pathInLexicalEnvironmentEquals(node: TS.Node, env: LexicalEnviro
 
 /**
  * Returns true if the given value represents an internal symbol
- *
- * @param value
- * @return
  */
 export function isInternalSymbol(value: Literal): boolean {
 	switch (value) {
@@ -116,12 +141,13 @@ export function isInternalSymbol(value: Literal): boolean {
  */
 export function setInLexicalEnvironment({env, path, value, reporting, node, newBinding = false}: ISetInLexicalEnvironmentOptions): void {
 	const [firstBinding] = path.split(".");
-	if (has(env.env, firstBinding) || newBinding || env.parentEnv == null) {
+
+	if (objectPath.has(env.env, firstBinding) || newBinding || env.parentEnv == null) {
 		// If the value didn't change, do no more
-		if (has(env.env, path) && get(env.env, path) === value) return;
+		if (objectPath.has(env.env, path) && objectPath.get(env.env, path) === value) return;
 
 		// Otherwise, mutate it
-		set(env.env, path, value);
+		objectPath.set(env.env, path, value);
 
 		// Inform reporting hooks if any is given
 		if (reporting.reportBindings != null && !isInternalSymbol(path)) {
@@ -130,12 +156,12 @@ export function setInLexicalEnvironment({env, path, value, reporting, node, newB
 	} else {
 		let currentParentEnv: LexicalEnvironment | undefined = env.parentEnv;
 		while (currentParentEnv != null) {
-			if (has(currentParentEnv.env, firstBinding)) {
+			if (objectPath.has(currentParentEnv.env, firstBinding)) {
 				// If the value didn't change, do no more
-				if (has(currentParentEnv.env, path) && get(currentParentEnv.env, path) === value) return;
+				if (objectPath.has(currentParentEnv.env, path) && objectPath.get(currentParentEnv.env, path) === value) return;
 
 				// Otherwise, mutate it
-				set(currentParentEnv.env, path, value);
+				objectPath.set(currentParentEnv.env, path, value);
 
 				// Inform reporting hooks if any is given
 				if (reporting.reportBindings != null && !isInternalSymbol(path)) {
@@ -143,7 +169,17 @@ export function setInLexicalEnvironment({env, path, value, reporting, node, newB
 				}
 				return;
 			} else {
-				currentParentEnv = currentParentEnv.parentEnv;
+				if (currentParentEnv.parentEnv == null) {
+					// Otherwise, mutate it
+					objectPath.set(currentParentEnv.env, path, value);
+
+					// Inform reporting hooks if any is given
+					if (reporting.reportBindings != null && !isInternalSymbol(path)) {
+						reporting.reportBindings({path, value, node});
+					}
+				} else {
+					currentParentEnv = currentParentEnv.parentEnv;
+				}
 			}
 		}
 	}
@@ -154,19 +190,33 @@ export function setInLexicalEnvironment({env, path, value, reporting, node, newB
  */
 export function clearBindingFromLexicalEnvironment(env: LexicalEnvironment, path: string): void {
 	const [firstBinding] = path.split(".");
-	if (has(env.env, firstBinding)) {
-		del(env.env, path);
+	if (objectPath.has(env.env, firstBinding)) {
+		objectPath.del(env.env, path);
 	} else {
 		let currentParentEnv: LexicalEnvironment | undefined = env.parentEnv;
 		while (currentParentEnv != null) {
-			if (has(currentParentEnv.env, firstBinding)) {
-				del(currentParentEnv.env, path);
+			if (objectPath.has(currentParentEnv.env, firstBinding)) {
+				objectPath.del(currentParentEnv.env, path);
 				return;
 			} else {
 				currentParentEnv = currentParentEnv.parentEnv;
 			}
 		}
 	}
+}
+
+export function simplifyEnvironment(environment: LexicalEnvironment, typescript: typeof TS): Record<string, unknown> {
+	// eslint-disable-next-line @typescript-eslint/no-unused-vars
+	const {arguments: _arguments, ...rest} = environment.env;
+
+	const strippedEnv = Object.fromEntries(Object.entries(rest).filter(([key]) => !(key in globalThis)));
+
+	return {
+		...(environment.preset == null ? {} : {preset: environment.preset}),
+		parentEnv: environment.parentEnv == null ? undefined : simplifyEnvironment(environment.parentEnv, typescript),
+		env: environment.preset != null ? strippedEnv : rest,
+		startingNode: typescript.SyntaxKind[environment.startingNode.kind]
+	};
 }
 
 /**
@@ -185,7 +235,12 @@ export function createLexicalEnvironment({inputEnvironment: {extra, preset}, pol
 			break;
 
 		case "NODE":
-			envInput = mergeDescriptors(NODE_GLOBALS(), extra);
+		case "NODE_CJS":
+			envInput = mergeDescriptors(NODE_CJS_GLOBALS(), extra);
+			break;
+
+		case "NODE_ESM":
+			envInput = mergeDescriptors(NODE_ESM_GLOBALS(), extra);
 			break;
 
 		case "BROWSER":
@@ -200,6 +255,7 @@ export function createLexicalEnvironment({inputEnvironment: {extra, preset}, pol
 	return {
 		preset,
 		parentEnv: undefined,
+		startingNode: getCurrentNode(),
 		env: createSanitizedEnvironment({
 			policy,
 			env: envInput,

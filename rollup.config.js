@@ -1,20 +1,28 @@
 import ts from "rollup-plugin-ts";
-import packageJSON from "./package.json";
+import pkg from "./package.json";
 import {builtinModules} from "module";
+
+const SHARED_OUTPUT_OPTIONS = {
+	sourcemap: true,
+	hoistTransitiveImports: false,
+	generatedCode: "es2015",
+	compact: false,
+	minifyInternalExports: false
+};
 
 // noinspection JSUnusedGlobalSymbols
 export default {
 	input: "src/index.ts",
 	output: [
 		{
-			file: packageJSON.main,
+			file: pkg.exports.require,
 			format: "cjs",
-			sourcemap: true
+			...SHARED_OUTPUT_OPTIONS
 		},
 		{
-			file: packageJSON.module,
+			file: pkg.exports.import,
 			format: "esm",
-			sourcemap: true
+			...SHARED_OUTPUT_OPTIONS
 		}
 	],
 	treeshake: true,
@@ -23,5 +31,5 @@ export default {
 			tsconfig: "tsconfig.build.json"
 		})
 	],
-	external: [...builtinModules, ...Object.keys(packageJSON.dependencies), ...Object.keys(packageJSON.devDependencies)]
+	external: [...builtinModules, ...Object.keys(pkg.dependencies), ...Object.keys(pkg.devDependencies)]
 };

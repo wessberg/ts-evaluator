@@ -1,8 +1,8 @@
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript} from "../setup/ts-macro";
-import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error";
-import {NotCallableError} from "../../src/interpreter/error/not-callable-error/not-callable-error";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript} from "../setup/ts-macro.js";
+import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
+import {NotCallableError} from "../../src/interpreter/error/not-callable-error/not-callable-error.js";
 
 test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", withTypeScript, (t, {typescript}) => {
 	const {result} = executeProgram(

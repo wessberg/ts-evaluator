@@ -1,6 +1,6 @@
-import {EvaluationError} from "../evaluation-error/evaluation-error";
-import {INotCallableErrorOptions} from "./i-not-callable-error-options";
-import {Literal, stringifyLiteral} from "../../literal/literal";
+import {EvaluationError} from "../evaluation-error/evaluation-error.js";
+import {INotCallableErrorOptions} from "./i-not-callable-error-options.js";
+import {Literal, stringifyLiteral} from "../../literal/literal.js";
 
 /**
  * An Error that can be thrown when a value is attempted to be called, but isn't callable

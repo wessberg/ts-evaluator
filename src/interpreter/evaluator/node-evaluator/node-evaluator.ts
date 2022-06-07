@@ -1,7 +1,7 @@
-import {LexicalEnvironment} from "../../lexical-environment/lexical-environment";
-import {Literal} from "../../literal/literal";
-import {StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack";
-import {TS} from "../../../type/ts";
+import {LexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
+import {Literal} from "../../literal/literal.js";
+import {StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack.js";
+import {TS} from "../../../type/ts.js";
 
 export type NodeWithValue = TS.PropertyName;
 

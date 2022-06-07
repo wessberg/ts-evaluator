@@ -1,8 +1,8 @@
-import {Logger} from "../../logger/logger";
-import {Stack} from "../../stack/stack";
-import {EvaluatePolicySanitized} from "../../policy/evaluate-policy";
-import {ReportingOptionsSanitized} from "../../reporting/i-reporting-options";
-import {TS} from "../../../type/ts";
+import {Logger} from "../../logger/logger.js";
+import {Stack} from "../../stack/stack.js";
+import {EvaluatePolicySanitized} from "../../policy/evaluate-policy.js";
+import {ReportingOptionsSanitized} from "../../reporting/i-reporting-options.js";
+import {TS} from "../../../type/ts.js";
 
 export interface ICreateNodeEvaluatorOptions {
 	typeChecker: TS.TypeChecker;

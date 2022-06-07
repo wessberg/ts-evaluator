@@ -1,7 +1,7 @@
-import {PolicyProxyHookOptions} from "../../proxy/policy-proxy-hook";
-import {isTrapConditionMet} from "../is-trap-condition-met";
-import {NETWORK_MAP} from "./network-map";
-import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
+import {PolicyProxyHookOptions} from "../../proxy/policy-proxy-hook.js";
+import {isTrapConditionMet} from "../is-trap-condition-met.js";
+import {NETWORK_MAP} from "./network-map.js";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals.js";
 
 /**
  * Returns true if the given item represents a network operation

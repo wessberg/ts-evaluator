@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "../../evaluator/evaluator-options";
-import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error";
-import {TS} from "../../../type/ts";
+import {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
+import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * Gets the name of the given declaration

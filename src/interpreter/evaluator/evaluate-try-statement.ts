@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error";
-import {clearBindingFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {TRY_SYMBOL} from "../util/try/try-symbol";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error.js";
+import {clearBindingFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {TRY_SYMBOL} from "../util/try/try-symbol.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a TryStatement

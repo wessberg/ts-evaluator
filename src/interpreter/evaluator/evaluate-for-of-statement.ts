@@ -1,13 +1,13 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {Literal} from "../literal/literal";
-import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
-import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {BREAK_SYMBOL} from "../util/break/break-symbol";
-import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {TS} from "../../type/ts";
-import {AsyncIteratorNotSupportedError} from "../error/async-iterator-not-supported-error/async-iterator-not-supported-error";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {Literal} from "../literal/literal.js";
+import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
+import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
+import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
+import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {TS} from "../../type/ts.js";
+import {AsyncIteratorNotSupportedError} from "../error/async-iterator-not-supported-error/async-iterator-not-supported-error.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ForOfStatement
@@ -32,7 +32,7 @@ export function evaluateForOfStatement({node, environment, evaluate, logger, rep
 	} else {
 		for (const literal of expressionResult) {
 			// Prepare a lexical environment for the current iteration
-			const localEnvironment = cloneLexicalEnvironment(environment);
+			const localEnvironment = cloneLexicalEnvironment(environment, node);
 
 			// Define a new binding for a break symbol within the environment
 			setInLexicalEnvironment({env: localEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});

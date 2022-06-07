@@ -1,7 +1,7 @@
 import test from "ava";
-import { UndefinedIdentifierError } from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript} from "../setup/ts-macro";
+import { UndefinedIdentifierError } from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript} from "../setup/ts-macro.js";
 
 test("Can handle ObjectLiteralExpressions. #1", withTypeScript, (t, {typescript}) => {
 	// noinspection BadExpressionStatementJS

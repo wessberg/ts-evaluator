@@ -1,6 +1,6 @@
 import {PartialExcept} from "helpertypes";
-import {EvaluateOptions} from "../../src/interpreter/evaluate-options";
-import {LogLevelKind} from "../../src/interpreter/logger/log-level";
+import {EvaluateOptions} from "../../src/interpreter/evaluate-options.js";
+import {LogLevelKind} from "../../src/interpreter/logger/log-level.js";
 
 const _process = process;
 export interface TestContext extends PartialExcept<Required<EvaluateOptions>, "typescript"> {

@@ -1,6 +1,6 @@
-import {IProcessErrorOptions} from "./i-process-error-options";
-import {PolicyError} from "../policy-error";
-import {EvaluateProcessPolicy} from "../../../policy/evaluate-policy";
+import {IProcessErrorOptions} from "./i-process-error-options.js";
+import {PolicyError} from "../policy-error.js";
+import {EvaluateProcessPolicy} from "../../../policy/evaluate-policy.js";
 
 /**
  * An Error that can be thrown when a Process operation is attempted to be executed that is in violation of the context policy

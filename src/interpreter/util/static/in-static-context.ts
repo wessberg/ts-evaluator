@@ -1,5 +1,5 @@
-import {hasModifier} from "../modifier/has-modifier";
-import {TS} from "../../../type/ts";
+import {hasModifier} from "../modifier/has-modifier.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * Returns true if the given Node exists within a static context

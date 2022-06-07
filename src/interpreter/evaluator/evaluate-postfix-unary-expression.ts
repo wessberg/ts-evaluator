@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {Literal} from "../literal/literal";
-import {getRelevantDictFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {Literal} from "../literal/literal.js";
+import {getRelevantDictFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a PostfixUnaryExpression

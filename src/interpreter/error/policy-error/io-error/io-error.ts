@@ -1,6 +1,6 @@
-import {IIoErrorOptions} from "./i-io-error-options";
-import {PolicyError} from "../policy-error";
-import {EvaluateIOPolicy} from "../../../policy/evaluate-policy";
+import {IIoErrorOptions} from "./i-io-error-options.js";
+import {PolicyError} from "../policy-error.js";
+import {EvaluateIOPolicy} from "../../../policy/evaluate-policy.js";
 
 /**
  * An Error that can be thrown when an IO operation is attempted to be executed that is in violation of the context policy

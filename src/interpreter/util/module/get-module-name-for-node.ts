@@ -1,5 +1,5 @@
-import {findNearestParentNodeOfKind} from "../node/find-nearest-parent-node-of-kind";
-import {TS} from "../../../type/ts";
+import {findNearestParentNodeOfKind} from "../node/find-nearest-parent-node-of-kind.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * Gets the name of the module that contains the given Node

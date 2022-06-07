@@ -1,5 +1,5 @@
-import {ReportedErrorSet} from "./reported-error-set";
-import {TS} from "../../type/ts";
+import {ReportedErrorSet} from "./reported-error-set.js";
+import {TS} from "../../type/ts.js";
 
 export interface IBindingReportEntry {
 	path: string;

@@ -1,6 +1,6 @@
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 import path from "crosspath";
 
 test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {typescript}) => {
@@ -196,7 +196,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 				import {readFileSync} from "fs";
 
 				const alias = readFileSync;
-				const foo = JSON.parse(readFileSync("${path.join(__dirname, "../../package.json").replace(/\\/g, "\\\\")}")).name;
+				const foo = JSON.parse(readFileSync("${path.join(path.dirname(path.urlToFilename(import.meta.url)), "../../package.json").replace(/\\/g, "\\\\")}")).name;
 			`
 		],
 		"foo",

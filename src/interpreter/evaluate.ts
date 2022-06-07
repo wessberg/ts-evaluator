@@ -1,24 +1,24 @@
 import * as TSModule from "typescript";
-import {EvaluateOptions} from "./evaluate-options";
-import {createLexicalEnvironment} from "./lexical-environment/lexical-environment";
-import {EvaluateResult} from "./evaluate-result";
-import {evaluateSimpleLiteral} from "./evaluator/simple/evaluate-simple-literal";
-import {createNodeEvaluator} from "./evaluator/node-evaluator/create-node-evaluator";
-import {LogLevelKind} from "./logger/log-level";
-import {Logger} from "./logger/logger";
-import {createStatementTraversalStack} from "./stack/traversal-stack/statement-traversal-stack";
-import {isExpression} from "./util/expression/is-expression";
-import {Literal} from "./literal/literal";
-import {isStatement} from "./util/statement/is-statement";
-import {createStack, Stack} from "./stack/stack";
-import {isDeclaration} from "./util/declaration/is-declaration";
-import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error";
-import {EvaluatePolicySanitized} from "./policy/evaluate-policy";
-import {reportError} from "./util/reporting/report-error";
-import {createReportedErrorSet} from "./reporting/reported-error-set";
-import {ReportingOptionsSanitized} from "./reporting/i-reporting-options";
-import {TS} from "../type/ts";
-import { EvaluationError } from "./error/evaluation-error/evaluation-error";
+import {EvaluateOptions} from "./evaluate-options.js";
+import {createLexicalEnvironment} from "./lexical-environment/lexical-environment.js";
+import {EvaluateResult} from "./evaluate-result.js";
+import {evaluateSimpleLiteral} from "./evaluator/simple/evaluate-simple-literal.js";
+import {createNodeEvaluator} from "./evaluator/node-evaluator/create-node-evaluator.js";
+import {LogLevelKind} from "./logger/log-level.js";
+import {Logger} from "./logger/logger.js";
+import {createStatementTraversalStack} from "./stack/traversal-stack/statement-traversal-stack.js";
+import {isExpression} from "./util/expression/is-expression.js";
+import {Literal} from "./literal/literal.js";
+import {isStatement} from "./util/statement/is-statement.js";
+import {createStack, Stack} from "./stack/stack.js";
+import {isDeclaration} from "./util/declaration/is-declaration.js";
+import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error.js";
+import {EvaluatePolicySanitized} from "./policy/evaluate-policy.js";
+import {reportError} from "./util/reporting/report-error.js";
+import {createReportedErrorSet} from "./reporting/reported-error-set.js";
+import {ReportingOptionsSanitized} from "./reporting/i-reporting-options.js";
+import {TS} from "../type/ts.js";
+import {EvaluationError} from "./error/evaluation-error/evaluation-error.js";
 
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.

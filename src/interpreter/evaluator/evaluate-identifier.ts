@@ -1,10 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {Literal} from "../literal/literal";
-import {UndefinedIdentifierError} from "../error/undefined-identifier-error/undefined-identifier-error";
-import {isVarDeclaration} from "../util/flags/is-var-declaration";
-import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {Literal} from "../literal/literal.js";
+import {UndefinedIdentifierError} from "../error/undefined-identifier-error/undefined-identifier-error.js";
+import {isVarDeclaration} from "../util/flags/is-var-declaration.js";
+import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, an Identifier or a PrivateIdentifier
@@ -15,6 +15,7 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
 	const environmentMatch = getFromLexicalEnvironment(node, environment, node.text);
+
 	if (environmentMatch != null) {
 		logger.logBinding(node.text, environmentMatch.literal, "Lexical Environment match");
 		// Return the existing evaluated value from the environment
@@ -35,7 +36,6 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 			// OK, it didn't alias anything
 		}
 	}
-
 
 	// If it has a value declaration, go forward with that one
 	if (valueDeclaration != null) {

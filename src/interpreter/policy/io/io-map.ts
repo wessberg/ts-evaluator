@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {TrapConditionMap} from "../trap-condition-map";
-import {PolicyTrapKind} from "../policy-trap-kind";
-import {EvaluateIOPolicy} from "../evaluate-policy";
-import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
+import {TrapConditionMap} from "../trap-condition-map.js";
+import {PolicyTrapKind} from "../policy-trap-kind.js";
+import {EvaluateIOPolicy} from "../evaluate-policy.js";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals.js";
 
 /**
  * A Map between built-in modules and the kind of IO operations their members performs

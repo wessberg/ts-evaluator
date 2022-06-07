@@ -1,4 +1,4 @@
-import {IndexLiteral} from "../../literal/literal";
+import {IndexLiteral} from "../../literal/literal.js";
 
 export const ECMA_GLOBALS = () => {
 	/* eslint-disable @typescript-eslint/naming-convention */
@@ -38,6 +38,18 @@ export const ECMA_GLOBALS = () => {
 	};
 
 	try {
+		base.AggregateError = AggregateError;
+	} catch {}
+
+	try {
+		base.FinalizationRegistry = FinalizationRegistry;
+	} catch {}
+
+	try {
+		base.WeakRef = WeakRef;
+	} catch {}
+
+	try {
 		base.BigInt = BigInt;
 	} catch {}
 
@@ -63,6 +75,26 @@ export const ECMA_GLOBALS = () => {
 
 	try {
 		base.Uint8Array = Uint8Array;
+	} catch {}
+
+	try {
+		base.BigUint64Array = BigUint64Array;
+	} catch {}
+
+	try {
+		base.BigInt64Array = BigInt64Array;
+	} catch {}
+
+	try {
+		base.Atomics = Atomics;
+	} catch {}
+
+	try {
+		base.SharedArrayBuffer = SharedArrayBuffer;
+	} catch {}
+
+	try {
+		base.WebAssembly = WebAssembly;
 	} catch {}
 
 	try {

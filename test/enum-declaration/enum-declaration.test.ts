@@ -1,6 +1,6 @@
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript} from "../setup/ts-macro";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript} from "../setup/ts-macro.js";
 
 test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript}) => {
 	const {result} = executeProgram(

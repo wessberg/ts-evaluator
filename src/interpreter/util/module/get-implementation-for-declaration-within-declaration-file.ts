@@ -1,12 +1,12 @@
-import {findNearestParentNodeOfKind} from "../node/find-nearest-parent-node-of-kind";
-import {Literal} from "../../literal/literal";
-import {ModuleNotFoundError} from "../../error/module-not-found-error/module-not-found-error";
-import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error";
-import {EvaluatorOptions} from "../../evaluator/evaluator-options";
-import {getDeclarationName} from "../declaration/get-declaration-name";
-import {EvaluationError} from "../../error/evaluation-error/evaluation-error";
-import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment";
-import {TS} from "../../../type/ts";
+import {findNearestParentNodeOfKind} from "../node/find-nearest-parent-node-of-kind.js";
+import {Literal} from "../../literal/literal.js";
+import {ModuleNotFoundError} from "../../error/module-not-found-error/module-not-found-error.js";
+import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error.js";
+import {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
+import {getDeclarationName} from "../declaration/get-declaration-name.js";
+import {EvaluationError} from "../../error/evaluation-error/evaluation-error.js";
+import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * Gets an implementation for the given declaration that lives within a declaration file

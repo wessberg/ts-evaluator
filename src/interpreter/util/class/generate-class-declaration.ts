@@ -1,4 +1,4 @@
-import {IGenerateClassDeclarationOptions} from "./i-generate-class-declaration-options";
+import {IGenerateClassDeclarationOptions} from "./i-generate-class-declaration-options.js";
 
 /**
  * A function that uses 'new Function' to auto-generate a class with a dynamic name and extended type

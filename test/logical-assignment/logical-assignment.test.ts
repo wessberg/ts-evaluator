@@ -1,6 +1,6 @@
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScriptVersions} from "../setup/ts-macro";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScriptVersions} from "../setup/ts-macro.js";
 
 test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
 	const {result} = executeProgram(

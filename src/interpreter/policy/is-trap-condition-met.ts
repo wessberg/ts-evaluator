@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import {isTrapCondition, isTrapConditionFunction, PolicyTrapKindToTrapConditionMap, TrapCondition, TrapConditionMap, TrapConditionMemberMap} from "./trap-condition-map";
-import {IPolicyProxyApplyHookOptions, IPolicyProxyConstructHookOptions, PolicyProxyHookOptions} from "../proxy/policy-proxy-hook";
+import {isTrapCondition, isTrapConditionFunction, PolicyTrapKindToTrapConditionMap, TrapCondition, TrapConditionMap, TrapConditionMemberMap} from "./trap-condition-map.js";
+import {IPolicyProxyApplyHookOptions, IPolicyProxyConstructHookOptions, PolicyProxyHookOptions} from "../proxy/policy-proxy-hook.js";
 
 /**
  * Returns true if the given path represents something that is nondeterministic.

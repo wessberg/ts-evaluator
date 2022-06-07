@@ -1,4 +1,4 @@
-import {TS} from "../../../type/ts";
+import {TS} from "../../../type/ts.js";
 
 /**
  * Returns true if the given VariableDeclarationList is declared with a 'var' keyword

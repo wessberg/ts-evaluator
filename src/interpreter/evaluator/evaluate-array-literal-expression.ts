@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {Literal} from "../literal/literal";
-import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {isIterable} from "../util/iterable/is-iterable";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {Literal} from "../literal/literal.js";
+import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {isIterable} from "../util/iterable/is-iterable.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ArrayLiteralExpression

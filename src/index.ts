@@ -1,29 +1,30 @@
-export {evaluate} from "./interpreter/evaluate";
-export {EvaluateResult} from "./interpreter/evaluate-result";
-export {EvaluateOptions as IEvaluateOptions} from "./interpreter/evaluate-options";
+export {evaluate} from "./interpreter/evaluate.js";
+export {EvaluateResult} from "./interpreter/evaluate-result.js";
+export {EvaluateOptions} from "./interpreter/evaluate-options.js";
 
 // Logging
-export {LogLevelKind} from "./interpreter/logger/log-level";
+export * from "./interpreter/logger/log-level.js";
 
 // Environment
-export {EnvironmentPresetKind} from "./interpreter/environment/environment-preset-kind";
-export {IEnvironment} from "./interpreter/environment/i-environment";
+export * from "./interpreter/environment/environment-preset-kind.js";
+export * from "./interpreter/environment/i-environment.js";
 
 // Errors
-export {EvaluationError} from "./interpreter/error/evaluation-error/evaluation-error";
-export {MissingCatchOrFinallyAfterTryError} from "./interpreter/error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error";
-export {ModuleNotFoundError} from "./interpreter/error/module-not-found-error/module-not-found-error";
-export {NotCallableError} from "./interpreter/error/not-callable-error/not-callable-error";
-export {PolicyError} from "./interpreter/error/policy-error/policy-error";
-export {UndefinedIdentifierError} from "./interpreter/error/undefined-identifier-error/undefined-identifier-error";
-export {UndefinedLeftValueError} from "./interpreter/error/undefined-left-value-error/undefined-left-value-error";
-export {UnexpectedNodeError} from "./interpreter/error/unexpected-node-error/unexpected-node-error";
-export {IoError} from "./interpreter/error/policy-error/io-error/io-error";
-export {MaxOpsExceededError} from "./interpreter/error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error";
-export {MaxOpDurationExceededError} from "./interpreter/error/policy-error/max-op-duration-exceeded-error/max-op-duration-exceeded-error";
-export {NetworkError} from "./interpreter/error/policy-error/network-error/network-error";
-export {NonDeterministicError} from "./interpreter/error/policy-error/non-deterministic-error/non-deterministic-error";
-export {ProcessError} from "./interpreter/error/policy-error/process-error/process-error";
+export * from "./interpreter/error/evaluation-error/evaluation-error.js";
+export * from "./interpreter/error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error.js";
+export * from "./interpreter/error/module-not-found-error/module-not-found-error.js";
+export * from "./interpreter/error/not-callable-error/not-callable-error.js";
+export * from "./interpreter/error/policy-error/policy-error.js";
+export * from "./interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
+export * from "./interpreter/error/undefined-left-value-error/undefined-left-value-error.js";
+export * from "./interpreter/error/unexpected-syntax-error/unexpected-syntax-error";
+export * from "./interpreter/error/unexpected-node-error/unexpected-node-error.js";
+export * from "./interpreter/error/policy-error/io-error/io-error.js";
+export * from "./interpreter/error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error.js";
+export * from "./interpreter/error/policy-error/max-op-duration-exceeded-error/max-op-duration-exceeded-error.js";
+export * from "./interpreter/error/policy-error/network-error/network-error.js";
+export * from "./interpreter/error/policy-error/non-deterministic-error/non-deterministic-error.js";
+export * from "./interpreter/error/policy-error/process-error/process-error.js";
 
 // Reporting
-export {BindingReportCallback, IReportingOptions, ReportingOptions} from "./interpreter/reporting/i-reporting-options";
+export {BindingReportCallback, IReportingOptions, ReportingOptions} from "./interpreter/reporting/i-reporting-options.js";

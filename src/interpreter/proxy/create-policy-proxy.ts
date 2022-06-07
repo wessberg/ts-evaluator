@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import {canBeObserved} from "../util/proxy/can-be-observed";
-import {ICreatePolicyProxyOptions} from "./i-create-policy-proxy-options";
-import {isBindCallApply} from "../util/function/is-bind-call-apply";
-import {PolicyTrapKind} from "../policy/policy-trap-kind";
+import {canBeObserved} from "../util/proxy/can-be-observed.js";
+import {ICreatePolicyProxyOptions} from "./i-create-policy-proxy-options.js";
+import {isBindCallApply} from "../util/function/is-bind-call-apply.js";
+import {PolicyTrapKind} from "../policy/policy-trap-kind.js";
 
 /**
  * Stringifies the given PropertyKey path

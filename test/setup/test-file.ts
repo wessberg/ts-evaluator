@@ -1,11 +1,11 @@
 import path from "crosspath";
 import fs from "fs";
-import {TestContext} from "./test-context";
-import {generateRandomPath} from "../../src/interpreter/util/path/generate-random-path";
-import {ensureArray} from "../../src/interpreter/util/array/ensure-array";
+import {TestContext} from "./test-context.js";
+import {generateRandomPath} from "../../src/interpreter/util/path/generate-random-path.js";
+import {ensureArray} from "../../src/interpreter/util/array/ensure-array.js";
 import {MaybeArray} from "helpertypes";
-import {BuiltInModuleMap} from "../../src/interpreter/policy/module/built-in-module-map";
-import {CachedFs} from "./cached-fs";
+import {CachedFs} from "./cached-fs.js";
+import { requireModule } from "../../src/interpreter/util/loader/require-module.js";
 
 export interface TestFileRecord {
 	fileName: string;
@@ -29,7 +29,7 @@ const VIRTUAL_ROOT = "#root";
 const VIRTUAL_SRC = "src";
 const VIRTUAL_DIST = "dist";
 
-const nodeTypesDir = path.dirname(require.resolve("@types/node/package.json"));
+const nodeTypesDir = path.dirname(requireModule.resolve("@types/node/package.json"));
 const fsWorker = new CachedFs({fs});
 
 export interface TestFileDirectories {
@@ -44,7 +44,13 @@ export interface TestFileStructure {
 	entry: TestFileEntryRefRecord;
 }
 
-export function createBuiltInModuleTestFiles(...modules: (keyof BuiltInModuleMap)[]): TestFile[] {
+function stripNodePrefixFromModuleSpecifier(moduleSpecifier: string): string {
+	return moduleSpecifier.startsWith("node:") ? moduleSpecifier.slice("node:".length) : moduleSpecifier;
+}
+
+export type SupportedBuiltInModuleBase = "child_process" | "fs" | "globals" | "buffer" | "dns" | "http" | "path" | "assert";
+export type SuppportedBuiltInModule = SupportedBuiltInModuleBase | `node:${SupportedBuiltInModuleBase}`;
+export function createBuiltInModuleTestFiles(...modules: SuppportedBuiltInModule[]): TestFile[] {
 	return [
 		{
 			fileName: "node_modules/@types/node/package.json",
@@ -56,16 +62,18 @@ export function createBuiltInModuleTestFiles(...modules: (keyof BuiltInModuleMap
 				}
 			`
 		},
-		{
-			fileName: "node_modules/@types/node/index.d.ts",
-			text: `
-				/// <reference path="./${module}.d.ts" />
-				`
-		},
-		...modules.map(module => ({
-			fileName: `node_modules/@types/node/${module}.d.ts`,
-			text: fsWorker.readFile(path.native.join(nodeTypesDir, `${module}.d.ts`)) ?? ""
-		}))
+		...modules.flatMap(module => [
+			{
+				fileName: "node_modules/@types/node/index.d.ts",
+				text: `
+					/// <reference path="./${stripNodePrefixFromModuleSpecifier(module)}.d.ts" />
+					`
+			},
+			{
+				fileName: `node_modules/@types/node/${stripNodePrefixFromModuleSpecifier(module)}.d.ts`,
+				text: fsWorker.readFile(path.native.join(nodeTypesDir, `${stripNodePrefixFromModuleSpecifier(module)}.d.ts`)) ?? ""
+			}
+		])
 	];
 }
 

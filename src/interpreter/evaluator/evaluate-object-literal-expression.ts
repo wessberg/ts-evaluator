@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {IndexLiteral, Literal} from "../literal/literal";
-import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {THIS_SYMBOL} from "../util/this/this-symbol";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {IndexLiteral, Literal} from "../literal/literal.js";
+import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {THIS_SYMBOL} from "../util/this/this-symbol.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ObjectLiteralExpression

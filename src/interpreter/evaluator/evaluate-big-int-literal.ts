@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {Literal} from "../literal/literal";
-import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {Literal} from "../literal/literal.js";
+import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a BigIntLiteral

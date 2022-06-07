@@ -1,6 +1,6 @@
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript} from "../setup/ts-macro";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript} from "../setup/ts-macro.js";
 
 test("Can evaluate an AwaitExpression #1", withTypeScript, async (t, {typescript}) => {
 	const {result} = executeProgram(

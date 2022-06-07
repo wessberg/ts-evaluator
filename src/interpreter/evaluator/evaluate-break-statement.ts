@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {BREAK_SYMBOL} from "../util/break/break-symbol";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a BreakStatement

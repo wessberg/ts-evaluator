@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {IndexLiteral, IndexLiteralKey} from "../literal/literal";
-import {inStaticContext} from "../util/static/in-static-context";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {IndexLiteral, IndexLiteralKey} from "../literal/literal.js";
+import {inStaticContext} from "../util/static/in-static-context.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a PropertyDeclaration, before applying it on the given parent

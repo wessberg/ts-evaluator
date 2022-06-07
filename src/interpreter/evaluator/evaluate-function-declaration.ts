@@ -1,13 +1,13 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {Literal} from "../literal/literal";
-import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
-import {THIS_SYMBOL} from "../util/this/this-symbol";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file";
-import {hasModifier} from "../util/modifier/has-modifier";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
+import {Literal} from "../literal/literal.js";
+import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";
+import {THIS_SYMBOL} from "../util/this/this-symbol.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file.js";
+import {hasModifier} from "../util/modifier/has-modifier.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a FunctionDeclaration
@@ -20,7 +20,7 @@ export function evaluateFunctionDeclaration(options: EvaluatorOptions<TS.Functio
 	const _functionDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function functionDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
-				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
 
 				// Define a new binding for a return symbol within the environment
 				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
@@ -65,7 +65,7 @@ export function evaluateFunctionDeclaration(options: EvaluatorOptions<TS.Functio
 		  }
 		: function functionDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
-				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
 
 				// Define a new binding for a return symbol within the environment
 				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});

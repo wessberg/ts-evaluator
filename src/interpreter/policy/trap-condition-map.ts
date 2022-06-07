@@ -1,4 +1,4 @@
-import {PolicyTrapKind} from "./policy-trap-kind";
+import {PolicyTrapKind} from "./policy-trap-kind.js";
 
 export type TrapConditionFunction<ConditionType> = (...args: unknown[]) => ConditionType;
 export type TrapCondition<ConditionType> = ConditionType | TrapConditionFunction<ConditionType>;

@@ -1,5 +1,5 @@
-import {INetworkErrorOptions} from "./i-network-error-options";
-import {PolicyError} from "../policy-error";
+import {INetworkErrorOptions} from "./i-network-error-options.js";
+import {PolicyError} from "../policy-error.js";
 
 /**
  * An Error that can be thrown when a network operation is attempted to be executed that is in violation of the context policy

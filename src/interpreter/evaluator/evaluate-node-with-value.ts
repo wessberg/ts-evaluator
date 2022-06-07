@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {Literal} from "../literal/literal";
-import {NodeWithValue} from "./node-evaluator/node-evaluator";
-import {evaluatePropertyName} from "./evaluate-property-name";
-import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {Literal} from "../literal/literal.js";
+import {NodeWithValue} from "./node-evaluator/node-evaluator.js";
+import {evaluatePropertyName} from "./evaluate-property-name.js";
+import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
 
 /**
  * Evaluates a given node with the provided argument

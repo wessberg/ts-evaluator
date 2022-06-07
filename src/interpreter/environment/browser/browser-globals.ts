@@ -1,8 +1,8 @@
-import {mergeDescriptors} from "../../util/descriptor/merge-descriptors";
-import {ECMA_GLOBALS} from "../ecma/ecma-globals";
-import {subtract} from "../../util/object/subtract";
-import {rafImplementation} from "./lib/raf";
-import {loadJsdom} from "../../util/loader/optional-peer-dependency-loader";
+import {mergeDescriptors} from "../../util/descriptor/merge-descriptors.js";
+import {ECMA_GLOBALS} from "../ecma/ecma-globals.js";
+import {subtract} from "../../util/object/subtract.js";
+import {rafImplementation} from "./lib/raf.js";
+import {loadJsdom} from "../../util/loader/optional-peer-dependency-loader.js";
 
 export const BROWSER_GLOBALS = () => {
 	const {JSDOM} = loadJsdom(true);

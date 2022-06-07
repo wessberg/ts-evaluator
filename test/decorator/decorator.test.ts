@@ -1,7 +1,7 @@
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript} from "../setup/ts-macro";
-import {IndexLiteral} from "../../src/interpreter/literal/literal";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript} from "../setup/ts-macro.js";
+import {IndexLiteral} from "../../src/interpreter/literal/literal.js";
 
 test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript}) => {
 	const {result} = executeProgram(

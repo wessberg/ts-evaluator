@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-types */
-import {EvaluatePolicySanitized} from "../policy/evaluate-policy";
-import {PolicyTrapKind} from "../policy/policy-trap-kind";
+import {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
+import {PolicyTrapKind} from "../policy/policy-trap-kind.js";
 
 export interface IPolicyProxyHookOptions {
 	kind: PolicyTrapKind;

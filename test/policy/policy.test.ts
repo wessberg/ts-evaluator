@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import test from "ava";
-import {executeProgram} from "../setup/execute-program";
-import {withTypeScript} from "../setup/ts-macro";
-import {IoError} from "../../src/interpreter/error/policy-error/io-error/io-error";
-import {NonDeterministicError} from "../../src/interpreter/error/policy-error/non-deterministic-error/non-deterministic-error";
-import {NetworkError} from "../../src/interpreter/error/policy-error/network-error/network-error";
-import {ProcessError} from "../../src/interpreter/error/policy-error/process-error/process-error";
+import {executeProgram} from "../setup/execute-program.js";
+import {withTypeScript} from "../setup/ts-macro.js";
+import {IoError} from "../../src/interpreter/error/policy-error/io-error/io-error.js";
+import {NonDeterministicError} from "../../src/interpreter/error/policy-error/non-deterministic-error/non-deterministic-error.js";
+import {NetworkError} from "../../src/interpreter/error/policy-error/network-error/network-error.js";
+import {ProcessError} from "../../src/interpreter/error/policy-error/process-error/process-error.js";
 
 test("Throws on IO read if the policy requires it. #1", withTypeScript, (t, {typescript}) => {
 	const {result} = executeProgram(

@@ -1,7 +1,7 @@
-import {EvaluateSimpleLiteralResult} from "./evaluate-simple-literal-result";
-import {isBooleanLiteral} from "../../util/node/is-boolean-literal";
-import {isNullLiteral} from "../../util/node/is-null-literal";
-import {TS} from "../../../type/ts";
+import {EvaluateSimpleLiteralResult} from "./evaluate-simple-literal-result.js";
+import {isBooleanLiteral} from "../../util/node/is-boolean-literal.js";
+import {isNullLiteral} from "../../util/node/is-null-literal.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * This is a tiny function that avoids the costs of building up an evaluation environment

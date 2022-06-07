@@ -1,5 +1,5 @@
-import {IEvaluationErrorOptions} from "./i-evaluation-error-options";
-import {TS} from "../../../type/ts";
+import {IEvaluationErrorOptions} from "./i-evaluation-error-options.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * A Base class for EvaluationErrors

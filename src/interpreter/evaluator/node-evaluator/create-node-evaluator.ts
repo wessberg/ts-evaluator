@@ -1,18 +1,18 @@
-import {ICreateNodeEvaluatorOptions} from "./i-create-node-evaluator-options";
-import {NodeEvaluator, NodeWithValue} from "./node-evaluator";
-import {MaxOpsExceededError} from "../../error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error";
-import {LexicalEnvironment, pathInLexicalEnvironmentEquals} from "../../lexical-environment/lexical-environment";
-import {evaluateStatement} from "../evaluate-statement";
-import {Literal} from "../../literal/literal";
-import {evaluateExpression} from "../evaluate-expression";
-import {EvaluatorOptions} from "../evaluator-options";
-import {evaluateDeclaration} from "../evaluate-declaration";
-import {evaluateNodeWithArgument} from "../evaluate-node-with-argument";
-import {evaluateNodeWithValue} from "../evaluate-node-with-value";
-import {createStatementTraversalStack, StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack";
-import {reportError} from "../../util/reporting/report-error";
-import {TRY_SYMBOL} from "../../util/try/try-symbol";
-import {TS} from "../../../type/ts";
+import {ICreateNodeEvaluatorOptions} from "./i-create-node-evaluator-options.js";
+import {NodeEvaluator, NodeWithValue} from "./node-evaluator.js";
+import {MaxOpsExceededError} from "../../error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error.js";
+import {LexicalEnvironment, pathInLexicalEnvironmentEquals} from "../../lexical-environment/lexical-environment.js";
+import {evaluateStatement} from "../evaluate-statement.js";
+import {Literal} from "../../literal/literal.js";
+import {evaluateExpression} from "../evaluate-expression.js";
+import {EvaluatorOptions} from "../evaluator-options.js";
+import {evaluateDeclaration} from "../evaluate-declaration.js";
+import {evaluateNodeWithArgument} from "../evaluate-node-with-argument.js";
+import {evaluateNodeWithValue} from "../evaluate-node-with-value.js";
+import {createStatementTraversalStack, StatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack.js";
+import {reportError} from "../../util/reporting/report-error.js";
+import {TRY_SYMBOL} from "../../util/try/try-symbol.js";
+import {TS} from "../../../type/ts.js";
 
 /**
  * Creates a Node Evaluator

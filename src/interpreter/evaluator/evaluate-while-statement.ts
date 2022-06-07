@@ -1,10 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {BREAK_SYMBOL} from "../util/break/break-symbol";
-import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
+import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
+import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a WhileStatement
@@ -14,7 +14,7 @@ export function evaluateWhileStatement({node, environment, evaluate, logger, rep
 
 	while (condition) {
 		// Prepare a lexical environment for the current iteration
-		const iterationEnvironment = cloneLexicalEnvironment(environment);
+		const iterationEnvironment = cloneLexicalEnvironment(environment, node);
 
 		// Define a new binding for a break symbol within the environment
 		setInLexicalEnvironment({env: iterationEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});

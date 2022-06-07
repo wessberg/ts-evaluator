@@ -1,8 +1,8 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import {PolicyTrapKind} from "../policy-trap-kind";
-import {TrapConditionMap} from "../trap-condition-map";
-import {NETWORK_MAP} from "../network/network-map";
-import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals";
+import {PolicyTrapKind} from "../policy-trap-kind.js";
+import {TrapConditionMap} from "../trap-condition-map.js";
+import {NETWORK_MAP} from "../network/network-map.js";
+import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals.js";
 
 /**
  * A Map between built-in identifiers and the members that produce non-deterministic results.

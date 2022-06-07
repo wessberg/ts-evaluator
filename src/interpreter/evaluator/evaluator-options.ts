@@ -1,11 +1,11 @@
-import {LexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {NodeEvaluator} from "./node-evaluator/node-evaluator";
-import {Logger} from "../logger/logger";
-import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack";
-import {Stack} from "../stack/stack";
-import {EvaluatePolicySanitized} from "../policy/evaluate-policy";
-import {ReportingOptionsSanitized} from "../reporting/i-reporting-options";
-import {TS} from "../../type/ts";
+import {LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {NodeEvaluator} from "./node-evaluator/node-evaluator.js";
+import {Logger} from "../logger/logger.js";
+import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack.js";
+import {Stack} from "../stack/stack.js";
+import {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
+import {ReportingOptionsSanitized} from "../reporting/i-reporting-options.js";
+import {TS} from "../../type/ts.js";
 
 export interface EvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> {
 	node: T;

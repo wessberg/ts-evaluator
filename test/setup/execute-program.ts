@@ -1,12 +1,12 @@
-import {TS} from "../../src/type/ts";
-import {TestResult} from "./test-result";
-import {createBuiltInModuleTestFiles, TestFile, TestFileEntry} from "./test-file";
-import {TestContext} from "./test-context";
-import {createTestSetup} from "./test-setup";
+import {TS} from "../../src/type/ts.js";
+import {TestResult} from "./test-result.js";
+import {createBuiltInModuleTestFiles, TestFile, TestFileEntry} from "./test-file.js";
+import {TestContext} from "./test-context.js";
+import {createTestSetup} from "./test-setup.js";
 import {MaybeArray, PartialExcept} from "helpertypes";
 import path from "crosspath";
-import {evaluate} from "../../src/interpreter/evaluate";
-import {ensureArray} from "../../src/interpreter/util/array/ensure-array";
+import {evaluate} from "../../src/interpreter/evaluate.js";
+import {ensureArray} from "../../src/interpreter/util/array/ensure-array.js";
 
 /**
  * Prepares a test
@@ -27,10 +27,9 @@ export function executeProgram(
 	const options =
 		arguments.length === 3 ? (optionsOrUndefined as Exclude<typeof optionsOrUndefined, undefined>) : (inputEntryOrOptions as Exclude<typeof optionsOrUndefined, undefined>);
 
-	if (options.environment?.preset == null || options.environment.preset === "NODE") {
-		inputFiles = [
-			...ensureArray(inputFiles),
-			...createBuiltInModuleTestFiles("child_process", "fs", "http", "path", "assert")];
+	const useCommonJs = options.environment?.preset == null || options.environment.preset === "NODE" || options.environment.preset === "NODE_CJS";
+	if (options.environment?.preset == null || options.environment.preset === "NODE" || options.environment.preset === "NODE_CJS" || options.environment.preset === "NODE_ESM") {
+		inputFiles = [...ensureArray(inputFiles), ...createBuiltInModuleTestFiles("child_process", "fs", "http", "path", "assert")];
 	}
 
 	const setup = createTestSetup(inputFiles, inputEntry, options);
@@ -48,7 +47,8 @@ export function executeProgram(
 		allowJs: true,
 		sourceMap: false,
 		outDir: dir.dist,
-		rootDir: dir.root
+		rootDir: dir.root,
+		module: useCommonJs ? typescript.ModuleKind.CommonJS : typescript.ModuleKind.ESNext
 	};
 
 	const program = typescript.createProgram({

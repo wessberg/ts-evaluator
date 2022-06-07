@@ -14,7 +14,7 @@
 
 <a href="https://npmcharts.com/compare/ts-evaluator?minimal=true"><img alt="Downloads per month" src="https://img.shields.io/npm/dm/ts-evaluator.svg"    /></a>
 <a href="https://www.npmjs.com/package/ts-evaluator"><img alt="NPM version" src="https://badge.fury.io/js/ts-evaluator.svg"    /></a>
-<a href="https://david-dm.org/wessberg/ts-evaluator"><img alt="Dependencies" src="https://img.shields.io/david/wessberg%2Fts-evaluator.svg"    /></a>
+<img alt="Dependencies" src="https://img.shields.io/librariesio/github/wessberg%2Fts-evaluator.svg"    />
 <a href="https://github.com/wessberg/ts-evaluator/graphs/contributors"><img alt="Contributors" src="https://img.shields.io/github/contributors/wessberg%2Fts-evaluator.svg"    /></a>
 <a href="https://github.com/prettier/prettier"><img alt="code style: prettier" src="https://img.shields.io/badge/code_style-prettier-ff69b4.svg"    /></a>
 <a href="https://opensource.org/licenses/MIT"><img alt="License: MIT" src="https://img.shields.io/badge/License-MIT-yellow.svg"    /></a>
@@ -64,9 +64,9 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
 
 [Become a sponsor/backer](https://github.com/wessberg/ts-evaluator?sponsor=1) and get your logo listed here.
 
-| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> | <a href="https://github.com/cblanc"><img alt="Christopher Blanchard" src="https://avatars0.githubusercontent.com/u/2160685?s=400&v=4" height="70"   /></a> | <a href="https://github.com/ideal-postcodes"><img alt="Ideal Postcodes" src="https://avatars.githubusercontent.com/u/4996310?s=200&v=4" height="70"   /></a> | <a href="https://www.xerox.com"><img alt="Xerox" src="https://avatars.githubusercontent.com/u/9158512?s=200&v=4" height="70"   /></a> | <a href="https://changelog.me"><img alt="Trent Raymond" src="https://avatars.githubusercontent.com/u/1509616?v=4" height="70"   /></a> | <a href="https://scrubtheweb.com"><img alt="scrubtheweb" src="https://avatars.githubusercontent.com/u/41668218?v=4" height="70"   /></a> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@usebubbles](https://twitter.com/usebubbles)                                                                                | [Christopher Blanchard](https://github.com/cblanc)                                                                                                         | [Ideal Postcodes](https://github.com/ideal-postcodes)                                                                                                        | [Xerox](https://www.xerox.com)                                                                                                        | [Trent Raymond](https://changelog.me)                                                                                                  | [scrubtheweb](https://scrubtheweb.com)                                                                                                   |
+| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> | <a href="https://github.com/cblanc"><img alt="Christopher Blanchard" src="https://avatars0.githubusercontent.com/u/2160685?s=400&v=4" height="70"   /></a> | <a href="https://github.com/ideal-postcodes"><img alt="Ideal Postcodes" src="https://avatars.githubusercontent.com/u/4996310?s=200&v=4" height="70"   /></a> | <a href="https://www.xerox.com"><img alt="Xerox" src="https://avatars.githubusercontent.com/u/9158512?s=200&v=4" height="70"   /></a> | <a href="https://changelog.me"><img alt="Trent Raymond" src="https://avatars.githubusercontent.com/u/1509616?v=4" height="70"   /></a> | <a href="https://scrubtheweb.com"><img alt="scrubtheweb" src="https://avatars.githubusercontent.com/u/41668218?v=4" height="70"   /></a> | <a href="https://github.com/hjoelh"><img alt="Joel" src="https://avatars.githubusercontent.com/u/68335961?v=4" height="70"   /></a> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@usebubbles](https://twitter.com/usebubbles)                                                                                | [Christopher Blanchard](https://github.com/cblanc)                                                                                                         | [Ideal Postcodes](https://github.com/ideal-postcodes)                                                                                                        | [Xerox](https://www.xerox.com)                                                                                                        | [Trent Raymond](https://changelog.me)                                                                                                  | [scrubtheweb](https://scrubtheweb.com)                                                                                                   | [Joel](https://github.com/hjoelh)                                                                                                   |
 
 ### Patreon
 
@@ -128,7 +128,7 @@ $ pnpm add ts-evaluator
 
 `ts-evaluator` depends on `typescript`, so you need to manually install this as well.
 
-You may also need to install additional peer dependencies such as `jsdom` or `chalk` depending on the features you are going to use. Refer to the documentation for the specific cases where any of these may be relevant.
+You may also need to install `jsdom` depending on the features you are going to use. Refer to the documentation for the specific cases where it may be relevant.
 
 <!-- SHADOW_SECTION_INSTALL_END -->
 
@@ -164,12 +164,14 @@ you don't have to evaluate the entire program to produce a value which may poten
 
 ### Setting up an environment
 
-You can define the kind of environment that `evaluate()` assumes when evaluating the given Node. By default, a `Node` environment is assumed.
+You can define the kind of environment that `evaluate()` assumes when evaluating the given Node. By default, a CommonJS-based `Node` environment is assumed, to align with what you would get simply by running `node` with no arguments.
 
 The following environment presets are supported:
 
 - `ECMA` - Assumes a pure ECMAScript environment. This means that no other globals than those that are defined in the ECMAScript spec such as `Math`, `Promise`, `Object`, etc, are available.
-- `NODE` _(default)_ - Assumes a Node environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present.
+- `NODE` _(default)_ - Assumes a CommonJS-based Node.js environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present, as well as ones that are only present in a CommonJS-based Node.js environment, such as `require`, `__dirname`, and `__filename`.
+- `NODE_CJS` - An alias for `NODE`.
+- `NODE_ESM` - Assumes an ESM-based Node.js environment. This means that built-in modules such as `fs` and `path` can be resolved, and Node-specific globals such as `process` is present, as well as ones that are only present in an ESM-based Node.js environment, such as `import.meta`.
 - `BROWSER` - Assumes a Browser environment. This means that DOM APIs are available and Browser-specific globals such as `window` is present.
 
 Beyond presets, you can provide additional globals or override those that comes from the presets.
@@ -179,7 +181,7 @@ Here's how you can configure environment options:
 const result = evaluate({
 	// ...
 	environment: {
-		// The "Node" environment is the default one. You can simply omit this key if you are targeting a Node environment
+		// The "Node" environment is the default one. You can simply omit this key if you are targeting a CommonJS-based Node environment
 		preset: "NODE",
 		extra: {
 			someGlobal: "someValue"

@@ -1,10 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment";
-import {BREAK_SYMBOL} from "../util/break/break-symbol";
-import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {Literal} from "../literal/literal";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment.js";
+import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
+import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {Literal} from "../literal/literal.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a CaseClause, based on a switch expression

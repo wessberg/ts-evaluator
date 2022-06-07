@@ -1,9 +1,9 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {generateClassDeclaration} from "../util/class/generate-class-declaration";
-import {hasModifier} from "../util/modifier/has-modifier";
-import {Literal} from "../literal/literal";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {generateClassDeclaration} from "../util/class/generate-class-declaration.js";
+import {hasModifier} from "../util/modifier/has-modifier.js";
+import {Literal} from "../literal/literal.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ClassExpression

@@ -1,4 +1,4 @@
-import {Literal} from "../../literal/literal";
+import {Literal} from "../../literal/literal.js";
 
 /**
  * Returns true if the given item is an Iterable

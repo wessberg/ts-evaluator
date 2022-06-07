@@ -1,5 +1,5 @@
-import {EvaluationError} from "../evaluation-error/evaluation-error";
-import {IUndefinedLeftValueErrorOptions} from "./i-undefined-left-value-error-options";
+import {EvaluationError} from "../evaluation-error/evaluation-error.js";
+import {IUndefinedLeftValueErrorOptions} from "./i-undefined-left-value-error-options.js";
 
 /**
  * An Error that can be thrown when an undefined leftValue is encountered

@@ -1,5 +1,5 @@
-import {INonDeterministicErrorOptions} from "./i-non-deterministic-error-options";
-import {PolicyError} from "../policy-error";
+import {INonDeterministicErrorOptions} from "./i-non-deterministic-error-options.js";
+import {PolicyError} from "../policy-error.js";
 
 /**
  * An Error that can be thrown when something nondeterministic is attempted to be evaluated and has been disallowed to be so

@@ -1,10 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {isLazyCall, Literal} from "../literal/literal";
-import {NotCallableError} from "../error/not-callable-error/not-callable-error";
-import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {THIS_SYMBOL} from "../util/this/this-symbol";
-import {expressionContainsSuperKeyword} from "../util/expression/expression-contains-super-keyword";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {isLazyCall, Literal} from "../literal/literal.js";
+import {NotCallableError} from "../error/not-callable-error/not-callable-error.js";
+import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {THIS_SYMBOL} from "../util/this/this-symbol.js";
+import {expressionContainsSuperKeyword} from "../util/expression/expression-contains-super-keyword.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a CallExpression

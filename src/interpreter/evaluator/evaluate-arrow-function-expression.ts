@@ -1,11 +1,11 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {Literal} from "../literal/literal";
-import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {hasModifier} from "../util/modifier/has-modifier";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
+import {Literal} from "../literal/literal.js";
+import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {hasModifier} from "../util/modifier/has-modifier.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, an ArrowFunction
@@ -16,7 +16,7 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 	const arrowFunctionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async (...args: Literal[]) => {
 				// Prepare a lexical environment for the function context
-				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
 
 				// Define a new binding for a return symbol within the environment
 				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
@@ -55,7 +55,7 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 		  }
 		: (...args: Literal[]) => {
 				// Prepare a lexical environment for the function context
-				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
 
 				// Define a new binding for a return symbol within the environment
 				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});

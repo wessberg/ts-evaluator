@@ -1,12 +1,12 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment";
-import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal";
-import {THIS_SYMBOL} from "../util/this/this-symbol";
-import {RETURN_SYMBOL} from "../util/return/return-symbol";
-import {SUPER_SYMBOL} from "../util/super/super-symbol";
-import {inStaticContext} from "../util/static/in-static-context";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
+import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
+import {THIS_SYMBOL} from "../util/this/this-symbol.js";
+import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
+import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
+import {inStaticContext} from "../util/static/in-static-context.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a GetAccessorDeclaration, before setting it on the given parent
@@ -41,7 +41,7 @@ export function evaluateGetAccessorDeclaration(
 	 */
 	function getAccessorDeclaration(this: Literal) {
 		// Prepare a lexical environment for the function context
-		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment);
+		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
 
 		// Define a new binding for a return symbol within the environment
 		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});

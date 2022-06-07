@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options";
-import {IndexLiteral, Literal} from "../literal/literal";
-import {hasModifier} from "../util/modifier/has-modifier";
-import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment";
-import {TS} from "../../type/ts";
+import {EvaluatorOptions} from "./evaluator-options.js";
+import {IndexLiteral, Literal} from "../literal/literal.js";
+import {hasModifier} from "../util/modifier/has-modifier.js";
+import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a NodeArray of ParameterDeclarations

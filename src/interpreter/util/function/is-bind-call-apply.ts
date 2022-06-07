@@ -1,4 +1,4 @@
-import {getFromLexicalEnvironment, LexicalEnvironment} from "../../lexical-environment/lexical-environment";
+import {getFromLexicalEnvironment, LexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
 
 /**
  * Returns true if the given function is either Function.prototype.bind, Function.prototype.call, or Function.prototype.apply
