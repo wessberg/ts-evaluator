@@ -39,8 +39,9 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 		}
 	}
 
-	// If we don't have a typechecker to work it, try parsing the SourceFile in order to locate the declaration
-	if (valueDeclaration == null && typeChecker == null) {
+
+	// If we weren't able to resolve a SourceFile still, try parsing the SourceFile manually
+	if (valueDeclaration == null) {
 		const result = findNearestParentNodeWithName<TS.Declaration>(node.parent, node.text, options as EvaluatorOptions<TS.Declaration>);
 
 		if (isTypescriptNode(result) && !typescript.isIdentifier(result)) {
@@ -52,6 +53,7 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 			return result;
 		}
 	}
+
 
 	// If it has a value declaration, go forward with that one
 	if (valueDeclaration != null) {
