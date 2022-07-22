@@ -24,14 +24,14 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 
 	// Try to get a symbol for whatever the identifier points to and take its value declaration.
 	// It may not have a symbol, for example if it is an inlined expression such as an initializer or a Block
-	const symbol = typescript.isShorthandPropertyAssignment(node.parent) ? typeChecker.getShorthandAssignmentValueSymbol(node.parent) : typeChecker.getSymbolAtLocation(node);
+	const symbol = typescript.isShorthandPropertyAssignment(node.parent) ? typeChecker?.getShorthandAssignmentValueSymbol(node.parent) : typeChecker?.getSymbolAtLocation(node);
 	let valueDeclaration: TS.Declaration | undefined = symbol == null ? undefined : symbol.valueDeclaration;
 
 	if (symbol != null && valueDeclaration == null) {
 		try {
 			// The symbol may be aliasing another one - which may have a value declaration
-			const aliasedSymbol = typeChecker.getAliasedSymbol(symbol);
-			valueDeclaration = aliasedSymbol.valueDeclaration;
+			const aliasedSymbol = typeChecker?.getAliasedSymbol(symbol);
+			valueDeclaration = aliasedSymbol?.valueDeclaration;
 		} catch {
 			// OK, it didn't alias anything
 		}

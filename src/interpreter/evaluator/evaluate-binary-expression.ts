@@ -148,7 +148,7 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 			// Update to the left-value within the environment if it exists there and has been updated
 			if (leftIdentifier != null) {
 				const innerLeftIdentifier = getInnerNode(node.left, typescript);
-				const leftIdentifierSymbol = typeChecker.getSymbolAtLocation(innerLeftIdentifier);
+				const leftIdentifierSymbol = typeChecker?.getSymbolAtLocation(innerLeftIdentifier);
 				const leftIdentifierValueDeclaration = leftIdentifierSymbol?.valueDeclaration;
 
 				const bestLexicalEnvironment =

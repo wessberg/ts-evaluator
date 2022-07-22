@@ -162,6 +162,11 @@ else {
 In this example, the referenced bindings within the lexical environment of the Node will be discovered and evaluated before producing a final value. This means that
 you don't have to evaluate the entire program to produce a value which may potentially be a much faster operation.
 
+### Behavior without a typechecker
+
+If you do not have access to a typechecker, for example if you don't have a TypeScript _Program_ to work with, you can avoid passing in a typechecker as an option.
+This will work for evaluating literal values, but `ts-evaluator` won't be able to resolve and dealias symbols and identifiers.
+
 ### Setting up an environment
 
 You can define the kind of environment that `evaluate()` assumes when evaluating the given Node. By default, a CommonJS-based `Node` environment is assumed, to align with what you would get simply by running `node` with no arguments.

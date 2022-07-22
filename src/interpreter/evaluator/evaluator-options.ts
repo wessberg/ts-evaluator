@@ -9,7 +9,7 @@ import {TS} from "../../type/ts.js";
 
 export interface EvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> {
 	node: T;
-	typeChecker: TS.TypeChecker;
+	typeChecker?: TS.TypeChecker;
 	typescript: typeof TS;
 	evaluate: NodeEvaluator;
 	environment: LexicalEnvironment;

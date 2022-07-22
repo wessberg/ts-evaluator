@@ -5,7 +5,7 @@ import {ReportingOptionsSanitized} from "../../reporting/i-reporting-options.js"
 import {TS} from "../../../type/ts.js";
 
 export interface ICreateNodeEvaluatorOptions {
-	typeChecker: TS.TypeChecker;
+	typeChecker?: TS.TypeChecker;
 	typescript: typeof TS;
 	policy: EvaluatePolicySanitized;
 	reporting: ReportingOptionsSanitized;

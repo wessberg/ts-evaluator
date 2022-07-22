@@ -12,7 +12,7 @@ export function evaluateSourceFileAsNamespaceObject({node, environment, evaluate
 	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;
 	const namespaceObject: IndexLiteral = objectCtor.create(objectCtor.prototype);
 
-	const moduleSymbol = typeChecker.getSymbolAtLocation(node);
+	const moduleSymbol = typeChecker?.getSymbolAtLocation(node);
 	if (moduleSymbol != null) {
 		const exports = moduleSymbol.exports;
 		if (exports != null) {
