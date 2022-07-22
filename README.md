@@ -89,6 +89,7 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
   - [pnpm](#pnpm)
   - [Peer Dependencies](#peer-dependencies)
 - [Usage](#usage)
+  - [Behavior without a typechecker](#behavior-without-a-typechecker)
   - [Setting up an environment](#setting-up-an-environment)
   - [Setting up Policies](#setting-up-policies)
   - [Custom TypeScript version](#custom-typescript-version)

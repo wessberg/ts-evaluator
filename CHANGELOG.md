@@ -1,3 +1,12 @@
+## [1.0.2](https://github.com/wessberg/ts-evaluator/compare/v1.0.1...v1.0.2) (2022-07-22)
+
+
+### Features
+
+* make passing in a typechecker optional and document its operation ([3966d4b](https://github.com/wessberg/ts-evaluator/commit/3966d4ba8fda13297bd794743d1061408b3c7a71))
+
+
+
 ## [1.0.1](https://github.com/wessberg/ts-evaluator/compare/v1.0.0...v1.0.1) (2022-06-07)
 
 
