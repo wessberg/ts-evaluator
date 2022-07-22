@@ -1,3 +1,13 @@
+## [1.0.3](https://github.com/wessberg/ts-evaluator/compare/v1.0.2...v1.0.3) (2022-07-22)
+
+
+### Features
+
+* make behavior when not passing in a typechecker far more robust ([5f6634f](https://github.com/wessberg/ts-evaluator/commit/5f6634f55929955a9d37a9263f99d0227f1a3956))
+* make evaluating identifiers more robust ([8436f68](https://github.com/wessberg/ts-evaluator/commit/8436f686b10d218977e242afcabbc2172f32bdca))
+
+
+
 ## [1.0.2](https://github.com/wessberg/ts-evaluator/compare/v1.0.1...v1.0.2) (2022-07-22)
 
 
