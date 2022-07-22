@@ -166,7 +166,9 @@ you don't have to evaluate the entire program to produce a value which may poten
 ### Behavior without a typechecker
 
 If you do not have access to a typechecker, for example if you don't have a TypeScript _Program_ to work with, you can avoid passing in a typechecker as an option.
-This will work for evaluating literal values, but `ts-evaluator` won't be able to resolve and dealias symbols and identifiers.
+This won't be as robust as when a typechecker is given, as `ts-evaluator` won't understand the full type hierarchy of your Program, and most importantly not understand
+how to resolve and dealias symbols and identifiers across source files, but it will still be able to resolve and evaluate identifiers and symbols that are located in the same
+SourceFile. Uou may find that it works perfectly well for your use case.
 
 ### Setting up an environment
 

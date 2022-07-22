@@ -45,3 +45,19 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 		else throw new ModuleNotFoundError({node: moduleDeclaration, path: moduleDeclaration.name.text});
 	}
 }
+
+
+ export function getImplementationFromExternalFile(name: string, moduleSpecifier: string, options: EvaluatorOptions<TS.Node>): Literal {
+	const {node} = options;
+
+	const require = getFromLexicalEnvironment(node, options.environment, "require")!.literal as NodeRequire;
+
+	try {
+		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
+		const module = require(moduleSpecifier);
+		return module[name] ?? module.default ?? module;
+	} catch (ex) {
+		if (ex instanceof EvaluationError) throw ex;
+		else throw new ModuleNotFoundError({node, path: moduleSpecifier});
+	}
+}

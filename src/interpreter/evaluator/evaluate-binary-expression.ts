@@ -6,6 +6,8 @@ import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-nod
 import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undefined-left-value-error.js";
 import {TS} from "../../type/ts.js";
 import {getInnerNode} from "../util/node/get-inner-node.js";
+import {findNearestParentNodeWithName} from "../util/node/find-nearest-parent-node-of-kind.js";
+import {isTypescriptNode} from "../util/node/is-node.js";
 
 /**
  * Evaluates, or attempts to evaluate, a BinaryExpression
@@ -149,14 +151,22 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 			if (leftIdentifier != null) {
 				const innerLeftIdentifier = getInnerNode(node.left, typescript);
 				const leftIdentifierSymbol = typeChecker?.getSymbolAtLocation(innerLeftIdentifier);
-				const leftIdentifierValueDeclaration = leftIdentifierSymbol?.valueDeclaration;
+				let leftIdentifierValueDeclaration = leftIdentifierSymbol?.valueDeclaration;
+
+				// If we don't have a typechecker to work it, try parsing the SourceFile in order to locate the declaration
+				if (leftIdentifierValueDeclaration == null && typeChecker == null && typescript.isIdentifier(innerLeftIdentifier)) {
+					const result = findNearestParentNodeWithName<TS.Declaration>(innerLeftIdentifier.parent, innerLeftIdentifier.text, options as EvaluatorOptions<TS.Declaration>);
+
+					if (isTypescriptNode(result)) {
+						leftIdentifierValueDeclaration = result;
+					}
+				}
 
 				const bestLexicalEnvironment =
 					leftIdentifierValueDeclaration == null ? environment : findLexicalEnvironmentInSameContext(environment, leftIdentifierValueDeclaration, typescript) ?? environment;
 
 				setInLexicalEnvironment({env: bestLexicalEnvironment, path: leftIdentifier, value: rightValue, reporting, node});
 				logger.logBinding(leftIdentifier, rightValue, "Assignment");
-
 			} else {
 				throw new UndefinedLeftValueError({node: node.left});
 			}

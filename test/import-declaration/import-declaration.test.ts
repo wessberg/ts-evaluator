@@ -229,3 +229,22 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #4",
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, true);
 });
+
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #5", withTypeScript, (t, {typescript}) => {
+	const {result} = executeProgram(
+		[
+			// language=TypeScript
+			`
+				import fs from "fs";
+
+				const alias = fs.readFileSync;
+				const foo = JSON.parse(fs.readFileSync("${path.join(path.dirname(path.urlToFilename(import.meta.url)), "../../package.json").replace(/\\/g, "\\\\")}")).name;
+			`
+		],
+		"foo",
+		{typescript}
+	);
+
+	if (!result.success) t.fail(result.reason.stack);
+	else t.deepEqual(result.value, "ts-evaluator");
+});

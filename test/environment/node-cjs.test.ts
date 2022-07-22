@@ -51,7 +51,6 @@ test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-
 
 	if (!result.success) t.fail(result.reason.stack);
 	else {
-		console.log(result.value);
 		t.deepEqual(result.value, {dirname: path.native.join(setup.fileStructure.dir.src), filename: path.native.join(setup.fileStructure.dir.src, "bar.ts")});
 	}
 });

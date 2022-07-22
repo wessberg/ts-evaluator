@@ -5,6 +5,8 @@ import {UndefinedIdentifierError} from "../error/undefined-identifier-error/unde
 import {isVarDeclaration} from "../util/flags/is-var-declaration.js";
 import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file.js";
 import {TS} from "../../type/ts.js";
+import {findNearestParentNodeWithName} from "../util/node/find-nearest-parent-node-of-kind.js";
+import {isTypescriptNode} from "../util/node/is-node.js";
 
 /**
  * Evaluates, or attempts to evaluate, an Identifier or a PrivateIdentifier
@@ -34,6 +36,20 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 			valueDeclaration = aliasedSymbol?.valueDeclaration;
 		} catch {
 			// OK, it didn't alias anything
+		}
+	}
+
+	// If we don't have a typechecker to work it, try parsing the SourceFile in order to locate the declaration
+	if (valueDeclaration == null && typeChecker == null) {
+		const result = findNearestParentNodeWithName<TS.Declaration>(node.parent, node.text, options as EvaluatorOptions<TS.Declaration>);
+
+		if (isTypescriptNode(result) && !typescript.isIdentifier(result)) {
+			valueDeclaration = result;
+		} else if (result != null) {
+			// Bind the value placed on the top of the stack to the local environment
+			setInLexicalEnvironment({env: environment, path: node.text, value: result, reporting, node: node});
+			logger.logBinding(node.text, result, `Discovered declaration value`);
+			return result;
 		}
 	}
 
