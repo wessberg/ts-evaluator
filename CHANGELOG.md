@@ -1,3 +1,12 @@
+## [1.0.5](https://github.com/wessberg/ts-evaluator/compare/v1.0.4...v1.0.5) (2022-07-23)
+
+
+### Bug Fixes
+
+* add null-check to avoid runtime exceptions under some circumstances on returned values ([d89671c](https://github.com/wessberg/ts-evaluator/commit/d89671c80df99bd8ae2a5c66c7657055c46646fd))
+
+
+
 ## [1.0.4](https://github.com/wessberg/ts-evaluator/compare/v1.0.3...v1.0.4) (2022-07-23)
 
 
