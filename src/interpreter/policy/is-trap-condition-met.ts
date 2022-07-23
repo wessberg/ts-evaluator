@@ -58,7 +58,7 @@ function handleTrapCondition<T extends object, ConditionType>(
 	// If matching the condition depends on the provided arguments, pass them in
 	if (isTrapConditionFunction(trapCondition)) {
 		const castItem = item as IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
-		return trapCondition(...castItem.argArray) === matchCondition;
+		return castItem.argArray != null && trapCondition(...castItem.argArray) === matchCondition;
 	}
 
 	// Otherwise, evaluate the truthiness of the condition
