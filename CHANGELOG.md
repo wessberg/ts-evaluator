@@ -1,3 +1,12 @@
+## [1.0.4](https://github.com/wessberg/ts-evaluator/compare/v1.0.3...v1.0.4) (2022-07-23)
+
+
+### Features
+
+* add ([e121d66](https://github.com/wessberg/ts-evaluator/commit/e121d662745c5cdbb83e2a0669258ff0c16a4b9d))
+
+
+
 ## [1.0.3](https://github.com/wessberg/ts-evaluator/compare/v1.0.2...v1.0.3) (2022-07-22)
 
 
