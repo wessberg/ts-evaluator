@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
+test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -13,7 +13,7 @@ test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {ty
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -22,7 +22,7 @@ test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
+test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -33,7 +33,7 @@ test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {ty
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -42,7 +42,7 @@ test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
+test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -54,7 +54,7 @@ test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {ty
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -63,7 +63,7 @@ test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
+test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -75,7 +75,7 @@ test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {ty
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -84,7 +84,7 @@ test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
+test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -96,7 +96,7 @@ test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {ty
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -105,7 +105,7 @@ test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {typescript}) => {
+test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -117,7 +117,7 @@ test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {ty
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

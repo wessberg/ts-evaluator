@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can capture errors that would otherwise throw with try-catch. #1", withTypeScript, (t, {typescript}) => {
+test("Can capture errors that would otherwise throw with try-catch. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -17,7 +17,7 @@ test("Can capture errors that would otherwise throw with try-catch. #1", withTyp
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

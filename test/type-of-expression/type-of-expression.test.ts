@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a TypeOfExpression #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a TypeOfExpression #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -12,14 +12,14 @@ test("Can evaluate a TypeOfExpression #1", withTypeScript, (t, {typescript}) => 
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bigint");
 });
 
-test("Can evaluate a TypeOfExpression #2", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a TypeOfExpression #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -30,7 +30,7 @@ test("Can evaluate a TypeOfExpression #2", withTypeScript, (t, {typescript}) => 
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle Spread Elements in arrays. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle Spread Elements in arrays. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -13,14 +13,14 @@ test("Can handle Spread Elements in arrays. #1", withTypeScript, (t, {typescript
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value as number[], [1, 2, 3]);
 });
 
-test("Can handle Spread Elements in CallExpressions. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle Spread Elements in CallExpressions. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -34,7 +34,7 @@ test("Can handle Spread Elements in CallExpressions. #1", withTypeScript, (t, {t
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

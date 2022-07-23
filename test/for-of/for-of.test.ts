@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression with a ForOfStatement. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -17,14 +17,14 @@ test("Can evaluate a CallExpression with a ForOfStatement. #1", withTypeScript, 
 			myFunc();
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -40,14 +40,14 @@ test("Can evaluate a CallExpression with a ForOfStatement and a break statement.
 			myFunc();
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -63,14 +63,14 @@ test("Can evaluate a CallExpression with a ForOfStatement and a continue stateme
 			myFunc();
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 5);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -86,7 +86,7 @@ test("Can evaluate a CallExpression with a ForOfStatement and a return statement
 			myFunc();
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

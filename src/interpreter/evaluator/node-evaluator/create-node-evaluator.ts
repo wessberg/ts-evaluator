@@ -17,7 +17,7 @@ import {TS} from "../../../type/ts.js";
 /**
  * Creates a Node Evaluator
  */
-export function createNodeEvaluator({typeChecker, typescript, policy, logger, stack, reporting, nextNode}: ICreateNodeEvaluatorOptions): NodeEvaluator {
+export function createNodeEvaluator({typeChecker, typescript, policy, logger, stack, reporting, nextNode, moduleOverrides}: ICreateNodeEvaluatorOptions): NodeEvaluator {
 	let ops = 0;
 
 	const handleNewNode = (node: TS.Node, statementTraversalStack: StatementTraversalStack) => {
@@ -101,7 +101,8 @@ export function createNodeEvaluator({typeChecker, typescript, policy, logger, st
 			environment,
 			stack,
 			logger,
-			statementTraversalStack
+			statementTraversalStack,
+			moduleOverrides
 		};
 	}
 

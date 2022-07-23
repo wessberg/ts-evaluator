@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -13,7 +13,7 @@ test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {t
 			}
 		`,
 		"add (",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -22,7 +22,7 @@ test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {t
 	}
 });
 
-test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
+test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -33,7 +33,7 @@ test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScript
 			}
 		`,
 		"#add (",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -42,7 +42,7 @@ test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScript
 	}
 });
 
-test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
+test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -59,7 +59,7 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 			const result = foo.add(2, 2);
 		`,
 		"result",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -68,7 +68,7 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 	}
 });
 
-test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #2", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
+test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #2", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -85,7 +85,7 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 			const result = foo.addToSecretNumber(2);
 		`,
 		"result",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

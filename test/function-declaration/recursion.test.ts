@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression for a recursive function. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression for a recursive function. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -17,7 +17,7 @@ test("Can evaluate a CallExpression for a recursive function. #1", withTypeScrip
 			fibonacci(5);
 		`,
 		"fibonacci(5",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

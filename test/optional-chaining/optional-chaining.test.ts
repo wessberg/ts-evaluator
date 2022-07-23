@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
+test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -10,7 +10,7 @@ test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (
 			const bar = foo.bar.baz?.();
 		`,
 		"foo.bar.baz?.()",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -19,7 +19,7 @@ test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (
 	}
 });
 
-test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
+test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -27,7 +27,7 @@ test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions("
 			const bar = foo.bar?.baz;
 		`,
 		"foo.bar?.baz",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -36,7 +36,7 @@ test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions("
 	}
 });
 
-test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
+test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -44,7 +44,7 @@ test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">
 			const bar = foo.bar?.["baz"];
 		`,
 		`foo.bar?.["baz"]`,
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

@@ -9,6 +9,7 @@ export interface ICreateNodeEvaluatorOptions {
 	typescript: typeof TS;
 	policy: EvaluatePolicySanitized;
 	reporting: ReportingOptionsSanitized;
+	moduleOverrides?: Record<string, unknown>;
 	logger: Logger;
 	stack: Stack;
 	nextNode(node: TS.Node): void;

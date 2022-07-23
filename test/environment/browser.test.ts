@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -14,6 +14,7 @@ test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript}) =
 		"(() =>",
 		{
 			typescript,
+			useTypeChecker,
 			environment: {
 				preset: "BROWSER"
 			}
@@ -26,7 +27,7 @@ test("Can handle a Browser environment. #1", withTypeScript, (t, {typescript}) =
 	}
 });
 
-test("Can handle a Browser environment. #2", withTypeScript, (t, {typescript}) => {
+test("Can handle a Browser environment. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -38,6 +39,7 @@ test("Can handle a Browser environment. #2", withTypeScript, (t, {typescript}) =
 		"(() =>",
 		{
 			typescript,
+			useTypeChecker,
 			environment: {
 				preset: "BROWSER"
 			}

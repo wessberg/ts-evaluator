@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 import path from "crosspath";
 
-test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -27,14 +28,24 @@ test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {type
 			fileName: "b.ts",
 			match: "(() =>"
 		},
-		{typescript}
+		{
+			typescript,
+			useTypeChecker,
+			...(useTypeChecker
+				? {}
+				: {
+						moduleOverrides: {
+							"./a": {foo: "bar"}
+						}
+				  })
+		}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #2", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -65,14 +76,25 @@ test("Can resolve symbols via ImportDeclarations. #2", withTypeScript, (t, {type
 			fileName: "c.ts",
 			match: "(() =>"
 		},
-		{typescript}
+		{
+			typescript,
+			useTypeChecker,
+			...(useTypeChecker
+				? {}
+				: {
+						moduleOverrides: {
+							"./a": {foo: "bar"},
+							"./b": {foo: "bar"}
+						}
+				  })
+		}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #3", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -105,14 +127,25 @@ test("Can resolve symbols via ImportDeclarations. #3", withTypeScript, (t, {type
 			fileName: "c.ts",
 			match: "(() =>"
 		},
-		{typescript}
+		{
+			typescript,
+			useTypeChecker,
+			...(useTypeChecker
+				? {}
+				: {
+						moduleOverrides: {
+							"./a": {foo: "bar"},
+							"./b": {foo: "bar"}
+						}
+				  })
+		}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #4", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations. #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -145,14 +178,25 @@ test("Can resolve symbols via ImportDeclarations. #4", withTypeScript, (t, {type
 			fileName: "c.ts",
 			match: "(() =>"
 		},
-		{typescript}
+		{
+			typescript,
+			useTypeChecker,
+			...(useTypeChecker
+				? {}
+				: {
+						moduleOverrides: {
+							"./a": {foo: "bar"},
+							"./b": {foo: "bar"}
+						}
+				  })
+		}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -163,14 +207,14 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 			`
 		],
 		"foo",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "/foo");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -181,14 +225,14 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 			`
 		],
 		"foo",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "/foo");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -200,14 +244,14 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 			`
 		],
 		"foo",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, "ts-evaluator");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", withTypeScriptVersions(">=3.1"), (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", withTypeScriptVersions(">=3.1"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -223,14 +267,14 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #4",
 			})();
 		`,
 		"(() => ",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, true);
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #5", withTypeScript, (t, {typescript}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #5", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -242,7 +286,7 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #5",
 			`
 		],
 		"foo",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

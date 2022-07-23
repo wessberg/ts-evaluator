@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -12,14 +12,14 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScr
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 123);
 });
 
-test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScript, (t, {typescript}) => {
+test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -29,14 +29,14 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScr
 			})();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 245);
 });
 
-test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -45,14 +45,14 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeSc
 			})({foo: 2});
 		`,
 		"(({foo}) =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", withTypeScript, (t, {typescript}) => {
+test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -61,7 +61,7 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", withTypeSc
 			})({foo: 2});
 		`,
 		"(({foo: alias}) =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

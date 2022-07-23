@@ -12,4 +12,12 @@ export interface EvaluateOptions {
 	logLevel?: LogLevelKind;
 	policy?: Partial<EvaluatePolicy>;
 	reporting?: ReportingOptions;
+
+	/**
+	 * A record of implementations for module specifiers that will override whatever is resolvable via
+	 * traditional require(...) evaluation.
+	 * Useful when/if you want to shim other modules inside the compilation unit contex of the evaluation,
+	 * much like local identifiers can be overridden with the `environment` option.
+	 */
+	moduleOverrides?: Record<string, unknown>;
 }

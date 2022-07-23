@@ -15,6 +15,7 @@ export interface EvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> {
 	environment: LexicalEnvironment;
 	policy: EvaluatePolicySanitized;
 	reporting: ReportingOptionsSanitized;
+	moduleOverrides?: Record<string, unknown>; 
 	stack: Stack;
 	statementTraversalStack: StatementTraversalStack;
 	logger: Logger;

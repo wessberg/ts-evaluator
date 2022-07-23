@@ -8,7 +8,7 @@ specifiers:
   '@typescript-eslint/eslint-plugin': ^5.30.7
   '@typescript-eslint/parser': ^5.30.7
   '@wessberg/prettier-config': ^1.0.0
-  '@wessberg/ts-config': ^2.0.3
+  '@wessberg/ts-config': ^2.0.4
   ansi-colors: ^4.1.3
   ava: ^3.15.0
   crosspath: ^2.0.0
@@ -21,7 +21,7 @@ specifiers:
   jsdom: ^20.0.0
   memfs: ^3.4.7
   np: 7.6.2
-  npm-check-updates: ^15.3.4
+  npm-check-updates: ^16.0.0
   object-path: ^0.11.8
   pnpm: ^7.6.0
   prettier: ^2.7.1
@@ -60,7 +60,7 @@ devDependencies:
   '@typescript-eslint/eslint-plugin': 5.30.7_6wltbjakwuqm7awqswigmiuhd4
   '@typescript-eslint/parser': 5.30.7_he2ccbldppg44uulnyq4rwocfa
   '@wessberg/prettier-config': 1.0.0
-  '@wessberg/ts-config': 2.0.3
+  '@wessberg/ts-config': 2.0.4
   ava: 3.15.0
   crosspath: 2.0.0
   eslint: 8.20.0
@@ -72,7 +72,7 @@ devDependencies:
   jsdom: 20.0.0
   memfs: 3.4.7
   np: 7.6.2
-  npm-check-updates: 15.3.4
+  npm-check-updates: 16.0.0
   pnpm: 7.6.0
   prettier: 2.7.1
   pretty-quick: 3.1.3_prettier@2.7.1
@@ -620,8 +620,8 @@ packages:
     engines: {node: '>=8.0.0'}
     dev: true
 
-  /@wessberg/ts-config/2.0.3:
-    resolution: {integrity: sha512-j/ZQoPoB9mjdVsZduT74JzzKX13GqCDIdnXZUf3baegSzOHk4PdDNgefqTB1ozIWlJk0UFJBflBCVWDQ/98Dhw==}
+  /@wessberg/ts-config/2.0.4:
+    resolution: {integrity: sha512-Zi1mE/S9F1dJB1VX0o7YIt3TecM5j88vV+0AUlyGv6eWiqM+hSjHC5CbFMQ//aftIve6LJkMkqliii+3FlT94Q==}
     dev: true
 
   /JSONStream/1.3.5:
@@ -1096,7 +1096,7 @@ packages:
       '@types/semver': 7.3.10
       '@types/ua-parser-js': 0.7.36
       browserslist: 4.20.2
-      caniuse-lite: 1.0.30001368
+      caniuse-lite: 1.0.30001369
       isbot: 3.4.5
       object-path: 0.11.8
       semver: 7.3.7
@@ -1108,8 +1108,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001368
-      electron-to-chromium: 1.4.198
+      caniuse-lite: 1.0.30001369
+      electron-to-chromium: 1.4.199
       escalade: 3.1.1
       node-releases: 2.0.6
       picocolors: 1.0.0
@@ -1120,8 +1120,8 @@ packages:
     engines: {node: ^6 || ^7 || ^8 || ^9 || ^10 || ^11 || ^12 || >=13.7}
     hasBin: true
     dependencies:
-      caniuse-lite: 1.0.30001368
-      electron-to-chromium: 1.4.198
+      caniuse-lite: 1.0.30001369
+      electron-to-chromium: 1.4.199
       node-releases: 2.0.6
       update-browserslist-db: 1.0.5_browserslist@4.21.2
     dev: true
@@ -1248,8 +1248,8 @@ packages:
     engines: {node: '>=14.16'}
     dev: true
 
-  /caniuse-lite/1.0.30001368:
-    resolution: {integrity: sha512-wgfRYa9DenEomLG/SdWgQxpIyvdtH3NW8Vq+tB6AwR9e56iOIcu1im5F/wNdDf04XlKHXqIx4N8Jo0PemeBenQ==}
+  /caniuse-lite/1.0.30001369:
+    resolution: {integrity: sha512-OY1SBHaodJc4wflDIKnlkdqWzJZd1Ls/2zbVJHBSv3AT7vgOJ58yAhd2CN4d57l2kPJrgMb7P9+N1Mhy4tNSQA==}
     dev: true
 
   /chalk/1.1.3:
@@ -1953,8 +1953,8 @@ packages:
     resolution: {integrity: sha512-I88TYZWc9XiYHRQ4/3c5rjjfgkjhLyW2luGIheGERbNQ6OY7yTybanSpDXZa8y7VUP9YmDcYa+eyq4ca7iLqWA==}
     dev: true
 
-  /electron-to-chromium/1.4.198:
-    resolution: {integrity: sha512-jwqQPdKGeAslcq8L+1SZZgL6uDiIDmTe9Gq4brsdWAH27y7MJ2g9Ue6MyST3ogmSM49EAQP7bype1V5hsuNrmQ==}
+  /electron-to-chromium/1.4.199:
+    resolution: {integrity: sha512-WIGME0Cs7oob3mxsJwHbeWkH0tYkIE/sjkJ8ML2BYmuRcjhRl/q5kVDXG7W9LOOKwzPU5M0LBlXRq9rlSgnNlg==}
     dev: true
 
   /elegant-spinner/1.0.1:
@@ -4457,8 +4457,8 @@ packages:
       npm-normalize-package-bin: 1.0.1
     dev: true
 
-  /npm-check-updates/15.3.4:
-    resolution: {integrity: sha512-YZDcw0DFn5ggl7b9znZ7N0i+Q1HVIxW+eZlV7XvR+RIs367H+ytKCB4slAU33Bg9IljY7uv3dsFjV2npOt3GyA==}
+  /npm-check-updates/16.0.0:
+    resolution: {integrity: sha512-l1PSWEQ51Zhq54LVMbvWcBDIKTqLLE0Bj40mP0z85mHR7wUJYRN1C+pndPu5qW3ay0h5466zZGc3E+o7wtJ2gA==}
     engines: {node: '>=14.14'}
     hasBin: true
     dependencies:

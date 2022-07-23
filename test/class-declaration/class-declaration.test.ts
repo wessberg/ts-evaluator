@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Can handle ClassDeclarations and preserves their names. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ClassDeclarations and preserves their names. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -12,7 +12,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", withTypeScrip
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -21,7 +21,7 @@ test("Can handle ClassDeclarations and preserves their names. #1", withTypeScrip
 	}
 });
 
-test("Can handle ClassDeclarations that extends from other named classes. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ClassDeclarations that extends from other named classes. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -34,7 +34,7 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", w
 			(() => [A, B])();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -45,7 +45,7 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", w
 	}
 });
 
-test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -59,7 +59,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeS
 			(() => A)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -69,7 +69,7 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", withTypeS
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ClassDeclarations and preserves their constructors. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -84,7 +84,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", withTy
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -95,7 +95,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", withTy
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #2", withTypeScriptVersions(">=3.8"), (t, {typescript}) => {
+test("Can handle ClassDeclarations and preserves their constructors. #2", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -114,7 +114,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", withTy
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -125,7 +125,7 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", withTy
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t, {typescript}) => {
+test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -140,7 +140,7 @@ test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t,
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -151,7 +151,7 @@ test("Inherits PropertyDeclarations from super classes. #1", withTypeScript, (t,
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t, {typescript}) => {
+test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -172,7 +172,7 @@ test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t,
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -182,7 +182,7 @@ test("Inherits PropertyDeclarations from super classes. #2", withTypeScript, (t,
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t, {typescript}) => {
+test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -209,7 +209,7 @@ test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t,
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -220,7 +220,7 @@ test("Inherits PropertyDeclarations from super classes. #3", withTypeScript, (t,
 	}
 });
 
-test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -234,7 +234,7 @@ test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -245,7 +245,7 @@ test("Can handle GetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 	}
 });
 
-test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -263,7 +263,7 @@ test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -275,7 +275,7 @@ test("Can handle SetAccessorDeclarations. #1", withTypeScript, (t, {typescript})
 	}
 });
 
-test("Can handle instance properties set via Constructor arguments. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle instance properties set via Constructor arguments. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -286,7 +286,7 @@ test("Can handle instance properties set via Constructor arguments. #1", withTyp
 			(() => MyClass)();
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

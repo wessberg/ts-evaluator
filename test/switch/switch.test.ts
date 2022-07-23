@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression with a SwitchStatement. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -20,14 +20,14 @@ test("Can evaluate a CallExpression with a SwitchStatement. #1", withTypeScript,
 			myFunc("a");
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #2", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -45,14 +45,14 @@ test("Can evaluate a CallExpression with a SwitchStatement. #2", withTypeScript,
 			myFunc("b");
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #3", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -70,14 +70,14 @@ test("Can evaluate a CallExpression with a SwitchStatement. #3", withTypeScript,
 			myFunc("c");
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #4", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -97,14 +97,14 @@ test("Can evaluate a CallExpression with a SwitchStatement. #4", withTypeScript,
 			myFunc("c");
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement. #5", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement. #5", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -129,14 +129,14 @@ test("Can evaluate a CallExpression with a SwitchStatement. #5", withTypeScript,
 			myFunc("a");
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -161,7 +161,7 @@ test("Can evaluate a CallExpression with a SwitchStatement with a fall-through. 
 			myFunc("b");
 		`,
 		"myFunc(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

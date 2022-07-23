@@ -69,7 +69,11 @@ export function executeProgram(
 		result: evaluate({
 			...context,
 			node: entryNode,
-			typeChecker: program.getTypeChecker()
+			...(context.useTypeChecker
+				? {
+						typeChecker: program.getTypeChecker()
+				  }
+				: {})
 		})
 	};
 }

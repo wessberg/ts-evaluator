@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript}) => {
+test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -11,7 +11,7 @@ test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript}) 
 			(() => 2 + 2 === 5 ? true : false)()
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
@@ -20,7 +20,7 @@ test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript}) 
 	}
 });
 
-test("Can handle ConditionalExpressions. #2", withTypeScript, (t, {typescript}) => {
+test("Can handle ConditionalExpressions. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -29,7 +29,7 @@ test("Can handle ConditionalExpressions. #2", withTypeScript, (t, {typescript}) 
 			(() => 2 + 2 === 4 ? true : false)()
 		`,
 		"(() =>",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

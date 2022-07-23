@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #1", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -17,14 +17,14 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #1
 			myFunc.call(myObj, 2);
 		`,
 		"myFunc.call(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #2", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -39,14 +39,14 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #2
 			myFunc.bind(myObj, 2)();
 		`,
 		"myFunc.bind(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #3", withTypeScript, (t, {typescript}) => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -61,7 +61,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #3
 			myFunc.apply(myObj, [2]);
 		`,
 		"myFunc.apply(",
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

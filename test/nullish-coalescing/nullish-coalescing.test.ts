@@ -2,7 +2,7 @@ import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Supports nullish coalescing with null-like values. #1", withTypeScriptVersions(">=3.7"), (t, {typescript}) => {
+test("Supports nullish coalescing with null-like values. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -10,7 +10,7 @@ test("Supports nullish coalescing with null-like values. #1", withTypeScriptVers
 			const bar = foo ?? "bar";
 		`,
 		`foo ?? "bar"`,
-		{typescript}
+		{typescript, useTypeChecker}
 	);
 
 	if (!result.success) t.fail(result.reason.stack);

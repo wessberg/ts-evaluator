@@ -27,6 +27,7 @@ export function evaluate({
 	typeChecker,
 	node,
 	environment: {preset = "NODE", extra = {}} = {},
+	moduleOverrides = {},
 	typescript = TSModule,
 	logLevel = LogLevelKind.SILENT,
 	policy: {
@@ -100,6 +101,7 @@ export function evaluate({
 		typescript,
 		logger,
 		stack,
+		moduleOverrides,
 		reporting: reporting,
 		nextNode: nextNode => (currentNode = nextNode)
 	});

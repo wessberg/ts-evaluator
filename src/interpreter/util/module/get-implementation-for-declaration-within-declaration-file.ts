@@ -38,7 +38,7 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 
 	try {
 		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
-		const module = require(moduleDeclaration.name.text);
+		const module = options.moduleOverrides?.[moduleDeclaration.name.text] ?? require(moduleDeclaration.name.text);
 		return typescript.isModuleDeclaration(node) ? module : module[name] ?? module;
 	} catch (ex) {
 		if (ex instanceof EvaluationError) throw ex;
@@ -46,15 +46,14 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 	}
 }
 
-
- export function getImplementationFromExternalFile(name: string, moduleSpecifier: string, options: EvaluatorOptions<TS.Node>): Literal {
+export function getImplementationFromExternalFile(name: string, moduleSpecifier: string, options: EvaluatorOptions<TS.Node>): Literal {
 	const {node} = options;
 
 	const require = getFromLexicalEnvironment(node, options.environment, "require")!.literal as NodeRequire;
 
 	try {
 		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
-		const module = require(moduleSpecifier);
+		const module = options.moduleOverrides?.[moduleSpecifier] ?? require(moduleSpecifier);
 		return module[name] ?? module.default ?? module;
 	} catch (ex) {
 		if (ex instanceof EvaluationError) throw ex;

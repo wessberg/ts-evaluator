@@ -5,11 +5,14 @@ import {LogLevelKind} from "../../src/interpreter/logger/log-level.js";
 const _process = process;
 export interface TestContext extends PartialExcept<Required<EvaluateOptions>, "typescript"> {
 	cwd: string;
+	useTypeChecker: boolean;
 }
 
 export function createTestContext({
 	typescript,
 	environment,
+	useTypeChecker = true,
+	moduleOverrides = {},
 	cwd = _process.cwd(),
 	policy: {
 		deterministic = true,
@@ -33,7 +36,9 @@ export function createTestContext({
 		cwd,
 		typescript,
 		environment,
+		moduleOverrides,
 		reporting,
+		useTypeChecker,
 		policy: {
 			maxOps,
 			maxOpDuration,

@@ -64,9 +64,9 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
 
 [Become a sponsor/backer](https://github.com/wessberg/ts-evaluator?sponsor=1) and get your logo listed here.
 
-| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> | <a href="https://github.com/cblanc"><img alt="Christopher Blanchard" src="https://avatars0.githubusercontent.com/u/2160685?s=400&v=4" height="70"   /></a> | <a href="https://github.com/ideal-postcodes"><img alt="Ideal Postcodes" src="https://avatars.githubusercontent.com/u/4996310?s=200&v=4" height="70"   /></a> | <a href="https://www.xerox.com"><img alt="Xerox" src="https://avatars.githubusercontent.com/u/9158512?s=200&v=4" height="70"   /></a> | <a href="https://changelog.me"><img alt="Trent Raymond" src="https://avatars.githubusercontent.com/u/1509616?v=4" height="70"   /></a> | <a href="https://scrubtheweb.com"><img alt="scrubtheweb" src="https://avatars.githubusercontent.com/u/41668218?v=4" height="70"   /></a> | <a href="https://github.com/hjoelh"><img alt="Joel" src="https://avatars.githubusercontent.com/u/68335961?v=4" height="70"   /></a> |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
-| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@usebubbles](https://twitter.com/usebubbles)                                                                                | [Christopher Blanchard](https://github.com/cblanc)                                                                                                         | [Ideal Postcodes](https://github.com/ideal-postcodes)                                                                                                        | [Xerox](https://www.xerox.com)                                                                                                        | [Trent Raymond](https://changelog.me)                                                                                                  | [scrubtheweb](https://scrubtheweb.com)                                                                                                   | [Joel](https://github.com/hjoelh)                                                                                                   |
+| <a href="https://usebubbles.com"><img alt="Bubbles" src="https://uploads-ssl.webflow.com/5d682047c28b217055606673/5e5360be16879c1d0dca6514_icon-thin-128x128%402x.png" height="70"   /></a> | <a href="https://www.xerox.com"><img alt="Xerox" src="https://avatars.githubusercontent.com/u/9158512?s=200&v=4" height="70"   /></a> | <a href="https://changelog.me"><img alt="Trent Raymond" src="https://avatars.githubusercontent.com/u/1509616?v=4" height="70"   /></a> | <a href="https://scrubtheweb.com"><img alt="scrubtheweb" src="https://avatars.githubusercontent.com/u/41668218?v=4" height="70"   /></a> | <a href="https://github.com/hjoelh"><img alt="Joel" src="https://avatars.githubusercontent.com/u/68335961?v=4" height="70"   /></a> |
+| ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| [Bubbles](https://usebubbles.com)<br><strong>Twitter</strong>: [@usebubbles](https://twitter.com/usebubbles)                                                                                | [Xerox](https://www.xerox.com)                                                                                                        | [Trent Raymond](https://changelog.me)                                                                                                  | [scrubtheweb](https://scrubtheweb.com)                                                                                                   | [Joel](https://github.com/hjoelh)                                                                                                   |
 
 ### Patreon
 
@@ -95,6 +95,7 @@ If you are looking for a Typescript REPL, or a way to _execute_ a full Typescrip
   - [Custom TypeScript version](#custom-typescript-version)
   - [Logging](#logging)
   - [Reporting](#reporting)
+  - [Module overrides](#module-overrides)
 - [Contributing](#contributing)
 - [Maintainers](#maintainers)
 - [FAQ](#faq)
@@ -297,6 +298,23 @@ Here's an explainer of the different reporting hooks:
 - `reportTraversal(entry: ITraversalReportEntry) => void|(Promise<void>)` - Will be invoked for each time a new Node is visited while evaluating. This is useful to track the path through the AST, for example to compute code coverage.
 - `reportIntermediateResults(entry: IIntermediateResultReportEntry) => void|(Promise<void>)` - Will be invoked for each intermediate result that has been evaluated before producing a final result. This allows you to work programmatically with all expression values during code execution.
 - `reportErrors(entry: IErrorReportEntry) => void|(Promise<void>)` - Will be invoked for each error that is thrown, both when evaluating a result, and for subsequent invocations on, for example, returned function instances. Holds a reference to the error, as well ast the AST node that threw or caused the Error.
+
+### Module overrides
+
+Sometimes, evaluating identifiers require resolving identifiers across source files. When a typechecker is passed in, so long as the identifier is resolvable as part of the compilation unit,
+this won't ever be an issue. However, when a type checker is not passed in, or in case you want to override the result of requiring an external module, you can use the `moduleOverrides` option.
+
+For example, you may want to pass in as shim for a built-in module.
+To use it, pass a record where the keys are module specifiers and the value is what requiring that module should resolve to. For example:
+
+```ts
+{
+	fs: {
+		readFileSync: () => {},
+		// ...
+	}
+}
+```
 
 <!-- SHADOW_SECTION_CONTRIBUTING_START -->
 
