@@ -144,18 +144,3 @@ export function getStatementContext<T extends TS.Declaration = TS.Declaration>(f
 		}
 	}
 }
-
-/**
-		 * TODO: You could in principle use the information from the environment preset
-		 * to resolve bindings from built-in node modules 
-		 
-		
- else if (typescript.isImportDeclaration(nextNode)) {
-	return false;
-} else if (typescript.isNamespaceImport(nextNode)) {
-	return false;
-} else if (typescript.isNamedImports(nextNode)) {
-	return false;
-} else if (typescript.isImportSpecifier(nextNode)) {
-	return false;
-}*/
