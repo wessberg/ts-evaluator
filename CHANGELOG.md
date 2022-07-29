@@ -1,3 +1,12 @@
+## [1.0.6](https://github.com/wessberg/ts-evaluator/compare/v1.0.5...v1.0.6) (2022-07-29)
+
+
+### Features
+
+* change error handling to a continuation function approach ([8f7cfdb](https://github.com/wessberg/ts-evaluator/commit/8f7cfdbb25af525f1928d2bf3471d68d1bad5c30))
+
+
+
 ## [1.0.5](https://github.com/wessberg/ts-evaluator/compare/v1.0.4...v1.0.5) (2022-07-23)
 
 
