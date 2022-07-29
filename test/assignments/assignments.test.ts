@@ -21,3 +21,30 @@ test("Can evaluate a CallExpression for a function with variable assignments. #1
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
+
+test("Can evaluate a CallExpression for a function with variable assignments. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+	const {result} = executeProgram(
+		`
+		const mapOfMaps: Map<string, Map<string, string>> = new Map();
+
+		function getMapForKey(key: string): string {
+
+			let innerMap = mapOfMaps.get(key);
+			if (innerMap == null) {
+				innerMap = new Map();
+				mapOfMaps.set(key, innerMap);
+			}
+
+			return innerMap;
+		}
+
+		mapOfMaps.set("foo", new Map());
+		getMapForKey("foo");
+		`,
+		"getMapForKey(",
+		{typescript, useTypeChecker}
+	);
+
+	if (!result.success) t.fail(result.reason.stack);
+	else t.deepEqual(result.value, new Map());
+});

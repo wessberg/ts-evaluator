@@ -11,7 +11,7 @@ export function evaluatePropertyAccessExpression(options: EvaluatorOptions<TS.Pr
 	const {evaluate, node, statementTraversalStack, environment, typescript, getCurrentError} = options;
 	const expressionResult = evaluate.expression(node.expression, options) as IndexLiteral;
 
-	if (getCurrentError() != null) {
+	if (expressionResult == null || getCurrentError() != null) {
 		return;
 	}
 
