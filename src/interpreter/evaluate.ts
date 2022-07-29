@@ -17,9 +17,8 @@ import {EvaluatePolicySanitized} from "./policy/evaluate-policy.js";
 import {reportError} from "./util/reporting/report-error.js";
 import {createReportedErrorSet} from "./reporting/reported-error-set.js";
 import {ReportingOptionsSanitized} from "./reporting/i-reporting-options.js";
-import {TS} from "../type/ts.js";
-import {EvaluationError} from "./error/evaluation-error/evaluation-error.js";
-
+import {EvaluationError, ThrowError} from "./error/evaluation-error/evaluation-error.js";
+import { ICreateNodeEvaluatorOptions } from "./evaluator/node-evaluator/i-create-node-evaluator-options.js";
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
  */
@@ -75,65 +74,89 @@ export function evaluate({
 		reportedErrorSet: createReportedErrorSet()
 	};
 
-	// Prepare a reference to the Node that is currently being evaluated
-	let currentNode: TS.Node = node;
+	/**
+	 * The error that has been thrown most recently.
+	 * We can' just throw errors internally, as some tools may patch error handling
+	 * and treat them as uncaught exceptions, which breaks the behavior of evaluate,
+	 * which never throws and instead returns a record with a {success: false, reason: Error} value.
+	 */
+	let error: EvaluationError | undefined;
 
 	// Prepare a logger
 	const logger = new Logger(logLevel);
 
+	const throwError: ThrowError = ex => {
+		// Report the Error
+		reportError(reporting, ex, ex.node);
+		error = ex;
+		return error;
+	};
+
 	// Prepare the initial environment
-	const initialEnvironment = createLexicalEnvironment({
+	const environment = createLexicalEnvironment({
 		inputEnvironment: {
 			preset,
 			extra
 		},
-		policy,
-		getCurrentNode: () => currentNode
+		startingNode: node,
+		policy
 	});
 
 	// Prepare a Stack
 	const stack: Stack = createStack();
 
-	// Prepare a NodeEvaluator
-	const nodeEvaluator = createNodeEvaluator({
+	const statementTraversalStack = createStatementTraversalStack();
+
+	const nodeEvaluatorOptions: ICreateNodeEvaluatorOptions = {
 		policy,
 		typeChecker,
 		typescript,
 		logger,
 		stack,
 		moduleOverrides,
-		reporting: reporting,
-		nextNode: nextNode => (currentNode = nextNode)
-	});
+		reporting,
+		throwError,
+		environment,
+		statementTraversalStack,
+		getCurrentError: () => error
+	};
+
+	// Prepare a NodeEvaluator
+	const nodeEvaluator = createNodeEvaluator(nodeEvaluatorOptions);
 
 	try {
 		let value: Literal;
 		if (isExpression(node, typescript)) {
-			value = nodeEvaluator.expression(node, initialEnvironment, createStatementTraversalStack());
+			value = nodeEvaluator.expression(node, nodeEvaluatorOptions);
 		} else if (isStatement(node, typescript)) {
-			nodeEvaluator.statement(node, initialEnvironment);
+			nodeEvaluator.statement(node, nodeEvaluatorOptions);
 			value = stack.pop();
 		} else if (isDeclaration(node, typescript)) {
-			nodeEvaluator.declaration(node, initialEnvironment, createStatementTraversalStack());
+			nodeEvaluator.declaration(node, nodeEvaluatorOptions);
 			value = stack.pop();
 		}
 
-		// Otherwise, throw an UnexpectedNodeError
+		// Otherwise, produce an UnexpectedNodeError
 		else {
-			// noinspection ExceptionCaughtLocallyJS
-			throw new UnexpectedNodeError({node, typescript});
+			throwError(new UnexpectedNodeError({node, environment, typescript}));
 		}
 
-		// Log the value before returning
-		logger.logResult(value);
+		if (error != null) {
+			return {
+				success: false,
+				reason: error
+			};
+		} else {
+			// Log the value before returning
+			logger.logResult(value);
 
-		return {
-			success: true,
-			value
-		};
+			return {
+				success: true,
+				value
+			};
+		}
 	} catch (reason) {
-		// Report the Error
-		reportError(reporting, reason as EvaluationError, node);
+		throwError(reason as EvaluationError);
 
 		return {
 			success: false,

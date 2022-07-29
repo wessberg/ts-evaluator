@@ -5,6 +5,6 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a SpreadElement, before applying it on the given parent
  */
-export function evaluateSpreadElement({environment, node, evaluate, statementTraversalStack}: EvaluatorOptions<TS.SpreadElement>): Literal[] {
-	return evaluate.expression(node.expression, environment, statementTraversalStack) as Literal[];
+export function evaluateSpreadElement({node, evaluate, ...options}: EvaluatorOptions<TS.SpreadElement>): Literal[] {
+	return evaluate.expression(node.expression, options) as Literal[];
 }

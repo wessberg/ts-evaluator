@@ -10,7 +10,8 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a Block
  */
-export function evaluateBlock({node, environment, typescript, evaluate}: EvaluatorOptions<TS.Block>): void {
+export function evaluateBlock(options: EvaluatorOptions<TS.Block>): void {
+	const {node, environment, typescript, evaluate, getCurrentError} = options;
 	// Prepare a lexical environment for the Block context
 	const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
 
@@ -28,7 +29,8 @@ export function evaluateBlock({node, environment, typescript, evaluate}: Evaluat
 			continue;
 		}
 
-		evaluate.statement(statement, localLexicalEnvironment);
+		evaluate.statement(statement, {...options, environment: localLexicalEnvironment});
+		if (getCurrentError() != null) break;
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
 		if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {

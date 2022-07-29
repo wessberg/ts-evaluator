@@ -7,13 +7,18 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ArrayLiteralExpression
  */
-export function evaluateArrayLiteralExpression({node, environment, evaluate, typescript, statementTraversalStack}: EvaluatorOptions<TS.ArrayLiteralExpression>): Literal {
+export function evaluateArrayLiteralExpression(options: EvaluatorOptions<TS.ArrayLiteralExpression>): Literal {
+	const {node, environment, evaluate, typescript, getCurrentError} = options;
 	// Get the Array constructor from the realm - not that of the executing context. Otherwise, instanceof checks would fail
 	const arrayCtor = getFromLexicalEnvironment(node, environment, "Array")!.literal as ArrayConstructor;
 	const value: Literal[] = arrayCtor.of();
 
 	for (const element of node.elements) {
-		const nextValue = evaluate.expression(element, environment, statementTraversalStack);
+		const nextValue = evaluate.expression(element, options);
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		if (typescript.isSpreadElement(element) && isIterable(nextValue)) {
 			value.push(...nextValue);
 		} else {

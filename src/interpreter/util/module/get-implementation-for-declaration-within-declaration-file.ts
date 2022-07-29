@@ -4,19 +4,24 @@ import {ModuleNotFoundError} from "../../error/module-not-found-error/module-not
 import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error.js";
 import {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
 import {getDeclarationName} from "../declaration/get-declaration-name.js";
-import {EvaluationError} from "../../error/evaluation-error/evaluation-error.js";
+import {isEvaluationError} from "../../error/evaluation-error/evaluation-error.js";
 import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
 import {TS} from "../../../type/ts.js";
+import {getResolvedModuleName} from "./get-resolved-module-name.js";
 
 /**
  * Gets an implementation for the given declaration that lives within a declaration file
  */
 export function getImplementationForDeclarationWithinDeclarationFile(options: EvaluatorOptions<TS.Declaration>): Literal {
-	const {node, typescript} = options;
+	const {node, typescript, throwError, environment} = options;
 	const name = getDeclarationName(options);
 
+	if (isEvaluationError(name)) {
+		return name;
+	}
+
 	if (name == null) {
-		throw new UnexpectedNodeError({node, typescript});
+		return throwError(new UnexpectedNodeError({node, environment, typescript}));
 	}
 
 	// First see if it lives within the lexical environment
@@ -33,30 +38,33 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 		? node
 		: findNearestParentNodeOfKind<TS.ModuleDeclaration>(node, typescript.SyntaxKind.ModuleDeclaration, typescript);
 	if (moduleDeclaration == null) {
-		throw new UnexpectedNodeError({node, typescript});
+		return throwError(new UnexpectedNodeError({node, environment, typescript}));
 	}
-
+	const moduleSpecifier = moduleDeclaration.name.text;
+	const resolvedModuleSpecifier = getResolvedModuleName(moduleSpecifier, options);
 	try {
+
 		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
-		const module = options.moduleOverrides?.[moduleDeclaration.name.text] ?? require(moduleDeclaration.name.text);
+		const module = options.moduleOverrides?.[moduleSpecifier] ??  options.moduleOverrides?.[resolvedModuleSpecifier] ?? require(resolvedModuleSpecifier);
 		return typescript.isModuleDeclaration(node) ? module : module[name] ?? module;
 	} catch (ex) {
-		if (ex instanceof EvaluationError) throw ex;
-		else throw new ModuleNotFoundError({node: moduleDeclaration, path: moduleDeclaration.name.text});
+		if (isEvaluationError(ex)) return ex;
+		else return throwError(new ModuleNotFoundError({node: moduleDeclaration, environment, path: resolvedModuleSpecifier}));
 	}
 }
 
 export function getImplementationFromExternalFile(name: string, moduleSpecifier: string, options: EvaluatorOptions<TS.Node>): Literal {
-	const {node} = options;
+	const {node, throwError, environment} = options;
 
 	const require = getFromLexicalEnvironment(node, options.environment, "require")!.literal as NodeRequire;
+	const resolvedModuleSpecifier = getResolvedModuleName(moduleSpecifier, options);
 
 	try {
 		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
-		const module = options.moduleOverrides?.[moduleSpecifier] ?? require(moduleSpecifier);
+		const module = options.moduleOverrides?.[moduleSpecifier] ?? options.moduleOverrides?.[resolvedModuleSpecifier] ?? require(resolvedModuleSpecifier);
 		return module[name] ?? module.default ?? module;
 	} catch (ex) {
-		if (ex instanceof EvaluationError) throw ex;
-		else throw new ModuleNotFoundError({node, path: moduleSpecifier});
+		if (isEvaluationError(ex)) return ex;
+		else return throwError(new ModuleNotFoundError({node, environment, path: resolvedModuleSpecifier}));
 	}
 }

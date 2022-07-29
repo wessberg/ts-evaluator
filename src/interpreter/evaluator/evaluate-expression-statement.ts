@@ -4,6 +4,10 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, an ExpressionStatement
  */
-export function evaluateExpressionStatement({node, environment, evaluate, stack, statementTraversalStack}: EvaluatorOptions<TS.ExpressionStatement>): void {
-	stack.push(evaluate.expression(node.expression, environment, statementTraversalStack));
+export function evaluateExpressionStatement({node, evaluate, stack, ...options}: EvaluatorOptions<TS.ExpressionStatement>): void {
+	const result = evaluate.expression(node.expression, options);
+	if (options.getCurrentError() != null) {
+		return;
+	}
+	stack.push(result);
 }

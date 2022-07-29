@@ -8,9 +8,14 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a DefaultClause, based on a switch expression
  */
-export function evaluateDefaultClause({node, evaluate, environment}: EvaluatorOptions<TS.DefaultClause>): void {
+export function evaluateDefaultClause(options: EvaluatorOptions<TS.DefaultClause>): void {
+	const {node, evaluate, environment, getCurrentError} = options;
 	for (const statement of node.statements) {
-		evaluate.statement(statement, environment);
+		evaluate.statement(statement, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
 		if (pathInLexicalEnvironmentEquals(node, environment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {

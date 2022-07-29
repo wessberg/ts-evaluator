@@ -11,8 +11,8 @@ export class ProcessError extends PolicyError {
 	 */
 	readonly kind: keyof EvaluateProcessPolicy;
 
-	constructor({kind, node, message = `${kind} operations are in violation of the policy`}: IProcessErrorOptions) {
-		super({violation: "process", message, node});
+	constructor({kind, node, environment, message = `${kind} operations are in violation of the policy`}: IProcessErrorOptions) {
+		super({violation: "process", message, node, environment});
 		this.kind = kind;
 	}
 }

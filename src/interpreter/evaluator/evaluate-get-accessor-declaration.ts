@@ -11,26 +11,38 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a GetAccessorDeclaration, before setting it on the given parent
  */
-export function evaluateGetAccessorDeclaration(
-	{node, environment, evaluate, stack, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.GetAccessorDeclaration>,
-	parent?: IndexLiteral
-): void {
+export function evaluateGetAccessorDeclaration(options: EvaluatorOptions<TS.GetAccessorDeclaration>, parent?: IndexLiteral): void {
+	const {node, environment, evaluate, stack, typescript, getCurrentError} = options;
 	// We might be attempting to evaluate GetAccessorDeclaration that is placed within an ambient
 	// context such as an InterfaceDeclaration, in which case there's nothing to evaluate
 	if (typescript.isTypeLiteralNode(node.parent) || typescript.isInterfaceDeclaration(node.parent)) {
 		return;
 	}
 
-	const nameResult = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
+	const nameResult = evaluate.nodeWithValue(node.name, options) as IndexLiteralKey;
+
+	if (getCurrentError() != null) {
+		return;
+	}
+
 	const isStatic = inStaticContext(node, typescript);
 
 	if (parent == null) {
 		let updatedParent: CallableFunction & IndexLiteral;
 		if (typescript.isClassLike(node.parent)) {
-			evaluate.declaration(node.parent, environment, statementTraversalStack);
+			evaluate.declaration(node.parent, options);
+
+			if (getCurrentError() != null) {
+				return;
+			}
+
 			updatedParent = stack.pop() as CallableFunction & IndexLiteral;
 		} else {
-			updatedParent = evaluate.expression(node.parent, environment, statementTraversalStack) as CallableFunction & IndexLiteral;
+			updatedParent = evaluate.expression(node.parent, options) as CallableFunction & IndexLiteral;
+
+			if (getCurrentError() != null) {
+				return;
+			}
 		}
 		stack.push(isStatic ? updatedParent[nameResult] : updatedParent.prototype[nameResult]);
 		return;
@@ -42,31 +54,35 @@ export function evaluateGetAccessorDeclaration(
 	function getAccessorDeclaration(this: Literal) {
 		// Prepare a lexical environment for the function context
 		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
+		const nextOptions = {...options, environment: localLexicalEnvironment};
 
 		// Define a new binding for a return symbol within the environment
-		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...nextOptions, path: RETURN_SYMBOL, value: false, newBinding: true});
 
 		// Define a new binding for the arguments given to the function
 		// eslint-disable-next-line prefer-rest-params
-		setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...nextOptions, path: "arguments", value: arguments, newBinding: true});
 
 		if (this != null) {
-			setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
+			setInLexicalEnvironment({...nextOptions, path: THIS_SYMBOL, value: this, newBinding: true});
 
 			// Set the 'super' binding, depending on whether or not we're inside a static context
 			setInLexicalEnvironment({
-				env: localLexicalEnvironment,
+				...nextOptions,
 				path: SUPER_SYMBOL,
 				value: isStatic ? Object.getPrototypeOf(this) : Object.getPrototypeOf((this as CallableFunction).constructor).prototype,
-				newBinding: true,
-				reporting,
-				node
+				newBinding: true
 			});
 		}
 
 		// If the body is a block, evaluate it as a statement
 		if (node.body == null) return;
-		evaluate.statement(node.body, localLexicalEnvironment);
+		evaluate.statement(node.body, nextOptions);
+
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		// If a 'return' has occurred within the block, pop the Stack and return that value
 		if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
 			return stack.pop();

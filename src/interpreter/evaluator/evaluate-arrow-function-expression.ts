@@ -11,19 +11,20 @@ import {TS} from "../../type/ts.js";
  * Evaluates, or attempts to evaluate, an ArrowFunction
  */
 export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.ArrowFunction>): Literal {
-	const {node, environment, evaluate, stack, statementTraversalStack, reporting, typescript} = options;
+	const {node, environment, evaluate, stack, typescript, getCurrentError} = options;
 
 	const arrowFunctionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async (...args: Literal[]) => {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
+				const nextOptions = {...options, environment: localLexicalEnvironment};
 
 				// Define a new binding for a return symbol within the environment
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: RETURN_SYMBOL, value: false, newBinding: true});
 
 				// Define a new binding for the arguments given to the function
 				// eslint-disable-next-line prefer-rest-params
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: "arguments", value: arguments, newBinding: true});
 
 				// Evaluate the parameters based on the given arguments
 				evaluateParameterDeclarations(
@@ -35,9 +36,17 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 					args
 				);
 
+				if (getCurrentError() != null) {
+					return;
+				}
+
 				// If the body is a block, evaluate it as a statement
 				if (typescript.isBlock(node.body)) {
-					evaluate.statement(node.body, localLexicalEnvironment);
+					evaluate.statement(node.body, nextOptions);
+
+					if (getCurrentError() != null) {
+						return;
+					}
 
 					// If a 'return' has occurred within the block, pop the Stack and return that value
 					if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -50,19 +59,20 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 
 				// Otherwise, the body is itself an expression
 				else {
-					return evaluate.expression(node.body, localLexicalEnvironment, statementTraversalStack);
+					return evaluate.expression(node.body, nextOptions);
 				}
 		  }
 		: (...args: Literal[]) => {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
+				const nextOptions = {...options, environment: localLexicalEnvironment};
 
 				// Define a new binding for a return symbol within the environment
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: RETURN_SYMBOL, value: false, newBinding: true});
 
 				// Define a new binding for the arguments given to the function
 				// eslint-disable-next-line prefer-rest-params
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: "arguments", value: arguments, newBinding: true});
 
 				// Evaluate the parameters based on the given arguments
 				evaluateParameterDeclarations(
@@ -74,9 +84,17 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 					args
 				);
 
+				if (getCurrentError() != null) {
+					return;
+				}
+
 				// If the body is a block, evaluate it as a statement
 				if (typescript.isBlock(node.body)) {
-					evaluate.statement(node.body, localLexicalEnvironment);
+					evaluate.statement(node.body, nextOptions);
+
+					if (getCurrentError() != null) {
+						return;
+					}
 
 					// If a 'return' has occurred within the block, pop the Stack and return that value
 					if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -89,7 +107,7 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 
 				// Otherwise, the body is itself an expression
 				else {
-					return evaluate.expression(node.body, localLexicalEnvironment, statementTraversalStack);
+					return evaluate.expression(node.body, nextOptions);
 				}
 		  };
 

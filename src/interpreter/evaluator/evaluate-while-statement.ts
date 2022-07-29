@@ -9,21 +9,31 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a WhileStatement
  */
-export function evaluateWhileStatement({node, environment, evaluate, logger, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.WhileStatement>): void {
-	let condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
+export function evaluateWhileStatement(options: EvaluatorOptions<TS.WhileStatement>): void {
+	const {node, environment, evaluate, logger, typescript, getCurrentError} = options;
+	let condition = evaluate.expression(node.expression, options) as boolean;
+
+	if (getCurrentError() != null) {
+		return;
+	}
 
 	while (condition) {
 		// Prepare a lexical environment for the current iteration
 		const iterationEnvironment = cloneLexicalEnvironment(environment, node);
+		const iterationOptions = {...options, environment: iterationEnvironment};
 
 		// Define a new binding for a break symbol within the environment
-		setInLexicalEnvironment({env: iterationEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...iterationOptions, path: BREAK_SYMBOL, value: false, newBinding: true});
 
 		// Define a new binding for a continue symbol within the environment
-		setInLexicalEnvironment({env: iterationEnvironment, path: CONTINUE_SYMBOL, value: false, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...iterationOptions, path: CONTINUE_SYMBOL, value: false, newBinding: true});
 
 		// Execute the Statement
-		evaluate.statement(node.statement, iterationEnvironment);
+		evaluate.statement(node.statement, iterationOptions);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, BREAK_SYMBOL)) {
@@ -34,7 +44,11 @@ export function evaluateWhileStatement({node, environment, evaluate, logger, rep
 			return;
 		}
 
-		condition = evaluate.expression(node.expression, environment, statementTraversalStack) as boolean;
+		condition = evaluate.expression(node.expression, options) as boolean;
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		// Always re-evaluate the condition before continuing
 		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, CONTINUE_SYMBOL)) {

@@ -5,7 +5,7 @@ import {IUnexpectedSyntaxErrorOptions} from "./i-unexpected-syntax-error-options
  * An Error that can be thrown when a certain usage is to be considered a SyntaxError
  */
 export class UnexpectedSyntaxError extends EvaluationError {
-	constructor({node, message = `'SyntaxError'`}: IUnexpectedSyntaxErrorOptions) {
-		super({message, node});
+	constructor({node, environment, message = `'SyntaxError'`}: IUnexpectedSyntaxErrorOptions) {
+		super({message, environment, node});
 	}
 }

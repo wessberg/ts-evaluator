@@ -2,18 +2,22 @@ import {EvaluatorOptions} from "./evaluator-options.js";
 import {IndexLiteral, IndexLiteralKey} from "../literal/literal.js";
 import {TS} from "../../type/ts.js";
 
-
 /**
  * Evaluates, or attempts to evaluate, an EnumMember
  */
-export function evaluateEnumMember({node, typeChecker, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.EnumMember>, parent: IndexLiteral): void {
+export function evaluateEnumMember(options: EvaluatorOptions<TS.EnumMember>, parent: IndexLiteral): void {
+	const {node, typeChecker, evaluate, getCurrentError} = options;
 	let constantValue = typeChecker?.getConstantValue(node);
 
 	// If the constant value is not defined, that must be due to the type checker either not being given or functioning incorrectly.
 	// Calculate it manually instead
 	if (constantValue == null) {
 		if (node.initializer != null) {
-			constantValue = evaluate.expression(node.initializer, environment, statementTraversalStack) as string | number | undefined;
+			constantValue = evaluate.expression(node.initializer, options) as string | number | undefined;
+
+			if (getCurrentError() != null) {
+				return;
+			}
 		} else {
 			const siblings = node.parent.members;
 
@@ -24,12 +28,16 @@ export function evaluateEnumMember({node, typeChecker, evaluate, environment, st
 			for (const sibling of [...beforeSiblings].reverse()) {
 				traversal++;
 				if (sibling.initializer != null) {
-					const siblingConstantValue = evaluate.expression(sibling.initializer, environment, statementTraversalStack) as string | number | undefined;
+					const siblingConstantValue = evaluate.expression(sibling.initializer, options) as string | number | undefined;
+
+					if (getCurrentError() != null) {
+						return;
+					}
+
 					if (typeof siblingConstantValue === "number") {
 						constantValue = siblingConstantValue + traversal;
 						break;
 					}
-					
 				}
 			}
 
@@ -39,7 +47,11 @@ export function evaluateEnumMember({node, typeChecker, evaluate, environment, st
 		}
 	}
 
-	const propertyName = evaluate.nodeWithValue(node.name, environment, statementTraversalStack) as IndexLiteralKey;
+	const propertyName = evaluate.nodeWithValue(node.name, options) as IndexLiteralKey;
+
+	if (getCurrentError() != null) {
+		return;
+	}
 
 	// If it is a String enum, all keys will be initialized to strings
 	if (typeof constantValue === "string") {

@@ -69,7 +69,7 @@ import {evaluateInterfaceDeclaration} from "./evaluate-interface-declaration.js"
 import {evaluateImportClause} from "./evaluate-import-clause.js";
 import {evaluateImportSpecifier} from "./evaluate-import-specifier.js";
 import {evaluateNamespaceImport} from "./evaluate-namespace-import.js";
-import { evaluateMetaProperty } from "./evaluate-meta-property.js";
+import {evaluateMetaProperty} from "./evaluate-meta-property.js";
 
 /**
  * Will get a literal value for the given Node. If it doesn't succeed, the value will be 'undefined'
@@ -207,7 +207,9 @@ export function evaluateNode({node, ...rest}: EvaluatorOptions<TS.Node>): unknow
 		return evaluateTypeAliasDeclaration({node, ...rest});
 	} else if (rest.typescript.isInterfaceDeclaration(node)) {
 		return evaluateInterfaceDeclaration({node, ...rest});
+	} else if (rest.getCurrentError() != null) {
+		return;
+	} else {
+		return rest.throwError(new UnexpectedNodeError({node, environment: rest.environment, typescript: rest.typescript}));
 	}
-
-	throw new UnexpectedNodeError({node, typescript: rest.typescript});
 }

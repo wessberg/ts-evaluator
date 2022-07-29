@@ -1,65 +1,82 @@
 import {EvaluatorOptions} from "./evaluator-options.js";
 import {MissingCatchOrFinallyAfterTryError} from "../error/missing-catch-or-finally-after-try-error/missing-catch-or-finally-after-try-error.js";
-import {clearBindingFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import {TRY_SYMBOL} from "../util/try/try-symbol.js";
 import {TS} from "../../type/ts.js";
+import {EvaluationError} from "../error/evaluation-error/evaluation-error.js";
 
 /**
  * Evaluates, or attempts to evaluate, a TryStatement
- *
- * @param options
- * @returns
  */
-export function evaluateTryStatement({node, evaluate, environment, reporting, statementTraversalStack}: EvaluatorOptions<TS.TryStatement>): void {
+export function evaluateTryStatement(options: EvaluatorOptions<TS.TryStatement>): void | EvaluationError {
+	const {node, evaluate, environment, throwError} = options;
+
+	let error: EvaluationError | undefined;
+
 	const executeTry = () => {
-		setInLexicalEnvironment({env: environment, reporting, newBinding: true, node, path: TRY_SYMBOL, value: true});
-		// The Block will declare an environment of its own
-		evaluate.statement(node.tryBlock, environment);
+		try {
+			return evaluate.statement(node.tryBlock, {
+				...options,
+				throwError: ex => {
+					error = ex;
+					return ex;
+				},
+				getCurrentError: () => error
+			});
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (ex: any) {
+			error = ex;
+		}
 	};
 
 	const executeCatch = (ex: Error) => {
-		clearBindingFromLexicalEnvironment(environment, TRY_SYMBOL);
 		// The CatchClause will declare an environment of its own
-		evaluate.nodeWithArgument(node.catchClause!, environment, ex, statementTraversalStack);
+		evaluate.nodeWithArgument(node.catchClause!, ex, options);
 	};
 
 	const executeFinally = () => {
-		clearBindingFromLexicalEnvironment(environment, TRY_SYMBOL);
+		let finallyError: EvaluationError | undefined;
+
 		// The Block will declare an environment of its own
-		evaluate.statement(node.finallyBlock!, environment);
+		evaluate.statement(node.finallyBlock!, {
+			...options,
+			throwError: ex => {
+				finallyError = ex;
+				// Also set it on the upper context
+				options.throwError(ex);
+				return ex;
+			},
+			getCurrentError: () => finallyError
+		});
 	};
 
 	// A TryStatement must have either a catch or a finally block
 	if (node.catchClause == null && node.finallyBlock == null) {
-		throw new MissingCatchOrFinallyAfterTryError({node});
+		return throwError(new MissingCatchOrFinallyAfterTryError({node, environment}));
 	}
 
 	// Follows the form: try {...} catch {...}
 	else if (node.catchClause != null && node.finallyBlock == null) {
-		try {
-			executeTry();
-		} catch (ex) {
-			executeCatch(ex as Error);
+		executeTry();
+		if (error != null) {
+			executeCatch(error);
 		}
 	}
 
 	// Follows the form: try {...} catch {...} finally {...}
 	else if (node.catchClause != null && node.finallyBlock != null) {
-		try {
-			executeTry();
-		} catch (ex) {
-			executeCatch(ex as Error);
-		} finally {
-			executeFinally();
+		executeTry();
+		if (error != null) {
+			executeCatch(error);
 		}
+		executeFinally();
 	}
 
 	// Follows the form: try {...} finally {...}
 	else if (node.catchClause == null && node.finallyBlock != null) {
-		try {
-			executeTry();
-		} finally {
-			executeFinally();
+		executeTry();
+		if (error != null) {
+			throwError(error);
 		}
+
+		executeFinally();
 	}
 }

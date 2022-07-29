@@ -10,8 +10,8 @@ export class MaxOpsExceededError extends PolicyError {
 	 */
 	readonly ops: number;
 
-	constructor({ops, node, message = `Maximum ops exceeded: ${ops}`}: IMaxOpsExceededErrorOptions) {
-		super({violation: "maxOps", message, node});
+	constructor({ops, node, environment, message = `Maximum ops exceeded: ${ops}`}: IMaxOpsExceededErrorOptions) {
+		super({violation: "maxOps", message, node, environment});
 		this.ops = ops;
 	}
 }

@@ -4,7 +4,7 @@ import {ReportingOptionsSanitized} from "../reporting/i-reporting-options.js";
 import {TS} from "../../type/ts.js";
 
 export interface ISetInLexicalEnvironmentOptions {
-	env: LexicalEnvironment;
+	environment: LexicalEnvironment;
 	path: string;
 	value: Literal;
 	reporting: ReportingOptionsSanitized;

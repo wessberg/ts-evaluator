@@ -11,7 +11,7 @@ import {TS} from "../../type/ts.js";
  * Evaluates, or attempts to evaluate, a ConstructorDeclaration
  */
 export function evaluateConstructorDeclaration(options: EvaluatorOptions<TS.ConstructorDeclaration>): void {
-	const {node, environment, evaluate, stack, reporting} = options;
+	const {node, environment, evaluate, stack, getCurrentError} = options;
 
 	/**
 	 * An implementation of a constructor function
@@ -21,32 +21,37 @@ export function evaluateConstructorDeclaration(options: EvaluatorOptions<TS.Cons
 
 		// Prepare a lexical environment for the function context
 		const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
+		const nextOptions = {...options, environment: localLexicalEnvironment};
 
 		// Define a new binding for a return symbol within the environment
-		setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...nextOptions, path: RETURN_SYMBOL, value: false, newBinding: true});
 
 		// Define a new binding for the arguments given to the function
 		// eslint-disable-next-line prefer-rest-params
-		setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...nextOptions, path: "arguments", value: arguments, newBinding: true});
 
 		if (this != null) {
-			setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
+			setInLexicalEnvironment({...nextOptions, path: THIS_SYMBOL, value: this, newBinding: true});
 		}
 
 		// Evaluate the parameters based on the given arguments
 		evaluateParameterDeclarations(
 			{
-				...options,
-				node: node.parameters,
-				environment: localLexicalEnvironment
+				...nextOptions,
+				node: node.parameters
 			},
 			args,
 			this
 		);
 
 		// If the body is a block, evaluate it as a statement
-		if (node.body == null) return;
-		evaluate.statement(node.body, localLexicalEnvironment);
+		if (node.body == null || getCurrentError() != null) return;
+
+		evaluate.statement(node.body, nextOptions);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		// If a 'return' has occurred within the block, pop the Stack and return that value
 		if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {

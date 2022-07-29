@@ -6,5 +6,11 @@ import {TS} from "../../type/ts.js";
  * Evaluates, or attempts to evaluate, a ModuleDeclaration
  */
 export function evaluateModuleDeclaration(options: EvaluatorOptions<TS.ModuleDeclaration>): void {
-	options.stack.push(getImplementationForDeclarationWithinDeclarationFile(options));
+	const {getCurrentError, stack} = options;
+	const result = getImplementationForDeclarationWithinDeclarationFile(options);
+
+	if (getCurrentError() != null) {
+		return;
+	}
+	stack.push(result);
 }

@@ -11,7 +11,7 @@ export class UndefinedIdentifierError extends EvaluationError {
 	 */
 	readonly node!: TS.Identifier | TS.PrivateIdentifier;
 
-	constructor({node, message = `'${node.text}' is not defined'`}: IUndefinedIdentifierErrorOptions) {
-		super({message, node});
+	constructor({node, environment, message = `'${node.text}' is not defined'`}: IUndefinedIdentifierErrorOptions) {
+		super({message, environment, node});
 	}
 }

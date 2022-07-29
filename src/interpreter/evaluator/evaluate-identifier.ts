@@ -13,7 +13,7 @@ import {isTypescriptNode} from "../util/node/is-node.js";
  */
 
 export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.PrivateIdentifier>): Literal {
-	const {node, environment, typeChecker, evaluate, stack, logger, reporting, typescript, statementTraversalStack} = options;
+	const {node, environment, typeChecker, evaluate, stack, logger, reporting, typescript, throwError, getCurrentError} = options;
 
 	// Otherwise, try to resolve it. Maybe it exists in the environment already?
 	const environmentMatch = getFromLexicalEnvironment(node, environment, node.text);
@@ -39,28 +39,35 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 		}
 	}
 
-
 	// If we weren't able to resolve a SourceFile still, try parsing the SourceFile manually
 	if (valueDeclaration == null) {
 		const result = findNearestParentNodeWithName<TS.Declaration>(node.parent, node.text, options as EvaluatorOptions<TS.Declaration>);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		if (isTypescriptNode(result) && !typescript.isIdentifier(result)) {
 			valueDeclaration = result;
 		} else if (result != null) {
 			// Bind the value placed on the top of the stack to the local environment
-			setInLexicalEnvironment({env: environment, path: node.text, value: result, reporting, node: node});
+			setInLexicalEnvironment({...options, path: node.text, value: result});
 			logger.logBinding(node.text, result, `Discovered declaration value`);
 			return result;
 		}
 	}
 
-
 	// If it has a value declaration, go forward with that one
 	if (valueDeclaration != null) {
 		if (valueDeclaration.getSourceFile().isDeclarationFile) {
 			const implementation = getImplementationForDeclarationWithinDeclarationFile({...options, node: valueDeclaration});
+
+			if (getCurrentError() != null) {
+				return;
+			}
+
 			// Bind the value placed on the top of the stack to the local environment
-			setInLexicalEnvironment({env: environment, path: node.text, value: implementation, reporting, node: valueDeclaration});
+			setInLexicalEnvironment({environment, path: node.text, value: implementation, reporting, node: valueDeclaration});
 			logger.logBinding(
 				node.text,
 				implementation,
@@ -77,22 +84,27 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 			// The 'var' keyword declares a variable that is defined, but which rvalue is still undefined
 			if (typescript.isVariableDeclarationList(valueDeclaration.parent) && isVarDeclaration(valueDeclaration.parent, typescript)) {
 				const returnValue = undefined;
-				setInLexicalEnvironment({env: environment, path: node.text, value: returnValue, newBinding: true, reporting, node: valueDeclaration});
+				setInLexicalEnvironment({...options, path: node.text, value: returnValue, newBinding: true, node: valueDeclaration});
 				logger.logBinding(node.text, returnValue, "Hoisted var declaration");
 				return returnValue;
 			}
 
 			// In all other cases, both the identifier and the rvalue is still undefined
 			else {
-				throw new UndefinedIdentifierError({node});
+				return throwError(new UndefinedIdentifierError({node, environment}));
 			}
 		}
 
-		evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
+		evaluate.declaration(valueDeclaration, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		const stackValue = stack.pop();
 
 		// Bind the value placed on the top of the stack to the local environment
-		setInLexicalEnvironment({env: environment, path: node.text, value: stackValue, reporting, node: valueDeclaration});
+		setInLexicalEnvironment({...options, path: node.text, value: stackValue, node: valueDeclaration});
 		logger.logBinding(
 			node.text,
 			stackValue,
@@ -104,5 +116,5 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 	}
 
 	// Otherwise throw. The identifier is unknown
-	throw new UndefinedIdentifierError({node});
+	return throwError(new UndefinedIdentifierError({node, environment}));
 }

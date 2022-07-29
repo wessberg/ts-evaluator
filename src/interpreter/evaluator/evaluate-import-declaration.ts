@@ -4,7 +4,7 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, an ImportDeclaration (which is actually a Statement).
  */
-export function evaluateImportDeclaration({node, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.ImportDeclaration>): void {
+export function evaluateImportDeclaration({node, evaluate, ...options}: EvaluatorOptions<TS.ImportDeclaration>): void {
 	if (node.importClause == null) return;
-	evaluate.declaration(node.importClause, environment, statementTraversalStack);
+	evaluate.declaration(node.importClause, options);
 }

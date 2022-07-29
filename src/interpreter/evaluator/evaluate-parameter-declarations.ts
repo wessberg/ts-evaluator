@@ -7,11 +7,8 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a NodeArray of ParameterDeclarations
  */
-export function evaluateParameterDeclarations(
-	{node, evaluate, environment, statementTraversalStack, typescript}: EvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>,
-	boundArguments: Literal[],
-	context?: IndexLiteral
-): void {
+export function evaluateParameterDeclarations(options: EvaluatorOptions<TS.NodeArray<TS.ParameterDeclaration>>, boundArguments: Literal[], context?: IndexLiteral): void {
+	const {node, evaluate, environment, typescript, getCurrentError} = options;
 	// 'this' is a special parameter which is removed from the emitted results
 	const parameters = node.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 
@@ -20,11 +17,20 @@ export function evaluateParameterDeclarations(
 
 		// It it is a spread element, it should receive all arguments from the current index.
 		if (parameter.dotDotDotToken != null) {
-			evaluate.nodeWithArgument(parameter, environment, boundArguments.slice(i), statementTraversalStack);
+			evaluate.nodeWithArgument(parameter, boundArguments.slice(i), options);
+
+			if (getCurrentError() != null) {
+				return;
+			}
+
 			// Spread elements must always be the last parameter
 			break;
 		} else {
-			evaluate.nodeWithArgument(parameter, environment, boundArguments[i], statementTraversalStack);
+			evaluate.nodeWithArgument(parameter, boundArguments[i], options);
+
+			if (getCurrentError() != null) {
+				return;
+			}
 
 			// If a context is given, and if a [public|protected|private] keyword is in front of the parameter, the initialized value should be
 			// set on the context as an instance property

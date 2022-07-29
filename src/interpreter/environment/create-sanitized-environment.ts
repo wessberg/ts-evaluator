@@ -14,11 +14,12 @@ import {ProcessError} from "../error/policy-error/process-error/process-error.js
 import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-child-operation.js";
 import {ICreateSanitizedEnvironmentOptions} from "./i-create-sanitized-environment-options.js";
 import {isConsoleOperation} from "../policy/console/is-console-operation.js";
+import { EvaluationErrorIntent } from "../error/evaluation-error/evaluation-error-intent.js";
 
 /**
  * Creates an environment that provide hooks into policy checks
  */
-export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
+export function createSanitizedEnvironment({policy, env}: ICreateSanitizedEnvironmentOptions): IndexLiteral {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const hook = (item: PolicyProxyHookOptions<any>) => {
 		if (!policy.console && isConsoleOperation(item)) {
@@ -26,27 +27,27 @@ export function createSanitizedEnvironment({policy, env, getCurrentNode}: ICreat
 		}
 
 		if (!policy.io.read && isIoRead(item)) {
-			throw new IoError({kind: "read", node: getCurrentNode()});
+            return new EvaluationErrorIntent((node, options) => new IoError({...options, node, kind: "read"}));
 		}
 
 		if (!policy.io.write && isIoWrite(item)) {
-			throw new IoError({kind: "write", node: getCurrentNode()});
+            return new EvaluationErrorIntent((node, options) => new IoError({...options, node, kind: "write"}));
 		}
 
 		if (!policy.process.exit && isProcessExitOperation(item)) {
-			throw new ProcessError({kind: "exit", node: getCurrentNode()});
+            return new EvaluationErrorIntent((node, options) => new ProcessError({...options, node, kind: "exit"}));
 		}
 
 		if (!policy.process.exit && isProcessSpawnChildOperation(item)) {
-			throw new ProcessError({kind: "spawnChild", node: getCurrentNode()});
+            return new EvaluationErrorIntent((node, options) => new ProcessError({...options, node, kind: "spawnChild"}));
 		}
 
 		if (!policy.network && isNetworkOperation(item)) {
-			throw new NetworkError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path), node: getCurrentNode()});
+            return new EvaluationErrorIntent((node, options) => new NetworkError({...options, node, operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)}));
 		}
 
 		if (policy.deterministic && isNonDeterministic(item)) {
-			throw new NonDeterministicError({operation: stringifyPolicyTrapKindOnPath(item.kind, item.path), node: getCurrentNode()});
+            return new EvaluationErrorIntent((node, options) => new NonDeterministicError({...options, node, operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)}));
 		}
 
 		return true;

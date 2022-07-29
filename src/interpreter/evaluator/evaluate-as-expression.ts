@@ -5,6 +5,6 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, an AsExpression
  */
-export function evaluateAsExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.AsExpression>): Literal {
-	return evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateAsExpression({node, evaluate, ...options}: EvaluatorOptions<TS.AsExpression>): Literal {
+	return evaluate.expression(node.expression, options);
 }

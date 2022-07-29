@@ -6,13 +6,19 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ReturnStatement
  */
-export function evaluateReturnStatement({node, environment, evaluate, stack, reporting, statementTraversalStack}: EvaluatorOptions<TS.ReturnStatement>): void {
-	setInLexicalEnvironment({env: environment, path: RETURN_SYMBOL, value: true, reporting, node});
+export function evaluateReturnStatement({node, evaluate, stack, ...options}: EvaluatorOptions<TS.ReturnStatement>): void {
+	const {getCurrentError} = options;
+	setInLexicalEnvironment({...options, environment: options.environment, path: RETURN_SYMBOL, value: true, node});
 
 	// If it is a simple 'return', return undefined
 	if (node.expression == null) {
 		stack.push(undefined);
 	} else {
-		stack.push(evaluate.expression(node.expression, environment, statementTraversalStack));
+		const result = evaluate.expression(node.expression, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
+		stack.push(result);
 	}
 }

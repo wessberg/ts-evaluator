@@ -6,7 +6,9 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, an EnumDeclaration
  */
-export function evaluateEnumDeclaration({node, environment, evaluate, statementTraversalStack, reporting, stack}: EvaluatorOptions<TS.EnumDeclaration>): void {
+export function evaluateEnumDeclaration(options: EvaluatorOptions<TS.EnumDeclaration>): void {
+	const {node, environment, evaluate, stack, getCurrentError} = options;
+
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;
@@ -14,10 +16,14 @@ export function evaluateEnumDeclaration({node, environment, evaluate, statementT
 	const name = node.name.text;
 
 	// Bind the Enum to the lexical environment as a new binding
-	setInLexicalEnvironment({env: environment, path: name, value: enumDeclaration, newBinding: true, reporting, node});
+	setInLexicalEnvironment({...options, path: name, value: enumDeclaration, newBinding: true});
 
 	for (const member of node.members) {
-		evaluate.nodeWithArgument(member, environment, enumDeclaration, statementTraversalStack);
+		evaluate.nodeWithArgument(member, enumDeclaration, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 	}
 
 	enumDeclaration.toString = () => `[Enum: ${name}]`;

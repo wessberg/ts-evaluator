@@ -12,38 +12,42 @@ import {TS} from "../../type/ts.js";
  * Evaluates, or attempts to evaluate, a FunctionExpression
  */
 export function evaluateFunctionExpression(options: EvaluatorOptions<TS.FunctionExpression>): Literal {
-	const {node, environment, evaluate, stack, reporting, typescript} = options;
+	const {node, environment, evaluate, stack, typescript, getCurrentError} = options;
 	const nameResult = node.name == null ? undefined : node.name.text;
 
 	const _functionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function functionExpression(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
+				const nextOptions = {...options, environment: localLexicalEnvironment};
 
 				// Define a new binding for a return symbol within the environment
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: RETURN_SYMBOL, value: false, newBinding: true});
 
 				// Define a new binding for the arguments given to the function
 				// eslint-disable-next-line prefer-rest-params
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: "arguments", value: arguments, newBinding: true});
 
 				if (this != null) {
-					setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
+					setInLexicalEnvironment({...nextOptions, path: THIS_SYMBOL, value: this, newBinding: true});
 				}
 
 				// Evaluate the parameters based on the given arguments
 				evaluateParameterDeclarations(
 					{
-						...options,
-						node: node.parameters,
-						environment: localLexicalEnvironment
+						...nextOptions,
+						node: node.parameters
 					},
 					args
 				);
 
 				// If the body is a block, evaluate it as a statement
-				if (node.body == null) return;
-				evaluate.statement(node.body, localLexicalEnvironment);
+				if (node.body == null || getCurrentError() != null) return;
+				evaluate.statement(node.body, nextOptions);
+
+				if (getCurrentError() != null) {
+					return;
+				}
 
 				// If a 'return' has occurred within the block, pop the Stack and return that value
 				if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -56,31 +60,35 @@ export function evaluateFunctionExpression(options: EvaluatorOptions<TS.Function
 		: function functionExpression(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
+				const nextOptions = {...options, environment: localLexicalEnvironment};
 
 				// Define a new binding for a return symbol within the environment
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: RETURN_SYMBOL, value: false, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: RETURN_SYMBOL, value: false, newBinding: true});
 
 				// Define a new binding for the arguments given to the function
 				// eslint-disable-next-line prefer-rest-params
-				setInLexicalEnvironment({env: localLexicalEnvironment, path: "arguments", value: arguments, newBinding: true, reporting, node});
+				setInLexicalEnvironment({...nextOptions, path: "arguments", value: arguments, newBinding: true});
 
 				if (this != null) {
-					setInLexicalEnvironment({env: localLexicalEnvironment, path: THIS_SYMBOL, value: this, newBinding: true, reporting, node});
+					setInLexicalEnvironment({...nextOptions, path: THIS_SYMBOL, value: this, newBinding: true});
 				}
 
 				// Evaluate the parameters based on the given arguments
 				evaluateParameterDeclarations(
 					{
-						...options,
-						node: node.parameters,
-						environment: localLexicalEnvironment
+						...nextOptions,
+						node: node.parameters
 					},
 					args
 				);
 
 				// If the body is a block, evaluate it as a statement
-				if (node.body == null) return;
-				evaluate.statement(node.body, localLexicalEnvironment);
+				if (node.body == null || getCurrentError() != null) return;
+				evaluate.statement(node.body, nextOptions);
+
+				if (getCurrentError() != null) {
+					return;
+				}
 
 				// If a 'return' has occurred within the block, pop the Stack and return that value
 				if (pathInLexicalEnvironmentEquals(node, localLexicalEnvironment, true, RETURN_SYMBOL)) {
@@ -92,7 +100,7 @@ export function evaluateFunctionExpression(options: EvaluatorOptions<TS.Function
 		  };
 
 	if (nameResult != null) {
-		setInLexicalEnvironment({env: environment, path: nameResult, value: _functionExpression.bind(_functionExpression), reporting, node});
+		setInLexicalEnvironment({...options, path: nameResult, value: _functionExpression.bind(_functionExpression)});
 	}
 
 	_functionExpression.toString = () => `[Function${nameResult == null ? "" : `: ${nameResult}`}]`;

@@ -7,23 +7,20 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ClassDeclaration
  */
-export function evaluateClassDeclaration({
-	node,
-	environment,
-	evaluate,
-	stack,
-	logger,
-	reporting,
-	typescript,
-	statementTraversalStack
-}: EvaluatorOptions<TS.ClassDeclaration>): void {
+export function evaluateClassDeclaration(options: EvaluatorOptions<TS.ClassDeclaration>): void {
+	const {node, evaluate, stack, logger, typescript, getCurrentError} = options;
 	let extendedType: CallableFunction | undefined;
 	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
 	let ctor: CallableFunction | undefined;
 	if (ctorMember != null) {
-		evaluate.declaration(ctorMember, environment, statementTraversalStack);
+		evaluate.declaration(ctorMember, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		ctor = stack.pop() as CallableFunction;
 	}
 
@@ -32,7 +29,11 @@ export function evaluateClassDeclaration({
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as CallableFunction;
+				extendedType = evaluate.expression(firstExtendedType.expression, options) as CallableFunction;
+
+				if (getCurrentError() != null) {
+					return;
+				}
 			}
 		}
 	}
@@ -42,7 +43,12 @@ export function evaluateClassDeclaration({
 
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
-			evaluate.nodeWithArgument(decorator, environment, [classDeclaration], statementTraversalStack);
+			evaluate.nodeWithArgument(decorator, [classDeclaration], options);
+
+			if (getCurrentError() != null) {
+				return;
+			}
+
 			classDeclaration = stack.pop() as CallableFunction;
 		}
 	}
@@ -50,17 +56,16 @@ export function evaluateClassDeclaration({
 	classDeclaration.toString = () => `[Class${name == null ? "" : `: ${name}`}]`;
 
 	if (name != null) {
-		setInLexicalEnvironment({env: environment, path: name, value: classDeclaration, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...options, path: name, value: classDeclaration, newBinding: true});
 	}
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		evaluate.nodeWithArgument(
-			member,
-			environment,
-			hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classDeclaration : classDeclaration.prototype,
-			statementTraversalStack
-		);
+		evaluate.nodeWithArgument(member, hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classDeclaration : classDeclaration.prototype, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 	}
 
 	logger.logHeritage(classDeclaration);

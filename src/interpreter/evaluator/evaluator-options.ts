@@ -6,17 +6,24 @@ import {Stack} from "../stack/stack.js";
 import {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
 import {ReportingOptionsSanitized} from "../reporting/i-reporting-options.js";
 import {TS} from "../../type/ts.js";
+import {EvaluationError, ThrowError} from "../error/evaluation-error/evaluation-error.js";
 
-export interface EvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> {
-	node: T;
-	typeChecker?: TS.TypeChecker;
-	typescript: typeof TS;
-	evaluate: NodeEvaluator;
+export interface NextEvaluatorOptions {
 	environment: LexicalEnvironment;
+	moduleOverrides?: Record<string, unknown>;
+	throwError: ThrowError;
+	getCurrentError (): EvaluationError|undefined;
+	statementTraversalStack: StatementTraversalStack;
+	
+}
+
+export interface EvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> extends NextEvaluatorOptions {
+	typescript: typeof TS;
+	node: T;
+	evaluate: NodeEvaluator;
+	typeChecker?: TS.TypeChecker;
+	stack: Stack;
+	logger: Logger;
 	policy: EvaluatePolicySanitized;
 	reporting: ReportingOptionsSanitized;
-	moduleOverrides?: Record<string, unknown>; 
-	stack: Stack;
-	statementTraversalStack: StatementTraversalStack;
-	logger: Logger;
 }

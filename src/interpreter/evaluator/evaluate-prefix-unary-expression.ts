@@ -7,8 +7,13 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a PrefixUnaryExpression
  */
-export function evaluatePrefixUnaryExpression({node, environment, evaluate, reporting, typescript, statementTraversalStack}: EvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
-	const operandValue = evaluate.expression(node.operand, environment, statementTraversalStack) as number;
+export function evaluatePrefixUnaryExpression(options: EvaluatorOptions<TS.PrefixUnaryExpression>): Literal {
+	const {node, environment, evaluate, reporting, typescript, throwError, getCurrentError} = options;
+	const operandValue = evaluate.expression(node.operand, options) as number;
+
+	if (getCurrentError() != null) {
+		return;
+	}
 
 	switch (node.operator) {
 		case typescript.SyntaxKind.PlusToken: {
@@ -31,7 +36,7 @@ export function evaluatePrefixUnaryExpression({node, environment, evaluate, repo
 		case typescript.SyntaxKind.PlusPlusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
 			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand, typescript});
+				return throwError(new UnexpectedNodeError({node: node.operand, environment, typescript}));
 			}
 
 			// Find the value associated with the identifier within the environment.
@@ -48,7 +53,7 @@ export function evaluatePrefixUnaryExpression({node, environment, evaluate, repo
 		case typescript.SyntaxKind.MinusMinusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
 			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand, typescript});
+				return throwError(new UnexpectedNodeError({node: node.operand, environment, typescript}));
 			}
 
 			// Find the value associated with the identifier within the environment.

@@ -7,17 +7,22 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ObjectLiteralExpression
  */
-export function evaluateObjectLiteralExpression({node, evaluate, environment, reporting, statementTraversalStack}: EvaluatorOptions<TS.ObjectLiteralExpression>): Literal {
+export function evaluateObjectLiteralExpression(options: EvaluatorOptions<TS.ObjectLiteralExpression>): Literal {
+	const {node, evaluate, environment, getCurrentError} = options;
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;
 	const value: IndexLiteral = objectCtor.create(objectCtor.prototype);
 
 	// Mark the object as the 'this' value of the scope
-	setInLexicalEnvironment({env: environment, path: THIS_SYMBOL, value, newBinding: true, reporting, node});
+	setInLexicalEnvironment({...options, path: THIS_SYMBOL, value, newBinding: true});
 
 	for (const property of node.properties) {
-		evaluate.nodeWithArgument(property, environment, value, statementTraversalStack);
+		evaluate.nodeWithArgument(property, value, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 	}
 
 	return value;

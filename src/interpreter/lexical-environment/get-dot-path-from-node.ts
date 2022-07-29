@@ -10,7 +10,7 @@ import {TS} from "../../type/ts.js";
  * And, if it is a PropertyAccessExpression, that path may be "console.log" for example
  */
 export function getDotPathFromNode<T extends TS.Node>(options: EvaluatorOptions<T>): string | undefined {
-	const {node, evaluate, typescript, environment, statementTraversalStack} = options;
+	const {node, evaluate, typescript} = options;
 	if (typescript.isIdentifier(node)) {
 		return node.text;
 	} else if (typescript.isPrivateIdentifier?.(node)) {
@@ -25,16 +25,16 @@ export function getDotPathFromNode<T extends TS.Node>(options: EvaluatorOptions<
 		return getDotPathFromNode({...options, node: node.expression});
 	} else if (typescript.isPropertyAccessExpression(node)) {
 		let leftHand = getDotPathFromNode({...options, node: node.expression});
-		if (leftHand == null) leftHand = evaluate.expression(node.expression, environment, statementTraversalStack) as string;
+		if (leftHand == null) leftHand = evaluate.expression(node.expression, options) as string;
 		let rightHand = getDotPathFromNode({...options, node: node.name});
-		if (rightHand == null) rightHand = evaluate.expression(node.name, environment, statementTraversalStack) as string;
+		if (rightHand == null) rightHand = evaluate.expression(node.name, options) as string;
 
 		if (leftHand == null || rightHand == null) return undefined;
 		return `${leftHand}.${rightHand}`;
 	} else if (typescript.isElementAccessExpression(node)) {
 		let leftHand = getDotPathFromNode({...options, node: node.expression});
-		if (leftHand == null) leftHand = evaluate.expression(node.expression, environment, statementTraversalStack) as string;
-		const rightHand = evaluate.expression(node.argumentExpression, environment, statementTraversalStack) as string;
+		if (leftHand == null) leftHand = evaluate.expression(node.expression, options) as string;
+		const rightHand = evaluate.expression(node.argumentExpression, options) as string;
 
 		if (leftHand == null || rightHand == null) return undefined;
 		return `${leftHand}.${rightHand}`;

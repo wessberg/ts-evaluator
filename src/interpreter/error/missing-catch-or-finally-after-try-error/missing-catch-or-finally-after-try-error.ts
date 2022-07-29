@@ -11,7 +11,7 @@ export class MissingCatchOrFinallyAfterTryError extends EvaluationError {
 	 */
 	readonly node!: TS.TryStatement;
 
-	constructor({node, message = `Missing catch or finally after try`}: IMissingCatchOrFinallyAfterTryErrorOptions) {
-		super({node, message});
+	constructor({node, environment, message = `Missing catch or finally after try`}: IMissingCatchOrFinallyAfterTryErrorOptions) {
+		super({node, environment, message});
 	}
 }

@@ -9,39 +9,54 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ForStatement
  */
-export function evaluateForStatement({node, environment, evaluate, reporting, statementTraversalStack, typescript}: EvaluatorOptions<TS.ForStatement>): void {
+export function evaluateForStatement({environment, evaluate, typescript, ...options}: EvaluatorOptions<TS.ForStatement>): void {
+	const {node, getCurrentError} = options;
 	// Prepare a lexical environment for the ForStatement
 	const forEnvironment = cloneLexicalEnvironment(environment, node);
+	const forOptions = {...options, environment: forEnvironment};
 
 	// Evaluate the initializer if it is given
 	if (node.initializer !== undefined) {
 		if (typescript.isVariableDeclarationList(node.initializer)) {
 			for (const declaration of node.initializer.declarations) {
-				evaluate.declaration(declaration, forEnvironment, statementTraversalStack);
+				evaluate.declaration(declaration, forOptions);
+
+				if (getCurrentError() != null) {
+					return;
+				}
 			}
 		} else {
-			evaluate.expression(node.initializer, forEnvironment, statementTraversalStack);
+			evaluate.expression(node.initializer, forOptions);
+
+			if (getCurrentError() != null) {
+				return;
+			}
 		}
 	}
 
 	while (true) {
 		// Prepare a lexical environment for the current iteration
 		const iterationEnvironment = cloneLexicalEnvironment(forEnvironment, node);
+		const iterationOptions = {...options, environment: iterationEnvironment};
 
 		// Define a new binding for a break symbol within the environment
-		setInLexicalEnvironment({env: iterationEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...iterationOptions, path: BREAK_SYMBOL, value: false, newBinding: true});
 
 		// Define a new binding for a continue symbol within the environment
-		setInLexicalEnvironment({env: iterationEnvironment, path: CONTINUE_SYMBOL, value: false, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...iterationOptions, path: CONTINUE_SYMBOL, value: false, newBinding: true});
 
 		// Evaluate the condition. It may be truthy always
-		const conditionResult = node.condition == null ? true : (evaluate.expression(node.condition, forEnvironment, statementTraversalStack) as boolean);
+		const conditionResult = node.condition == null ? true : (evaluate.expression(node.condition, forOptions) as boolean);
 
 		// If the condition doesn't hold, return immediately
-		if (!conditionResult) return;
+		if (!conditionResult || getCurrentError() != null) return;
 
 		// Execute the Statement
-		evaluate.statement(node.statement, iterationEnvironment);
+		evaluate.statement(node.statement, iterationOptions);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		// Check if a 'break' statement has been encountered and break if so
 		if (pathInLexicalEnvironmentEquals(node, iterationEnvironment, true, BREAK_SYMBOL)) {
@@ -52,7 +67,11 @@ export function evaluateForStatement({node, environment, evaluate, reporting, st
 
 		// Run the incrementor
 		if (node.incrementor != null) {
-			evaluate.expression(node.incrementor, forEnvironment, statementTraversalStack);
+			evaluate.expression(node.incrementor, forOptions);
+
+			if (getCurrentError() != null) {
+				return;
+			}
 		}
 
 		// Always run the incrementor before continuing

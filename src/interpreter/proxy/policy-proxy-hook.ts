@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/ban-types */
+import { EvaluationErrorIntent } from "../error/evaluation-error/evaluation-error-intent.js";
 import {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
 import {PolicyTrapKind} from "../policy/policy-trap-kind.js";
 
@@ -29,4 +30,4 @@ export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyP
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type PolicyProxyHookOptions<T extends Record<string, any>> = IPolicyProxyGetHookOptions<T> | IPolicyProxyApplyHookOptions<T> | IPolicyProxyConstructHookOptions<T>;
-export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => boolean;
+export type PolicyProxyHook<T extends object> = (options: PolicyProxyHookOptions<T>) => boolean|EvaluationErrorIntent;

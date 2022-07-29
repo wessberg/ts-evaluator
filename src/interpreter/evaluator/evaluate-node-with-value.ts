@@ -16,5 +16,5 @@ export function evaluateNodeWithValue(options: EvaluatorOptions<NodeWithValue>):
 		return evaluatePropertyName({node, ...rest});
 	}
 
-	throw new UnexpectedNodeError({node, typescript: options.typescript});
+	return options.throwError(new UnexpectedNodeError({node, environment: options.environment, typescript: options.typescript}));
 }

@@ -5,6 +5,6 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ComputedPropertyName
  */
-export function evaluateComputedPropertyName({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.ComputedPropertyName>): Literal {
-	return evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateComputedPropertyName({node, evaluate, ...options}: EvaluatorOptions<TS.ComputedPropertyName>): Literal {
+	return evaluate.expression(node.expression, options);
 }

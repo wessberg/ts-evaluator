@@ -13,9 +13,6 @@ export interface LazyCall {
 
 /**
  * Returns true if the given literal is a lazy call
- *
- * @param literal
- * @return
  */
 export function isLazyCall(literal: Literal): literal is LazyCall {
 	return literal != null && typeof literal === "object" && LAZY_CALL_FLAG in literal;
@@ -33,9 +30,6 @@ export interface IndexLiteral {
 
 /**
  * Stringifies the given literal
- *
- * @param literal
- * @return
  */
 export function stringifyLiteral(literal: Literal): string {
 	if (literal === undefined) return "undefined";

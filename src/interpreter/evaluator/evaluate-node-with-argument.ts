@@ -31,46 +31,48 @@ export function evaluateNodeWithArgument(options: EvaluatorOptions<TS.Node>, arg
 	const {node, ...rest} = options;
 
 	if (rest.typescript.isGetAccessorDeclaration(node)) {
-		return evaluateGetAccessorDeclaration({node, ...rest}, arg as IndexLiteral);
+		evaluateGetAccessorDeclaration({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isSetAccessorDeclaration(node)) {
-		return evaluateSetAccessorDeclaration({node, ...rest}, arg as IndexLiteral);
+		evaluateSetAccessorDeclaration({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isPropertyAssignment(node)) {
-		return evaluatePropertyAssignment({node, ...rest}, arg as IndexLiteral);
+		evaluatePropertyAssignment({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isPropertyDeclaration(node)) {
-		return evaluatePropertyDeclaration({node, ...rest}, arg as IndexLiteral);
+		evaluatePropertyDeclaration({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isParameter(node)) {
-		return evaluateParameterDeclaration({node, ...rest}, arg);
+		evaluateParameterDeclaration({node, ...rest}, arg);
 	} else if (rest.typescript.isEnumMember(node)) {
-		return evaluateEnumMember({node, ...rest}, arg as IndexLiteral);
+		evaluateEnumMember({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isShorthandPropertyAssignment(node)) {
-		return evaluateShorthandPropertyAssignment({node, ...rest}, arg as IndexLiteral);
+		evaluateShorthandPropertyAssignment({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isDecorator(node)) {
-		return evaluateDecorator({node, ...rest}, arg as [IndexLiteral, string?]);
+		evaluateDecorator({node, ...rest}, arg as [IndexLiteral, string?]);
 	} else if (rest.typescript.isSpreadAssignment(node)) {
-		return evaluateSpreadAssignment({node, ...rest}, arg as IndexLiteral);
+		evaluateSpreadAssignment({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isMethodDeclaration(node)) {
-		return evaluateMethodDeclaration({node, ...rest}, arg as IndexLiteral);
+		evaluateMethodDeclaration({node, ...rest}, arg as IndexLiteral);
 	} else if (rest.typescript.isArrayBindingPattern(node)) {
-		return evaluateArrayBindingPattern({node, ...rest}, arg as Iterable<Literal>);
+		evaluateArrayBindingPattern({node, ...rest}, arg as Iterable<Literal>);
 	} else if (rest.typescript.isBindingElement(node)) {
-		return evaluateBindingElement({node, ...rest}, arg);
+		evaluateBindingElement({node, ...rest}, arg);
 	} else if (rest.typescript.isObjectBindingPattern(node)) {
-		return evaluateObjectBindingPattern({node, ...rest}, arg);
+		evaluateObjectBindingPattern({node, ...rest}, arg);
 	} else if (rest.typescript.isVariableDeclaration(node)) {
-		return evaluateVariableDeclaration({node, ...rest}, arg);
+		evaluateVariableDeclaration({node, ...rest}, arg);
 	} else if (rest.typescript.isCaseBlock(node)) {
-		return evaluateCaseBlock({node, ...rest}, arg);
+		evaluateCaseBlock({node, ...rest}, arg);
 	} else if (rest.typescript.isCaseClause(node)) {
-		return evaluateCaseClause({node, ...rest}, arg);
+		evaluateCaseClause({node, ...rest}, arg);
 	} else if (rest.typescript.isDefaultClause(node)) {
-		return evaluateDefaultClause({node, ...rest});
+		evaluateDefaultClause({node, ...rest});
 	} else if (rest.typescript.isCatchClause(node)) {
-		return evaluateCatchClause({node, ...rest}, arg as Error);
+		evaluateCatchClause({node, ...rest}, arg as Error);
 	} else if (rest.typescript.isBindingName(node)) {
-		return evaluateBindingName({node, ...rest}, arg);
+		evaluateBindingName({node, ...rest}, arg);
 	} else if (rest.typescript.isOmittedExpression(node)) {
-		return evaluateOmittedExpression({node, ...rest});
+		evaluateOmittedExpression({node, ...rest});
+	} else if (options.getCurrentError() != null) {
+		return;
+	} else {
+		rest.throwError(new UnexpectedNodeError({node, environment: rest.environment, typescript: rest.typescript}));
 	}
-
-	throw new UnexpectedNodeError({node, typescript: rest.typescript});
 }

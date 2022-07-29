@@ -5,24 +5,39 @@ import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environm
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {expressionContainsSuperKeyword} from "../util/expression/expression-contains-super-keyword.js";
 import {TS} from "../../type/ts.js";
+import {maybeThrow} from "../error/evaluation-error/evaluation-error-intent.js";
 
 /**
  * Evaluates, or attempts to evaluate, a CallExpression
  */
-export function evaluateCallExpression({node, environment, evaluate, statementTraversalStack, typescript, logger}: EvaluatorOptions<TS.CallExpression>): Literal {
+export function evaluateCallExpression(options: EvaluatorOptions<TS.CallExpression>): Literal {
+	const {node, environment, evaluate, throwError, typescript, logger, getCurrentError} = options;
 	const evaluatedArgs: Literal[] = [];
 
 	for (let i = 0; i < node.arguments.length; i++) {
-		evaluatedArgs[i] = evaluate.expression(node.arguments[i], environment, statementTraversalStack);
+		evaluatedArgs[i] = evaluate.expression(node.arguments[i], options);
+		if (getCurrentError() != null) {
+			return;
+		}
 	}
 
 	// Evaluate the expression
-	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack) as CallableFunction | undefined;
+	const expressionResult = evaluate.expression(node.expression, options) as CallableFunction | undefined;
+
+	if (getCurrentError() != null) {
+		return;
+	}
 
 	if (isLazyCall(expressionResult)) {
 		const currentThisBinding = expressionContainsSuperKeyword(node.expression, typescript) ? getFromLexicalEnvironment(node, environment, THIS_SYMBOL) : undefined;
 		const value = expressionResult.invoke(currentThisBinding != null ? currentThisBinding.literal : undefined, ...evaluatedArgs);
+
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		logger.logResult(value, "CallExpression");
+
 		return value;
 	}
 
@@ -30,10 +45,15 @@ export function evaluateCallExpression({node, environment, evaluate, statementTr
 	else {
 		// Unless optional chaining is being used, throw a NotCallableError
 		if (node.questionDotToken == null && typeof expressionResult !== "function") {
-			throw new NotCallableError({value: expressionResult, node: node.expression});
+			return throwError(new NotCallableError({value: expressionResult, node: node.expression, environment}));
 		}
 
-		const value = typeof expressionResult !== "function" ? undefined : expressionResult(...evaluatedArgs);
+		const value = typeof expressionResult !== "function" ? undefined : maybeThrow(node, options, expressionResult(...evaluatedArgs));
+
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		logger.logResult(value, "CallExpression");
 		return value;
 	}

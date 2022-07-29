@@ -5,12 +5,12 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a PropertyName
  */
-export function evaluatePropertyName({environment, node, evaluate, typescript, statementTraversalStack}: EvaluatorOptions<TS.PropertyName>): Literal {
+export function evaluatePropertyName({node, evaluate, typescript, ...options}: EvaluatorOptions<TS.PropertyName>): Literal {
 	return (
 		typescript.isComputedPropertyName(node)
-			? evaluate.expression(node.expression, environment, statementTraversalStack)
+			? evaluate.expression(node.expression, options)
 			: typescript.isIdentifier(node) || typescript.isPrivateIdentifier?.(node)
 			? node.text
-			: evaluate.expression(node as TS.StringLiteral | TS.NumericLiteral, environment, statementTraversalStack)
+			: evaluate.expression(node as TS.StringLiteral | TS.NumericLiteral, options)
 	) as IndexLiteralKey;
 }

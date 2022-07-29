@@ -7,27 +7,22 @@ import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ClassExpression
- *
- * @param options
- * @returns
  */
-export function evaluateClassExpression({
-	node,
-	environment,
-	evaluate,
-	stack,
-	logger,
-	reporting,
-	statementTraversalStack,
-	typescript
-}: EvaluatorOptions<TS.ClassExpression>): Literal {
+export function evaluateClassExpression(options: EvaluatorOptions<TS.ClassExpression>): Literal {
+	const {node, evaluate, stack, logger, typescript, getCurrentError} = options;
+
 	let extendedType: CallableFunction | undefined;
 	const ctorMember = node.members.find(typescript.isConstructorDeclaration);
 	const otherMembers = node.members.filter(member => !typescript.isConstructorDeclaration(member));
 
 	let ctor: CallableFunction | undefined;
 	if (ctorMember != null) {
-		evaluate.declaration(ctorMember, environment, statementTraversalStack);
+		evaluate.declaration(ctorMember, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
+
 		ctor = stack.pop() as CallableFunction;
 	}
 
@@ -36,7 +31,11 @@ export function evaluateClassExpression({
 		if (extendsClause != null) {
 			const [firstExtendedType] = extendsClause.types;
 			if (firstExtendedType != null) {
-				extendedType = evaluate.expression(firstExtendedType.expression, environment, statementTraversalStack) as CallableFunction;
+				extendedType = evaluate.expression(firstExtendedType.expression, options) as CallableFunction;
+
+				if (getCurrentError() != null) {
+					return;
+				}
 			}
 		}
 	}
@@ -46,7 +45,12 @@ export function evaluateClassExpression({
 
 	if (node.decorators != null) {
 		for (const decorator of node.decorators) {
-			evaluate.nodeWithArgument(decorator, environment, [classExpression], statementTraversalStack);
+			evaluate.nodeWithArgument(decorator, [classExpression], options);
+
+			if (getCurrentError() != null) {
+				return;
+			}
+
 			classExpression = stack.pop() as CallableFunction;
 		}
 	}
@@ -54,12 +58,16 @@ export function evaluateClassExpression({
 	classExpression.toString = () => `[Class${name == null ? "" : `: ${name}`}]`;
 
 	if (name != null) {
-		setInLexicalEnvironment({env: environment, path: name, value: classExpression, newBinding: true, reporting, node});
+		setInLexicalEnvironment({...options, path: name, value: classExpression, newBinding: true});
 	}
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		evaluate.nodeWithArgument(member, environment, hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classExpression : classExpression.prototype, statementTraversalStack);
+		evaluate.nodeWithArgument(member, hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classExpression : classExpression.prototype, options);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 	}
 
 	logger.logHeritage(classExpression);

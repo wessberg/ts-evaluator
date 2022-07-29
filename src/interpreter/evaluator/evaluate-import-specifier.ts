@@ -6,6 +6,6 @@ import {TS} from "../../type/ts.js";
  * It will only initialize the bindings inside the lexical environment, but not resolve them, since we rely on the TypeChecker to resolve symbols across SourceFiles,
  * rather than manually parsing and resolving imports/exports
  */
-export function evaluateImportSpecifier({node, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.ImportSpecifier>): void {
-	evaluate.declaration(node.propertyName ?? node.name, environment, statementTraversalStack);
+export function evaluateImportSpecifier({node, evaluate, ...options}: EvaluatorOptions<TS.ImportSpecifier>): void {
+	evaluate.declaration(node.propertyName ?? node.name, options);
 }

@@ -6,7 +6,8 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a SourceFile as a namespace object
  */
-export function evaluateSourceFileAsNamespaceObject({node, environment, evaluate, typeChecker, stack, statementTraversalStack}: EvaluatorOptions<TS.SourceFile>): void {
+export function evaluateSourceFileAsNamespaceObject(options: EvaluatorOptions<TS.SourceFile>): void {
+	const {node, evaluate, environment, typeChecker, stack, getCurrentError} = options;
 	// Create a new ObjectLiteral based on the Object implementation from the Realm since this must not be the same as in the parent executing context
 	// Otherwise, instanceof checks would fail
 	const objectCtor = getFromLexicalEnvironment(node, environment, "Object")!.literal as ObjectConstructor;
@@ -20,7 +21,12 @@ export function evaluateSourceFileAsNamespaceObject({node, environment, evaluate
 				const valueDeclaration = symbol.valueDeclaration;
 				if (valueDeclaration == null) return;
 
-				evaluate.declaration(valueDeclaration, environment, statementTraversalStack);
+				evaluate.declaration(valueDeclaration, options);
+
+				if (getCurrentError() != null) {
+					return;
+				}
+
 				namespaceObject[identifier] = stack.pop();
 			}
 		}

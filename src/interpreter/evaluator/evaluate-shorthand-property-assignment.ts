@@ -5,12 +5,14 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a ShorthandPropertyAssignment, before applying it on the given parent
  */
-export function evaluateShorthandPropertyAssignment(
-	{evaluate, statementTraversalStack, environment, node}: EvaluatorOptions<TS.ShorthandPropertyAssignment>,
-	parent: IndexLiteral
-): void {
+export function evaluateShorthandPropertyAssignment({node, evaluate, ...options}: EvaluatorOptions<TS.ShorthandPropertyAssignment>, parent: IndexLiteral): void {
+	const {getCurrentError} = options;
 	const identifier = node.name.text;
-	const initializer = evaluate.expression(node.name, environment, statementTraversalStack);
+	const initializer = evaluate.expression(node.name, options);
+
+	if (getCurrentError() != null) {
+		return;
+	}
 
 	parent[identifier] = initializer;
 }

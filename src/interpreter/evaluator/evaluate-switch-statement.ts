@@ -4,7 +4,11 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a SwitchStatement
  */
-export function evaluateSwitchStatement({node, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.SwitchStatement>): void {
-	const expressionResult = evaluate.expression(node.expression, environment, statementTraversalStack);
-	evaluate.nodeWithArgument(node.caseBlock, environment, expressionResult, statementTraversalStack);
+export function evaluateSwitchStatement({node, evaluate, ...options}: EvaluatorOptions<TS.SwitchStatement>): void {
+	const expressionResult = evaluate.expression(node.expression, options);
+
+	if (options.getCurrentError() != null) {
+		return;
+	}
+	evaluate.nodeWithArgument(node.caseBlock, expressionResult, options);
 }

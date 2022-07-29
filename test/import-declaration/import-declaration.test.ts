@@ -4,6 +4,7 @@ import {executeProgram} from "../setup/execute-program.js";
 import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 import path from "crosspath";
 
+
 test("Can resolve symbols via ImportDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[

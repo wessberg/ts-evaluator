@@ -7,22 +7,17 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a PostfixUnaryExpression
  */
-export function evaluatePostfixUnaryExpression({
-	node,
-	evaluate,
-	environment,
-	reporting,
-	typescript,
-	statementTraversalStack
-}: EvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
+export function evaluatePostfixUnaryExpression(options: EvaluatorOptions<TS.PostfixUnaryExpression>): Literal {
+	const {evaluate, node, environment, typescript, throwError, reporting} = options;
+
 	// Make sure to evaluate the operand to ensure that it is found in the lexical environment
-	evaluate.expression(node.operand, environment, statementTraversalStack);
+	evaluate.expression(node.operand, options);
 
 	switch (node.operator) {
 		case typescript.SyntaxKind.PlusPlusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
 			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand, typescript});
+				return throwError(new UnexpectedNodeError({node: node.operand, environment, typescript}));
 			}
 
 			// Find the value associated with the identifier within the environment.
@@ -38,7 +33,7 @@ export function evaluatePostfixUnaryExpression({
 		case typescript.SyntaxKind.MinusMinusToken: {
 			// If the Operand isn't an identifier, this will be a SyntaxError
 			if (!typescript.isIdentifier(node.operand) && !typescript.isPrivateIdentifier?.(node.operand)) {
-				throw new UnexpectedNodeError({node: node.operand, typescript});
+				return throwError(new UnexpectedNodeError({node: node.operand, environment, typescript}));
 			}
 
 			// Find the value associated with the identifier within the environment.

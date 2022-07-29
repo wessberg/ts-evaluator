@@ -4,12 +4,9 @@ import {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a VoidExpression
- *
- * @param options
- * @returns
  */
-export function evaluateVoidExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.VoidExpression>): Literal {
-	evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateVoidExpression({node, evaluate, ...options}: EvaluatorOptions<TS.VoidExpression>): Literal {
+	evaluate.expression(node.expression, options);
 	// The void operator evaluates the expression and then returns undefined
 	return undefined;
 }

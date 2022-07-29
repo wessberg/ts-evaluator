@@ -5,6 +5,6 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a NonNullExpression
  */
-export function evaluateNonNullExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.NonNullExpression>): Literal {
-	return evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateNonNullExpression({node, evaluate, ...options}: EvaluatorOptions<TS.NonNullExpression>): Literal {
+	return evaluate.expression(node.expression, options);
 }

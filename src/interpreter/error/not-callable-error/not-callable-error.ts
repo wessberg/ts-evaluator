@@ -11,8 +11,8 @@ export class NotCallableError extends EvaluationError {
 	 */
 	readonly value: Literal;
 
-	constructor({value, node, message = `${stringifyLiteral(value)} is not a function'`}: INotCallableErrorOptions) {
-		super({message, node});
+	constructor({value, node, environment, message = `${stringifyLiteral(value)} is not a function'`}: INotCallableErrorOptions) {
+		super({message, environment, node});
 		this.value = value;
 	}
 }

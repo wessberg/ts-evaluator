@@ -13,10 +13,20 @@ import {isTypescriptNode} from "../util/node/is-node.js";
  * Evaluates, or attempts to evaluate, a BinaryExpression
  */
 export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpression>): Literal {
-	const {node, environment, evaluate, logger, typeChecker, statementTraversalStack, reporting, typescript} = options;
+	const {node, environment, evaluate, logger, throwError, typeChecker, typescript, getCurrentError} = options;
 
-	const leftValue = evaluate.expression(node.left, environment, statementTraversalStack) as number;
-	const rightValue = evaluate.expression(node.right, environment, statementTraversalStack) as number;
+	const leftValue = evaluate.expression(node.left, options) as number;
+
+	if (getCurrentError() != null) {
+		return;
+	}
+
+	const rightValue = evaluate.expression(node.right, options) as number;
+
+	if (getCurrentError() != null) {
+		return;
+	}
+
 	const leftIdentifier = getDotPathFromNode({...options, node: node.left});
 
 	const operator = node.operatorToken.kind;
@@ -101,7 +111,7 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 
 			// Update to the left-value within the environment if it exists there and has been updated
 			if (leftIdentifier != null) {
-				setInLexicalEnvironment({env: environment, path: leftIdentifier, value: computedValue, reporting, node});
+				setInLexicalEnvironment({...options, path: leftIdentifier, value: computedValue});
 			}
 
 			// Return the computed value
@@ -165,10 +175,10 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 				const bestLexicalEnvironment =
 					leftIdentifierValueDeclaration == null ? environment : findLexicalEnvironmentInSameContext(environment, leftIdentifierValueDeclaration, typescript) ?? environment;
 
-				setInLexicalEnvironment({env: bestLexicalEnvironment, path: leftIdentifier, value: rightValue, reporting, node});
+				setInLexicalEnvironment({...options, environment: bestLexicalEnvironment, path: leftIdentifier, value: rightValue});
 				logger.logBinding(leftIdentifier, rightValue, "Assignment");
 			} else {
-				throw new UndefinedLeftValueError({node: node.left});
+				return throwError(new UndefinedLeftValueError({node: node.left, environment}));
 			}
 
 			// The return value of an assignment is always the assigned value
@@ -219,5 +229,5 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 	}
 
 	// Throw if the operator couldn't be handled
-	throw new UnexpectedNodeError({node: node.operatorToken, typescript});
+	return throwError(new UnexpectedNodeError({node: node.operatorToken, typescript, environment}));
 }

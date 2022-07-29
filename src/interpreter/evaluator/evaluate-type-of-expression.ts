@@ -5,6 +5,11 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a TypeOfExpression
  */
-export function evaluateTypeOfExpression({node, environment, evaluate, statementTraversalStack}: EvaluatorOptions<TS.TypeOfExpression>): Literal {
-	return typeof evaluate.expression(node.expression, environment, statementTraversalStack);
+export function evaluateTypeOfExpression({evaluate, node, ...options}: EvaluatorOptions<TS.TypeOfExpression>): Literal {
+	const result = evaluate.expression(node.expression, options);
+
+	if (options.getCurrentError() != null) {
+		return;
+	}
+	return typeof result;
 }

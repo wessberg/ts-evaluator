@@ -5,10 +5,7 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, an ArrayBindingPattern, based on an initializer
  */
-export function evaluateArrayBindingPattern(
-	{node, evaluate, environment, statementTraversalStack}: EvaluatorOptions<TS.ArrayBindingPattern>,
-	rightHandValue: Iterable<Literal>
-): void {
+export function evaluateArrayBindingPattern({node, evaluate, ...options}: EvaluatorOptions<TS.ArrayBindingPattern>, rightHandValue: Iterable<Literal>): void {
 	const iterator = rightHandValue[Symbol.iterator]();
 	let elementsCursor = 0;
 
@@ -16,6 +13,10 @@ export function evaluateArrayBindingPattern(
 		const {done, value} = iterator.next();
 		if (done === true) break;
 
-		evaluate.nodeWithArgument(node.elements[elementsCursor++], environment, value, statementTraversalStack);
+		evaluate.nodeWithArgument(node.elements[elementsCursor++], value, options);
+
+		if (options.getCurrentError() != null) {
+			return;
+		}
 	}
 }

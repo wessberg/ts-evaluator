@@ -10,14 +10,20 @@ import {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a CaseBlock, based on a switch expression
  */
-export function evaluateCaseBlock({node, evaluate, environment, reporting, statementTraversalStack}: EvaluatorOptions<TS.CaseBlock>, switchExpression: Literal): void {
+export function evaluateCaseBlock(options: EvaluatorOptions<TS.CaseBlock>, switchExpression: Literal): void {
+	const {node, evaluate, environment, getCurrentError} = options;
 	// Prepare a lexical environment for the case block
 	const localEnvironment = cloneLexicalEnvironment(environment, node);
+	const nextOptions = {...options, environment: localEnvironment};
 	// Define a new binding for a break symbol within the environment
-	setInLexicalEnvironment({env: localEnvironment, path: BREAK_SYMBOL, value: false, newBinding: true, reporting, node});
+	setInLexicalEnvironment({...nextOptions, path: BREAK_SYMBOL, value: false, newBinding: true});
 
 	for (const clause of node.clauses) {
-		evaluate.nodeWithArgument(clause, localEnvironment, switchExpression, statementTraversalStack);
+		evaluate.nodeWithArgument(clause, switchExpression, nextOptions);
+
+		if (getCurrentError() != null) {
+			return;
+		}
 
 		// Check if a 'break', 'continue', or 'return' statement has been encountered, break the block
 		if (pathInLexicalEnvironmentEquals(node, localEnvironment, true, BREAK_SYMBOL, CONTINUE_SYMBOL, RETURN_SYMBOL)) {
