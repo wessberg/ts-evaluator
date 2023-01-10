@@ -1,3 +1,12 @@
+# [1.1.0](https://github.com/wessberg/ts-evaluator/compare/v1.0.7...v1.1.0) (2023-01-10)
+
+
+### Features
+
+* add TypeScript v4.9 support ([590293c](https://github.com/wessberg/ts-evaluator/commit/590293c77bc5a7fc0b472451e070d2d279bb6ce9))
+
+
+
 ## [1.0.7](https://github.com/wessberg/ts-evaluator/compare/v1.0.6...v1.0.7) (2022-07-29)
 
 
