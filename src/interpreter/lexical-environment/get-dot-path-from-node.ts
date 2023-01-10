@@ -21,7 +21,7 @@ export function getDotPathFromNode<T extends TS.Node>(options: EvaluatorOptions<
 		return SUPER_SYMBOL;
 	} else if (typescript.isParenthesizedExpression(node)) {
 		return getDotPathFromNode({...options, node: node.expression});
-	} else if (typescript.isTypeAssertion(node)) {
+	} else if (typescript.isTypeAssertionExpression?.(node) || (!("isTypeAssertionExpression" in typescript) && (typescript as typeof TS).isTypeAssertion(node))) {
 		return getDotPathFromNode({...options, node: node.expression});
 	} else if (typescript.isPropertyAccessExpression(node)) {
 		let leftHand = getDotPathFromNode({...options, node: node.expression});

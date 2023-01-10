@@ -168,7 +168,7 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 					const result = findNearestParentNodeWithName<TS.Declaration>(innerLeftIdentifier.parent, innerLeftIdentifier.text, options as EvaluatorOptions<TS.Declaration>);
 
 					if (isTypescriptNode(result)) {
-						leftIdentifierValueDeclaration = result;
+						leftIdentifierValueDeclaration = result as TS.Declaration;
 					}
 				}
 

@@ -83,7 +83,7 @@ export function createPolicyProxy<T extends object>({hook, item, scope, policy}:
 								if (config != null && config.configurable === false && config.writable === false) {
 									return currentItem[property as keyof U];
 								}
-								return createAccessTrap(newPath, match);
+								return createAccessTrap(newPath, match as object);
 							}
 						);
 					}

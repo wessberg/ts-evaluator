@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/strict-boolean-expressions */
 /**
  * This is ported over from tslib to avoid having it as a runtime dependency
  */

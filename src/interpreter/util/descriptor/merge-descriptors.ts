@@ -2,8 +2,6 @@
 
 /**
  * Merges all of the given descriptors
- * @param {A} a
- * @return {A}
  */
 export function mergeDescriptors<A extends object>(a: A): A;
 export function mergeDescriptors<A extends object, B extends object>(a: A, b: B): A & B;

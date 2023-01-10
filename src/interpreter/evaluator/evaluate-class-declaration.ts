@@ -3,6 +3,7 @@ import {setInLexicalEnvironment} from "../lexical-environment/lexical-environmen
 import {generateClassDeclaration} from "../util/class/generate-class-declaration.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
 import {TS} from "../../type/ts.js";
+import { canHaveDecorators, getDecorators } from "../util/node/modifier-util.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ClassDeclaration
@@ -41,8 +42,8 @@ export function evaluateClassDeclaration(options: EvaluatorOptions<TS.ClassDecla
 	const name = node.name == null ? undefined : node.name.text;
 	let classDeclaration = generateClassDeclaration({name, extendedType, ctor});
 
-	if (node.decorators != null) {
-		for (const decorator of node.decorators) {
+	if (canHaveDecorators(node, typescript)) {
+		for (const decorator of getDecorators(node, typescript) ?? []) {
 			evaluate.nodeWithArgument(decorator, [classDeclaration], options);
 
 			if (getCurrentError() != null) {

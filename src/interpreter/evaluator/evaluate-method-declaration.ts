@@ -9,6 +9,7 @@ import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
 import {inStaticContext} from "../util/static/in-static-context.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
 import {TS} from "../../type/ts.js";
+import { canHaveDecorators, getDecorators } from "../util/node/modifier-util.js";
 
 /**
  * Evaluates, or attempts to evaluate, a MethodDeclaration, before setting it on the given parent
@@ -154,8 +155,8 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 
 	parent[nameResult] = _methodDeclaration;
 
-	if (node.decorators != null) {
-		for (const decorator of node.decorators) {
+	if (canHaveDecorators(node, typescript)) {
+		for (const decorator of getDecorators(node, typescript) ?? []) {
 			evaluate.nodeWithArgument(decorator, [parent, nameResult], options);
 
 			if (getCurrentError() != null) {
@@ -173,8 +174,9 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 		const parameters = node.parameters.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 		for (let i = 0; i < parameters.length; i++) {
 			const parameter = parameters[i];
-			if (parameter.decorators != null) {
-				for (const decorator of parameter.decorators) {
+
+			if (canHaveDecorators(parameter, typescript)) {
+				for (const decorator of getDecorators(parameter, typescript) ?? []) {
 					evaluate.nodeWithArgument(decorator, [parent, nameResult, i], options);
 
 					if (getCurrentError() != null) {

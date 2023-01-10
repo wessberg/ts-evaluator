@@ -99,7 +99,7 @@ export function evaluateNode({node, ...rest}: EvaluatorOptions<TS.Node>): unknow
 		return evaluateObjectLiteralExpression({node, ...rest});
 	} else if (rest.typescript.isAwaitExpression(node)) {
 		return evaluateAwaitExpression({node, ...rest});
-	} else if (rest.typescript.isTypeAssertionExpression?.(node) || rest.typescript.isTypeAssertion(node)) {
+	} else if (rest.typescript.isTypeAssertionExpression?.(node) || (!("isTypeAssertionExpression" in rest.typescript) && (rest.typescript as typeof TS).isTypeAssertion(node))) {
 		return evaluateTypeAssertion({node, ...rest});
 	} else if (rest.typescript.isTemplateExpression(node)) {
 		return evaluateTemplateExpression({node, ...rest});

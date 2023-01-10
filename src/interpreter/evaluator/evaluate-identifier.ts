@@ -48,7 +48,7 @@ export function evaluateIdentifier(options: EvaluatorOptions<TS.Identifier | TS.
 		}
 
 		if (isTypescriptNode(result) && !typescript.isIdentifier(result)) {
-			valueDeclaration = result;
+			valueDeclaration = result as TS.Declaration;
 		} else if (result != null) {
 			// Bind the value placed on the top of the stack to the local environment
 			setInLexicalEnvironment({...options, path: node.text, value: result});

@@ -2,6 +2,7 @@ import {EvaluatorOptions} from "./evaluator-options.js";
 import {IndexLiteral, IndexLiteralKey} from "../literal/literal.js";
 import {inStaticContext} from "../util/static/in-static-context.js";
 import {TS} from "../../type/ts.js";
+import { canHaveDecorators, getDecorators } from "../util/node/modifier-util.js";
 
 /**
  * Evaluates, or attempts to evaluate, a PropertyDeclaration, before applying it on the given parent
@@ -35,8 +36,8 @@ export function evaluatePropertyDeclaration({node, evaluate, typescript, stack, 
 		return;
 	}
 
-	if (node.decorators != null) {
-		for (const decorator of node.decorators) {
+	if (canHaveDecorators(node, typescript)) {
+		for (const decorator of getDecorators(node, typescript) ?? []) {
 			evaluate.nodeWithArgument(decorator, [parent, propertyNameResult], options);
 
 			if (getCurrentError() != null) {
