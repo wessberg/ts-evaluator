@@ -37,9 +37,9 @@ export function evaluateParameterDeclarations(options: EvaluatorOptions<TS.NodeA
 			if (
 				context != null &&
 				typescript.isIdentifier(parameter.name) &&
-				(hasModifier(parameter, typescript.SyntaxKind.PublicKeyword) ||
-					hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword) ||
-					hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword))
+				(hasModifier(parameter, typescript.SyntaxKind.PublicKeyword, typescript) ||
+					hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword, typescript) ||
+					hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword, typescript))
 			) {
 				const value = getFromLexicalEnvironment(parameter, environment, parameter.name.text);
 				if (value != null) {

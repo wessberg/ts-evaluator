@@ -13,7 +13,7 @@ import {TS} from "../../type/ts.js";
 export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.ArrowFunction>): Literal {
 	const {node, environment, evaluate, stack, typescript, getCurrentError} = options;
 
-	const arrowFunctionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
+	const arrowFunctionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword, typescript)
 		? async (...args: Literal[]) => {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
