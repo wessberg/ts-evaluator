@@ -2,7 +2,7 @@ import type {EvaluatorOptions} from "./evaluator-options.js";
 import type {IndexLiteral, IndexLiteralKey} from "../literal/literal.js";
 import {inStaticContext} from "../util/static/in-static-context.js";
 import type {TS} from "../../type/ts.js";
-import { canHaveDecorators, getDecorators } from "../util/node/modifier-util.js";
+import {canHaveDecorators, getDecorators} from "../util/node/modifier-util.js";
 
 /**
  * Evaluates, or attempts to evaluate, a PropertyDeclaration, before applying it on the given parent

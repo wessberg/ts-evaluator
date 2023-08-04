@@ -1,4 +1,4 @@
-import type { LexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
+import type {LexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
 import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
 
 /**

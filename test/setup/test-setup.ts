@@ -1,7 +1,7 @@
-import type { TestContext} from "./test-context.js";
+import type {TestContext} from "./test-context.js";
 import {createTestContext} from "./test-context.js";
 import type {FileSystem} from "../../src/type/file-system.js";
-import type { TestFile, TestFileEntry, TestFileStructure} from "./test-file.js";
+import type {TestFile, TestFileEntry, TestFileStructure} from "./test-file.js";
 import {createTestFileStructure} from "./test-file.js";
 import {createVirtualFileSystem} from "./create-virtual-file-system.js";
 import type {TS} from "../../src/type/ts.js";

@@ -1,7 +1,7 @@
 import type {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
 import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error.js";
 import type {TS} from "../../../type/ts.js";
-import type { EvaluationError } from "../../error/evaluation-error/evaluation-error.js";
+import type {EvaluationError} from "../../error/evaluation-error/evaluation-error.js";
 
 /**
  * Gets the name of the given declaration

@@ -14,7 +14,7 @@ import {ProcessError} from "../error/policy-error/process-error/process-error.js
 import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-child-operation.js";
 import type {ICreateSanitizedEnvironmentOptions} from "./i-create-sanitized-environment-options.js";
 import {isConsoleOperation} from "../policy/console/is-console-operation.js";
-import { EvaluationErrorIntent } from "../error/evaluation-error/evaluation-error-intent.js";
+import {EvaluationErrorIntent} from "../error/evaluation-error/evaluation-error-intent.js";
 
 /**
  * Creates an environment that provide hooks into policy checks
@@ -27,27 +27,27 @@ export function createSanitizedEnvironment({policy, env}: ICreateSanitizedEnviro
 		}
 
 		if (!policy.io.read && isIoRead(item)) {
-            return new EvaluationErrorIntent((node, options) => new IoError({...options, node, kind: "read"}));
+			return new EvaluationErrorIntent((node, options) => new IoError({...options, node, kind: "read"}));
 		}
 
 		if (!policy.io.write && isIoWrite(item)) {
-            return new EvaluationErrorIntent((node, options) => new IoError({...options, node, kind: "write"}));
+			return new EvaluationErrorIntent((node, options) => new IoError({...options, node, kind: "write"}));
 		}
 
 		if (!policy.process.exit && isProcessExitOperation(item)) {
-            return new EvaluationErrorIntent((node, options) => new ProcessError({...options, node, kind: "exit"}));
+			return new EvaluationErrorIntent((node, options) => new ProcessError({...options, node, kind: "exit"}));
 		}
 
 		if (!policy.process.exit && isProcessSpawnChildOperation(item)) {
-            return new EvaluationErrorIntent((node, options) => new ProcessError({...options, node, kind: "spawnChild"}));
+			return new EvaluationErrorIntent((node, options) => new ProcessError({...options, node, kind: "spawnChild"}));
 		}
 
 		if (!policy.network && isNetworkOperation(item)) {
-            return new EvaluationErrorIntent((node, options) => new NetworkError({...options, node, operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)}));
+			return new EvaluationErrorIntent((node, options) => new NetworkError({...options, node, operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)}));
 		}
 
 		if (policy.deterministic && isNonDeterministic(item)) {
-            return new EvaluationErrorIntent((node, options) => new NonDeterministicError({...options, node, operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)}));
+			return new EvaluationErrorIntent((node, options) => new NonDeterministicError({...options, node, operation: stringifyPolicyTrapKindOnPath(item.kind, item.path)}));
 		}
 
 		return true;

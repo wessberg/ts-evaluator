@@ -27,10 +27,10 @@ export function evaluateVariableDeclaration(options: EvaluatorOptions<TS.Variabl
 
 	// Evaluate the binding name
 	evaluate.nodeWithArgument(node.name, initializerResult, options);
-	
+
 	if (getCurrentError() != null) {
 		return;
 	}
-	
+
 	stack.push(initializerResult);
 }

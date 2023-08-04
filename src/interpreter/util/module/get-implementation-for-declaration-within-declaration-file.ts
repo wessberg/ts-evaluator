@@ -43,9 +43,8 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 	const moduleSpecifier = moduleDeclaration.name.text;
 	const resolvedModuleSpecifier = getResolvedModuleName(moduleSpecifier, options);
 	try {
-
 		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
-		const module = options.moduleOverrides?.[moduleSpecifier] ??  options.moduleOverrides?.[resolvedModuleSpecifier] ?? require(resolvedModuleSpecifier);
+		const module = options.moduleOverrides?.[moduleSpecifier] ?? options.moduleOverrides?.[resolvedModuleSpecifier] ?? require(resolvedModuleSpecifier);
 		return typescript.isModuleDeclaration(node) ? module : module[name] ?? module;
 	} catch (ex) {
 		if (isEvaluationError(ex)) return ex;

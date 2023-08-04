@@ -1,6 +1,6 @@
 import type {EvaluatorOptions} from "./evaluator-options.js";
 import type {IndexLiteral} from "../literal/literal.js";
-import { stringifyLiteral} from "../literal/literal.js";
+import {stringifyLiteral} from "../literal/literal.js";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error.js";
 import type {TS} from "../../type/ts.js";
 import {__decorate, __param} from "../util/tslib/tslib-util.js";

@@ -1,6 +1,6 @@
 import type {EvaluatorOptions} from "./evaluator-options.js";
 import type {LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import { pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
 import type {IndexLiteral, Literal} from "../literal/literal.js";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";

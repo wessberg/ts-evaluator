@@ -1,5 +1,5 @@
 import type {EvaluatorOptions} from "./evaluator-options.js";
-import type { LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import type {LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {getFromLexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
 import type {Literal} from "../literal/literal.js";

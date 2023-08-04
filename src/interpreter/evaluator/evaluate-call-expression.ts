@@ -1,5 +1,5 @@
 import type {EvaluatorOptions} from "./evaluator-options.js";
-import type { Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 import {isLazyCall} from "../literal/literal.js";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error.js";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";

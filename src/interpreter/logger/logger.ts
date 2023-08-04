@@ -1,7 +1,7 @@
 import {LogLevelKind} from "./log-level.js";
 import {stringifySyntaxKind} from "../util/syntax-kind/stringify-syntax-kind.js";
 import type {Literal} from "../literal/literal.js";
-import { stringifyLiteral} from "../literal/literal.js";
+import {stringifyLiteral} from "../literal/literal.js";
 import type {Stack} from "../stack/stack.js";
 import type {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack.js";
 import {inspect} from "util";

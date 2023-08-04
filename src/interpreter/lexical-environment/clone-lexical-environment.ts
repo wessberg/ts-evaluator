@@ -1,4 +1,4 @@
-import type { TS } from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import type {LexicalEnvironment} from "./lexical-environment.js";
 
 /**
@@ -7,7 +7,7 @@ import type {LexicalEnvironment} from "./lexical-environment.js";
 export function cloneLexicalEnvironment(environment: LexicalEnvironment, startingNode: TS.Node): LexicalEnvironment {
 	return {
 		parentEnv: environment,
-		startingNode,		
+		startingNode,
 		env: {}
 	};
 }

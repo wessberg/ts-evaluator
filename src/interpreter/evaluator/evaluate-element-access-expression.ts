@@ -1,6 +1,6 @@
 import type {EvaluatorOptions} from "./evaluator-options.js";
 import type {IndexLiteral, IndexLiteralKey, LazyCall, Literal} from "../literal/literal.js";
-import { LAZY_CALL_FLAG, LiteralFlagKind} from "../literal/literal.js";
+import {LAZY_CALL_FLAG, LiteralFlagKind} from "../literal/literal.js";
 import {isBindCallApply} from "../util/function/is-bind-call-apply.js";
 import type {TS} from "../../type/ts.js";
 import {maybeThrow} from "../error/evaluation-error/evaluation-error-intent.js";

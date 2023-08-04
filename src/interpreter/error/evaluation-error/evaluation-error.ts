@@ -1,6 +1,6 @@
 import type {IEvaluationErrorOptions} from "./i-evaluation-error-options.js";
 import type {TS} from "../../../type/ts.js";
-import type { LexicalEnvironment } from "../../lexical-environment/lexical-environment.js";
+import type {LexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
 
 export type ThrowError = (error: EvaluationError) => EvaluationError;
 
@@ -22,6 +22,6 @@ export class EvaluationError extends Error {
 	}
 }
 
-export function isEvaluationError (item: unknown): item is EvaluationError {
+export function isEvaluationError(item: unknown): item is EvaluationError {
 	return typeof item === "object" && item != null && item instanceof EvaluationError;
 }

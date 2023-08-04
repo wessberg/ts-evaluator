@@ -4,8 +4,8 @@ import type {ICreatePolicyProxyOptions} from "./i-create-policy-proxy-options.js
 import {isBindCallApply} from "../util/function/is-bind-call-apply.js";
 import {PolicyTrapKind} from "../policy/policy-trap-kind.js";
 import type {EvaluationErrorIntent} from "../error/evaluation-error/evaluation-error-intent.js";
-import { isEvaluationErrorIntent} from "../error/evaluation-error/evaluation-error-intent.js";
-import { isEvaluationError } from "../error/evaluation-error/evaluation-error.js";
+import {isEvaluationErrorIntent} from "../error/evaluation-error/evaluation-error-intent.js";
+import {isEvaluationError} from "../error/evaluation-error/evaluation-error.js";
 
 /**
  * Stringifies the given PropertyKey path

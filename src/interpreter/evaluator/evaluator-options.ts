@@ -12,9 +12,8 @@ export interface NextEvaluatorOptions {
 	environment: LexicalEnvironment;
 	moduleOverrides?: Record<string, unknown>;
 	throwError: ThrowError;
-	getCurrentError (): EvaluationError|undefined;
+	getCurrentError(): EvaluationError | undefined;
 	statementTraversalStack: StatementTraversalStack;
-	
 }
 
 export interface EvaluatorOptions<T extends TS.Node | TS.NodeArray<TS.Node>> extends NextEvaluatorOptions {

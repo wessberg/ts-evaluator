@@ -5,7 +5,7 @@ import {generateRandomPath} from "../../src/interpreter/util/path/generate-rando
 import {ensureArray} from "../../src/interpreter/util/array/ensure-array.js";
 import type {MaybeArray} from "helpertypes";
 import {CachedFs} from "./cached-fs.js";
-import { requireModule } from "../../src/interpreter/util/loader/require-module.js";
+import {requireModule} from "../../src/interpreter/util/loader/require-module.js";
 
 export interface TestFileRecord {
 	fileName: string;
@@ -93,7 +93,9 @@ export function createTestFileStructure(input: MaybeArray<TestFile>, entryInput:
 		.map(file => ({...file, fileName: path.join(src, file.fileName)}));
 
 	const entry: TestFileEntryRefRecord =
-		typeof entryInput === "string" ? {file: files[0], match: entryInput} : {file: files.find(file => file.fileName === path.join(src, entryInput.fileName))!, match: entryInput.match};
+		typeof entryInput === "string"
+			? {file: files[0], match: entryInput}
+			: {file: files.find(file => file.fileName === path.join(src, entryInput.fileName))!, match: entryInput.match};
 
 	return {
 		dir: {

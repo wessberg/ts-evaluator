@@ -10,8 +10,8 @@ import {evaluateNodeWithValue} from "../evaluate-node-with-value.js";
 import {createStatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack.js";
 import type {TS} from "../../../type/ts.js";
 import type {EvaluationError} from "../../error/evaluation-error/evaluation-error.js";
-import { isEvaluationError} from "../../error/evaluation-error/evaluation-error.js";
-import type { Literal } from "../../literal/literal.js";
+import {isEvaluationError} from "../../error/evaluation-error/evaluation-error.js";
+import type {Literal} from "../../literal/literal.js";
 
 /**
  * Creates a Node Evaluator
@@ -50,7 +50,6 @@ export function createNodeEvaluator(options: ICreateNodeEvaluatorOptions): NodeE
 	};
 
 	const evaluate: NodeEvaluator = {
-		
 		statement: (node, nextOptions): void => {
 			const combinedNextOptions = {...nextOptions, statementTraversalStack: createStatementTraversalStack()};
 			const prequalifyResult = prequalifyNextNode(node, combinedNextOptions);
@@ -73,14 +72,14 @@ export function createNodeEvaluator(options: ICreateNodeEvaluatorOptions): NodeE
 			}
 			return evaluateNodeWithArgument(getEvaluatorOptions(node, nextOptions), arg);
 		},
-		expression: (node, nextOptions): Literal|EvaluationError => {
+		expression: (node, nextOptions): Literal | EvaluationError => {
 			const prequalifyResult = prequalifyNextNode(node, nextOptions);
 			if (isEvaluationError(prequalifyResult)) {
 				return prequalifyResult;
 			}
 			return evaluateExpression(getEvaluatorOptions(node, nextOptions));
 		},
-		nodeWithValue: (node, nextOptions): Literal|EvaluationError => {
+		nodeWithValue: (node, nextOptions): Literal | EvaluationError => {
 			const prequalifyResult = prequalifyNextNode(node, nextOptions);
 			if (isEvaluationError(prequalifyResult)) {
 				return prequalifyResult;

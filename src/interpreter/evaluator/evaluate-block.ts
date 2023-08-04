@@ -1,6 +1,6 @@
 import type {EvaluatorOptions} from "./evaluator-options.js";
 import type {LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import { pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment.js";
+import {pathInLexicalEnvironmentEquals} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
 import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";

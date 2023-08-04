@@ -10,7 +10,7 @@ import {createStatementTraversalStack} from "./stack/traversal-stack/statement-t
 import {isExpression} from "./util/expression/is-expression.js";
 import type {Literal} from "./literal/literal.js";
 import {isStatement} from "./util/statement/is-statement.js";
-import type { Stack} from "./stack/stack.js";
+import type {Stack} from "./stack/stack.js";
 import {createStack} from "./stack/stack.js";
 import {isDeclaration} from "./util/declaration/is-declaration.js";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error.js";
@@ -19,7 +19,7 @@ import {reportError} from "./util/reporting/report-error.js";
 import {createReportedErrorSet} from "./reporting/reported-error-set.js";
 import type {ReportingOptionsSanitized} from "./reporting/i-reporting-options.js";
 import type {EvaluationError, ThrowError} from "./error/evaluation-error/evaluation-error.js";
-import type { ICreateNodeEvaluatorOptions } from "./evaluator/node-evaluator/i-create-node-evaluator-options.js";
+import type {ICreateNodeEvaluatorOptions} from "./evaluator/node-evaluator/i-create-node-evaluator-options.js";
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
  */

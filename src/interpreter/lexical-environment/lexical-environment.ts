@@ -15,7 +15,7 @@ import type {ICreateLexicalEnvironmentOptions} from "./i-create-lexical-environm
 import type {TS} from "../../type/ts.js";
 import {NODE_ESM_GLOBALS} from "../environment/node/node-esm-globals.js";
 import {getStatementContext} from "../util/node/find-nearest-parent-node-of-kind.js";
-import { createSanitizedEnvironment } from "../environment/create-sanitized-environment.js";
+import {createSanitizedEnvironment} from "../environment/create-sanitized-environment.js";
 
 export interface LexicalEnvironment {
 	parentEnv: LexicalEnvironment | undefined;
@@ -228,11 +228,7 @@ export function simplifyEnvironment(environment: LexicalEnvironment, typescript:
 /**
  * Creates a Lexical Environment
  */
-export function createLexicalEnvironment({
-	inputEnvironment: {extra, preset},
-	startingNode,
-	policy,
-}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
+export function createLexicalEnvironment({inputEnvironment: {extra, preset}, startingNode, policy}: ICreateLexicalEnvironmentOptions): LexicalEnvironment {
 	let env: IndexLiteral;
 
 	switch (preset) {

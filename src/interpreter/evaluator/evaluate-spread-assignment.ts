@@ -7,10 +7,10 @@ import type {TS} from "../../type/ts.js";
  */
 export function evaluateSpreadAssignment({node, evaluate, ...options}: EvaluatorOptions<TS.SpreadAssignment>, parent: IndexLiteral): void {
 	const entries = evaluate.expression(node.expression, options) as IndexLiteral;
-	
+
 	if (options.getCurrentError() != null) {
 		return;
 	}
-	
+
 	Object.assign(parent, entries);
 }

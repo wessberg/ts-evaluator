@@ -1,5 +1,5 @@
 import type {JSDOM} from "../../../type/jsdom.js";
-import { requireModule } from "./require-module.js";
+import {requireModule} from "./require-module.js";
 
 /**
  * The jsdom module is optionally imported on-demand as needed

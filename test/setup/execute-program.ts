@@ -1,6 +1,6 @@
 import type {TS} from "../../src/type/ts.js";
 import type {TestResult} from "./test-result.js";
-import type { TestFile, TestFileEntry} from "./test-file.js";
+import type {TestFile, TestFileEntry} from "./test-file.js";
 import {createBuiltInModuleTestFiles} from "./test-file.js";
 import type {TestContext} from "./test-context.js";
 import {createTestSetup} from "./test-setup.js";
