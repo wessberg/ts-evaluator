@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -24,7 +23,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #1
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -46,7 +45,7 @@ test("Can evaluate a CallExpression that is called with another 'this' value. #2
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression that is called with another 'this' value. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression that is called with another 'this' value. #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

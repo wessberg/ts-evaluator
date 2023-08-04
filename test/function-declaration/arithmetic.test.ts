@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a simple '(number, number) => number' function. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -20,7 +19,7 @@ test("Can evaluate a simple '(number, number) => number' function. #1", withType
 	else t.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -38,7 +37,7 @@ test("Can evaluate a simple '(number, number) => number' function. #2", withType
 	else t.deepEqual(result.value, -1);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -56,7 +55,7 @@ test("Can evaluate a simple '(number, number) => number' function. #3", withType
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #4", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -74,7 +73,7 @@ test("Can evaluate a simple '(number, number) => number' function. #4", withType
 	else t.deepEqual(result.value, 0.5);
 });
 
-test("Can evaluate a simple 'number => number' function. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple 'number => number' function. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -92,7 +91,7 @@ test("Can evaluate a simple 'number => number' function. #1", withTypeScript, (t
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can handle the 'arguments' identifier. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle the 'arguments' identifier. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

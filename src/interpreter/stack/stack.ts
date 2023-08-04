@@ -1,4 +1,4 @@
-import {Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 
 export interface Stack {
 	readonly length: number;

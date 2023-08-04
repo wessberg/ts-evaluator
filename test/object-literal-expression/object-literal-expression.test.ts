@@ -1,9 +1,8 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle ObjectLiteralExpressions. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #1", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -25,7 +24,7 @@ test("Can handle ObjectLiteralExpressions. #1", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #2", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -47,7 +46,7 @@ test("Can handle ObjectLiteralExpressions. #2", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #3", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -71,7 +70,7 @@ test("Can handle ObjectLiteralExpressions. #3", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #4", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -91,7 +90,7 @@ test("Can handle ObjectLiteralExpressions. #4", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #5", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #5", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -111,7 +110,7 @@ test("Can handle ObjectLiteralExpressions. #5", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #6", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #6", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -131,7 +130,7 @@ test("Can handle ObjectLiteralExpressions. #6", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #7", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #7", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript

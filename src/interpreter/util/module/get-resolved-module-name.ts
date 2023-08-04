@@ -1,6 +1,6 @@
 import path from "crosspath";
-import { TS } from "../../../type/ts.js";
-import { EvaluatorOptions } from "../../evaluator/evaluator-options.js";
+import type { TS } from "../../../type/ts.js";
+import type { EvaluatorOptions } from "../../evaluator/evaluator-options.js";
 
 export function getResolvedModuleName (moduleSpecifier: string, options: EvaluatorOptions<TS.Node>): string {
     const {node, typescript} = options;

@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {evaluateVariableDeclarationList} from "./evaluate-variable-declaration-list.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a VariableStatement

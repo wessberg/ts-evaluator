@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {generateClassDeclaration} from "../util/class/generate-class-declaration.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {canHaveDecorators, getDecorators} from "../util/node/modifier-util.js";
 
 /**
@@ -62,7 +62,7 @@ export function evaluateClassDeclaration(options: EvaluatorOptions<TS.ClassDecla
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		evaluate.nodeWithArgument(member, hasModifier(member, typescript.SyntaxKind.StaticKeyword, typescript) ? classDeclaration : classDeclaration.prototype, options);
+		evaluate.nodeWithArgument(member, hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classDeclaration : classDeclaration.prototype, options);
 
 		if (getCurrentError() != null) {
 			return;

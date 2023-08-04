@@ -1,6 +1,6 @@
-import {ReportingOptionsSanitized} from "../../reporting/i-reporting-options.js";
+import type {ReportingOptionsSanitized} from "../../reporting/i-reporting-options.js";
 import {EvaluationError} from "../../error/evaluation-error/evaluation-error.js";
-import {TS} from "../../../type/ts.js";
+import type {TS} from "../../../type/ts.js";
 
 /**
  * Reports an error

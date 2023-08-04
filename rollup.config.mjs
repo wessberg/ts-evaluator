@@ -17,6 +17,7 @@ export default {
 		{
 			file: pkg.exports.require,
 			format: "cjs",
+			dynamicImportInCjs: false,
 			...SHARED_OUTPUT_OPTIONS
 		},
 		{

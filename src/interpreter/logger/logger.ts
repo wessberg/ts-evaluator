@@ -1,11 +1,12 @@
 import {LogLevelKind} from "./log-level.js";
 import {stringifySyntaxKind} from "../util/syntax-kind/stringify-syntax-kind.js";
-import {Literal, stringifyLiteral} from "../literal/literal.js";
-import {Stack} from "../stack/stack.js";
-import {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack.js";
+import type {Literal} from "../literal/literal.js";
+import { stringifyLiteral} from "../literal/literal.js";
+import type {Stack} from "../stack/stack.js";
+import type {StatementTraversalStack} from "../stack/traversal-stack/statement-traversal-stack.js";
 import {inspect} from "util";
-import {TS} from "../../type/ts.js";
-import {PartialDeep} from "helpertypes";
+import type {TS} from "../../type/ts.js";
+import type {PartialDeep} from "helpertypes";
 import color from "ansi-colors";
 
 export type LoggerColor = "white" | "cyan" | "yellow" | "magenta" | "gray" | "red";

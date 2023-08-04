@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle PostfixUnaryExpressions. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle PostfixUnaryExpressions. #1", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript

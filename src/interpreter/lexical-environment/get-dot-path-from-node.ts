@@ -2,8 +2,8 @@ import {isThisExpression} from "../util/node/is-this-expression.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {isSuperExpression} from "../util/node/is-super-expression.js";
 import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
-import {EvaluatorOptions} from "../evaluator/evaluator-options.js";
-import {TS} from "../../type/ts.js";
+import type {EvaluatorOptions} from "../evaluator/evaluator-options.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Gets the path to "dot" into an object with based on the node. For example, if the node is a simple identifier, say, 'foo', the dot path is simply "foo".

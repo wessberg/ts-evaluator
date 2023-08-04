@@ -1,9 +1,8 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import path from "crosspath";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle the import.meta.url meta property in an ESM-based Node environment. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle the import.meta.url meta property in an ESM-based Node environment. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result, setup} = executeProgram(
 		// language=TypeScript
 		{

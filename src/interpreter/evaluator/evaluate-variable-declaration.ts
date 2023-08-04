@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {EvaluationError} from "../error/evaluation-error/evaluation-error.js";
-import {Literal} from "../literal/literal.js";
-import {TS} from "../../type/ts.js";
+import type {Literal} from "../literal/literal.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a VariableDeclaration

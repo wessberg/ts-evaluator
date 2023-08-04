@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {TS} from "../../type/ts.js";
-import { EvaluationError } from "../error/evaluation-error/evaluation-error.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {TS} from "../../type/ts.js";
+import type { EvaluationError } from "../error/evaluation-error/evaluation-error.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ThrowStatement

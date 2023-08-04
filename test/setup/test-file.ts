@@ -1,9 +1,9 @@
 import path from "crosspath";
 import fs from "fs";
-import {TestContext} from "./test-context.js";
+import type {TestContext} from "./test-context.js";
 import {generateRandomPath} from "../../src/interpreter/util/path/generate-random-path.js";
 import {ensureArray} from "../../src/interpreter/util/array/ensure-array.js";
-import {MaybeArray} from "helpertypes";
+import type {MaybeArray} from "helpertypes";
 import {CachedFs} from "./cached-fs.js";
 import { requireModule } from "../../src/interpreter/util/loader/require-module.js";
 

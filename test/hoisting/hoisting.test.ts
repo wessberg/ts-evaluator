@@ -1,10 +1,10 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
+
 import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
 import {NotCallableError} from "../../src/interpreter/error/not-callable-error/not-callable-error.js";
 
-test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -24,7 +24,7 @@ test("Throws when attempting to reference an identifier that is still not define
 
 test(
 	"Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1",
-	withTypeScript,
+	"*",
 	(t, {typescript, useTypeChecker}) => {
 		const {result} = executeProgram(
 			// language=TypeScript
@@ -50,7 +50,7 @@ test(
 
 test(
 	"Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1",
-	withTypeScript,
+	"*",
 	(t, {typescript, useTypeChecker}) => {
 		const {result} = executeProgram(
 			// language=TypeScript
@@ -73,7 +73,7 @@ test(
 	}
 );
 
-test("Respects block scoped variables declared with 'let'. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Respects block scoped variables declared with 'let'. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -90,7 +90,7 @@ test("Respects block scoped variables declared with 'let'. #1", withTypeScript, 
 	else t.true(result.reason instanceof UndefinedIdentifierError);
 });
 
-test("Respects block scoped variables declared with 'var'. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Respects block scoped variables declared with 'var'. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

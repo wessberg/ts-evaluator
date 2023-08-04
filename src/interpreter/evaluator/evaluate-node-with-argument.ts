@@ -1,5 +1,5 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral, Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral, Literal} from "../literal/literal.js";
 import {evaluateBindingName} from "./evaluate-binding-name.js";
 import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaration.js";
 import {evaluateSetAccessorDeclaration} from "./evaluate-set-accessor-declaration.js";
@@ -21,7 +21,7 @@ import {evaluateOmittedExpression} from "./evaluate-omitted-expression.js";
 import {evaluatePropertyDeclaration} from "./evaluate-property-declaration.js";
 import {evaluateDecorator} from "./evaluate-decorator.js";
 import {evaluateEnumMember} from "./evaluate-enum-member.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates a given node with the provided argument

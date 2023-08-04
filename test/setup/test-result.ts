@@ -1,5 +1,5 @@
-import {EvaluateResult} from "../../src/interpreter/evaluate-result.js";
-import { TestSetup } from "./test-setup.js";
+import type {EvaluateResult} from "../../src/interpreter/evaluate-result.js";
+import type { TestSetup } from "./test-setup.js";
 
 export interface TestResult {
 	result: EvaluateResult;

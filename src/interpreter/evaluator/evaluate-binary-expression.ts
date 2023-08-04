@@ -1,10 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {getDotPathFromNode} from "../lexical-environment/get-dot-path-from-node.js";
 import {findLexicalEnvironmentInSameContext, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import {Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
 import {UndefinedLeftValueError} from "../error/undefined-left-value-error/undefined-left-value-error.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {getInnerNode} from "../util/node/get-inner-node.js";
 import {findNearestParentNodeWithName} from "../util/node/find-nearest-parent-node-of-kind.js";
 import {isTypescriptNode} from "../util/node/is-node.js";

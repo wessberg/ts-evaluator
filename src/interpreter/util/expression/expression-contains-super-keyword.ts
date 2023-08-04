@@ -1,5 +1,5 @@
 import {isSuperExpression} from "../node/is-super-expression.js";
-import {TS} from "../../../type/ts.js";
+import type {TS} from "../../../type/ts.js";
 
 /**
  * Returns true if the given expression contains a 'super' keyword

@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle EnumDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -27,7 +26,7 @@ test("Can handle EnumDeclarations. #1", withTypeScript, (t, {typescript, useType
 	}
 });
 
-test("Can handle EnumDeclarations. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle EnumDeclarations. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -52,7 +51,7 @@ test("Can handle EnumDeclarations. #2", withTypeScript, (t, {typescript, useType
 	}
 });
 
-test("Can handle EnumDeclarations. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle EnumDeclarations. #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -77,7 +76,7 @@ test("Can handle EnumDeclarations. #3", withTypeScript, (t, {typescript, useType
 	}
 });
 
-test("Can handle EnumDeclarations. #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle EnumDeclarations. #4", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

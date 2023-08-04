@@ -1,6 +1,6 @@
-import {TS} from "../../../type/ts.js";
+import type {TS} from "../../../type/ts.js";
 import {EvaluationError} from "../evaluation-error/evaluation-error.js";
-import {IAsyncIteratorNotSupportedErrorOptions} from "./i-async-iterator-not-supported-error-options.js";
+import type {IAsyncIteratorNotSupportedErrorOptions} from "./i-async-iterator-not-supported-error-options.js";
 
 /**
  * An Error that can be thrown when an async iteration operation is attempted

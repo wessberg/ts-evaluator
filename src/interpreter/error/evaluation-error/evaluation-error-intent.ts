@@ -1,6 +1,6 @@
-import {TS} from "../../../type/ts.js";
-import {NextEvaluatorOptions} from "../../evaluator/evaluator-options.js";
-import {EvaluationError} from "./evaluation-error.js";
+import type {TS} from "../../../type/ts.js";
+import type {NextEvaluatorOptions} from "../../evaluator/evaluator-options.js";
+import type {EvaluationError} from "./evaluation-error.js";
 
 type EvaluationErrorIntentCallback<T extends EvaluationError> = (node: TS.Node, options: NextEvaluatorOptions) => T;
 

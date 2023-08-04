@@ -1,4 +1,4 @@
-import {IndexLiteral} from "../../literal/literal.js";
+import type {IndexLiteral} from "../../literal/literal.js";
 
 export const ECMA_GLOBALS = () => {
 	/* eslint-disable @typescript-eslint/naming-convention */

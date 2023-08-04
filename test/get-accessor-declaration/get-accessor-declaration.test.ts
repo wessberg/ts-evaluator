@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate and retrieve a GetAccessorDeclaration. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate and retrieve a GetAccessorDeclaration. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

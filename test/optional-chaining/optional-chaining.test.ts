@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
+test("Supports optional CallExpressions. #1", ">=3.7", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -19,7 +18,7 @@ test("Supports optional CallExpressions. #1", withTypeScriptVersions(">=3.7"), (
 	}
 });
 
-test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
+test("Supports optional PropertyAccessExpressions. #1", ">=3.7", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -36,7 +35,7 @@ test("Supports optional PropertyAccessExpressions. #1", withTypeScriptVersions("
 	}
 });
 
-test("Supports optional ElementAccessExpressions. #1", withTypeScriptVersions(">=3.7"), (t, {typescript, useTypeChecker}) => {
+test("Supports optional ElementAccessExpressions. #1", ">=3.7", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

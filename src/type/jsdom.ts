@@ -1,2 +1,2 @@
 import type * as JSDOM from "jsdom";
-export {JSDOM};
+export type {JSDOM};

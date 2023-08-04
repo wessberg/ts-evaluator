@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a BindingName, based on an BindingElement

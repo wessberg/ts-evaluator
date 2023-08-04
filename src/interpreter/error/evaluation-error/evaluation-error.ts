@@ -1,6 +1,6 @@
-import {IEvaluationErrorOptions} from "./i-evaluation-error-options.js";
-import {TS} from "../../../type/ts.js";
-import { LexicalEnvironment } from "../../lexical-environment/lexical-environment.js";
+import type {IEvaluationErrorOptions} from "./i-evaluation-error-options.js";
+import type {TS} from "../../../type/ts.js";
+import type { LexicalEnvironment } from "../../lexical-environment/lexical-environment.js";
 
 export type ThrowError = (error: EvaluationError) => EvaluationError;
 

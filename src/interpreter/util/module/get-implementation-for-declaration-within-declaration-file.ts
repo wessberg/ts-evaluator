@@ -1,12 +1,12 @@
 import {findNearestParentNodeOfKind} from "../node/find-nearest-parent-node-of-kind.js";
-import {Literal} from "../../literal/literal.js";
+import type {Literal} from "../../literal/literal.js";
 import {ModuleNotFoundError} from "../../error/module-not-found-error/module-not-found-error.js";
 import {UnexpectedNodeError} from "../../error/unexpected-node-error/unexpected-node-error.js";
-import {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
+import type {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
 import {getDeclarationName} from "../declaration/get-declaration-name.js";
 import {isEvaluationError} from "../../error/evaluation-error/evaluation-error.js";
 import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-environment.js";
-import {TS} from "../../../type/ts.js";
+import type {TS} from "../../../type/ts.js";
 import {getResolvedModuleName} from "./get-resolved-module-name.js";
 
 /**

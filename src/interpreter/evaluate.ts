@@ -1,24 +1,25 @@
 import * as TSModule from "typescript";
-import {EvaluateOptions} from "./evaluate-options.js";
+import type {EvaluateOptions} from "./evaluate-options.js";
 import {createLexicalEnvironment} from "./lexical-environment/lexical-environment.js";
-import {EvaluateResult} from "./evaluate-result.js";
+import type {EvaluateResult} from "./evaluate-result.js";
 import {evaluateSimpleLiteral} from "./evaluator/simple/evaluate-simple-literal.js";
 import {createNodeEvaluator} from "./evaluator/node-evaluator/create-node-evaluator.js";
 import {LogLevelKind} from "./logger/log-level.js";
 import {Logger} from "./logger/logger.js";
 import {createStatementTraversalStack} from "./stack/traversal-stack/statement-traversal-stack.js";
 import {isExpression} from "./util/expression/is-expression.js";
-import {Literal} from "./literal/literal.js";
+import type {Literal} from "./literal/literal.js";
 import {isStatement} from "./util/statement/is-statement.js";
-import {createStack, Stack} from "./stack/stack.js";
+import type { Stack} from "./stack/stack.js";
+import {createStack} from "./stack/stack.js";
 import {isDeclaration} from "./util/declaration/is-declaration.js";
 import {UnexpectedNodeError} from "./error/unexpected-node-error/unexpected-node-error.js";
-import {EvaluatePolicySanitized} from "./policy/evaluate-policy.js";
+import type {EvaluatePolicySanitized} from "./policy/evaluate-policy.js";
 import {reportError} from "./util/reporting/report-error.js";
 import {createReportedErrorSet} from "./reporting/reported-error-set.js";
-import {ReportingOptionsSanitized} from "./reporting/i-reporting-options.js";
-import {EvaluationError, ThrowError} from "./error/evaluation-error/evaluation-error.js";
-import { ICreateNodeEvaluatorOptions } from "./evaluator/node-evaluator/i-create-node-evaluator-options.js";
+import type {ReportingOptionsSanitized} from "./reporting/i-reporting-options.js";
+import type {EvaluationError, ThrowError} from "./error/evaluation-error/evaluation-error.js";
+import type { ICreateNodeEvaluatorOptions } from "./evaluator/node-evaluator/i-create-node-evaluator-options.js";
 /**
  * Will get a literal value for the given Expression, ExpressionStatement, or Declaration.
  */

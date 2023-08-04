@@ -1,4 +1,4 @@
-import {IMaxOpsExceededErrorOptions} from "./i-max-ops-exceeded-error-options.js";
+import type {IMaxOpsExceededErrorOptions} from "./i-max-ops-exceeded-error-options.js";
 import {PolicyError} from "../policy-error.js";
 
 /**

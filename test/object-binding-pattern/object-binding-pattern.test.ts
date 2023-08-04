@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -19,7 +18,7 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #1", withTypeScr
 	else t.deepEqual(result.value, 123);
 });
 
-test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -36,7 +35,7 @@ test("Can handle ObjectBindingPatterns in VariableDeclarations. #2", withTypeScr
 	else t.deepEqual(result.value, 245);
 });
 
-test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -52,7 +51,7 @@ test("Can handle ObjectBindingPatterns in ParameterDeclarations. #1", withTypeSc
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectBindingPatterns in ParameterDeclarations. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

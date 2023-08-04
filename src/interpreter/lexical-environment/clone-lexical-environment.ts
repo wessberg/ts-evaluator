@@ -1,5 +1,5 @@
-import { TS } from "../../type/ts.js";
-import {LexicalEnvironment} from "./lexical-environment.js";
+import type { TS } from "../../type/ts.js";
+import type {LexicalEnvironment} from "./lexical-environment.js";
 
 /**
  * Clones the given LexicalEnvironment

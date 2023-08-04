@@ -1,9 +1,9 @@
-import {IndexLiteral} from "../literal/literal.js";
+import type {IndexLiteral} from "../literal/literal.js";
 import {createPolicyProxy} from "../proxy/create-policy-proxy.js";
 import {stringifyPolicyTrapKindOnPath} from "../policy/policy-trap-kind.js";
 import {isNonDeterministic} from "../policy/nondeterministic/is-nondeterministic.js";
 import {NonDeterministicError} from "../error/policy-error/non-deterministic-error/non-deterministic-error.js";
-import {PolicyProxyHookOptions} from "../proxy/policy-proxy-hook.js";
+import type {PolicyProxyHookOptions} from "../proxy/policy-proxy-hook.js";
 import {isIoRead} from "../policy/io/is-io-read.js";
 import {IoError} from "../error/policy-error/io-error/io-error.js";
 import {isIoWrite} from "../policy/io/is-io-write.js";
@@ -12,7 +12,7 @@ import {NetworkError} from "../error/policy-error/network-error/network-error.js
 import {isProcessExitOperation} from "../policy/process/is-process-exit-operation.js";
 import {ProcessError} from "../error/policy-error/process-error/process-error.js";
 import {isProcessSpawnChildOperation} from "../policy/process/is-process-spawn-child-operation.js";
-import {ICreateSanitizedEnvironmentOptions} from "./i-create-sanitized-environment-options.js";
+import type {ICreateSanitizedEnvironmentOptions} from "./i-create-sanitized-environment-options.js";
 import {isConsoleOperation} from "../policy/console/is-console-operation.js";
 import { EvaluationErrorIntent } from "../error/evaluation-error/evaluation-error-intent.js";
 

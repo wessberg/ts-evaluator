@@ -1,4 +1,4 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {evaluateVariableDeclaration} from "./evaluate-variable-declaration.js";
 import {evaluateBinaryExpression} from "./evaluate-binary-expression.js";
 import {evaluateCallExpression} from "./evaluate-call-expression.js";
@@ -63,7 +63,7 @@ import {evaluateConditionalExpression} from "./evaluate-conditional-expression.j
 import {evaluateMethodDeclaration} from "./evaluate-method-declaration.js";
 import {evaluatePropertyDeclaration} from "./evaluate-property-declaration.js";
 import {evaluateGetAccessorDeclaration} from "./evaluate-get-accessor-declaration.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {evaluateTypeAliasDeclaration} from "./evaluate-type-alias-declaration.js";
 import {evaluateInterfaceDeclaration} from "./evaluate-interface-declaration.js";
 import {evaluateImportClause} from "./evaluate-import-clause.js";

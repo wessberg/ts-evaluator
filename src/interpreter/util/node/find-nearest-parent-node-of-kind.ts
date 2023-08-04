@@ -1,6 +1,6 @@
-import {TS} from "../../../type/ts.js";
-import {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
-import {Literal} from "../../literal/literal.js";
+import type {TS} from "../../../type/ts.js";
+import type {EvaluatorOptions} from "../../evaluator/evaluator-options.js";
+import type {Literal} from "../../literal/literal.js";
 import {isDeclaration, isNamedDeclaration} from "../declaration/is-declaration.js";
 import {isVarDeclaration} from "../flags/is-var-declaration.js";
 import {getImplementationFromExternalFile} from "../module/get-implementation-for-declaration-within-declaration-file.js";

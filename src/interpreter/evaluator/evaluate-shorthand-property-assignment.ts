@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral} from "../literal/literal.js";
-import {TS} from "../../type/ts.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral} from "../literal/literal.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ShorthandPropertyAssignment, before applying it on the given parent

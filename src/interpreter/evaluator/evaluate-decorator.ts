@@ -1,9 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral, stringifyLiteral} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral} from "../literal/literal.js";
+import { stringifyLiteral} from "../literal/literal.js";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {__decorate, __param} from "../util/tslib/tslib-util.js";
-import {EvaluationError} from "../error/evaluation-error/evaluation-error.js";
+import type {EvaluationError} from "../error/evaluation-error/evaluation-error.js";
 
 /**
  * Evaluates, or attempts to evaluate, a Decorator

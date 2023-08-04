@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {Literal} from "../literal/literal.js";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ThisExpression

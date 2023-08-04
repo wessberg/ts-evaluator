@@ -1,4 +1,4 @@
-import {EvaluationError} from "./error/evaluation-error/evaluation-error.js";
+import type {EvaluationError} from "./error/evaluation-error/evaluation-error.js";
 
 export interface IEvaluateResultBase {
 	success: boolean;

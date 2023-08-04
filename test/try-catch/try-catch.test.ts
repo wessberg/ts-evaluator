@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can capture errors that would otherwise throw with try-catch. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can capture errors that would otherwise throw with try-catch. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -24,7 +23,7 @@ test("Can capture errors that would otherwise throw with try-catch. #1", withTyp
 	else t.true(result.value instanceof Error);
 });
 
-test("Will execute the 'finally' branch correctly. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Will execute the 'finally' branch correctly. #1", "*", (t, {typescript, useTypeChecker}) => {
 	let executedFinally = false;
 	executeProgram(
 		// language=TypeScript
@@ -56,7 +55,7 @@ test("Will execute the 'finally' branch correctly. #1", withTypeScript, (t, {typ
 	t.true(executedFinally);
 });
 
-test("Will execute the 'finally' branch correctly. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Will execute the 'finally' branch correctly. #2", "*", (t, {typescript, useTypeChecker}) => {
 	let executedFinally = false;
 	executeProgram(
 		// language=TypeScript
@@ -90,8 +89,7 @@ test("Will execute the 'finally' branch correctly. #2", withTypeScript, (t, {typ
 	t.true(executedFinally);
 });
 
-
-test("Will execute the 'finally' branch correctly. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Will execute the 'finally' branch correctly. #3", "*", (t, {typescript, useTypeChecker}) => {
 	let executedFinally = false;
 	executeProgram(
 		// language=TypeScript

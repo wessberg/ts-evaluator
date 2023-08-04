@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {Literal} from "../literal/literal.js";
 import {MaxOpDurationExceededError} from "../error/policy-error/max-op-duration-exceeded-error/max-op-duration-exceeded-error.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, an AwaitExpression

@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ConditionalExpressions. #1", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -20,7 +19,7 @@ test("Can handle ConditionalExpressions. #1", withTypeScript, (t, {typescript, u
 	}
 });
 
-test("Can handle ConditionalExpressions. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle ConditionalExpressions. #2", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript

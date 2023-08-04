@@ -1,13 +1,14 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type { LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {getFromLexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
-import {Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
 import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a FunctionDeclaration
@@ -17,7 +18,7 @@ export function evaluateFunctionDeclaration(options: EvaluatorOptions<TS.Functio
 
 	const nameResult = node.name == null ? undefined : node.name.text;
 
-	const _functionDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword, typescript)
+	const _functionDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function functionDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);

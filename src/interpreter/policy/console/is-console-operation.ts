@@ -1,7 +1,7 @@
-import {PolicyProxyHookOptions} from "../../proxy/policy-proxy-hook.js";
+import type {PolicyProxyHookOptions} from "../../proxy/policy-proxy-hook.js";
 import {isTrapConditionMet} from "../is-trap-condition-met.js";
 import {CONSOLE_MAP} from "./console-map.js";
-import {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals.js";
+import type {NodeBuiltInsAndGlobals} from "../../environment/node/node-built-ins-and-globals.js";
 
 /**
  * Returns true if the given item represents an operation that prints to console

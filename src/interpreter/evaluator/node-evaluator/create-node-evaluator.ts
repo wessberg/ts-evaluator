@@ -1,16 +1,17 @@
-import {ICreateNodeEvaluatorOptions} from "./i-create-node-evaluator-options.js";
-import {NodeEvaluator} from "./node-evaluator.js";
+import type {ICreateNodeEvaluatorOptions} from "./i-create-node-evaluator-options.js";
+import type {NodeEvaluator} from "./node-evaluator.js";
 import {MaxOpsExceededError} from "../../error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error.js";
 import {evaluateStatement} from "../evaluate-statement.js";
 import {evaluateExpression} from "../evaluate-expression.js";
-import {EvaluatorOptions, NextEvaluatorOptions} from "../evaluator-options.js";
+import type {EvaluatorOptions, NextEvaluatorOptions} from "../evaluator-options.js";
 import {evaluateDeclaration} from "../evaluate-declaration.js";
 import {evaluateNodeWithArgument} from "../evaluate-node-with-argument.js";
 import {evaluateNodeWithValue} from "../evaluate-node-with-value.js";
 import {createStatementTraversalStack} from "../../stack/traversal-stack/statement-traversal-stack.js";
-import {TS} from "../../../type/ts.js";
-import {EvaluationError, isEvaluationError} from "../../error/evaluation-error/evaluation-error.js";
-import { Literal } from "../../literal/literal.js";
+import type {TS} from "../../../type/ts.js";
+import type {EvaluationError} from "../../error/evaluation-error/evaluation-error.js";
+import { isEvaluationError} from "../../error/evaluation-error/evaluation-error.js";
+import type { Literal } from "../../literal/literal.js";
 
 /**
  * Creates a Node Evaluator

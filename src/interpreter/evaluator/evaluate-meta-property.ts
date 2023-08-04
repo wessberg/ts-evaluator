@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {TS} from "../../type/ts.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {TS} from "../../type/ts.js";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import {Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 import {UnexpectedSyntaxError} from "../error/unexpected-syntax-error/unexpected-syntax-error.js";
 
 /**

@@ -1,8 +1,7 @@
-import test from "ava";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
+import {test} from "../setup/test-runner.js";
 
-test("Can evaluate a CallExpression with a WhileStatement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a WhileStatement. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

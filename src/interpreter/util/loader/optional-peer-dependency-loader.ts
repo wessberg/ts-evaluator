@@ -1,4 +1,4 @@
-import {JSDOM} from "../../../type/jsdom.js";
+import type {JSDOM} from "../../../type/jsdom.js";
 import { requireModule } from "./require-module.js";
 
 /**

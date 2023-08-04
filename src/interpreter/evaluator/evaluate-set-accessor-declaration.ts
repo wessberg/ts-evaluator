@@ -1,13 +1,14 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {LexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import { setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
-import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
+import type {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
 import {inStaticContext} from "../util/static/in-static-context.js";
 import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a SetAccessorDeclaration, before setting it on the given parent

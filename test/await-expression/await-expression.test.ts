@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate an AwaitExpression #1", withTypeScript, async (t, {typescript, useTypeChecker}) => {
+test("Can evaluate an AwaitExpression #1", "*", async (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

@@ -1,6 +1,6 @@
 import {EvaluationError} from "../evaluation-error/evaluation-error.js";
-import {IPolicyErrorOptions} from "./i-policy-error-options.js";
-import {EvaluatePolicySanitized} from "../../policy/evaluate-policy.js";
+import type {IPolicyErrorOptions} from "./i-policy-error-options.js";
+import type {EvaluatePolicySanitized} from "../../policy/evaluate-policy.js";
 
 /**
  * An Error that can be thrown when a policy is violated

@@ -1,8 +1,8 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral, Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral, Literal} from "../literal/literal.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a NodeArray of ParameterDeclarations
@@ -37,9 +37,9 @@ export function evaluateParameterDeclarations(options: EvaluatorOptions<TS.NodeA
 			if (
 				context != null &&
 				typescript.isIdentifier(parameter.name) &&
-				(hasModifier(parameter, typescript.SyntaxKind.PublicKeyword, typescript) ||
-					hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword, typescript) ||
-					hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword, typescript))
+				(hasModifier(parameter, typescript.SyntaxKind.PublicKeyword) ||
+					hasModifier(parameter, typescript.SyntaxKind.ProtectedKeyword) ||
+					hasModifier(parameter, typescript.SyntaxKind.PrivateKeyword))
 			) {
 				const value = getFromLexicalEnvironment(parameter, environment, parameter.name.text);
 				if (value != null) {

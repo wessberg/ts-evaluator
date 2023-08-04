@@ -1,13 +1,13 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral} from "../literal/literal.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
 import {pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {BREAK_SYMBOL} from "../util/break/break-symbol.js";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";
 import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
-import {TS} from "../../type/ts.js";
-import {EvaluationError} from "../error/evaluation-error/evaluation-error.js";
+import type {TS} from "../../type/ts.js";
+import type {EvaluationError} from "../error/evaluation-error/evaluation-error.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ForInStatement

@@ -1,12 +1,13 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type { LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {getFromLexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
-import {Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a FunctionExpression
@@ -15,7 +16,7 @@ export function evaluateFunctionExpression(options: EvaluatorOptions<TS.Function
 	const {node, environment, evaluate, stack, typescript, getCurrentError} = options;
 	const nameResult = node.name == null ? undefined : node.name.text;
 
-	const _functionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword, typescript)
+	const _functionExpression = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function functionExpression(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);

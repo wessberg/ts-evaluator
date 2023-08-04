@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a CatchClause, based on a given Error

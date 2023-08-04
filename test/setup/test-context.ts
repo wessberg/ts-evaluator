@@ -1,5 +1,5 @@
-import {PartialExcept} from "helpertypes";
-import {EvaluateOptions} from "../../src/interpreter/evaluate-options.js";
+import type {PartialExcept} from "helpertypes";
+import type {EvaluateOptions} from "../../src/interpreter/evaluate-options.js";
 import {LogLevelKind} from "../../src/interpreter/logger/log-level.js";
 
 const _process = process;

@@ -1,5 +1,5 @@
-import {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
-import {IndexLiteral} from "../literal/literal.js";
+import type {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
+import type {IndexLiteral} from "../literal/literal.js";
 
 export interface ICreateSanitizedEnvironmentOptions {
 	policy: EvaluatePolicySanitized;

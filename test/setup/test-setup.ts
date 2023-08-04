@@ -1,10 +1,12 @@
-import {createTestContext, TestContext} from "./test-context.js";
-import {FileSystem} from "../../src/type/file-system.js";
-import {createTestFileStructure, TestFile, TestFileEntry, TestFileStructure} from "./test-file.js";
+import type { TestContext} from "./test-context.js";
+import {createTestContext} from "./test-context.js";
+import type {FileSystem} from "../../src/type/file-system.js";
+import type { TestFile, TestFileEntry, TestFileStructure} from "./test-file.js";
+import {createTestFileStructure} from "./test-file.js";
 import {createVirtualFileSystem} from "./create-virtual-file-system.js";
-import {TS} from "../../src/type/ts.js";
+import type {TS} from "../../src/type/ts.js";
 import {createCompilerHost} from "./create-compiler-host.js";
-import {MaybeArray, PartialExcept} from "helpertypes";
+import type {MaybeArray, PartialExcept} from "helpertypes";
 
 export interface TestSetup {
 	context: TestContext;

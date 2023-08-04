@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate and retrieve a MethodDeclaration. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -22,7 +21,7 @@ test("Can evaluate and retrieve a MethodDeclaration. #1", withTypeScript, (t, {t
 	}
 });
 
-test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
+test("Can evaluate and retrieve a private MethodDeclaration. #1", ">=3.8", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -42,7 +41,7 @@ test("Can evaluate and retrieve a private MethodDeclaration. #1", withTypeScript
 	}
 });
 
-test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #1", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
+test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #1", ">=3.8", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -68,7 +67,7 @@ test("Can evaluate and retrieve the result of calling a private MethodDeclaratio
 	}
 });
 
-test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #2", withTypeScriptVersions(">=3.8"), (t, {typescript, useTypeChecker}) => {
+test("Can evaluate and retrieve the result of calling a private MethodDeclaration. #2", ">=3.8", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

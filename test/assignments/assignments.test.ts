@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression for a function with variable assignments. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression for a function with variable assignments. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -22,7 +21,7 @@ test("Can evaluate a CallExpression for a function with variable assignments. #1
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression for a function with variable assignments. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression for a function with variable assignments. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		`
 		const mapOfMaps: Map<string, Map<string, string>> = new Map();

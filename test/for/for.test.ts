@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate a CallExpression with a ForStatement. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForStatement. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -25,7 +24,7 @@ test("Can evaluate a CallExpression with a ForStatement. #1", withTypeScript, (t
 	else t.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForStatement. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForStatement. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -49,7 +48,7 @@ test("Can evaluate a CallExpression with a ForStatement. #2", withTypeScript, (t
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a CallExpression with a ForStatement. #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForStatement. #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

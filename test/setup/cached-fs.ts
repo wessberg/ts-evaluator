@@ -1,6 +1,7 @@
-import { TS } from "../../src/type/ts.js";
-import { FileSystem } from "../../src/type/file-system.js";
-import {CachedWorker, CachedWorkerOptions} from "./cached-worker.js";
+import type { TS } from "../../src/type/ts.js";
+import type { FileSystem } from "../../src/type/file-system.js";
+import type { CachedWorkerOptions} from "./cached-worker.js";
+import {CachedWorker} from "./cached-worker.js";
 
 export interface CachedFsWorkerOptions extends CachedWorkerOptions {
 	fs: TS.System | FileSystem;

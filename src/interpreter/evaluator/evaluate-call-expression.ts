@@ -1,10 +1,11 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {isLazyCall, Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type { Literal} from "../literal/literal.js";
+import {isLazyCall} from "../literal/literal.js";
 import {NotCallableError} from "../error/not-callable-error/not-callable-error.js";
 import {getFromLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {expressionContainsSuperKeyword} from "../util/expression/expression-contains-super-keyword.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {maybeThrow} from "../error/evaluation-error/evaluation-error-intent.js";
 
 /**

@@ -1,10 +1,10 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {getFromLexicalEnvironment, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
-import {Literal} from "../literal/literal.js";
+import type {Literal} from "../literal/literal.js";
 import {UndefinedIdentifierError} from "../error/undefined-identifier-error/undefined-identifier-error.js";
 import {isVarDeclaration} from "../util/flags/is-var-declaration.js";
 import {getImplementationForDeclarationWithinDeclarationFile} from "../util/module/get-implementation-for-declaration-within-declaration-file.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {findNearestParentNodeWithName} from "../util/node/find-nearest-parent-node-of-kind.js";
 import {isTypescriptNode} from "../util/node/is-node.js";
 

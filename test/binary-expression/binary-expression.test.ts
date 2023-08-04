@@ -1,64 +1,63 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript, withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Can evaluate a simple arithmetic BinaryExpression #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`2 + 2`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`2 - 2`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 0);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`2 * 2`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 4);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression #4", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`2 / 2`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression #5", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression #5", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`1 + 2 * 3`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 7);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression #6", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression #6", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`(1 + 2) * 3`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 9);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression with type casts #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression with type casts #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`((<number>1) + 2) * 3`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 9);
 });
 
-test("Can evaluate a simple arithmetic BinaryExpression with type casts #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple arithmetic BinaryExpression with type casts #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`((1 as number) + 2) * 3`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, 9);
 });
 
-test("Can evaluate equality BinaryExpressions #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate equality BinaryExpressions #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -77,7 +76,7 @@ test("Can evaluate equality BinaryExpressions #1", withTypeScript, (t, {typescri
 	else t.deepEqual(result.value, Number.MIN_VALUE);
 });
 
-test("Can evaluate BinaryExpressions with CommaTokens #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate BinaryExpressions with CommaTokens #1", "*", (t, {typescript, useTypeChecker}) => {
 	// noinspection UnnecessaryLocalVariableJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -97,7 +96,7 @@ test("Can evaluate BinaryExpressions with CommaTokens #1", withTypeScript, (t, {
 	else t.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -115,7 +114,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #1", withTypeSc
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -134,7 +133,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #2", withTypeSc
 	else t.deepEqual(result.value, "foo");
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -151,7 +150,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #3", withTypeSc
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #4", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #4", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -168,7 +167,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #4", withTypeSc
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #5", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #5", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -186,7 +185,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #5", withTypeSc
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #6", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #6", "*", (t, {typescript, useTypeChecker}) => {
 	/* eslint-disable no-useless-escape */
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -205,7 +204,7 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #6", withTypeSc
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with an InstanceOf keyword #7", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InstanceOf keyword #7", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -225,28 +224,28 @@ test("Can evaluate a BinaryExpression with an InstanceOf keyword #7", withTypeSc
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with a BigInt #1", withTypeScriptVersions(">=3.2"), (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with a BigInt #1", ">=3.2", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`123456789123456789123456789n + 123456789123456789123456789n`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, BigInt("246913578246913578246913578"));
 });
 
-test("Can evaluate a BinaryExpression with an InKeyword #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InKeyword #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`"foo" in {}`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, false);
 });
 
-test("Can evaluate a BinaryExpression with an InKeyword #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InKeyword #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`"foo" in {foo: 123}`, {typescript, useTypeChecker});
 
 	if (!result.success) t.fail(result.reason.stack);
 	else t.deepEqual(result.value, true);
 });
 
-test("Can evaluate a BinaryExpression with an InKeyword #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a BinaryExpression with an InKeyword #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(`"foo" in 42`, {typescript, useTypeChecker});
 
 	if (result.success) t.fail("Expected the evaluation to fail");

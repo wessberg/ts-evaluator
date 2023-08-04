@@ -1,8 +1,8 @@
-import {LogLevelKind} from "./logger/log-level.js";
-import {EvaluatePolicy} from "./policy/evaluate-policy.js";
-import {IEnvironment} from "./environment/i-environment.js";
-import {ReportingOptions} from "./reporting/i-reporting-options.js";
-import {TS} from "../type/ts.js";
+import type {LogLevelKind} from "./logger/log-level.js";
+import type {EvaluatePolicy} from "./policy/evaluate-policy.js";
+import type {IEnvironment} from "./environment/i-environment.js";
+import type {ReportingOptions} from "./reporting/i-reporting-options.js";
+import type {TS} from "../type/ts.js";
 
 export interface EvaluateOptions {
 	node: TS.Statement | TS.Declaration | TS.Expression;

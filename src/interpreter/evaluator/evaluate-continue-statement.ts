@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
 import {setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {CONTINUE_SYMBOL} from "../util/continue/continue-symbol.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ContinueStatement

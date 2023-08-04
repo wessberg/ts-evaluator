@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {IndexLiteral, IndexLiteralKey} from "../literal/literal.js";
-import {TS} from "../../type/ts.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {IndexLiteral, IndexLiteralKey} from "../literal/literal.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Evaluates, or attempts to evaluate, an EnumMember

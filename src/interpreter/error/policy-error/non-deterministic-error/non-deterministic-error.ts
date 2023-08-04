@@ -1,4 +1,4 @@
-import {INonDeterministicErrorOptions} from "./i-non-deterministic-error-options.js";
+import type {INonDeterministicErrorOptions} from "./i-non-deterministic-error-options.js";
 import {PolicyError} from "../policy-error.js";
 
 /**

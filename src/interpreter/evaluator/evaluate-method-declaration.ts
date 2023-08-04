@@ -1,14 +1,15 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {getFromLexicalEnvironment, LexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type { LexicalEnvironment} from "../lexical-environment/lexical-environment.js";
+import {getFromLexicalEnvironment, pathInLexicalEnvironmentEquals, setInLexicalEnvironment} from "../lexical-environment/lexical-environment.js";
 import {cloneLexicalEnvironment} from "../lexical-environment/clone-lexical-environment.js";
-import {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
+import type {IndexLiteral, IndexLiteralKey, Literal} from "../literal/literal.js";
 import {evaluateParameterDeclarations} from "./evaluate-parameter-declarations.js";
 import {THIS_SYMBOL} from "../util/this/this-symbol.js";
 import {RETURN_SYMBOL} from "../util/return/return-symbol.js";
 import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
 import {inStaticContext} from "../util/static/in-static-context.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 import {canHaveDecorators, getDecorators} from "../util/node/modifier-util.js";
 
 /**
@@ -45,7 +46,7 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 		return;
 	}
 
-	const _methodDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword, typescript)
+	const _methodDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
 		? async function methodDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);

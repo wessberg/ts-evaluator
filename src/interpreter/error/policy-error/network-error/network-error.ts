@@ -1,4 +1,4 @@
-import {INetworkErrorOptions} from "./i-network-error-options.js";
+import type {INetworkErrorOptions} from "./i-network-error-options.js";
 import {PolicyError} from "../policy-error.js";
 
 /**

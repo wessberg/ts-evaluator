@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can evaluate VoidExpressions #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate VoidExpressions #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -21,7 +20,7 @@ test("Can evaluate VoidExpressions #1", withTypeScript, (t, {typescript, useType
 	else t.deepEqual(result.value, 1);
 });
 
-test("Can evaluate VoidExpressions #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate VoidExpressions #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -39,7 +38,7 @@ test("Can evaluate VoidExpressions #2", withTypeScript, (t, {typescript, useType
 	else t.deepEqual(result.value, undefined);
 });
 
-test("Can evaluate VoidExpressions #3", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can evaluate VoidExpressions #3", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

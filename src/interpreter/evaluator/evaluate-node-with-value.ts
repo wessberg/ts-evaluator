@@ -1,6 +1,6 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {Literal} from "../literal/literal.js";
-import {NodeWithValue} from "./node-evaluator/node-evaluator.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {Literal} from "../literal/literal.js";
+import type {NodeWithValue} from "./node-evaluator/node-evaluator.js";
 import {evaluatePropertyName} from "./evaluate-property-name.js";
 import {UnexpectedNodeError} from "../error/unexpected-node-error/unexpected-node-error.js";
 

@@ -1,7 +1,7 @@
-import {EvaluatorOptions} from "./evaluator-options.js";
-import {Literal} from "../literal/literal.js";
+import type {EvaluatorOptions} from "./evaluator-options.js";
+import type {Literal} from "../literal/literal.js";
 import {evaluateNode} from "./evaluate-node.js";
-import {TS} from "../../type/ts.js";
+import type {TS} from "../../type/ts.js";
 
 /**
  * Will get a literal value for the given Expression. If it doesn't succeed, the value will be 'undefined'

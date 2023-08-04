@@ -1,6 +1,6 @@
 import {EvaluationError} from "../evaluation-error/evaluation-error.js";
-import {IUndefinedIdentifierErrorOptions} from "./i-undefined-identifier-error-options.js";
-import {TS} from "../../../type/ts.js";
+import type {IUndefinedIdentifierErrorOptions} from "./i-undefined-identifier-error-options.js";
+import type {TS} from "../../../type/ts.js";
 
 /**
  * An Error that can be thrown when an undefined identifier is encountered

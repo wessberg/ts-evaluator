@@ -1,9 +1,9 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
-import {IndexLiteral} from "../../src/interpreter/literal/literal.js";
 
-test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+import type {IndexLiteral} from "../../src/interpreter/literal/literal.js";
+
+test("Can handle Class Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -30,7 +30,7 @@ test("Can handle Class Decorators. #1", withTypeScript, (t, {typescript, useType
 	}
 });
 
-test("Can handle multiple Class Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle multiple Class Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -65,7 +65,7 @@ test("Can handle multiple Class Decorators. #1", withTypeScript, (t, {typescript
 	}
 });
 
-test("Can handle instance Method Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle instance Method Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -99,7 +99,7 @@ test("Can handle instance Method Decorators. #1", withTypeScript, (t, {typescrip
 	}
 });
 
-test("Can handle static Method Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle static Method Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -133,7 +133,7 @@ test("Can handle static Method Decorators. #1", withTypeScript, (t, {typescript,
 	}
 });
 
-test("Can handle instance PropertyDeclaration Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle instance PropertyDeclaration Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -158,7 +158,7 @@ test("Can handle instance PropertyDeclaration Decorators. #1", withTypeScript, (
 	}
 });
 
-test("Can handle static PropertyDeclaration Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle static PropertyDeclaration Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -182,7 +182,7 @@ test("Can handle static PropertyDeclaration Decorators. #1", withTypeScript, (t,
 	}
 });
 
-test("Can handle Parameter Decorators. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle Parameter Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

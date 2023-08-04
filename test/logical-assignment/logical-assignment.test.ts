@@ -1,8 +1,7 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScriptVersions} from "../setup/ts-macro.js";
 
-test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
+test("Supports logical assignment. #1", ">=4.0", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -22,7 +21,7 @@ test("Supports logical assignment. #1", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
+test("Supports logical assignment. #2", ">=4.0", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -42,7 +41,7 @@ test("Supports logical assignment. #2", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
+test("Supports logical assignment. #3", ">=4.0", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -63,7 +62,7 @@ test("Supports logical assignment. #3", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
+test("Supports logical assignment. #4", ">=4.0", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -84,7 +83,7 @@ test("Supports logical assignment. #4", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
+test("Supports logical assignment. #5", ">=4.0", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -105,7 +104,7 @@ test("Supports logical assignment. #5", withTypeScriptVersions(">=4.0"), (t, {ty
 	}
 });
 
-test("Supports logical assignment. #6", withTypeScriptVersions(">=4.0"), (t, {typescript, useTypeChecker}) => {
+test("Supports logical assignment. #6", ">=4.0", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`

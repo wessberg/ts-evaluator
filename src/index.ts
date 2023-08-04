@@ -1,13 +1,13 @@
 export {evaluate} from "./interpreter/evaluate.js";
-export {EvaluateResult} from "./interpreter/evaluate-result.js";
-export {EvaluateOptions} from "./interpreter/evaluate-options.js";
+export type {EvaluateResult} from "./interpreter/evaluate-result.js";
+export type {EvaluateOptions} from "./interpreter/evaluate-options.js";
 
 // Logging
 export * from "./interpreter/logger/log-level.js";
 
 // Environment
-export * from "./interpreter/environment/environment-preset-kind.js";
-export * from "./interpreter/environment/i-environment.js";
+export type * from "./interpreter/environment/environment-preset-kind.js";
+export type * from "./interpreter/environment/i-environment.js";
 
 // Errors
 export * from "./interpreter/error/evaluation-error/evaluation-error.js";
@@ -17,7 +17,7 @@ export * from "./interpreter/error/not-callable-error/not-callable-error.js";
 export * from "./interpreter/error/policy-error/policy-error.js";
 export * from "./interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
 export * from "./interpreter/error/undefined-left-value-error/undefined-left-value-error.js";
-export * from "./interpreter/error/unexpected-syntax-error/unexpected-syntax-error";
+export * from "./interpreter/error/unexpected-syntax-error/unexpected-syntax-error.js";
 export * from "./interpreter/error/unexpected-node-error/unexpected-node-error.js";
 export * from "./interpreter/error/policy-error/io-error/io-error.js";
 export * from "./interpreter/error/policy-error/max-ops-exceeded-error/max-ops-exceeded-error.js";
@@ -27,4 +27,4 @@ export * from "./interpreter/error/policy-error/non-deterministic-error/non-dete
 export * from "./interpreter/error/policy-error/process-error/process-error.js";
 
 // Reporting
-export {BindingReportCallback, IReportingOptions, ReportingOptions} from "./interpreter/reporting/i-reporting-options.js";
+export type {BindingReportCallback, IReportingOptions, ReportingOptions} from "./interpreter/reporting/i-reporting-options.js";

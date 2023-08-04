@@ -1,9 +1,8 @@
-import test from "ava";
+import {test} from "../setup/test-runner.js";
 import path from "crosspath";
 import {executeProgram} from "../setup/execute-program.js";
-import {withTypeScript} from "../setup/ts-macro.js";
 
-test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-based Node environment. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-based Node environment. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result, setup} = executeProgram(
 		// language=TypeScript
 		{
@@ -30,7 +29,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-
 	}
 });
 
-test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-based Node environment. #2", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-based Node environment. #2", "*", (t, {typescript, useTypeChecker}) => {
 	const {result, setup} = executeProgram(
 		// language=TypeScript
 		{
@@ -57,7 +56,7 @@ test("Can handle the '__dirname' and '__filename' meta properties in a CommonJS-
 	}
 });
 
-test("Can handle 'process.cwd()' in a CommonJS-based Node environment. #1", withTypeScript, (t, {typescript, useTypeChecker}) => {
+test("Can handle 'process.cwd()' in a CommonJS-based Node environment. #1", "*", (t, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
