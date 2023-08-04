@@ -65,7 +65,7 @@
 		"npm-check-updates": "^16.10.17",
 		"pnpm": "^8.6.11",
 		"prettier": "^3.0.1",
-		"pretty-quick": "^3.1.3",
+		"lint-staged": "^13.2.3",
 		"rimraf": "^5.0.1",
 		"rollup": "^3.27.2",
 		"sandhog": "^2.0.2",
@@ -127,6 +127,9 @@
 	},
 	"engines": {
 		"node": ">=14.19.0"
+	},
+	"lint-staged": {
+		"*": "prettier --ignore-unknown --write"
 	},
 	"prettier": "@wessberg/prettier-config",
 	"ava": {
