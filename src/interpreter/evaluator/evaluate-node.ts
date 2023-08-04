@@ -99,8 +99,11 @@ export function evaluateNode({node, ...rest}: EvaluatorOptions<TS.Node>): unknow
 		return evaluateObjectLiteralExpression({node, ...rest});
 	} else if (rest.typescript.isAwaitExpression(node)) {
 		return evaluateAwaitExpression({node, ...rest});
-	} else if (rest.typescript.isTypeAssertionExpression?.(node) || (!("isTypeAssertionExpression" in rest.typescript) && (rest.typescript as any).isTypeAssertion(node))) {
-		return evaluateTypeAssertion({node: node as TS.TypeAssertion, ...rest});
+	} else if (
+		rest.typescript.isTypeAssertionExpression?.(node) ||
+		(!("isTypeAssertionExpression" in rest.typescript) && (rest.typescript as {isTypeAssertion: typeof TS.isTypeAssertionExpression}).isTypeAssertion(node))
+	) {
+		return evaluateTypeAssertion({node, ...rest});
 	} else if (rest.typescript.isTemplateExpression(node)) {
 		return evaluateTemplateExpression({node, ...rest});
 	} else if (rest.typescript.isMethodDeclaration(node)) {

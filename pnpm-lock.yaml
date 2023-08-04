@@ -154,21 +154,9 @@ devDependencies:
   typescript-4-9-4:
     specifier: npm:typescript@4.9.4
     version: /typescript@4.9.4
-  typescript-4-9-5:
-    specifier: npm:typescript@4.9.5
-    version: /typescript@4.9.5
-  typescript-5-0-3:
-    specifier: npm:typescript@5.0.3
-    version: /typescript@5.0.3
   typescript-5-0-4:
     specifier: npm:typescript@5.0.4
     version: /typescript@5.0.4
-  typescript-5-1-3:
-    specifier: npm:typescript@5.1.3
-    version: /typescript@5.1.3
-  typescript-5-1-5:
-    specifier: npm:typescript@5.1.5
-    version: /typescript@5.1.5
   typescript-5-1-6:
     specifier: npm:typescript@5.1.6
     version: /typescript@5.1.6
@@ -6801,33 +6789,9 @@ packages:
     hasBin: true
     dev: true
 
-  /typescript@4.9.5:
-    resolution: {integrity: sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g==}
-    engines: {node: '>=4.2.0'}
-    hasBin: true
-    dev: true
-
-  /typescript@5.0.3:
-    resolution: {integrity: sha512-xv8mOEDnigb/tN9PSMTwSEqAnUvkoXMQlicOb0IUVDBSQCgBSaAAROUZYy2IcUy5qU6XajK5jjjO7TMWqBTKZA==}
-    engines: {node: '>=12.20'}
-    hasBin: true
-    dev: true
-
   /typescript@5.0.4:
     resolution: {integrity: sha512-cW9T5W9xY37cc+jfEnaUvX91foxtHkza3Nw3wkoF4sSlKn0MONdkdEndig/qPBWXNkmplh3NzayQzCiHM4/hqw==}
     engines: {node: '>=12.20'}
-    hasBin: true
-    dev: true
-
-  /typescript@5.1.3:
-    resolution: {integrity: sha512-XH627E9vkeqhlZFQuL+UsyAXEnibT0kWR2FWONlr4sTjvxyJYnyefgrkyECLzM5NenmKzRAy2rR/OlYLA1HkZw==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-    dev: true
-
-  /typescript@5.1.5:
-    resolution: {integrity: sha512-FOH+WN/DQjUvN6WgW+c4Ml3yi0PH+a/8q+kNIfRehv1wLhWONedw85iu+vQ39Wp49IzTJEsZ2lyLXpBF7mkF1g==}
-    engines: {node: '>=14.17'}
     hasBin: true
     dev: true
 

@@ -10,7 +10,7 @@ export class AsyncIteratorNotSupportedError extends EvaluationError {
 		super({
 			message,
 			environment,
-			node: typescript.factory?.createEmptyStatement() ?? (typescript as any as (typeof TS)["factory"]).createEmptyStatement()
+			node: typescript.factory?.createEmptyStatement() ?? (typescript as unknown as TS.NodeFactory).createEmptyStatement()
 		});
 	}
 }
