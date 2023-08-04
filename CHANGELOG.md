@@ -1,3 +1,13 @@
+# [1.2.0](https://github.com/wessberg/ts-evaluator/compare/v1.1.0...v1.2.0) (2023-08-04)
+
+
+### Features
+
+* add Typescript v[4.9.5 ; 5.1.6] support ([b699f23](https://github.com/wessberg/ts-evaluator/commit/b699f237b26ca9fe3a263b6e65b50fb6a4cba7d7))
+* add TypeScript v5.1 support. Add support for newer JSDOM versions ([6f06ef0](https://github.com/wessberg/ts-evaluator/commit/6f06ef0635136578c64738fec01f7f1817c85be8))
+
+
+
 # [1.1.0](https://github.com/wessberg/ts-evaluator/compare/v1.0.7...v1.1.0) (2023-01-10)
 
 
