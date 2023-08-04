@@ -1,3 +1,4 @@
+import {TS} from "../../../type/ts.js";
 import {EvaluationError} from "../evaluation-error/evaluation-error.js";
 import {IAsyncIteratorNotSupportedErrorOptions} from "./i-async-iterator-not-supported-error-options.js";
 
@@ -6,6 +7,10 @@ import {IAsyncIteratorNotSupportedErrorOptions} from "./i-async-iterator-not-sup
  */
 export class AsyncIteratorNotSupportedError extends EvaluationError {
 	constructor({message = `It is not possible to evaluate an async iterator'`, typescript, environment}: IAsyncIteratorNotSupportedErrorOptions) {
-		super({message, environment, node: typescript.factory?.createEmptyStatement() ?? typescript.createEmptyStatement()});
+		super({
+			message,
+			environment,
+			node: typescript.factory?.createEmptyStatement() ?? (typescript as unknown as TS.NodeFactory).createEmptyStatement()
+		});
 	}
 }

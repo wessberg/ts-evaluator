@@ -25,7 +25,7 @@ function deepCloneWithRemovedProperty<T extends object, U>(obj: T, properties: (
 	if (Array.isArray(shallowClone)) {
 		shallowClone.forEach((item, index) => {
 			if (typeof item === "object" && item != null) {
-				shallowClone[index] = deepCloneWithRemovedProperty(item, properties, seenNestedObjects);
+				shallowClone[index] = deepCloneWithRemovedProperty(item as T, properties, seenNestedObjects);
 			} else {
 				shallowClone[index] = item;
 			}

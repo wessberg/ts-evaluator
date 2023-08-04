@@ -17,7 +17,7 @@ export function evaluateFunctionDeclaration(options: EvaluatorOptions<TS.Functio
 
 	const nameResult = node.name == null ? undefined : node.name.text;
 
-	const _functionDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
+	const _functionDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword, typescript)
 		? async function functionDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);

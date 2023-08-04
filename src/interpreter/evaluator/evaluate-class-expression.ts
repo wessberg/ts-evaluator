@@ -4,7 +4,7 @@ import {generateClassDeclaration} from "../util/class/generate-class-declaration
 import {hasModifier} from "../util/modifier/has-modifier.js";
 import {Literal} from "../literal/literal.js";
 import {TS} from "../../type/ts.js";
-import { canHaveDecorators, getDecorators } from "../util/node/modifier-util.js";
+import {canHaveDecorators, getDecorators} from "../util/node/modifier-util.js";
 
 /**
  * Evaluates, or attempts to evaluate, a ClassExpression
@@ -44,7 +44,6 @@ export function evaluateClassExpression(options: EvaluatorOptions<TS.ClassExpres
 	const name = node.name == null ? undefined : node.name.text;
 	let classExpression = generateClassDeclaration({name, extendedType, ctor});
 
-	
 	if (canHaveDecorators(node, typescript)) {
 		for (const decorator of getDecorators(node, typescript) ?? []) {
 			evaluate.nodeWithArgument(decorator, [classExpression], options);
@@ -56,7 +55,7 @@ export function evaluateClassExpression(options: EvaluatorOptions<TS.ClassExpres
 			classExpression = stack.pop() as CallableFunction;
 		}
 	}
-	
+
 	classExpression.toString = () => `[Class${name == null ? "" : `: ${name}`}]`;
 
 	if (name != null) {
@@ -65,7 +64,7 @@ export function evaluateClassExpression(options: EvaluatorOptions<TS.ClassExpres
 
 	// Walk through all of the class members
 	for (const member of otherMembers) {
-		evaluate.nodeWithArgument(member, hasModifier(member, typescript.SyntaxKind.StaticKeyword) ? classExpression : classExpression.prototype, options);
+		evaluate.nodeWithArgument(member, hasModifier(member, typescript.SyntaxKind.StaticKeyword, typescript) ? classExpression : classExpression.prototype, options);
 
 		if (getCurrentError() != null) {
 			return;

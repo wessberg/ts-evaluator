@@ -7,7 +7,7 @@ import {TS} from "../../../type/ts.js";
 export function inStaticContext(node: TS.Node, typescript: typeof TS): boolean {
 	let currentNode = node;
 	while (currentNode != null && !typescript.isSourceFile(currentNode)) {
-		if (hasModifier(currentNode, typescript.SyntaxKind.StaticKeyword)) return true;
+		if (hasModifier(currentNode, typescript.SyntaxKind.StaticKeyword, typescript)) return true;
 		currentNode = currentNode.parent;
 	}
 	return false;

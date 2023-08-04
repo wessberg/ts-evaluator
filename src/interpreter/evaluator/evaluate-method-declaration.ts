@@ -9,7 +9,7 @@ import {SUPER_SYMBOL} from "../util/super/super-symbol.js";
 import {inStaticContext} from "../util/static/in-static-context.js";
 import {hasModifier} from "../util/modifier/has-modifier.js";
 import {TS} from "../../type/ts.js";
-import { canHaveDecorators, getDecorators } from "../util/node/modifier-util.js";
+import {canHaveDecorators, getDecorators} from "../util/node/modifier-util.js";
 
 /**
  * Evaluates, or attempts to evaluate, a MethodDeclaration, before setting it on the given parent
@@ -45,7 +45,7 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 		return;
 	}
 
-	const _methodDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword)
+	const _methodDeclaration = hasModifier(node, typescript.SyntaxKind.AsyncKeyword, typescript)
 		? async function methodDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);

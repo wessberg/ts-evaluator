@@ -12,10 +12,12 @@ export function expressionContainsSuperKeyword(expression: TS.Expression | TS.Pr
 		return expressionContainsSuperKeyword(expression.expression, typescript) || expressionContainsSuperKeyword(expression.argumentExpression, typescript);
 	} else if (typescript.isParenthesizedExpression(expression)) return expressionContainsSuperKeyword(expression.expression, typescript);
 	else if (typescript.isAsExpression(expression)) return expressionContainsSuperKeyword(expression.expression, typescript);
-	else if (typescript.isTypeAssertionExpression?.(expression) || (!("isTypeAssertionExpression" in typescript) && (typescript as typeof TS).isTypeAssertion(expression))) {
+	else if (
+		typescript.isTypeAssertionExpression?.(expression) ||
+		(!("isTypeAssertionExpression" in typescript) && (typescript as {isTypeAssertion: typeof TS.isTypeAssertionExpression}).isTypeAssertion(expression))
+	) {
 		return expressionContainsSuperKeyword(expression.expression, typescript);
-	}
-	else {
+	} else {
 		return false;
 	}
 }
