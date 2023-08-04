@@ -75,7 +75,7 @@ devDependencies:
     version: 16.10.16
   pnpm:
     specifier: ^7.23.0
-    version: 7.23.0
+    version: 7.33.4
   prettier:
     specifier: ^2.8.2
     version: 2.8.8
@@ -5365,8 +5365,8 @@ packages:
       irregular-plurals: 3.5.0
     dev: true
 
-  /pnpm@7.23.0:
-    resolution: {integrity: sha512-0dJQXA+1+mo//tBvSpjb6dmLxx/UmLoeEOk/0FmOZ73GRZRNhMdarnwEenhKHNpiVXGCcvfWXJnvUMB7lp+tRQ==}
+  /pnpm@7.33.4:
+    resolution: {integrity: sha512-xEbf/tkwHpGM/GXq5U/sDSiE6ykLPho+o71PHNRWqkVLm6dJe4G/5Pg619Ow32ovekrr7pii5qtfamujB/+1bA==}
     engines: {node: '>=14.6'}
     hasBin: true
     dev: true
