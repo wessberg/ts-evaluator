@@ -21,7 +21,7 @@ export function createNodeEvaluator(options: ICreateNodeEvaluatorOptions): NodeE
 
 	const {policy, reporting} = options;
 
-	const prequalifyNextNode = (node: TS.Node, nextOptions: NextEvaluatorOptions): EvaluationError | void => {
+	const prequalifyNextNode = (node: TS.Node, nextOptions: NextEvaluatorOptions): EvaluationError | undefined => {
 		const {
 			environment = options.environment,
 			statementTraversalStack = options.statementTraversalStack,

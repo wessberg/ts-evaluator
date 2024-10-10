@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import {canBeObserved} from "../util/proxy/can-be-observed.js";
 import type {ICreatePolicyProxyOptions} from "./i-create-policy-proxy-options.js";
 import {isBindCallApply} from "../util/function/is-bind-call-apply.js";
@@ -28,13 +27,13 @@ export function createPolicyProxy<T extends object>({hook, item, scope, policy}:
 			return successCallback();
 		};
 
-		return !canBeObserved(currentItem) || isBindCallApply(currentItem as Function)
+		return !canBeObserved(currentItem) || isBindCallApply(currentItem as CallableFunction)
 			? currentItem
 			: new Proxy(currentItem, {
 					/**
 					 * Constructs a new instance of the given target
 					 */
-					construct(target: U, argArray: unknown[], newTarget?: Function): object {
+					construct(target: U, argArray: unknown[], newTarget?: CallableFunction): object {
 						return handleHookResult(
 							hook({
 								kind: PolicyTrapKind.CONSTRUCT,
@@ -44,7 +43,7 @@ export function createPolicyProxy<T extends object>({hook, item, scope, policy}:
 								target,
 								path: stringifyPath(inputPath)
 							}),
-							() => Reflect.construct(target as Function, argArray, newTarget)
+							() => Reflect.construct(target as CallableFunction, argArray, newTarget)
 						);
 					},
 
@@ -61,7 +60,7 @@ export function createPolicyProxy<T extends object>({hook, item, scope, policy}:
 								target,
 								path: stringifyPath(inputPath)
 							}),
-							() => Reflect.apply(target as Function, thisArg, argArray)
+							() => Reflect.apply(target as CallableFunction, thisArg, argArray)
 						);
 					},
 
@@ -88,7 +87,7 @@ export function createPolicyProxy<T extends object>({hook, item, scope, policy}:
 							}
 						);
 					}
-			  });
+				});
 	}
 
 	return !canBeObserved(item) ? item : createAccessTrap([scope], item);

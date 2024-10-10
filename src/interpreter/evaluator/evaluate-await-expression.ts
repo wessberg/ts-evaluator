@@ -14,7 +14,7 @@ export async function evaluateAwaitExpression(options: EvaluatorOptions<TS.Await
 			? undefined
 			: setTimeout(() => {
 					throwError(new MaxOpDurationExceededError({duration: policy.maxOpDuration, node, environment}));
-			  }, policy.maxOpDuration);
+				}, policy.maxOpDuration);
 
 	const result = evaluate.expression(node.expression, options) as Promise<Literal>;
 

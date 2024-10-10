@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can evaluate a TypeOfExpression #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a TypeOfExpression #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -14,11 +15,11 @@ test("Can evaluate a TypeOfExpression #1", "*", (t, {typescript, useTypeChecker}
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "bigint");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "bigint");
 });
 
-test("Can evaluate a TypeOfExpression #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a TypeOfExpression #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -32,6 +33,6 @@ test("Can evaluate a TypeOfExpression #2", "*", (t, {typescript, useTypeChecker}
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "foo");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "foo");
 });

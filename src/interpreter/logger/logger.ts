@@ -29,8 +29,6 @@ export class Logger {
 	private readonly options: LoggerOptions;
 
 	constructor(logLevel?: LogLevelKind);
-	constructor(options?: PartialDeep<LoggerOptions>);
-	constructor(optionsOrLogLevel?: LogLevelKind | PartialDeep<LoggerOptions>);
 	constructor(optionsOrLogLevel: LogLevelKind | PartialDeep<LoggerOptions> = {}) {
 		const {logLevel = LogLevelKind.SILENT, color: {info = "white", verbose = "yellow", debug = "magenta"} = {}} =
 			typeof optionsOrLogLevel === "object" ? optionsOrLogLevel : {logLevel: optionsOrLogLevel};
@@ -151,7 +149,7 @@ export class Logger {
 	logHeritage(classDeclaration: CallableFunction): void {
 		if (this.options.logLevel < LogLevelKind.DEBUG) return;
 		const parent = Object.getPrototypeOf(classDeclaration);
-		// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
+
 		if (parent.toString().includes("[Class")) {
 			console.log(
 				`${this.formatWithColor(this.options.color.debug, classDeclaration.toString())} ${this.formatWithColor(this.options.color.debug, `extends`)} ${this.formatWithColor(

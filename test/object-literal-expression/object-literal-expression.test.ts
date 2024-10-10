@@ -1,8 +1,9 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can handle ObjectLiteralExpressions. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #1", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -18,13 +19,13 @@ test("Can handle ObjectLiteralExpressions. #1", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {readonly bar: string}).bar, "foo");
+		assert.deepEqual((result.value as {readonly bar: string}).bar, "foo");
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #2", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -40,13 +41,13 @@ test("Can handle ObjectLiteralExpressions. #2", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {bar(): string}).bar(), "foo");
+		assert.deepEqual((result.value as {bar(): string}).bar(), "foo");
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #3", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -64,13 +65,13 @@ test("Can handle ObjectLiteralExpressions. #3", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {foo: {bar: {someKey: number}}}).foo.bar.someKey, 2);
+		assert.deepEqual((result.value as {foo: {bar: {someKey: number}}}).foo.bar.someKey, 2);
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #4", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #4", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -84,13 +85,13 @@ test("Can handle ObjectLiteralExpressions. #4", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {foo: string}).foo, "hehe");
+		assert.deepEqual((result.value as {foo: string}).foo, "hehe");
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #5", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #5", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -104,13 +105,13 @@ test("Can handle ObjectLiteralExpressions. #5", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {foo: string}).foo, "hehe");
+		assert.deepEqual((result.value as {foo: string}).foo, "hehe");
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #6", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #6", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -124,13 +125,13 @@ test("Can handle ObjectLiteralExpressions. #6", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {foo: undefined}).foo, undefined);
+		assert.deepEqual((result.value as {foo: undefined}).foo, undefined);
 	}
 });
 
-test("Can handle ObjectLiteralExpressions. #7", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ObjectLiteralExpressions. #7", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -143,8 +144,8 @@ test("Can handle ObjectLiteralExpressions. #7", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (result.success) t.fail(`Expected evaluation to throw`);
+	if (result.success) assert.fail(`Expected evaluation to throw`);
 	else {
-		t.true(result.reason instanceof UndefinedIdentifierError);
+		assert(result.reason instanceof UndefinedIdentifierError);
 	}
 });

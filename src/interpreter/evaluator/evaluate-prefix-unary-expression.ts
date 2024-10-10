@@ -29,7 +29,6 @@ export function evaluatePrefixUnaryExpression(options: EvaluatorOptions<TS.Prefi
 		}
 
 		case typescript.SyntaxKind.ExclamationToken: {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			return !operandValue;
 		}
 

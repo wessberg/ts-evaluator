@@ -1,9 +1,10 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
 import type {IndexLiteral} from "../../src/interpreter/literal/literal.js";
 
-test("Can handle Class Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle Class Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -23,14 +24,14 @@ test("Can handle Class Decorators. #1", "*", (t, {typescript, useTypeChecker}) =
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {prop: string})();
-		t.deepEqual(instance.prop, "prop");
+		assert.deepEqual(instance.prop, "prop");
 	}
 });
 
-test("Can handle multiple Class Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle multiple Class Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -57,15 +58,15 @@ test("Can handle multiple Class Decorators. #1", "*", (t, {typescript, useTypeCh
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {prop: string; otherProp: string})();
-		t.deepEqual(instance.prop, "prop");
-		t.deepEqual(instance.otherProp, "otherProp");
+		assert.deepEqual(instance.prop, "prop");
+		assert.deepEqual(instance.otherProp, "otherProp");
 	}
 });
 
-test("Can handle instance Method Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle instance Method Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -92,14 +93,14 @@ test("Can handle instance Method Decorators. #1", "*", (t, {typescript, useTypeC
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const descriptor = Object.getOwnPropertyDescriptor((result.value as CallableFunction).prototype, "greet");
-		t.true(descriptor != null && descriptor.enumerable === false);
+		assert(descriptor != null && descriptor.enumerable === false);
 	}
 });
 
-test("Can handle static Method Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle static Method Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -126,14 +127,14 @@ test("Can handle static Method Decorators. #1", "*", (t, {typescript, useTypeChe
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const descriptor = Object.getOwnPropertyDescriptor(result.value as CallableFunction, "greet");
-		t.true(descriptor != null && descriptor.enumerable === false);
+		assert(descriptor != null && descriptor.enumerable === false);
 	}
 });
 
-test("Can handle instance PropertyDeclaration Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle instance PropertyDeclaration Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -151,14 +152,14 @@ test("Can handle instance PropertyDeclaration Decorators. #1", "*", (t, {typescr
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {_myProp: string; myProp: string})();
-		t.deepEqual(instance._myProp, "whatever");
+		assert.deepEqual(instance._myProp, "whatever");
 	}
 });
 
-test("Can handle static PropertyDeclaration Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle static PropertyDeclaration Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -176,13 +177,13 @@ test("Can handle static PropertyDeclaration Decorators. #1", "*", (t, {typescrip
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual((result.value as {_myProp: string; myProp: string})._myProp, "whatever");
+		assert.deepEqual((result.value as {_myProp: string; myProp: string})._myProp, "whatever");
 	}
 });
 
-test("Can handle Parameter Decorators. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle Parameter Decorators. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -210,9 +211,9 @@ test("Can handle Parameter Decorators. #1", "*", (t, {typescript, useTypeChecker
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {paramCounts: IndexLiteral})();
-		t.deepEqual(instance.paramCounts.doSomething, 2);
+		assert.deepEqual(instance.paramCounts.doSomething, 2);
 	}
 });

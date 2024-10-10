@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can handle new.target syntax. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle new.target syntax. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		`
 		let result: boolean|undefined;
@@ -18,8 +19,8 @@ test("Can handle new.target syntax. #1", "*", (t, {typescript, useTypeChecker}) 
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual(result.value, true);
+		assert.deepEqual(result.value, true);
 	}
 });

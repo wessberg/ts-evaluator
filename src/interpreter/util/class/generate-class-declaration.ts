@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-implied-eval */
 import type {IGenerateClassDeclarationOptions} from "./i-generate-class-declaration-options.js";
 
 /**
@@ -13,14 +14,14 @@ export function generateClassDeclaration({
 	if (extendedType == null) {
 		return new Function(
 			"ctor",
-			`return class ${name == null ? "" : name} {constructor () {const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`
+			`return class ${name ?? ""} {constructor () {const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`
 		)(ctor);
 	} else {
 		return new Function(
 			"extendedType",
 			"ctor",
 			`return class ${
-				name == null ? "" : name
+				name ?? ""
 			} extends extendedType {constructor () {super(...arguments); const ctorReturnValue = ctor.call(this, ...arguments); if (ctorReturnValue != null) return ctorReturnValue;}}`
 		)(extendedType, ctor);
 	}

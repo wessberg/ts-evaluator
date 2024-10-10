@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can capture errors that would otherwise throw with try-catch. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can capture errors that would otherwise throw with try-catch. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -19,11 +20,11 @@ test("Can capture errors that would otherwise throw with try-catch. #1", "*", (t
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.true(result.value instanceof Error);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert(result.value instanceof Error);
 });
 
-test("Will execute the 'finally' branch correctly. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Will execute the 'finally' branch correctly. #1", "*", (_, {typescript, useTypeChecker}) => {
 	let executedFinally = false;
 	executeProgram(
 		// language=TypeScript
@@ -52,10 +53,10 @@ test("Will execute the 'finally' branch correctly. #1", "*", (t, {typescript, us
 		}
 	);
 
-	t.true(executedFinally);
+	assert(executedFinally);
 });
 
-test("Will execute the 'finally' branch correctly. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Will execute the 'finally' branch correctly. #2", "*", (_, {typescript, useTypeChecker}) => {
 	let executedFinally = false;
 	executeProgram(
 		// language=TypeScript
@@ -86,10 +87,10 @@ test("Will execute the 'finally' branch correctly. #2", "*", (t, {typescript, us
 		}
 	);
 
-	t.true(executedFinally);
+	assert(executedFinally);
 });
 
-test("Will execute the 'finally' branch correctly. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Will execute the 'finally' branch correctly. #3", "*", (_, {typescript, useTypeChecker}) => {
 	let executedFinally = false;
 	executeProgram(
 		// language=TypeScript
@@ -120,5 +121,5 @@ test("Will execute the 'finally' branch correctly. #3", "*", (t, {typescript, us
 		}
 	);
 
-	t.true(executedFinally);
+	assert(executedFinally);
 });

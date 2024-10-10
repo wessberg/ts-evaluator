@@ -25,7 +25,7 @@ export function evaluateElementAccessExpression(options: EvaluatorOptions<TS.Ele
 	const match =
 		node.questionDotToken != null && expressionResult == null
 			? // If optional chaining are being used and the expressionResult is undefined or null, assign undefined to 'match'
-			  undefined
+				undefined
 			: expressionResult[argumentExpressionResult];
 
 	// If it is a function, wrap it in a lazy call to preserve implicit this bindings. This is to avoid losing the this binding or having to
@@ -38,8 +38,8 @@ export function evaluateElementAccessExpression(options: EvaluatorOptions<TS.Ele
 					node,
 					options,
 					overriddenThis != null && !isBindCallApply(match, environment)
-						? // eslint-disable-next-line @typescript-eslint/ban-types
-						  (expressionResult[argumentExpressionResult] as Function).call(overriddenThis, ...args)
+						? // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
+							(expressionResult[argumentExpressionResult] as Function).call(overriddenThis, ...args)
 						: (expressionResult[argumentExpressionResult] as CallableFunction)(...args)
 				)
 		} as LazyCall;

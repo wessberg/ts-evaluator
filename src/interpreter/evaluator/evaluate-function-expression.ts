@@ -57,7 +57,7 @@ export function evaluateFunctionExpression(options: EvaluatorOptions<TS.Function
 
 				// Otherwise, return 'undefined'. Nothing is returned from the function
 				else return undefined;
-		  }
+			}
 		: function functionExpression(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
@@ -98,7 +98,7 @@ export function evaluateFunctionExpression(options: EvaluatorOptions<TS.Function
 
 				// Otherwise, return 'undefined'. Nothing is returned from the function
 				else return undefined;
-		  };
+			};
 
 	if (nameResult != null) {
 		setInLexicalEnvironment({...options, path: nameResult, value: _functionExpression.bind(_functionExpression)});

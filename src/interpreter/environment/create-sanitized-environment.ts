@@ -70,20 +70,24 @@ export function createSanitizedEnvironment({policy, env}: ICreateSanitizedEnviro
 								apply(target: NodeRequire, thisArg: unknown, argArray: unknown[] = []): unknown {
 									const [moduleName] = argArray as string[];
 
-									return createPolicyProxy({
-										policy,
-										item: Reflect.apply(target, thisArg, argArray),
-										scope: moduleName,
-										hook
-									});
+									if (moduleName != null) {
+										return createPolicyProxy({
+											policy,
+											item: Reflect.apply(target, thisArg, argArray),
+											scope: moduleName,
+											hook
+										});
+									} else {
+										return Reflect.apply(target, thisArg, argArray);
+									}
 								}
-						  })
+							})
 						: createPolicyProxy({
 								policy,
 								item: descriptor.value,
 								scope: name,
 								hook
-						  })
+							})
 			}))
 	);
 

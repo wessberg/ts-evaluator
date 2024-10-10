@@ -29,6 +29,7 @@ export interface LexicalEnvironment {
  */
 export function getRelevantDictFromLexicalEnvironment(env: LexicalEnvironment, path: string): LexicalEnvironment["env"] | undefined {
 	const [firstBinding] = path.split(".");
+	if (firstBinding == null) return undefined;
 	if (objectPath.has(env.env, firstBinding)) return env.env;
 	if (env.parentEnv != null) return getRelevantDictFromLexicalEnvironment(env.parentEnv, path);
 	return undefined;
@@ -48,6 +49,7 @@ export function getPresetForLexicalEnvironment(env: LexicalEnvironment): Environ
  */
 export function findLexicalEnvironmentUp(from: LexicalEnvironment, path: string): LexicalEnvironment | undefined {
 	const [firstBinding] = path.split(".");
+	if (firstBinding == null) return undefined;
 	if (objectPath.has(from.env, firstBinding)) return from;
 	if (from.parentEnv != null) return findLexicalEnvironmentUp(from.parentEnv, path);
 	return undefined;
@@ -73,6 +75,8 @@ export function findLexicalEnvironmentInSameContext(from: LexicalEnvironment, no
  */
 export function getFromLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): LiteralMatch | undefined {
 	const [firstBinding] = path.split(".");
+	if (firstBinding == null) return undefined;
+
 	if (objectPath.has(env.env, firstBinding)) {
 		const literal = objectPath.get(env.env, path);
 		switch (path) {
@@ -106,6 +110,8 @@ export function getFromLexicalEnvironment(node: TS.Node | undefined, env: Lexica
  */
 export function hasInLexicalEnvironment(node: TS.Node | undefined, env: LexicalEnvironment, path: string): boolean {
 	const [firstBinding] = path.split(".");
+	if (firstBinding == null) return false;
+
 	if (objectPath.has(env.env, firstBinding)) {
 		return true;
 	}
@@ -147,6 +153,7 @@ export function isInternalSymbol(value: Literal): boolean {
  */
 export function setInLexicalEnvironment({environment, path, value, reporting, node, newBinding = false}: ISetInLexicalEnvironmentOptions): void {
 	const [firstBinding] = path.split(".");
+	if (firstBinding == null) return undefined;
 
 	if (objectPath.has(environment.env, firstBinding) || newBinding || environment.parentEnv == null) {
 		// If the value didn't change, do no more
@@ -161,6 +168,7 @@ export function setInLexicalEnvironment({environment, path, value, reporting, no
 		}
 	} else {
 		let currentParentEnv: LexicalEnvironment | undefined = environment.parentEnv;
+
 		while (currentParentEnv != null) {
 			if (objectPath.has(currentParentEnv.env, firstBinding)) {
 				// If the value didn't change, do no more
@@ -196,6 +204,8 @@ export function setInLexicalEnvironment({environment, path, value, reporting, no
  */
 export function clearBindingFromLexicalEnvironment(env: LexicalEnvironment, path: string): void {
 	const [firstBinding] = path.split(".");
+	if (firstBinding == null) return undefined;
+
 	if (objectPath.has(env.env, firstBinding)) {
 		objectPath.del(env.env, path);
 	} else {

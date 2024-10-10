@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can handle PostfixUnaryExpressions. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle PostfixUnaryExpressions. #1", "*", (_, {typescript, useTypeChecker}) => {
 	// noinspection BadExpressionStatementJS
 	const {result} = executeProgram(
 		// language=TypeScript
@@ -18,8 +19,8 @@ test("Can handle PostfixUnaryExpressions. #1", "*", (t, {typescript, useTypeChec
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual(result.value, 0);
+		assert.deepEqual(result.value, 0);
 	}
 });

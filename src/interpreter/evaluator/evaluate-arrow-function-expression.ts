@@ -62,7 +62,7 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 				else {
 					return evaluate.expression(node.body, nextOptions);
 				}
-		  }
+			}
 		: (...args: Literal[]) => {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
@@ -110,7 +110,7 @@ export function evaluateArrowFunctionExpression(options: EvaluatorOptions<TS.Arr
 				else {
 					return evaluate.expression(node.body, nextOptions);
 				}
-		  };
+			};
 
 	arrowFunctionExpression.toString = () => `[Function: anonymous]`;
 

@@ -10,6 +10,7 @@ import type {TS} from "../../../type/ts.js";
 export function evaluateSimpleLiteral(node: TS.Node, typescript: typeof TS): EvaluateSimpleLiteralResult {
 	if (typescript.isStringLiteralLike(node)) return {success: true, value: node.text};
 	else if (isBooleanLiteral(node, typescript)) return {success: true, value: node.kind === typescript.SyntaxKind.TrueKeyword};
+	// eslint-disable-next-line @typescript-eslint/no-implied-eval
 	else if (typescript.isRegularExpressionLiteral(node)) return {success: true, value: new Function(`return ${node.text}`)()};
 	else if (typescript.isNumericLiteral(node)) return {success: true, value: Number(node.text)};
 	else if (typescript.isBigIntLiteral?.(node)) return {success: true, value: BigInt(node.text)};

@@ -6,15 +6,15 @@ import type {TS} from "../../type/ts.js";
 /**
  * Evaluates, or attempts to evaluate, a VariableDeclaration
  */
-export function evaluateVariableDeclaration(options: EvaluatorOptions<TS.VariableDeclaration>, initializer?: Literal): void | EvaluationError {
+export function evaluateVariableDeclaration(options: EvaluatorOptions<TS.VariableDeclaration>, initializer?: Literal): EvaluationError | undefined {
 	const {node, environment, evaluate, stack, typescript, throwError, getCurrentError} = options;
+
 	const initializerResult =
-		initializer != null
-			? initializer
-			: node.initializer == null
+		initializer ??
+		(node.initializer == null
 			? // A VariableDeclaration with no initializer is implicitly bound to 'undefined'
-			  undefined
-			: evaluate.expression(node.initializer, options);
+				undefined
+			: evaluate.expression(node.initializer, options));
 
 	if (getCurrentError() != null) {
 		return;
@@ -33,4 +33,5 @@ export function evaluateVariableDeclaration(options: EvaluatorOptions<TS.Variabl
 	}
 
 	stack.push(initializerResult);
+	return;
 }

@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Supports optional CallExpressions. #1", ">=3.7", (t, {typescript, useTypeChecker}) => {
+test("Supports optional CallExpressions. #1", ">=3.7", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -12,13 +13,13 @@ test("Supports optional CallExpressions. #1", ">=3.7", (t, {typescript, useTypeC
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual(result.value, undefined);
+		assert.deepEqual(result.value, undefined);
 	}
 });
 
-test("Supports optional PropertyAccessExpressions. #1", ">=3.7", (t, {typescript, useTypeChecker}) => {
+test("Supports optional PropertyAccessExpressions. #1", ">=3.7", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -29,13 +30,13 @@ test("Supports optional PropertyAccessExpressions. #1", ">=3.7", (t, {typescript
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual(result.value, undefined);
+		assert.deepEqual(result.value, undefined);
 	}
 });
 
-test("Supports optional ElementAccessExpressions. #1", ">=3.7", (t, {typescript, useTypeChecker}) => {
+test("Supports optional ElementAccessExpressions. #1", ">=3.7", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -46,8 +47,8 @@ test("Supports optional ElementAccessExpressions. #1", ">=3.7", (t, {typescript,
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.deepEqual(result.value, undefined);
+		assert.deepEqual(result.value, undefined);
 	}
 });

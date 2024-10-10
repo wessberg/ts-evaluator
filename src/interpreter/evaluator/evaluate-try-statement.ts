@@ -6,7 +6,7 @@ import type {EvaluationError} from "../error/evaluation-error/evaluation-error.j
 /**
  * Evaluates, or attempts to evaluate, a TryStatement
  */
-export function evaluateTryStatement(options: EvaluatorOptions<TS.TryStatement>): void | EvaluationError {
+export function evaluateTryStatement(options: EvaluatorOptions<TS.TryStatement>): EvaluationError | undefined {
 	const {node, evaluate, environment, throwError} = options;
 
 	let error: EvaluationError | undefined;
@@ -56,6 +56,7 @@ export function evaluateTryStatement(options: EvaluatorOptions<TS.TryStatement>)
 	// Follows the form: try {...} catch {...}
 	else if (node.catchClause != null && node.finallyBlock == null) {
 		executeTry();
+
 		if (error != null) {
 			executeCatch(error);
 		}
@@ -79,4 +80,6 @@ export function evaluateTryStatement(options: EvaluatorOptions<TS.TryStatement>)
 
 		executeFinally();
 	}
+
+	return;
 }

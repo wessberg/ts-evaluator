@@ -13,7 +13,10 @@ export function evaluateArrayBindingPattern({node, evaluate, ...options}: Evalua
 		const {done, value} = iterator.next();
 		if (done === true) break;
 
-		evaluate.nodeWithArgument(node.elements[elementsCursor++], value, options);
+		const nextElement = node.elements[elementsCursor++];
+		if (nextElement == null) continue;
+
+		evaluate.nodeWithArgument(nextElement, value, options);
 
 		if (options.getCurrentError() != null) {
 			return;

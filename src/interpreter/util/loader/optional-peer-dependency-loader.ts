@@ -16,7 +16,7 @@ export function loadJsdom(required = false): typeof JSDOM | undefined {
 function loadModules<T = never>(description: string, required: boolean, moduleSpecifier = description): T | undefined {
 	try {
 		return requireModule(moduleSpecifier) as T;
-	} catch (ex) {
+	} catch {
 		if (required) {
 			throw new ReferenceError(`You must install the peer dependency '${moduleSpecifier}' in order to ${description} with ts-evaluator`);
 		}

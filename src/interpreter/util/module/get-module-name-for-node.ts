@@ -6,6 +6,6 @@ import type {TS} from "../../../type/ts.js";
  */
 export function getModuleNameForNode(node: TS.Node, typescript: typeof TS): string | undefined {
 	const module = node.getSourceFile().isDeclarationFile ? findNearestParentNodeOfKind<TS.ModuleDeclaration>(node, typescript.SyntaxKind.ModuleDeclaration, typescript) : undefined;
-	if (module == null || module.name == null) return undefined;
+	if (module?.name == null) return undefined;
 	return module.name.text;
 }

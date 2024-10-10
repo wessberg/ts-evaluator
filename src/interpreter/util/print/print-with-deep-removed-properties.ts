@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
-// noinspection JSUnusedGlobalSymbols
 /**
  * Prints the given Node
  */
@@ -15,7 +12,7 @@ export function printWithDeepRemovedProperties<T extends object>(node: T | undef
  * Deep-clones the given object, and removes the provided property names along the way
  * from property values
  */
-function deepCloneWithRemovedProperty<T extends object, U>(obj: T, properties: (keyof T)[], seenNestedObjects: Set<{}> = new Set()): U {
+function deepCloneWithRemovedProperty<T extends object, U>(obj: T, properties: (keyof T)[], seenNestedObjects = new Set<{}>()): U {
 	if (seenNestedObjects.has(obj)) return "[Circular]" as unknown as U;
 
 	seenNestedObjects.add(obj);

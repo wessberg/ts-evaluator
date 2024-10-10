@@ -72,7 +72,7 @@ export function evaluateFunctionDeclaration(options: EvaluatorOptions<TS.Functio
 				else {
 					return undefined;
 				}
-		  }
+			}
 		: function functionDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
@@ -123,7 +123,7 @@ export function evaluateFunctionDeclaration(options: EvaluatorOptions<TS.Functio
 
 				// Otherwise, return 'undefined'. Nothing is returned from the function
 				else return undefined;
-		  };
+			};
 
 	if (nameResult != null) {
 		setInLexicalEnvironment({...options, path: nameResult, value: _functionDeclaration.bind(_functionDeclaration)});

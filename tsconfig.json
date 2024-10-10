@@ -1,8 +1,8 @@
 {
-	"extends": "@wessberg/ts-config",
-	"include": ["src/**/*.*", "test/**/*.*"],
+	"extends": "./node_modules/@wessberg/ts-config/tsconfig.json",
+	"include": ["src/**/*.*", "test/**/*.*", "loader.cjs", "sandhog.config.js"],
+	"exclude": ["dist/*.*"],
 	"compilerOptions": {
-		"target": "es2019",
 		"importHelpers": false
 	}
 }

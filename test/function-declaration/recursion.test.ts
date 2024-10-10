@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can evaluate a CallExpression for a recursive function. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression for a recursive function. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -19,6 +20,6 @@ test("Can evaluate a CallExpression for a recursive function. #1", "*", (t, {typ
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 8);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 8);
 });

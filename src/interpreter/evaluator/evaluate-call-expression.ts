@@ -16,7 +16,9 @@ export function evaluateCallExpression(options: EvaluatorOptions<TS.CallExpressi
 	const evaluatedArgs: Literal[] = [];
 
 	for (let i = 0; i < node.arguments.length; i++) {
-		evaluatedArgs[i] = evaluate.expression(node.arguments[i], options);
+		const argument = node.arguments[i];
+		if (argument == null) continue;
+		evaluatedArgs[i] = evaluate.expression(argument, options);
 		if (getCurrentError() != null) {
 			return;
 		}

@@ -10,7 +10,7 @@ export function evaluatePropertyName({node, evaluate, typescript, ...options}: E
 		typescript.isComputedPropertyName(node)
 			? evaluate.expression(node.expression, options)
 			: typescript.isIdentifier(node) || typescript.isPrivateIdentifier?.(node)
-			? node.text
-			: evaluate.expression(node as TS.StringLiteral | TS.NumericLiteral, options)
+				? node.text
+				: evaluate.expression(node as TS.StringLiteral | TS.NumericLiteral, options)
 	) as IndexLiteralKey;
 }

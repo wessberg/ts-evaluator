@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
 import path from "crosspath";
 
-test("Can resolve symbols via ImportDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -37,15 +38,15 @@ test("Can resolve symbols via ImportDeclarations. #1", "*", (t, {typescript, use
 						moduleOverrides: {
 							"./a": {foo: "bar"}
 						}
-				  })
+					})
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "bar2");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -86,15 +87,15 @@ test("Can resolve symbols via ImportDeclarations. #2", "*", (t, {typescript, use
 							"./a": {foo: "bar"},
 							"./b": {foo: "bar"}
 						}
-				  })
+					})
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "bar2");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations. #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -137,15 +138,15 @@ test("Can resolve symbols via ImportDeclarations. #3", "*", (t, {typescript, use
 							"./a": {foo: "bar"},
 							"./b": {foo: "bar"}
 						}
-				  })
+					})
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "bar2");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations. #4", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations. #4", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			{
@@ -188,15 +189,15 @@ test("Can resolve symbols via ImportDeclarations. #4", "*", (t, {typescript, use
 							"./a": {foo: "bar"},
 							"./b": {foo: "bar"}
 						}
-				  })
+					})
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "bar2");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "bar2");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -210,11 +211,11 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #1",
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "/foo");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "/foo");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -228,11 +229,11 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #2",
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "/foo");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "/foo");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -247,11 +248,11 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #3",
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "ts-evaluator");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "ts-evaluator");
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", ">=3.1", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #4", ">=3.1", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -270,11 +271,11 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #4",
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Can resolve symbols via ImportDeclarations for built-in node modules. #5", "*", (t, {typescript, useTypeChecker}) => {
+test("Can resolve symbols via ImportDeclarations for built-in node modules. #5", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		[
 			// language=TypeScript
@@ -289,6 +290,6 @@ test("Can resolve symbols via ImportDeclarations for built-in node modules. #5",
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "ts-evaluator");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "ts-evaluator");
 });

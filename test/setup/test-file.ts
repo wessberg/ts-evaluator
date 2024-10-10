@@ -87,14 +87,14 @@ export function createTestFileStructure(input: MaybeArray<TestFile>, entryInput:
 				? {
 						text: file,
 						fileName: generateRandomPath({extension: ".ts"})
-				  }
+					}
 				: file
 		)
 		.map(file => ({...file, fileName: path.join(src, file.fileName)}));
 
 	const entry: TestFileEntryRefRecord =
 		typeof entryInput === "string"
-			? {file: files[0], match: entryInput}
+			? {file: files[0]!, match: entryInput}
 			: {file: files.find(file => file.fileName === path.join(src, entryInput.fileName))!, match: entryInput.match};
 
 	return {

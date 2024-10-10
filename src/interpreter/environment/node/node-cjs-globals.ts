@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/naming-convention */
 import {mergeDescriptors} from "../../util/descriptor/merge-descriptors.js";
 import {ECMA_GLOBALS} from "../ecma/ecma-globals.js";
 import {subtract} from "../../util/object/subtract.js";

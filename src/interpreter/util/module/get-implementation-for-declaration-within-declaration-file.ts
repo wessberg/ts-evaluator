@@ -27,7 +27,7 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 	// First see if it lives within the lexical environment
 	const matchInLexicalEnvironment = getFromLexicalEnvironment(node, options.environment, name as string);
 	// If so, return it
-	if (matchInLexicalEnvironment != null && matchInLexicalEnvironment.literal != null) {
+	if (matchInLexicalEnvironment?.literal != null) {
 		return matchInLexicalEnvironment.literal;
 	}
 
@@ -43,9 +43,8 @@ export function getImplementationForDeclarationWithinDeclarationFile(options: Ev
 	const moduleSpecifier = moduleDeclaration.name.text;
 	const resolvedModuleSpecifier = getResolvedModuleName(moduleSpecifier, options);
 	try {
-		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
 		const module = options.moduleOverrides?.[moduleSpecifier] ?? options.moduleOverrides?.[resolvedModuleSpecifier] ?? require(resolvedModuleSpecifier);
-		return typescript.isModuleDeclaration(node) ? module : module[name] ?? module;
+		return typescript.isModuleDeclaration(node) ? module : (module[name] ?? module);
 	} catch (ex) {
 		if (isEvaluationError(ex)) return ex;
 		else return throwError(new ModuleNotFoundError({node: moduleDeclaration, environment, path: resolvedModuleSpecifier}));
@@ -59,7 +58,6 @@ export function getImplementationFromExternalFile(name: string, moduleSpecifier:
 	const resolvedModuleSpecifier = getResolvedModuleName(moduleSpecifier, options);
 
 	try {
-		// eslint-disable-next-line @typescript-eslint/no-require-imports,@typescript-eslint/no-var-requires
 		const module = options.moduleOverrides?.[moduleSpecifier] ?? options.moduleOverrides?.[resolvedModuleSpecifier] ?? require(resolvedModuleSpecifier);
 		return module[name] ?? module.default ?? module;
 	} catch (ex) {

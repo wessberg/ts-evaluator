@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
-
 export type Subtract<T, K extends Partial<T>> = {
 	[Key in Exclude<keyof T, keyof K>]: T[Key];
 };

@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can evaluate VoidExpressions #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate VoidExpressions #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -16,11 +17,11 @@ test("Can evaluate VoidExpressions #1", "*", (t, {typescript, useTypeChecker}) =
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 1);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 1);
 });
 
-test("Can evaluate VoidExpressions #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate VoidExpressions #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -34,11 +35,11 @@ test("Can evaluate VoidExpressions #2", "*", (t, {typescript, useTypeChecker}) =
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, undefined);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, undefined);
 });
 
-test("Can evaluate VoidExpressions #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate VoidExpressions #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -53,6 +54,6 @@ test("Can evaluate VoidExpressions #3", "*", (t, {typescript, useTypeChecker}) =
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, [1, undefined]);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, [1, undefined]);
 });

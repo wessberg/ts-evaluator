@@ -17,7 +17,7 @@ export function executeProgram(inputFiles: MaybeArray<TestFile>, options: Partia
 export function executeProgram(
 	inputFiles: MaybeArray<TestFile>,
 	inputEntryOrOptions: TestFileEntry | PartialExcept<TestContext, "typescript">,
-	optionsOrUndefined?: PartialExcept<TestContext, "typescript"> | undefined
+	optionsOrUndefined?: PartialExcept<TestContext, "typescript">
 ): TestResult {
 	const [firstInputFile] = ensureArray(inputFiles);
 	if (firstInputFile == null) {
@@ -25,8 +25,7 @@ export function executeProgram(
 	}
 
 	const inputEntry = arguments.length === 3 ? (inputEntryOrOptions as TestFileEntry) : typeof firstInputFile === "string" ? firstInputFile : firstInputFile.text;
-	const options =
-		arguments.length === 3 ? (optionsOrUndefined as Exclude<typeof optionsOrUndefined, undefined>) : (inputEntryOrOptions as Exclude<typeof optionsOrUndefined, undefined>);
+	const options = arguments.length === 3 ? optionsOrUndefined! : (inputEntryOrOptions as Exclude<typeof optionsOrUndefined, undefined>);
 
 	const useCommonJs = options.environment?.preset == null || options.environment.preset === "NODE" || options.environment.preset === "NODE_CJS";
 	if (options.environment?.preset == null || options.environment.preset === "NODE" || options.environment.preset === "NODE_CJS" || options.environment.preset === "NODE_ESM") {
@@ -73,7 +72,7 @@ export function executeProgram(
 			...(context.useTypeChecker
 				? {
 						typeChecker: program.getTypeChecker()
-				  }
+					}
 				: {})
 		})
 	};

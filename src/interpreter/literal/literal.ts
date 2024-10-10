@@ -1,5 +1,3 @@
-// tslint:disable:no-any
-
 export const enum LiteralFlagKind {
 	CALL
 }
@@ -18,15 +16,12 @@ export function isLazyCall(literal: Literal): literal is LazyCall {
 	return literal != null && typeof literal === "object" && LAZY_CALL_FLAG in literal;
 }
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export type Literal = object | Function | string | number | boolean | symbol | bigint | null | undefined;
+export type Literal = object | CallableFunction | string | number | boolean | symbol | bigint | null | undefined;
 export interface LiteralMatch {
 	literal: Literal;
 }
 export type IndexLiteralKey = string;
-export interface IndexLiteral {
-	[key: string]: Literal;
-}
+export type IndexLiteral = Record<string, Literal>;
 
 /**
  * Stringifies the given literal
@@ -35,5 +30,6 @@ export function stringifyLiteral(literal: Literal): string {
 	if (literal === undefined) return "undefined";
 	else if (literal === null) return "null";
 	else if (typeof literal === "string") return `"${literal}"`;
+	// eslint-disable-next-line @typescript-eslint/no-base-to-string
 	return literal.toString();
 }

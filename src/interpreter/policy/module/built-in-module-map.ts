@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 /* eslint-disable @typescript-eslint/naming-convention */
 export interface BuiltInModuleMap {
 	"node:async_hooks": typeof import("node:async_hooks");

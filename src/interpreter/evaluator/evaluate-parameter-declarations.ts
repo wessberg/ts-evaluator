@@ -13,7 +13,7 @@ export function evaluateParameterDeclarations(options: EvaluatorOptions<TS.NodeA
 	const parameters = node.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 
 	for (let i = 0; i < parameters.length; i++) {
-		const parameter = parameters[i];
+		const parameter = parameters[i]!;
 
 		// It it is a spread element, it should receive all arguments from the current index.
 		if (parameter.dotDotDotToken != null) {

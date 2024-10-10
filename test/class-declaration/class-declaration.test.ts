@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can handle ClassDeclarations and preserves their names. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassDeclarations and preserves their names. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -14,13 +15,13 @@ test("Can handle ClassDeclarations and preserves their names. #1", "*", (t, {typ
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.true(result.value != null && (result.value as CallableFunction).name === "MyClass");
+		assert(result.value != null && (result.value as CallableFunction).name === "MyClass");
 	}
 });
 
-test("Can handle ClassDeclarations that extends from other named classes. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassDeclarations that extends from other named classes. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -36,15 +37,15 @@ test("Can handle ClassDeclarations that extends from other named classes. #1", "
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (!Array.isArray(result.value)) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (!Array.isArray(result.value)) assert.fail();
 	else {
 		const [A, B] = result.value;
-		t.true(Object.getPrototypeOf(B) === A);
+		assert(Object.getPrototypeOf(B) === A);
 	}
 });
 
-test("Can handle ClassDeclarations that extends from Expressions. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassDeclarations that extends from Expressions. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -61,14 +62,14 @@ test("Can handle ClassDeclarations that extends from Expressions. #1", "*", (t, 
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
 		const instance = new (result.value as new () => {method(): string})();
-		t.deepEqual(instance.method(), "foo");
+		assert.deepEqual(instance.method(), "foo");
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassDeclarations and preserves their constructors. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -86,15 +87,15 @@ test("Can handle ClassDeclarations and preserves their constructors. #1", "*", (
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {foo: string})();
-		t.deepEqual(instance.foo, "hello");
+		assert.deepEqual(instance.foo, "hello");
 	}
 });
 
-test("Can handle ClassDeclarations and preserves their constructors. #2", ">=3.8", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassDeclarations and preserves their constructors. #2", ">=3.8", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -116,15 +117,15 @@ test("Can handle ClassDeclarations and preserves their constructors. #2", ">=3.8
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {foo: string})();
-		t.deepEqual(instance.foo, "hello");
+		assert.deepEqual(instance.foo, "hello");
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Inherits PropertyDeclarations from super classes. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -142,15 +143,15 @@ test("Inherits PropertyDeclarations from super classes. #1", "*", (t, {typescrip
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {bar: string})();
-		t.deepEqual(instance.bar, "hello");
+		assert.deepEqual(instance.bar, "hello");
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Inherits PropertyDeclarations from super classes. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -174,14 +175,14 @@ test("Inherits PropertyDeclarations from super classes. #2", "*", (t, {typescrip
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
-		t.deepEqual((result.value as {doStuff(): string}).doStuff(), "hello");
+		assert.deepEqual((result.value as {doStuff(): string}).doStuff(), "hello");
 	}
 });
 
-test("Inherits PropertyDeclarations from super classes. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Inherits PropertyDeclarations from super classes. #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -211,15 +212,15 @@ test("Inherits PropertyDeclarations from super classes. #3", "*", (t, {typescrip
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {doStuff(): string})();
-		t.deepEqual(instance.doStuff(), "foo");
+		assert.deepEqual(instance.doStuff(), "foo");
 	}
 });
 
-test("Can handle GetAccessorDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle GetAccessorDeclarations. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -236,15 +237,15 @@ test("Can handle GetAccessorDeclarations. #1", "*", (t, {typescript, useTypeChec
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {readonly prop: number})();
-		t.deepEqual(instance.prop, 1);
+		assert.deepEqual(instance.prop, 1);
 	}
 });
 
-test("Can handle SetAccessorDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle SetAccessorDeclarations. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -265,16 +266,16 @@ test("Can handle SetAccessorDeclarations. #1", "*", (t, {typescript, useTypeChec
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {prop: number})();
 		instance.prop = 2;
-		t.deepEqual(instance.prop, 2);
+		assert.deepEqual(instance.prop, 2);
 	}
 });
 
-test("Can handle instance properties set via Constructor arguments. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle instance properties set via Constructor arguments. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -288,10 +289,10 @@ test("Can handle instance properties set via Constructor arguments. #1", "*", (t
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (result.value == null) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (result.value == null) assert.fail();
 	else {
 		const instance = new (result.value as new () => {foo: number})();
-		t.deepEqual(instance.foo, 2);
+		assert.deepEqual(instance.foo, 2);
 	}
 });

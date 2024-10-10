@@ -7,7 +7,7 @@ import {UnexpectedSyntaxError} from "../error/unexpected-syntax-error/unexpected
 /**
  * Evaluates, or attempts to evaluate, a MetaProperty.
  */
-export function evaluateMetaProperty({node, typescript, throwError, environment}: EvaluatorOptions<TS.MetaProperty>): Literal | void {
+export function evaluateMetaProperty({node, typescript, throwError, environment}: EvaluatorOptions<TS.MetaProperty>): Literal | undefined {
 	switch (node.keywordToken) {
 		case typescript.SyntaxKind.NewKeyword: {
 			switch (node.name.text) {

@@ -5,7 +5,7 @@ import type {EvaluationError} from "../error/evaluation-error/evaluation-error.j
 /**
  * Evaluates, or attempts to evaluate, an IfStatement
  */
-export function evaluateIfStatement({node, evaluate, ...options}: EvaluatorOptions<TS.IfStatement>): void | EvaluationError {
+export function evaluateIfStatement({node, evaluate, ...options}: EvaluatorOptions<TS.IfStatement>): EvaluationError | undefined {
 	const {getCurrentError} = options;
 
 	const expressionValue = evaluate.expression(node.expression, options);
@@ -15,7 +15,6 @@ export function evaluateIfStatement({node, evaluate, ...options}: EvaluatorOptio
 	}
 
 	// We have to perform a loose boolean expression here to conform with actual spec behavior
-	// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 	if (expressionValue) {
 		// Proceed with the truthy branch
 		evaluate.statement(node.thenStatement, options);
@@ -27,6 +26,8 @@ export function evaluateIfStatement({node, evaluate, ...options}: EvaluatorOptio
 
 	// Proceed with the falsy branch
 	else if (node.elseStatement != null) {
-		return evaluate.statement(node.elseStatement, options);
+		return evaluate.statement(node.elseStatement, options) as undefined;
 	}
+
+	return;
 }

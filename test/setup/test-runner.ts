@@ -1,7 +1,7 @@
 import path from "crosspath";
 import fs from "fs";
 import semver from "semver";
-import avaTest, {type ExecutionContext} from "ava";
+import testModule, {type TestContext} from "node:test";
 import type * as TS from "typescript";
 
 function getNearestPackageJson(from = import.meta.url): Record<string, unknown> | undefined {
@@ -11,7 +11,7 @@ function getNearestPackageJson(from = import.meta.url): Record<string, unknown> 
 
 	const pkgPath = path.join(currentDir, "package.json");
 	if (fs.existsSync(pkgPath)) {
-		return JSON.parse(fs.readFileSync(pkgPath, "utf-8"));
+		return JSON.parse(fs.readFileSync(pkgPath, "utf-8")) as Record<string, unknown>;
 	} else if (currentDir !== normalizedFrom) {
 		return getNearestPackageJson(currentDir);
 	} else {
@@ -26,79 +26,60 @@ export interface ExecutionContextOptions {
 	useTypeChecker: boolean;
 }
 
-export type ExtendedImplementation = (t: ExecutionContext, options: ExecutionContextOptions) => void | Promise<void>;
+export type ExtendedImplementation = (t: TestContext, options: ExecutionContextOptions) => void | Promise<void>;
 
 const {devDependencies} = pkg as {devDependencies: Record<string, string>};
 
-// Map of all TypeScript versions parsed from package.json
-const TS_OPTIONS_ENTRIES = new Map<string, Omit<ExecutionContextOptions, "useTypeChecker">>();
+// Set of all TypeScript versions parsed from package.json
+const availableTsVersions = new Set<string>();
+const TS_OPTIONS_RECORDS = new Map<string, ExecutionContextOptions>();
 
 const tsRangeRegex = /(npm:typescript@)?[\^~]*(.+)$/;
-
-const tsFilter = process.env.TS_VERSION;
+const filter = process.env.TS_VERSION;
 
 for (const [specifier, range] of Object.entries(devDependencies)) {
-	const tsMatch = range.match(tsRangeRegex);
-
-	const tsMatchContext = tsMatch?.[1];
-	const tsMatchVersion = tsMatch?.[2];
-
-	if (tsMatchVersion != null && (tsMatchContext === "npm:typescript@" || specifier === "typescript")) {
-		if (tsFilter === undefined || (tsFilter.toUpperCase() === "CURRENT" && specifier === "typescript") || semver.satisfies(tsMatchVersion, tsFilter, {includePrerelease: true})) {
-			TS_OPTIONS_ENTRIES.set(tsMatchVersion, {
-				typescript: (await import(specifier)).default
-			});
-		}
-	}
-}
-
-if (TS_OPTIONS_ENTRIES.size === 0) {
-	throw new Error(`The TS_VERSION environment variable matches none of the available TypeScript versions.
-Filter: ${process.env.TS_VERSION}
-Available TypeScript versions: ${[...TS_OPTIONS_ENTRIES.keys()].join(", ")}`);
-}
-
-interface TestRunOptions {
-	only: boolean;
-	serial: boolean;
-	skip: boolean;
-}
-
-export function test(title: string, tsVersionGlob: string | undefined, impl: ExtendedImplementation, runOptions?: Partial<TestRunOptions>) {
-	const allOptions = [...TS_OPTIONS_ENTRIES.values()];
-	const filteredOptions =
-		tsVersionGlob == null || tsVersionGlob === "*"
-			? allOptions
-			: [...TS_OPTIONS_ENTRIES.entries()].filter(([version]) => semver.satisfies(version, tsVersionGlob, {includePrerelease: true})).map(([, options]) => options);
-
-	for (const useTypeChecker of [true, false]) {
-		for (const currentOptions of allOptions) {
-			const matchesGlob = filteredOptions.includes(currentOptions);
-			const fullTitle = `${title} (TypeScript v${currentOptions.typescript.version}${matchesGlob ? "" : " is not applicable"}) (Use TypeChecker: ${useTypeChecker})`;
-
-			const testHandler = async (t: ExecutionContext) => (matchesGlob ? impl(t, {...currentOptions, useTypeChecker}) : t.pass());
-
-			if (Boolean(runOptions?.only)) {
-				avaTest.only(fullTitle, testHandler);
-			} else if (Boolean(runOptions?.serial)) {
-				avaTest.serial(fullTitle, testHandler);
-			} else if (Boolean(runOptions?.skip)) {
-				avaTest.skip(fullTitle, testHandler);
-			} else {
-				avaTest(fullTitle, testHandler);
+	const match = range.match(tsRangeRegex);
+	if (match !== null) {
+		const [, context, version] = match;
+		if (version != null && (context === "npm:typescript@" || specifier === "typescript")) {
+			availableTsVersions.add(version);
+			if (filter === undefined || (filter.toUpperCase() === "CURRENT" && specifier === "typescript") || semver.satisfies(version, filter, {includePrerelease: true})) {
+				const typescript = ((await import(specifier)) as {default: typeof TS}).default;
+				TS_OPTIONS_RECORDS.set(version, {
+					typescript,
+					useTypeChecker: false
+				});
 			}
 		}
 	}
 }
 
-test.only = function (title: string, tsVersionGlob: string | undefined, impl: ExtendedImplementation) {
-	return test(title, tsVersionGlob, impl, {only: true});
-};
+if (availableTsVersions.size === 0) {
+	throw new Error(`The TS_VERSION environment variable matches none of the available TypeScript versions.
+Filter: ${process.env.TS_VERSION}
+Available TypeScript versions: ${[...availableTsVersions].join(", ")}`);
+}
 
-test.serial = function (title: string, tsVersionGlob: string | undefined, impl: ExtendedImplementation) {
-	return test(title, tsVersionGlob, impl, {serial: true});
-};
+interface TestRunOptions {
+	only: boolean;
+}
 
-test.skip = function (title: string, tsVersionGlob: string | undefined, impl: ExtendedImplementation) {
-	return test(title, tsVersionGlob, impl, {skip: true});
-};
+export function test(title: string, tsVersionGlob: string | undefined, impl: ExtendedImplementation, runOptions?: Partial<TestRunOptions>): void {
+	const allOptions =
+		tsVersionGlob == null || tsVersionGlob === "*"
+			? TS_OPTIONS_RECORDS.values()
+			: [...TS_OPTIONS_RECORDS.entries()].filter(([version]) => semver.satisfies(version, tsVersionGlob, {includePrerelease: true})).map(([, options]) => options);
+
+	for (const useTypeChecker of [true, false]) {
+		for (const currentOptions of allOptions) {
+			const nextCurrentOptions = {...currentOptions, useTypeChecker};
+			const fullTitle = `${title} (TypeScript v${nextCurrentOptions.typescript.version}) (Use TypeChecker: ${useTypeChecker})`;
+
+			if (Boolean(runOptions?.only)) {
+				testModule(fullTitle, {only: true}, async t => impl(t, nextCurrentOptions));
+			} else {
+				testModule(fullTitle, async t => impl(t, nextCurrentOptions));
+			}
+		}
+	}
+}

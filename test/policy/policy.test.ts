@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
 import {IoError} from "../../src/interpreter/error/policy-error/io-error/io-error.js";
@@ -7,7 +8,7 @@ import {NonDeterministicError} from "../../src/interpreter/error/policy-error/no
 import {NetworkError} from "../../src/interpreter/error/policy-error/network-error/network-error.js";
 import {ProcessError} from "../../src/interpreter/error/policy-error/process-error/process-error.js";
 
-test("Throws on IO read if the policy requires it. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on IO read if the policy requires it. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -39,11 +40,11 @@ test("Throws on IO read if the policy requires it. #1", "*", (t, {typescript, us
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on IO read if the policy requires it. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -75,11 +76,11 @@ test("Throws on IO read if the policy requires it. #2", "*", (t, {typescript, us
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on IO read if the policy requires it. #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -112,11 +113,11 @@ test("Throws on IO read if the policy requires it. #3", "*", (t, {typescript, us
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #4", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on IO read if the policy requires it. #4", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -149,11 +150,11 @@ test("Throws on IO read if the policy requires it. #4", "*", (t, {typescript, us
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #5", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on IO read if the policy requires it. #5", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -185,11 +186,11 @@ test("Throws on IO read if the policy requires it. #5", "*", (t, {typescript, us
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on IO read if the policy requires it. #6", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on IO read if the policy requires it. #6", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -221,11 +222,11 @@ test("Throws on IO read if the policy requires it. #6", "*", (t, {typescript, us
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on invoking Math.random() read if the policy is non-deterministic. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on invoking Math.random() read if the policy is non-deterministic. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -253,11 +254,11 @@ test("Throws on invoking Math.random() read if the policy is non-deterministic. 
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Doesn't throws on _getting_ Math.random, even if the policy is non-deterministic. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Doesn't throws on _getting_ Math.random, even if the policy is non-deterministic. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -285,11 +286,11 @@ test("Doesn't throws on _getting_ Math.random, even if the policy is non-determi
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on constructing new Date() without arguments if the policy is non-deterministic. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on constructing new Date() without arguments if the policy is non-deterministic. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -317,11 +318,11 @@ test("Throws on constructing new Date() without arguments if the policy is non-d
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Doesn't throws on construction of a new Date with a specific date input, even if the policy is non-deterministic. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Doesn't throws on construction of a new Date with a specific date input, even if the policy is non-deterministic. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -350,11 +351,11 @@ test("Doesn't throws on construction of a new Date with a specific date input, e
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on Network activity if the policy requires it. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on Network activity if the policy requires it. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -383,11 +384,11 @@ test("Throws on Network activity if the policy requires it. #1", "*", (t, {types
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on Network activity if the policy requires it. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on Network activity if the policy requires it. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -416,11 +417,11 @@ test("Throws on Network activity if the policy requires it. #2", "*", (t, {types
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on attempting to exit the Process if the policy requires it. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on attempting to exit the Process if the policy requires it. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -449,11 +450,11 @@ test("Throws on attempting to exit the Process if the policy requires it. #1", "
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });
 
-test("Throws on attempting to spawn a child process if the policy requires it. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws on attempting to spawn a child process if the policy requires it. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -482,6 +483,6 @@ test("Throws on attempting to spawn a child process if the policy requires it. #
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, true);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, true);
 });

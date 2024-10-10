@@ -14,7 +14,6 @@ export function evaluateConditionalExpression({node, evaluate, ...options}: Eval
 	}
 
 	// We have to perform a loose boolean expression here to conform with actual spec behavior
-	// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 	if (conditionValue) {
 		// Proceed with the truthy branch
 		return evaluate.expression(node.whenTrue, options);

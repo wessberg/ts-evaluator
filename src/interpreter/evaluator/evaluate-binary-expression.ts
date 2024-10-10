@@ -36,7 +36,6 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 		}
 
 		case typescript.SyntaxKind.AmpersandAmpersandToken: {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			return leftValue && rightValue;
 		}
 
@@ -95,7 +94,7 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 					computedValue /= rightValue;
 					break;
 				case typescript.SyntaxKind.QuestionQuestionEqualsToken:
-					computedValue = leftValue == null ? rightValue : leftValue;
+					computedValue = leftValue ?? rightValue;
 					break;
 				case typescript.SyntaxKind.BarBarEqualsToken:
 					if (!leftValue) {
@@ -131,7 +130,6 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 		}
 
 		case typescript.SyntaxKind.BarBarToken: {
-			// eslint-disable-next-line @typescript-eslint/strict-boolean-expressions
 			return leftValue || rightValue;
 		}
 
@@ -173,7 +171,7 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 				}
 
 				const bestLexicalEnvironment =
-					leftIdentifierValueDeclaration == null ? environment : findLexicalEnvironmentInSameContext(environment, leftIdentifierValueDeclaration, typescript) ?? environment;
+					leftIdentifierValueDeclaration == null ? environment : (findLexicalEnvironmentInSameContext(environment, leftIdentifierValueDeclaration, typescript) ?? environment);
 
 				setInLexicalEnvironment({...options, environment: bestLexicalEnvironment, path: leftIdentifier, value: rightValue});
 				logger.logBinding(leftIdentifier, rightValue, "Assignment");
@@ -221,7 +219,7 @@ export function evaluateBinaryExpression(options: EvaluatorOptions<TS.BinaryExpr
 
 		// Nullish coalescing (A ?? B)
 		case typescript.SyntaxKind.QuestionQuestionToken:
-			return leftValue != null ? leftValue : rightValue;
+			return leftValue ?? rightValue;
 
 		case typescript.SyntaxKind.InstanceOfKeyword: {
 			return (leftValue as unknown as Record<string, unknown>) instanceof (rightValue as unknown as CallableFunction);

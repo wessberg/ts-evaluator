@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can handle ClassExpressions. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassExpressions. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -12,13 +13,13 @@ test("Can handle ClassExpressions. #1", "*", (t, {typescript, useTypeChecker}) =
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
+	if (!result.success) assert.fail(result.reason.stack);
 	else {
-		t.true(typeof result.value === "function");
+		assert(typeof result.value === "function");
 	}
 });
 
-test("Can handle ClassExpressions that extends from other named classes. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ClassExpressions that extends from other named classes. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -31,10 +32,10 @@ test("Can handle ClassExpressions that extends from other named classes. #1", "*
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else if (!Array.isArray(result.value)) t.fail();
+	if (!result.success) assert.fail(result.reason.stack);
+	else if (!Array.isArray(result.value)) assert.fail();
 	else {
 		const [A, B] = result.value;
-		t.true(Object.getPrototypeOf(B) === A);
+		assert(Object.getPrototypeOf(B) === A);
 	}
 });

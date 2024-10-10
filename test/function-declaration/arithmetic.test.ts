@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can evaluate a simple '(number, number) => number' function. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -15,11 +16,11 @@ test("Can evaluate a simple '(number, number) => number' function. #1", "*", (t,
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 3);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -33,11 +34,11 @@ test("Can evaluate a simple '(number, number) => number' function. #2", "*", (t,
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, -1);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, -1);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -51,11 +52,11 @@ test("Can evaluate a simple '(number, number) => number' function. #3", "*", (t,
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 2);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 2);
 });
 
-test("Can evaluate a simple '(number, number) => number' function. #4", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple '(number, number) => number' function. #4", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -69,11 +70,11 @@ test("Can evaluate a simple '(number, number) => number' function. #4", "*", (t,
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 0.5);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 0.5);
 });
 
-test("Can evaluate a simple 'number => number' function. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a simple 'number => number' function. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -87,11 +88,11 @@ test("Can evaluate a simple 'number => number' function. #1", "*", (t, {typescri
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 4);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 4);
 });
 
-test("Can handle the 'arguments' identifier. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle the 'arguments' identifier. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -111,6 +112,6 @@ test("Can handle the 'arguments' identifier. #1", "*", (t, {typescript, useTypeC
 		}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 4);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 4);
 });

@@ -9,7 +9,7 @@ import type {EvaluationError} from "../error/evaluation-error/evaluation-error.j
 /**
  * Evaluates, or attempts to evaluate, a Decorator
  */
-export function evaluateDecorator(options: EvaluatorOptions<TS.Decorator>, [parent, propertyName, index]: [IndexLiteral, string?, number?]): void | EvaluationError {
+export function evaluateDecorator(options: EvaluatorOptions<TS.Decorator>, [parent, propertyName, index]: [IndexLiteral, string?, number?]): EvaluationError | undefined {
 	const {node, evaluate, environment, throwError, stack, getCurrentError} = options;
 	const decoratorImplementation = evaluate.expression(node.expression, options);
 
@@ -29,4 +29,5 @@ export function evaluateDecorator(options: EvaluatorOptions<TS.Decorator>, [pare
 	}
 
 	stack.push(__decorate([index != null ? __param(index, decoratorImplementation) : decoratorImplementation], parent, propertyName));
+	return;
 }

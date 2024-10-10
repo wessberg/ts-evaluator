@@ -18,6 +18,7 @@ export function evaluateBlock(options: EvaluatorOptions<TS.Block>): void {
 
 	for (let i = 0; i < node.statements.length; i++) {
 		const statement = node.statements[i];
+		if (statement == null) continue;
 
 		// Don't execute 'super()' within Constructor Blocks since this is handled in another level
 		if (

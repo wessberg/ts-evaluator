@@ -1,10 +1,11 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
 import {UndefinedIdentifierError} from "../../src/interpreter/error/undefined-identifier-error/undefined-identifier-error.js";
 import {NotCallableError} from "../../src/interpreter/error/not-callable-error/not-callable-error.js";
 
-test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Throws when attempting to reference an identifier that is still not defined within the current scope. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -18,14 +19,14 @@ test("Throws when attempting to reference an identifier that is still not define
 		{typescript, useTypeChecker}
 	);
 
-	if (result.success) t.fail();
-	else t.true(result.reason instanceof UndefinedIdentifierError);
+	if (result.success) assert.fail();
+	else assert(result.reason instanceof UndefinedIdentifierError);
 });
 
 test(
 	"Doesn't throw when attempting to reference an identifier that is declared after the reference, but is hoisted to the current scope. #1",
 	"*",
-	(t, {typescript, useTypeChecker}) => {
+	(_, {typescript, useTypeChecker}) => {
 		const {result} = executeProgram(
 			// language=TypeScript
 			`
@@ -41,17 +42,17 @@ test(
 			{typescript, useTypeChecker}
 		);
 
-		if (!result.success) t.fail(result.reason.stack);
+		if (!result.success) assert.fail(result.reason.stack);
 		// myVar aliases 'add', but before add received an rvalue. My the time it was aliased, it was initialized to the primitive
 		// value 'undefined', so myVar will still be assigned to undefined
-		else t.deepEqual(result.value, undefined);
+		else assert.deepEqual(result.value, undefined);
 	}
 );
 
 test(
 	"Throws when attempting to use the rvalue of a referenced identifier that is declared after the reference, but is hoisted to the current scope. #1",
 	"*",
-	(t, {typescript, useTypeChecker}) => {
+	(_, {typescript, useTypeChecker}) => {
 		const {result} = executeProgram(
 			// language=TypeScript
 			`
@@ -67,13 +68,13 @@ test(
 			{typescript, useTypeChecker}
 		);
 
-		if (result.success) t.fail();
+		if (result.success) assert.fail();
 		// The identifier is not undefined, but the rvalue is.
-		else t.true(result.reason instanceof NotCallableError);
+		else assert(result.reason instanceof NotCallableError);
 	}
 );
 
-test("Respects block scoped variables declared with 'let'. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Respects block scoped variables declared with 'let'. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -86,11 +87,11 @@ test("Respects block scoped variables declared with 'let'. #1", "*", (t, {typesc
 		{typescript, useTypeChecker}
 	);
 
-	if (result.success) t.fail();
-	else t.true(result.reason instanceof UndefinedIdentifierError);
+	if (result.success) assert.fail();
+	else assert(result.reason instanceof UndefinedIdentifierError);
 });
 
-test("Respects block scoped variables declared with 'var'. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Respects block scoped variables declared with 'var'. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -103,6 +104,6 @@ test("Respects block scoped variables declared with 'var'. #1", "*", (t, {typesc
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 2);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 2);
 });

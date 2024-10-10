@@ -12,7 +12,7 @@ import type {EvaluationError} from "../error/evaluation-error/evaluation-error.j
 /**
  * Evaluates, or attempts to evaluate, a ForInStatement
  */
-export function evaluateForInStatement(options: EvaluatorOptions<TS.ForInStatement>): void | EvaluationError {
+export function evaluateForInStatement(options: EvaluatorOptions<TS.ForInStatement>): EvaluationError | undefined {
 	const {node, environment, evaluate, logger, typescript, throwError, getCurrentError} = options;
 	// Compute the 'of' part
 	const expressionResult = evaluate.expression(node.expression, options) as IndexLiteral;
@@ -28,7 +28,7 @@ export function evaluateForInStatement(options: EvaluatorOptions<TS.ForInStateme
 
 	// Only 1 declaration is allowed in a ForOfStatement
 	else if (node.initializer.declarations.length > 1) {
-		return throwError(new UnexpectedNodeError({node: node.initializer.declarations[1], environment, typescript}));
+		return throwError(new UnexpectedNodeError({node: node.initializer.declarations[1]!, environment, typescript}));
 	}
 
 	for (const literal in expressionResult) {
@@ -43,7 +43,7 @@ export function evaluateForInStatement(options: EvaluatorOptions<TS.ForInStateme
 		setInLexicalEnvironment({...nextOptions, path: CONTINUE_SYMBOL, value: false, newBinding: true});
 
 		// Evaluate the VariableDeclaration and manually pass in the current literal as the initializer for the variable assignment
-		evaluate.nodeWithArgument(node.initializer.declarations[0], literal, nextOptions);
+		evaluate.nodeWithArgument(node.initializer.declarations[0]!, literal, nextOptions);
 
 		if (getCurrentError() != null) {
 			return;
@@ -69,4 +69,6 @@ export function evaluateForInStatement(options: EvaluatorOptions<TS.ForInStateme
 			return;
 		}
 	}
+
+	return;
 }

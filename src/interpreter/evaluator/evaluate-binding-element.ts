@@ -32,7 +32,7 @@ export function evaluateBindingElement(options: EvaluatorOptions<TS.BindingEleme
 		const propertyValue = typescript.isArrayBindingPattern(node.parent) ? rightHandValue : (rightHandValue as IndexLiteral)[propertyNameResult];
 
 		// Fall back to using the initializer of the BindingElement if the property value is null-like and if it has one
-		const propertyValueWithInitializerFallback = propertyValue != null ? propertyValue : bindingElementInitializer;
+		const propertyValueWithInitializerFallback = propertyValue ?? bindingElementInitializer;
 
 		setInLexicalEnvironment({
 			...options,
@@ -51,7 +51,7 @@ export function evaluateBindingElement(options: EvaluatorOptions<TS.BindingEleme
 		const propertyValue = typescript.isArrayBindingPattern(node.parent) ? rightHandValue : (rightHandValue as IndexLiteral)[nameResult];
 
 		// Fall back to using the initializer of the BindingElement if the property value is null-like and if it has one
-		const propertyValueWithInitializerFallback = propertyValue != null ? propertyValue : bindingElementInitializer;
+		const propertyValueWithInitializerFallback = propertyValue ?? bindingElementInitializer;
 
 		logger.logBinding(node.name.text, propertyValueWithInitializerFallback);
 
@@ -76,7 +76,7 @@ export function evaluateBindingElement(options: EvaluatorOptions<TS.BindingEleme
 		const propertyValue = typescript.isArrayBindingPattern(node.parent) ? rightHandValue : (rightHandValue as IndexLiteral)[propertyNameResult];
 
 		// Fall back to using the initializer of the BindingElement if the property value is null-like and if it has one
-		const propertyValueWithInitializerFallback = propertyValue != null ? propertyValue : bindingElementInitializer;
+		const propertyValueWithInitializerFallback = propertyValue ?? bindingElementInitializer;
 
 		// Evaluate the BindingPattern based on the narrowed property value
 		evaluate.nodeWithArgument(node.name, propertyValueWithInitializerFallback, options);
@@ -89,7 +89,7 @@ export function evaluateBindingElement(options: EvaluatorOptions<TS.BindingEleme
 	// Otherwise, the name itself is a BindingPattern. This will happen for example if an ObjectBindingPattern occurs within an ArrayBindingPattern
 	else if (!typescript.isIdentifier(node.name) && !typescript.isPrivateIdentifier?.(node.name) && node.propertyName == null) {
 		// Fall back to using the initializer of the BindingElement if the property value is null-like and if it has one
-		const propertyValueWithInitializerFallback = rightHandValue != null ? rightHandValue : bindingElementInitializer;
+		const propertyValueWithInitializerFallback = rightHandValue ?? bindingElementInitializer;
 
 		evaluate.nodeWithArgument(node.name, propertyValueWithInitializerFallback, options);
 

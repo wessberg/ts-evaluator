@@ -5,7 +5,7 @@ import type {EvaluationError} from "../error/evaluation-error/evaluation-error.j
 /**
  * Evaluates, or attempts to evaluate, a ThrowStatement
  */
-export function evaluateThrowStatement({node, evaluate, ...options}: EvaluatorOptions<TS.ThrowStatement>): void | EvaluationError {
+export function evaluateThrowStatement({node, evaluate, ...options}: EvaluatorOptions<TS.ThrowStatement>): EvaluationError | undefined {
 	const {getCurrentError, throwError} = options;
 	const result = evaluate.expression(node.expression, options) as EvaluationError;
 

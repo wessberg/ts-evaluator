@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can evaluate a CallExpression with a ForOfStatement. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForOfStatement. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -19,11 +20,11 @@ test("Can evaluate a CallExpression with a ForOfStatement. #1", "*", (t, {typesc
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 6);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 6);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a break statement. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -42,11 +43,11 @@ test("Can evaluate a CallExpression with a ForOfStatement and a break statement.
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 3);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 3);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a continue statement. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -65,11 +66,11 @@ test("Can evaluate a CallExpression with a ForOfStatement and a continue stateme
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 5);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 5);
 });
 
-test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForOfStatement and a return statement. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -88,6 +89,6 @@ test("Can evaluate a CallExpression with a ForOfStatement and a return statement
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 3);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 3);
 });

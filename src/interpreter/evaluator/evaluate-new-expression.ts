@@ -13,7 +13,7 @@ export function evaluateNewExpression({node, evaluate, ...options}: EvaluatorOpt
 
 	if (node.arguments != null) {
 		for (let i = 0; i < node.arguments.length; i++) {
-			evaluatedArgs[i] = evaluate.expression(node.arguments[i], options);
+			evaluatedArgs[i] = evaluate.expression(node.arguments[i]!, options);
 			if (getCurrentError() != null) {
 				return;
 			}

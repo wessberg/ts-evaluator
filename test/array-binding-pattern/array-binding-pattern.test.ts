@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -14,11 +15,11 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #1", "*", (t, {ty
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 2);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 2);
 });
 
-test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -31,11 +32,11 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #2", "*", (t, {ty
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 2);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 2);
 });
 
-test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -48,11 +49,11 @@ test("Can handle ArrayBindingPatterns in VariableDeclarations. #3", "*", (t, {ty
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 2);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 2);
 });
 
-test("Can handle ArrayBindingPatterns in ParameterDeclarations. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can handle ArrayBindingPatterns in ParameterDeclarations. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -64,6 +65,6 @@ test("Can handle ArrayBindingPatterns in ParameterDeclarations. #1", "*", (t, {t
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, 2);
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, 2);
 });

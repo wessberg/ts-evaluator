@@ -1,7 +1,8 @@
 import {test} from "../setup/test-runner.js";
+import assert from "node:assert";
 import {executeProgram} from "../setup/execute-program.js";
 
-test("Can evaluate a CallExpression with a ForInStatement. #1", "*", (t, {typescript, useTypeChecker}) => {
+test("Can evaluate a CallExpression with a ForInStatement. #1", "*", (_, {typescript, useTypeChecker}) => {
 	const {result} = executeProgram(
 		// language=TypeScript
 		`
@@ -20,6 +21,6 @@ test("Can evaluate a CallExpression with a ForInStatement. #1", "*", (t, {typesc
 		{typescript, useTypeChecker}
 	);
 
-	if (!result.success) t.fail(result.reason.stack);
-	else t.deepEqual(result.value, "abc");
+	if (!result.success) assert.fail(result.reason.stack);
+	else assert.deepEqual(result.value, "abc");
 });

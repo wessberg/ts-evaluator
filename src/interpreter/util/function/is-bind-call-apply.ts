@@ -3,10 +3,6 @@ import {getFromLexicalEnvironment} from "../../lexical-environment/lexical-envir
 
 /**
  * Returns true if the given function is either Function.prototype.bind, Function.prototype.call, or Function.prototype.apply
- *
- * @param func
- * @param [environment]
- * @return
  */
 export function isBindCallApply(func: CallableFunction, environment?: LexicalEnvironment): boolean {
 	switch (func) {

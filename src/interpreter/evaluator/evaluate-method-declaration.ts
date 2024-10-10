@@ -96,7 +96,7 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 
 				// Otherwise, return 'undefined'. Nothing is returned from the function
 				else return undefined;
-		  }
+			}
 		: function methodDeclaration(this: Literal, ...args: Literal[]) {
 				// Prepare a lexical environment for the function context
 				const localLexicalEnvironment: LexicalEnvironment = cloneLexicalEnvironment(environment, node);
@@ -146,7 +146,7 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 
 				// Otherwise, return 'undefined'. Nothing is returned from the function
 				else return undefined;
-		  };
+			};
 
 	_methodDeclaration.toString = () => `[Method: ${nameResult}]`;
 
@@ -174,7 +174,7 @@ export function evaluateMethodDeclaration(options: EvaluatorOptions<TS.MethodDec
 		// 'this' is a special parameter which is removed from the emitted results
 		const parameters = node.parameters.filter(param => !(typescript.isIdentifier(param.name) && param.name.text === "this"));
 		for (let i = 0; i < parameters.length; i++) {
-			const parameter = parameters[i];
+			const parameter = parameters[i]!;
 
 			if (canHaveDecorators(parameter, typescript)) {
 				for (const decorator of getDecorators(parameter, typescript) ?? []) {

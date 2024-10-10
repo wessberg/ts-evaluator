@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-types */
 import type {EvaluationErrorIntent} from "../error/evaluation-error/evaluation-error-intent.js";
 import type {EvaluatePolicySanitized} from "../policy/evaluate-policy.js";
 import type {PolicyTrapKind} from "../policy/policy-trap-kind.js";
@@ -18,7 +17,7 @@ export interface IPolicyProxyConstructHookOptions<T extends object> extends IPol
 	kind: PolicyTrapKind.CONSTRUCT;
 	target: T;
 	argArray: unknown[];
-	newTarget: unknown | undefined;
+	newTarget: unknown;
 }
 
 export interface IPolicyProxyApplyHookOptions<T extends object> extends IPolicyProxyHookOptions {
