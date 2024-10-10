@@ -67,12 +67,13 @@ interface TestRunOptions {
 export function test(title: string, tsVersionGlob: string | undefined, impl: ExtendedImplementation, runOptions?: Partial<TestRunOptions>): void {
 	const allOptions =
 		tsVersionGlob == null || tsVersionGlob === "*"
-			? TS_OPTIONS_RECORDS.values()
+			? [...TS_OPTIONS_RECORDS.values()]
 			: [...TS_OPTIONS_RECORDS.entries()].filter(([version]) => semver.satisfies(version, tsVersionGlob, {includePrerelease: true})).map(([, options]) => options);
 
 	for (const useTypeChecker of [true, false]) {
 		for (const currentOptions of allOptions) {
 			const nextCurrentOptions = {...currentOptions, useTypeChecker};
+
 			const fullTitle = `${title} (TypeScript v${nextCurrentOptions.typescript.version}) (Use TypeChecker: ${useTypeChecker})`;
 
 			if (Boolean(runOptions?.only)) {

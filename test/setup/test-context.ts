@@ -1,16 +1,19 @@
 import type {PartialExcept} from "helpertypes";
 import type {EvaluateOptions} from "../../src/interpreter/evaluate-options.js";
 import {LogLevelKind} from "../../src/interpreter/logger/log-level.js";
+import type {TS} from "../../src/type/ts.js";
 
 const _process = process;
 export interface TestContext extends PartialExcept<Required<EvaluateOptions>, "typescript"> {
 	cwd: string;
 	useTypeChecker: boolean;
+	compilerOptions?: Partial<TS.CompilerOptions>;
 }
 
 export function createTestContext({
 	typescript,
 	environment,
+	compilerOptions,
 	useTypeChecker = true,
 	moduleOverrides = {},
 	cwd = _process.cwd(),
@@ -39,6 +42,7 @@ export function createTestContext({
 		moduleOverrides,
 		reporting,
 		useTypeChecker,
+		compilerOptions,
 		policy: {
 			maxOps,
 			maxOpDuration,

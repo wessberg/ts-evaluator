@@ -48,7 +48,8 @@ export function executeProgram(
 		sourceMap: false,
 		outDir: dir.dist,
 		rootDir: dir.root,
-		module: useCommonJs ? typescript.ModuleKind.CommonJS : typescript.ModuleKind.ESNext
+		module: useCommonJs ? typescript.ModuleKind.CommonJS : typescript.ModuleKind.ESNext,
+		...context.compilerOptions
 	};
 
 	const program = typescript.createProgram({

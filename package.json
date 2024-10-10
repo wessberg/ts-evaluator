@@ -11,7 +11,7 @@
 		"prettier": "prettier --write \"{src,test,documentation}/**/*.{js,ts,json,html,xml,css,md}\"",
 		"test": "node --import tsx --test \"./test/**/*.test.ts\"",
 		"prebuild": "pnpm run clean",
-		"build": "tsup \"src/index.ts\" --sourcemap --dts --format esm,cjs",
+		"build": "pnpm run prebuild && tsup \"src/index.ts\" --sourcemap --dts --shims --format esm,cjs",
 		"preversion": "pnpm run lint && pnpm run build",
 		"version": "pnpm run generate:all && git add .",
 		"release": "np --no-cleanup --no-yarn --no-tests",
